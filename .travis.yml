@@ -1,5 +1,17 @@
 language: android
 
+jdk: oraclejdk8
+
+sudo: required
+
+install: true
+
+cache:
+  directories:
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
+    - $HOME/.sonar
+
 android:
   components:
     # MORE INFORMATION HERE https://docs.travis-ci.com/user/languages/android/
@@ -26,7 +38,8 @@ android:
     - sys-img-armeabi-v7a-android-17
 
 script:
-- sonar-scanner
+  - sonar-scanner
+
 notifications:
   webhooks:
     on_success: change
