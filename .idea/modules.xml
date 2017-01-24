@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$USER_HOME$/development/android/Eventapp/Eventapp.iml" filepath="$USER_HOME$/development/android/Eventapp/Eventapp.iml" />
+      <module fileurl="file://$USER_HOME$/development/android/Eventapp/app/app.iml" filepath="$USER_HOME$/development/android/Eventapp/app/app.iml" />
+    </modules>
+  </component>
+</project>

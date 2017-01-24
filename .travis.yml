@@ -1,0 +1,40 @@
+language: android
+
+android:
+  components:
+    # MORE INFORMATION HERE https://docs.travis-ci.com/user/languages/android/
+    # Uncomment the lines below if you want to
+    # use the latest revision of Android SDK Tools
+    # - platform-tools
+    # - tools
+
+    # The BuildTools version used by your project
+    - build-tools-25.0.1
+
+    # The SDK version used to compile your project
+    - android-22
+
+    # Additional components
+    - extra-google-google_play_services
+    - extra-google-m2repository
+    - extra-android-m2repository
+    - addon-google_apis-google-19
+
+    # Specify at least one system image,
+    # if you need to run emulator(s) during your tests
+    - sys-img-armeabi-v7a-android-22
+    - sys-img-armeabi-v7a-android-17
+
+script:
+- sonar-scanner
+notifications:
+  webhooks:
+    on_success: change
+    on_failure: always
+    on_start: false
+  slack:
+    secure: e4JSnLI1i42Ylm1FisI7V4a5qu9fezZ4Xnzu4mD8vuEDm+BYU2GJVB67X6kyvaqxz+fJoUXYLle48c2PnX2RLSrRBua/UHkqECY6pFa/DEif1osIwG1HOpK4GWwXqN22Zzl+c6IAxzbAjY8IHJPmaNNhnvHiVUMTcjur0mixsZ/T454vBKByX6ZbIcTVpv/ewNZuVIbgbuj+6KeHAechudFYWR4WftTrbZ4pijSjv/i7uBiJpCXxrWXj+aZqnCPHyJ3WveJFMFV743QweNzYilPwNHodY/uNQYotOvnaSpGqZnBCsDvbFZXXWgTleYoSuZM394lijeEbtG3RNoy6nUNIc514Ym04Uf6t22IMOAY+cLCOpsq9QsPTEUm8SZFVXQfRvILbVTXCK6iLt6h+Z7q1bhFrDTM0uX+J7JHQ+GnmcFpWiO8qUIA+cJgdE/zqnyl3tlDrrM8yD8ZpNFFMQRYh0ckCuJBKFFnSZAVcd65nHlHHXFWmaM61ax7oO6D7UVyz8lZIcYdDbxeWOYqOpIuLhNiaFI6cTmUpOk09OWxl3N1c0KyWx50nkcunl92mpXHD6UALPm9jsXxF+R8aNoVB1tincmI2jnRtTJ5U64y4yhH4vOKDh73oY1u76DPLjhDB2Ap553p8qef3KDcgN4VPFQbFp6qr5KTulJRjXUI=
+addons:
+  sonarqube:
+    token:
+      secure: deCnYUB0YY50nJ71g8w7rihTluAx8iOdjZavZX2GQCwZdz1h2IG5ah6FhRzWnQ72gToJZt7mr09boy7jpOAEJQNWCjrW2mJ096691afqEP8yHQ3V1fPsIuRgRBmu2j0cZTf99dHszbWIJYmDEEzsZpXF/J5oy+nzNsyEEhtAbccA7LkQOwX38E9HFA6bTO0j1RspttoQaOqShT4lt1zCVfgRfL8fdU9Nm5GnuKsSIS2ax71kqJTzsmFu5Fenp6lHFc19gNSSfUJkIF1zHOFehKIry5ZNNZL1gwzYdrHU5V7AmPFkkmPnScslYly4Z2/KvtvRFF5yk6ty5pb7J2wD414AFRVONomwmomZLmXuHRrpZKBDjuKLCc0u1GwHoT1Im/2BEJW3zfUAsVA9Ug0zQU8bA0Fav83gJo/KaInMaaSp/XZGnK19HlmVP//VEwtRYkptEiyxE1dHu3GgYuoNdaJ8ogUTjY3Oy+/9BqpsZVDv9M8jCiGejy33wb5HvN/irrrfIbddxXbBLTCgd5MMOVWFUqW+53ojwtwv3x0aqMp6SdHx/EtUvY62iVCFxwfvdKQbwxjvB34WkenF6OoC1ybVwaqWBJnhQV6pmF+dbPdGuwwodtY9ig9og3rlBAuv+KksyWTdptG62L8tPHYIS86iLFqPV47BtSyWb2BOKpU= 
