@@ -7,10 +7,19 @@ import com.google.gson.annotations.SerializedName;
  */
 public class Event {
 
-
+    @SerializedName("id")
+    public Long id;
 
     @SerializedName("title")
     public String title;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getTitle() {
         return title;
@@ -19,6 +28,4 @@ public class Event {
     public void setTitle(String title) {
         this.title = title;
     }
-
-
 }

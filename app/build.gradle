@@ -36,4 +36,6 @@ dependencies {
 
     // GSON
     compile 'com.google.code.gson:gson:2.8.0'
+
+    testCompile 'com.github.tomakehurst:wiremock-standalone:2.5.0'
 }

@@ -8,11 +8,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class EventService {
 
-    public static final String URL = "localhost:8080";
+    public static final String URL = "http://localhost:8080";
 
     public static EventAPI createService() {
-        return new Retrofit.Builder().baseUrl(URL).
-                addConverterFactory(GsonConverterFactory.create()).
-                build().create(EventAPI.class);
+        return new Retrofit.Builder()
+                .baseUrl(URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+                .create(EventAPI.class);
     }
 }

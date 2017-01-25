@@ -3,6 +3,7 @@ package io.hobaskos.event.eventapp.api;
 import java.util.List;
 
 import io.hobaskos.event.eventapp.models.Event;
+import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
@@ -16,17 +17,17 @@ import retrofit2.http.Path;
 public interface EventAPI {
 
     @GET("api/events")
-    List<Event> getEvents();
+    Call<List<Event>> getEvents();
 
     @GET("api/events/{id}")
-    Event getEvent(@Path("id") int id);
+    Call<Event> getEvent(@Path("id") int id);
 
     @POST("api/events")
-    Event postEvent(@Body Event event);
+    Call<Event> postEvent(@Body Event event);
 
     @PUT("api/events")
-    Event putEvent(@Body Event event);
+    Call<Event> putEvent(@Body Event event);
 
     @DELETE("api/events/{id}")
-    void deleteEvent(@Path("id") int id);
+    Call<Void> deleteEvent(@Path("id") int id);
 }
