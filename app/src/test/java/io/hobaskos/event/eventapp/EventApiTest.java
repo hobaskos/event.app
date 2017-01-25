@@ -5,23 +5,23 @@ import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import org.junit.Rule;
 import org.junit.Test;
 
-import java.io.IOException;
-import java.util.List;
+import io.hobaskos.event.eventapp.api.ApiService;
+import io.hobaskos.event.eventapp.api.EventApi;
 
-import io.hobaskos.event.eventapp.api.EventService;
-import io.hobaskos.event.eventapp.models.Event;
-import retrofit2.Response;
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
+import static org.junit.Assert.assertTrue;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import static org.junit.Assert.*;
-
-public class EventApiTest {
+public class EventApiTest extends BaseApiTest {
 
     @Rule
-    public WireMockRule wireMockRule = new WireMockRule(8080);
+    public WireMockRule wireMockRule = new WireMockRule(TEST_PORT);
 
     @Test
     public void getEventsTest() {
+
         String jsonListOfEvents = "[{ \"id\": 1, \"title\": \"event1\"}," +
                 "{\"id\": 2, \"title\": \"event2\"}]";
 
@@ -31,14 +31,11 @@ public class EventApiTest {
                         .withHeader("Content-Type", "application/json")
                         .withBody(jsonListOfEvents)));
 
-        try {
-            Response<List<Event>> listResponse = EventService.createService().getEvents().execute();
-            assertTrue(listResponse.isSuccessful());
-            List<Event> events = listResponse.body();
+        EventApi api = ApiService.build(url).createService(EventApi.class);
+
+        api.getEvents().doOnNext((events) -> {
             assertTrue(events.size() == 2);
-        } catch (IOException ioe) {
-            // do nothing for now
-        }
+        }).subscribe();
     }
 
     @Test
@@ -52,15 +49,11 @@ public class EventApiTest {
                         .withHeader("Content-Type", "application/json")
                         .withBody(singleEvent)));
 
-        try {
-            Response<Event> listResponse = EventService.createService().getEvent(1).execute();
-            assertTrue(listResponse.isSuccessful());
-            Event events = listResponse.body();
+        EventApi api = ApiService.build(url).createService(EventApi.class);
+
+        api.getEvent(1).doOnNext((events) -> {
             assertTrue(events.getId() == 1);
             assertTrue(events.getTitle().equals("event1"));
-        } catch (IOException ioe) {
-            // do nothing for now
-        }
-
+        }).subscribe();
     }
 }
