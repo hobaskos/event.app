@@ -44,7 +44,12 @@ dependencies {
     // Mosby:
     compile "com.hannesdorfmann.mosby:mvp:${mosby_version}"
     compile "com.hannesdorfmann.mosby:viewstate:${mosby_version}"
-    // optional viewstate feature
+    // ^optional viewstate feature
+
+    // Butter Knife
+    compile 'com.jakewharton:butterknife:8.5.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
+
     // Retrofit
     compile "com.squareup.retrofit2:retrofit:${retrofit_version}"
     compile "com.squareup.retrofit2:converter-gson:${retrofit_version}"
