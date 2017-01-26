@@ -1,7 +1,5 @@
 package io.hobaskos.event.eventapp.event;
 
-import java.util.List;
-
 import io.hobaskos.event.eventapp.models.Event;
 
 /**
@@ -15,5 +13,5 @@ public interface EventView {
 
     void onFailure(String errorMessage);
 
-    void setEvent(List<Event> events);
+    void setEvent(Event event);
 }
