@@ -3,7 +3,7 @@ package io.hobaskos.event.eventapp.module;
 import javax.inject.Singleton;
 
 import dagger.Component;
-import io.hobaskos.event.eventapp.events.EventPresenter;
+import io.hobaskos.event.eventapp.events.EventsPresenter;
 
 /**
  * Created by alex on 1/26/17.
@@ -13,6 +13,6 @@ import io.hobaskos.event.eventapp.events.EventPresenter;
                       NetModule.class})
 public interface DiComponent {
 
-    void inject(EventPresenter eventPresenter);
+    void inject(EventsPresenter eventPresenter);
 
 }
