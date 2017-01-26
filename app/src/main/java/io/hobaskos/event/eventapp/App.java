@@ -3,6 +3,10 @@ package io.hobaskos.event.eventapp;
 import android.app.Application;
 
 import io.hobaskos.event.eventapp.config.Constants;
+import io.hobaskos.event.eventapp.module.AppModule;
+import io.hobaskos.event.eventapp.module.DaggerDiComponent;
+import io.hobaskos.event.eventapp.module.DiComponent;
+import io.hobaskos.event.eventapp.module.NetModule;
 import okhttp3.HttpUrl;
 
 /**
@@ -12,7 +16,7 @@ public class App extends Application
 {
     private static App inst;
 
-    private HttpUrl apiUrl;
+    private DiComponent diComponent;
 
     @Override
     public void onCreate()
@@ -21,10 +25,15 @@ public class App extends Application
 
         inst = this;
 
-        apiUrl = new HttpUrl.Builder()
+        HttpUrl apiUrl = new HttpUrl.Builder()
                 .scheme(Constants.API_SCHEME)
                 .host(Constants.API_HOST)
                 .port(Constants.API_PORT)
+                .build();
+
+        diComponent = DaggerDiComponent.builder()
+                .appModule(new AppModule(this))
+                .netModule(new NetModule(apiUrl))
                 .build();
 
     }
@@ -34,8 +43,7 @@ public class App extends Application
         return inst;
     }
 
-    public HttpUrl getApiUrl()
-    {
-        return apiUrl;
+    public DiComponent getDiComponent() {
+        return diComponent;
     }
 }

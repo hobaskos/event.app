@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
+apply plugin: 'android-apt'
 
 android {
     compileSdkVersion 25
@@ -63,6 +64,12 @@ dependencies {
     // Rxjava
     compile "io.reactivex.rxjava2:rxandroid:${rxjava_version}"
     compile "io.reactivex.rxjava2:rxjava:${rxjava_version}"
+
+    // Dagger2
+    apt "com.google.dagger:dagger-compiler:${dagger_version}"
+    compile "com.google.dagger:dagger:${dagger_version}"
+    provided 'javax.annotation:jsr250-api:1.0'
+
 
     testCompile 'junit:junit:4.12'
     testCompile "com.github.tomakehurst:wiremock-standalone:${wiremock_version}"
