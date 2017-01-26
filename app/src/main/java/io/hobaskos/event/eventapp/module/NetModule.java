@@ -6,7 +6,7 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import io.hobaskos.event.eventapp.api.ApiService;
-import io.hobaskos.event.eventapp.api.EventApi;
+import io.hobaskos.event.eventapp.api.EventService;
 import io.hobaskos.event.eventapp.repository.EventRepository;
 import okhttp3.HttpUrl;
 
@@ -25,14 +25,14 @@ public class NetModule {
 
     @Singleton
     @Provides
-    public EventApi providesEventApi() {
-        return ApiService.build(httpUrl).createService(EventApi.class);
+    public EventService providesEventService() {
+        return ApiService.build(httpUrl).createService(EventService.class);
     }
 
     @Singleton
     @Provides
-    public EventRepository providesEventRepository(EventApi eventApi)
+    public EventRepository providesEventRepository(EventService eventService)
     {
-        return new EventRepository(eventApi);
+        return new EventRepository(eventService);
     }
 }

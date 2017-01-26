@@ -32,6 +32,7 @@ android {
 
 repositories {
     mavenCentral()
+    jcenter()
 }
 
 
@@ -65,7 +66,7 @@ dependencies {
     compile "com.google.dagger:dagger:${dagger_version}"
     provided 'javax.annotation:jsr250-api:1.0'
 
-
     testCompile 'junit:junit:4.12'
+    testCompile "org.mockito:mockito-core:${mockito_version}"
     testCompile "com.github.tomakehurst:wiremock-standalone:${wiremock_version}"
 }
