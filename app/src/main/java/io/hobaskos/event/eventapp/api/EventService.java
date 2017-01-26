@@ -15,7 +15,7 @@ import retrofit2.http.Path;
 /**
  * Created by andre on 1/25/2017.
  */
-public interface EventApi
+public interface EventService
 {
     @GET("api/events")
     Observable<List<Event>> getEvents();
@@ -24,7 +24,7 @@ public interface EventApi
     Observable<Event> getEvent(@Path("id") int id);
 
     @POST("api/events")
-    Observable<Event> postEvent(@Body Event event);
+    Observable<Event> saveEvent(@Body Event event);
 
     @PUT("api/events")
     Observable<Event> putEvent(@Body Event event);

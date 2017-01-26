@@ -6,22 +6,32 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import io.hobaskos.event.eventapp.api.ApiService;
-import io.hobaskos.event.eventapp.api.EventApi;
+import io.hobaskos.event.eventapp.api.EventService;
 import io.hobaskos.event.eventapp.models.Event;
+import io.hobaskos.event.eventapp.repository.EventRepository;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.delete;
-import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.put;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-public class EventApiTest extends BaseApiTest {
+public class EventTest extends BaseApiTest {
 
     @Rule
     public WireMockRule wireMockRule = new WireMockRule(TEST_PORT);
+
+    private EventRepository eventRepository;
+
+    public EventTest()
+    {
+        eventRepository = new EventRepository(ApiService.build(url)
+                .createService(EventService.class));
+    }
 
     @Test
     public void getEventsTest() {
@@ -35,9 +45,7 @@ public class EventApiTest extends BaseApiTest {
                         .withHeader("Content-Type", "application/json")
                         .withBody(jsonListOfEvents)));
 
-        EventApi api = ApiService.build(url).createService(EventApi.class);
-
-        api.getEvents().doOnNext((events) -> {
+        eventRepository.getAll().doOnNext((events) -> {
             assertTrue(events.size() == 2);
         }).subscribe();
     }
@@ -53,21 +61,38 @@ public class EventApiTest extends BaseApiTest {
                         .withHeader("Content-Type", "application/json")
                         .withBody(singleEvent)));
 
-        EventApi api = ApiService.build(url).createService(EventApi.class);
-
-        api.getEvent(1).doOnNext((events) -> {
+        eventRepository.get(1).doOnNext((events) -> {
             assertTrue(events.getId() == 1);
             assertTrue(events.getTitle().equals("event1"));
         }).subscribe();
     }
 
     @Test
+    public void saveEvent() {
+        String singleEvent = "{\"id\": 1, \"title\": \"newEvent\"}";
+        Event event = new Event();
+        event.setTitle("newEvent");
+
+        stubFor(post(urlEqualTo("/api/events"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "application/json")
+                        .withBody(singleEvent)));
+
+        eventRepository.save(event).doOnNext((events) -> {
+            assertTrue(events.getId() == 1);
+            assertTrue(events.getTitle().equals("newEvent"));
+        }).subscribe();
+
+    }
+
+    @Test
     public void updateEvent() {
 
-        String singleEvent = "{\"id\": 1, \"title\": \"newTitle\"}";
+        String singleEvent = "{\"id\": 1, \"title\": \"newEventTitle\"}";
         Event event = new Event();
         event.setId(1L);
-        event.setTitle("newTitle");
+        event.setTitle("newEventTitle");
 
         stubFor(put(urlEqualTo("/api/events"))
                 .willReturn(aResponse()
@@ -75,11 +100,9 @@ public class EventApiTest extends BaseApiTest {
                         .withHeader("Content-Type", "application/json")
                         .withBody(singleEvent)));
 
-        EventApi api = ApiService.build(url).createService(EventApi.class);
-
-        api.putEvent(event).doOnNext((events) -> {
+        eventRepository.update(event).doOnNext((events) -> {
             assertTrue(events.getId() == 1);
-            assertTrue(events.getTitle().equals("newTitle"));
+            assertTrue(events.getTitle().equals("newEventTitle"));
         }).subscribe();
     }
 
@@ -91,9 +114,7 @@ public class EventApiTest extends BaseApiTest {
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")));
 
-        EventApi api = ApiService.build(url).createService(EventApi.class);
-
-        api.deleteEvent(1).doOnNext((Void) -> {
+        eventRepository.delete(1).doOnNext((Void) -> {
             // mocking this seems a bit unnecessary...
         });
     }
