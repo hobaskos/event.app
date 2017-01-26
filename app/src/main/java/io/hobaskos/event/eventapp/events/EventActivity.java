@@ -22,8 +22,6 @@ import io.hobaskos.event.eventapp.repository.EventRepository;
 public class EventActivity extends AppCompatActivity implements EventView {
 
     private RecyclerView list;
-    @Inject
-    public EventRepository repository;
     ProgressBar progressBar;
 
     @Override
@@ -34,7 +32,7 @@ public class EventActivity extends AppCompatActivity implements EventView {
         renderView();
         init();
 
-        EventPresenter presenter = new EventPresenter(repository, this);
+        EventPresenter presenter = new EventPresenter(this);
         presenter.getEvents();
     }
 

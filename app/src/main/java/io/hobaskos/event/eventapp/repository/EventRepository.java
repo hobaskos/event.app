@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import io.hobaskos.event.eventapp.api.EventApi;
+import io.hobaskos.event.eventapp.api.EventService;
 import io.hobaskos.event.eventapp.models.Event;
 import rx.Observable;
 
@@ -13,18 +13,33 @@ import rx.Observable;
  */
 public class EventRepository implements BaseRepository<Event, Integer> {
 
-    private EventApi eventApi;
+    private EventService eventService;
 
     @Inject
-    public EventRepository(EventApi eventApi) {
-        this.eventApi = eventApi;
+    public EventRepository(EventService eventService) {
+        this.eventService = eventService;
     }
 
     public Observable<List<Event>> getAll() {
-        return eventApi.getEvents();
+        return eventService.getEvents();
     }
 
     public Observable<Event> get(Integer id) {
-        return eventApi.getEvent(id);
+        return eventService.getEvent(id);
+    }
+
+    @Override
+    public Observable<Event> save(Event item) {
+        return eventService.saveEvent(item);
+    }
+
+    @Override
+    public Observable<Event> update(Event item) {
+        return eventService.putEvent(item);
+    }
+
+    @Override
+    public Observable<Void> delete(Integer id) {
+        return eventService.deleteEvent(id);
     }
 }
