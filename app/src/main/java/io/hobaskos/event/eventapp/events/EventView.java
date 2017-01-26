@@ -14,5 +14,5 @@ public interface EventView {
 
     void onFailure(String errorMessage);
 
-    void getEventsSuccess(List<Event> events);
+    void setEvents(List<Event> events);
 }

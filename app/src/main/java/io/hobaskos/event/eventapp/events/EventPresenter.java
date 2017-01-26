@@ -1,7 +1,7 @@
 package io.hobaskos.event.eventapp.events;
 
 import io.hobaskos.event.eventapp.repository.EventRepository;
-import io.reactivex.schedulers.Schedulers;
+import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
 /**
@@ -21,15 +21,15 @@ public class EventPresenter {
     public void getEvents() {
         view.showWait();
 
-        repository.getEvents().subscribeOn(Schedulers.io())
+        repository.getAll().subscribeOn(Schedulers.io())
                 .doOnNext((list) -> {
-                    //view.setData(list);
+                    view.setEvents(list);
                 }).doOnError((throwable) -> {
-                    //throwable.getMessage();
+                    view.onFailure(throwable.getMessage());
                 });
 
 
-        subscriptions.add(subscription);
+        //subscriptions.add(subscription);
     }
     public void onStop() {
         subscriptions.unsubscribe();

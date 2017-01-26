@@ -29,7 +29,7 @@
         android:background="#5000">
 
         <TextView
-            android:id="@+id/id"
+            android:id="@+id/event_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Placeholder Id"
@@ -41,7 +41,7 @@
 
 
         <TextView
-            android:id="@+id/title"
+            android:id="@+id/event_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Placeholder Title"
