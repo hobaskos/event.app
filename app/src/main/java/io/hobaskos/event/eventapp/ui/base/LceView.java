@@ -25,5 +25,4 @@ public interface LceView<M> extends View {
 
     @UiThread
     public void setData(M data);
-
 }

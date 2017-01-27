@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="io.hobaskos.event.eventapp"
-          xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="io.hobaskos.event.eventapp">
 
     <uses-permission android:name="android.permission.INTERNET"/>
 
@@ -13,19 +13,14 @@
         android:theme="@style/AppTheme">
         <activity android:name=".activity.MainActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".ui.events.EventsActivity">
-
-        </activity>
-
-        <activity android:name=".ui.event.EventActivity">
-        </activity>
-
+        <activity android:name=".ui.events.EventsActivity"></activity>
+        <activity android:name=".ui.event.EventActivity"></activity>
+        <activity android:name=".ui.createevent.CreateEventActivity"></activity>
     </application>
 
 </manifest>
