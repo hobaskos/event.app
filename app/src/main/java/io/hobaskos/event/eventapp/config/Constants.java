@@ -6,7 +6,7 @@ package io.hobaskos.event.eventapp.config;
 
 public class Constants
 {
-    public static final int API_PORT = 8080;
-    public static final String API_HOST = "10.0.2.2";
-    public static final String API_SCHEME = "http";
+    public static final int API_PORT = 443;
+    public static final String API_HOST = "plod.herokuapp.com";
+    public static final String API_SCHEME = "https";
 }
