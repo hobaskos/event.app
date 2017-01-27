@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import io.hobaskos.event.eventapp.R;
-import io.hobaskos.event.eventapp.ui.event.EventActivity;
+import io.hobaskos.event.eventapp.ui.events.EventsActivity;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -16,6 +16,6 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        startActivity(new Intent(this, EventActivity.class));
+        startActivity(new Intent(this, EventsActivity.class));
     }
 }

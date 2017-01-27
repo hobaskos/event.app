@@ -24,12 +24,12 @@ public class EventsActivity extends AppCompatActivity implements EventsView {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //getDeps().inject(this);
 
         renderView();
         init();
 
-        EventsPresenter presenter = new EventsPresenter(this);
+        EventsPresenter presenter = new EventsPresenter();
+        presenter.attachView(this);
         presenter.getEvents();
     }
 
@@ -44,31 +44,31 @@ public class EventsActivity extends AppCompatActivity implements EventsView {
     }
 
     @Override
-    public void showWait() {
+    public void showLoading() {
         progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
-    public void removeWait() {
+    public void showContent() {
+
+    }
+
+
+    public void stopLoading() {
         progressBar.setVisibility(View.GONE);
     }
 
     @Override
-    public void onFailure(String appErrorMessage) {
+    public void showError(String appErrorMessage) {
 
     }
 
     @Override
-    public void setEvents(List<Event> events) {
+    public void setData(List<Event> events) {
 
         EventsAdapter adapter = new EventsAdapter(getApplicationContext(), events,
-                new EventsAdapter.OnItemClickListener() {
-                    @Override
-                    public void onClick(Event Item) {
-                        Toast.makeText(getApplicationContext(), Item.getTitle(),
-                                Toast.LENGTH_LONG).show();
-                    }
-                });
+                Item -> Toast.makeText(getApplicationContext(), Item.getTitle(),
+                        Toast.LENGTH_LONG).show());
 
         list.setAdapter(adapter);
 

@@ -40,8 +40,8 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
     @Override
     public void onBindViewHolder(EventsAdapter.ViewHolder holder, int position) {
         holder.click(data.get(position), listener);
-        holder.tvCity.setText(data.get(position).getId() + "");
-        holder.tvDesc.setText(data.get(position).getTitle());
+        holder.eventTitle.setText(data.get(position).getTitle());
+        holder.eventId.setText(data.get(position).getId() + "");
 
     }
 
@@ -57,13 +57,13 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvCity, tvDesc;
+        TextView eventTitle, eventId;
         //ImageView background;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            tvCity = (TextView) itemView.findViewById(R.id.event_id);
-            tvDesc = (TextView) itemView.findViewById(R.id.event_title);
+            eventTitle = (TextView) itemView.findViewById(R.id.event_title);
+            eventId = (TextView) itemView.findViewById(R.id.event_id);
             //background = (ImageView) itemView.findViewById(R.id.image);
 
         }
