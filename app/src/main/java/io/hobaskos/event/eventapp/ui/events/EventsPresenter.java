@@ -4,7 +4,7 @@ import javax.inject.Inject;
 
 import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.data.repository.EventRepository;
-import io.hobaskos.event.eventapp.ui.BasePresenter;
+import io.hobaskos.event.eventapp.ui.base.BasePresenter;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 

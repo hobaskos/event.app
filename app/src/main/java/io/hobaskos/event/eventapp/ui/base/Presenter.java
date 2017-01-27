@@ -1,4 +1,4 @@
-package io.hobaskos.event.eventapp.ui;
+package io.hobaskos.event.eventapp.ui.base;
 
 import android.support.annotation.UiThread;
 
