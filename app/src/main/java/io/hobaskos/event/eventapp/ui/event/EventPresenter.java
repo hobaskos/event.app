@@ -4,6 +4,7 @@ import javax.inject.Inject;
 
 import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.data.repository.EventRepository;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
@@ -28,12 +29,14 @@ public class EventPresenter {
     public void getEvent(int id) {
         view.showWait();
 
-        repository.get(id).subscribeOn(Schedulers.io())
+        repository.get(id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext((event) -> {
                     view.setEvent(event);
                 }).doOnError((throwable) -> {
-            view.onFailure(throwable.getMessage());
-        });
+                    view.onFailure(throwable.getMessage());
+                }).subscribe();
 
 
         //subscriptions.add(subscription);
