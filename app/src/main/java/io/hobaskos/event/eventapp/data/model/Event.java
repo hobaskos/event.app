@@ -1,4 +1,4 @@
-package io.hobaskos.event.eventapp.models;
+package io.hobaskos.event.eventapp.data.model;
 
 import com.google.gson.annotations.SerializedName;
 

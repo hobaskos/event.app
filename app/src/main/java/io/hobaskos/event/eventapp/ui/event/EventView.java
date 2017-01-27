@@ -1,6 +1,6 @@
-package io.hobaskos.event.eventapp.event;
+package io.hobaskos.event.eventapp.ui.event;
 
-import io.hobaskos.event.eventapp.models.Event;
+import io.hobaskos.event.eventapp.data.model.Event;
 
 /**
  * Created by andre on 1/26/2017.

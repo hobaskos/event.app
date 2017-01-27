@@ -1,4 +1,4 @@
-package io.hobaskos.event.eventapp.events;
+package io.hobaskos.event.eventapp.ui.events;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,7 +11,7 @@ import android.widget.Toast;
 import java.util.List;
 
 import io.hobaskos.event.eventapp.R;
-import io.hobaskos.event.eventapp.models.Event;
+import io.hobaskos.event.eventapp.data.model.Event;
 
 /**
  * Created by andre on 1/26/2017.

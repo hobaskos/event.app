@@ -3,8 +3,8 @@ package io.hobaskos.event.eventapp.module;
 import javax.inject.Singleton;
 
 import dagger.Component;
-import io.hobaskos.event.eventapp.event.EventPresenter;
-import io.hobaskos.event.eventapp.events.EventsPresenter;
+import io.hobaskos.event.eventapp.ui.event.EventPresenter;
+import io.hobaskos.event.eventapp.ui.events.EventsPresenter;
 
 /**
  * Created by alex on 1/26/17.

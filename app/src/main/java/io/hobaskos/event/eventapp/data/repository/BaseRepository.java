@@ -1,4 +1,4 @@
-package io.hobaskos.event.eventapp.repository;
+package io.hobaskos.event.eventapp.data.repository;
 
 import java.util.List;
 

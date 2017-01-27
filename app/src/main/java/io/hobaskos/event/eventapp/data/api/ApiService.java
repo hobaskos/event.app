@@ -1,4 +1,4 @@
-package io.hobaskos.event.eventapp.api;
+package io.hobaskos.event.eventapp.data.api;
 
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;

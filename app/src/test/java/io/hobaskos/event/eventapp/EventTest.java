@@ -5,10 +5,10 @@ import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import org.junit.Rule;
 import org.junit.Test;
 
-import io.hobaskos.event.eventapp.api.ApiService;
-import io.hobaskos.event.eventapp.api.EventService;
-import io.hobaskos.event.eventapp.models.Event;
-import io.hobaskos.event.eventapp.repository.EventRepository;
+import io.hobaskos.event.eventapp.data.api.ApiService;
+import io.hobaskos.event.eventapp.data.api.EventService;
+import io.hobaskos.event.eventapp.data.model.Event;
+import io.hobaskos.event.eventapp.data.repository.EventRepository;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.delete;

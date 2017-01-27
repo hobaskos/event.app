@@ -1,11 +1,11 @@
-package io.hobaskos.event.eventapp.repository;
+package io.hobaskos.event.eventapp.data.repository;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
-import io.hobaskos.event.eventapp.api.EventService;
-import io.hobaskos.event.eventapp.models.Event;
+import io.hobaskos.event.eventapp.data.api.EventService;
+import io.hobaskos.event.eventapp.data.model.Event;
 import rx.Observable;
 
 /**

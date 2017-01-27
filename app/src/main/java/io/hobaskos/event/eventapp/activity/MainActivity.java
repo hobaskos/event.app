@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import io.hobaskos.event.eventapp.R;
-import io.hobaskos.event.eventapp.event.EventActivity;
+import io.hobaskos.event.eventapp.ui.event.EventActivity;
 
 public class MainActivity extends AppCompatActivity
 {

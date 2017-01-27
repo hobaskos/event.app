@@ -17,11 +17,11 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".events.EventsActivity">
+        <activity android:name=".ui.events.EventsActivity">
 
         </activity>
 
-        <activity android:name=".event.EventActivity">
+        <activity android:name=".ui.event.EventActivity">
         </activity>
 
     </application>

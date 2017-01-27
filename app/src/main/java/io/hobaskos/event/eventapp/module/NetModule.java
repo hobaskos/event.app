@@ -5,9 +5,9 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import io.hobaskos.event.eventapp.api.ApiService;
-import io.hobaskos.event.eventapp.api.EventService;
-import io.hobaskos.event.eventapp.repository.EventRepository;
+import io.hobaskos.event.eventapp.data.api.ApiService;
+import io.hobaskos.event.eventapp.data.api.EventService;
+import io.hobaskos.event.eventapp.data.repository.EventRepository;
 import okhttp3.HttpUrl;
 
 /**

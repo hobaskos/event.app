@@ -1,9 +1,9 @@
-package io.hobaskos.event.eventapp.events;
+package io.hobaskos.event.eventapp.ui.events;
 
 import javax.inject.Inject;
 
 import io.hobaskos.event.eventapp.App;
-import io.hobaskos.event.eventapp.repository.EventRepository;
+import io.hobaskos.event.eventapp.data.repository.EventRepository;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 

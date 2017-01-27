@@ -1,11 +1,11 @@
-package io.hobaskos.event.eventapp.event;
+package io.hobaskos.event.eventapp.ui.event;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 import io.hobaskos.event.eventapp.R;
-import io.hobaskos.event.eventapp.models.Event;
+import io.hobaskos.event.eventapp.data.model.Event;
 
 /**
  * Created by andre on 1/26/2017.

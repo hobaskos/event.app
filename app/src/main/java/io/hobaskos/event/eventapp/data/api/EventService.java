@@ -1,10 +1,9 @@
-package io.hobaskos.event.eventapp.api;
+package io.hobaskos.event.eventapp.data.api;
 
 import java.util.List;
 
-import io.hobaskos.event.eventapp.models.Event;
+import io.hobaskos.event.eventapp.data.model.Event;
 import rx.Observable;
-import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;

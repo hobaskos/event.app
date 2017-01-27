@@ -1,4 +1,4 @@
-package io.hobaskos.event.eventapp.events;
+package io.hobaskos.event.eventapp.ui.events;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -10,7 +10,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import io.hobaskos.event.eventapp.R;
-import io.hobaskos.event.eventapp.models.Event;
+import io.hobaskos.event.eventapp.data.model.Event;
 
 /**
  * Created by andre on 1/26/2017.
