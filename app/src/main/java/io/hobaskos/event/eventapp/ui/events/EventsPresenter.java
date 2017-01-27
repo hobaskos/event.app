@@ -5,6 +5,7 @@ import javax.inject.Inject;
 import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.data.repository.EventRepository;
 import io.hobaskos.event.eventapp.ui.base.BasePresenter;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
@@ -28,12 +29,14 @@ public class EventsPresenter extends BasePresenter<EventsView> {
     public void getEvents() {
         getView().showLoading();
 
-        repository.getAll().subscribeOn(Schedulers.io())
+        repository.getAll()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext((list) -> {
                     getView().setData(list);
                 }).doOnError((throwable) -> {
                     getView().showError(throwable.getMessage());
-                });
+                }).subscribe();
 
 
         //subscriptions.add(subscription);
