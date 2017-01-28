@@ -1,6 +1,7 @@
 # Hobaskos Event App
 
 [![Build Status](https://travis-ci.org/hobaskos/event.app.svg)](https://travis-ci.org/hobaskos/event.app)
+[![CodeCov](https://codecov.io/gh/hobaskos/event.app/branch/master/graph/badge.svg)](https://codecov.io/gh/hobaskos/event.app)
 [![Build Coverage](https://sonarqube.com/api/badges/measure?key=hobaskos:event:app&metric=coverage)](https://sonarqube.com/dashboard?id=hobaskos%3Aevent%3Aapp)
 [![Build Bugs](https://sonarqube.com/api/badges/measure?key=hobaskos:event:app&metric=bugs)](https://sonarqube.com/dashboard?id=hobaskos%3Aevent%3Aapp)
 [![Build Vulnerabilities](https://sonarqube.com/api/badges/measure?key=hobaskos:event:app&metric=vulnerabilities)](https://sonarqube.com/dashboard?id=hobaskos%3Aevent%3Aapp)
