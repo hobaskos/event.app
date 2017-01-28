@@ -5,9 +5,11 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.data.api.ApiService;
 import io.hobaskos.event.eventapp.data.api.EventService;
 import io.hobaskos.event.eventapp.data.repository.EventRepository;
+import okhttp3.Cache;
 import okhttp3.HttpUrl;
 
 /**
@@ -17,22 +19,28 @@ import okhttp3.HttpUrl;
 public class NetModule {
 
     protected HttpUrl httpUrl;
+    private int cacheSize = 10 * 1024 * 1024; // 10 MiB
 
     @Inject
     public NetModule(HttpUrl httpUrl) {
         this.httpUrl = httpUrl;
     }
 
-    @Singleton
     @Provides
-    public EventService providesEventService() {
-        return ApiService.build(httpUrl).createService(EventService.class);
+    @Singleton
+    public Cache providesCache(App app) {
+        return new Cache(app.getCacheDir(), cacheSize);
     }
 
     @Singleton
     @Provides
-    public EventRepository providesEventRepository(EventService eventService)
-    {
+    public EventService providesEventService(Cache cache) {
+        return ApiService.build(httpUrl).createService(EventService.class, cache);
+    }
+
+    @Singleton
+    @Provides
+    public EventRepository providesEventRepository(EventService eventService) {
         return new EventRepository(eventService);
     }
 }

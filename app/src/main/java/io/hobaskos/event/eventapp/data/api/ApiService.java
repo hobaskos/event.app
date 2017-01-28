@@ -1,5 +1,6 @@
 package io.hobaskos.event.eventapp.data.api;
 
+import okhttp3.Cache;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
@@ -11,8 +12,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class ApiService
 {
-    private OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-    private static Retrofit.Builder builder = new Retrofit.Builder();
+    private final OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+    private final Retrofit.Builder builder = new Retrofit.Builder();
 
     private ApiService(HttpUrl httpUrl) {
         builder.baseUrl(httpUrl)
@@ -24,8 +25,13 @@ public class ApiService
         return new ApiService(httpUrl);
     }
 
-    public <S> S createService(Class<S> serviceClass)
-    {
+    public <S> S createService(Class<S> serviceClass, Cache cache) {
+        return builder.client(httpClient.cache(cache).build())
+                .build()
+                .create(serviceClass);
+    }
+
+    public <S> S createService(Class<S> serviceClass) {
         return builder.client(httpClient.build())
                 .build()
                 .create(serviceClass);
