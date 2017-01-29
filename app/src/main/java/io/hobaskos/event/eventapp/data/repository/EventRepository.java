@@ -13,7 +13,7 @@ import rx.Observable;
  */
 public class EventRepository implements BaseRepository<Event, Long> {
 
-    private EventService eventService;
+    private final EventService eventService;
 
     @Inject
     public EventRepository(EventService eventService) {
