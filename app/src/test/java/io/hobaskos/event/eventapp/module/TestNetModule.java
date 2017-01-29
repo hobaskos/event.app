@@ -5,6 +5,7 @@ import java.util.List;
 import dagger.Module;
 import io.hobaskos.event.eventapp.data.api.EventService;
 import io.hobaskos.event.eventapp.data.model.Event;
+import okhttp3.Cache;
 import okhttp3.HttpUrl;
 import rx.Observable;
 
@@ -27,7 +28,7 @@ public class TestNetModule extends NetModule {
     }
 
     @Override
-    public EventService providesEventService() {
+    public EventService providesEventService(Cache cache) {
 
         EventService eventService = mock(EventService.class);
 
