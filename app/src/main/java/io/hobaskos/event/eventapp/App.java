@@ -25,17 +25,31 @@ public class App extends Application
 
         inst = this;
 
-        HttpUrl apiUrl = new HttpUrl.Builder()
+        initComponent();
+    }
+
+    protected HttpUrl getApiUrl() {
+        return new HttpUrl.Builder()
                 .scheme(Constants.API_SCHEME)
                 .host(Constants.API_HOST)
                 .port(Constants.API_PORT)
                 .build();
+    }
 
+    protected AppModule getAppModule() {
+        return new AppModule(this);
+    }
+
+    protected NetModule getNetModule() {
+        return new NetModule(getApiUrl());
+    }
+
+    protected void initComponent()
+    {
         diComponent = DaggerDiComponent.builder()
-                .appModule(new AppModule(this))
-                .netModule(new NetModule(apiUrl))
+                .appModule(getAppModule())
+                .netModule(getNetModule())
                 .build();
-
     }
 
     public static App getInst()
@@ -43,7 +57,7 @@ public class App extends Application
         return inst;
     }
 
-    public DiComponent getDiComponent() {
+    public DiComponent getComponent() {
         return diComponent;
     }
 }

@@ -20,7 +20,7 @@ public interface EventService
     Observable<List<Event>> getEvents();
 
     @GET("api/events/{id}")
-    Observable<Event> getEvent(@Path("id") int id);
+    Observable<Event> getEvent(@Path("id") Long id);
 
     @POST("api/events")
     Observable<Event> saveEvent(@Body Event event);
@@ -29,5 +29,5 @@ public interface EventService
     Observable<Event> putEvent(@Body Event event);
 
     @DELETE("api/events/{id}")
-    Observable<Void> deleteEvent(@Path("id") int id);
+    Observable<Void> deleteEvent(@Path("id") Long id);
 }

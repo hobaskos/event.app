@@ -11,7 +11,7 @@ import rx.Observable;
 /**
  * Created by andre on 1/25/2017.
  */
-public class EventRepository implements BaseRepository<Event, Integer> {
+public class EventRepository implements BaseRepository<Event, Long> {
 
     private EventService eventService;
 
@@ -24,7 +24,7 @@ public class EventRepository implements BaseRepository<Event, Integer> {
         return eventService.getEvents();
     }
 
-    public Observable<Event> get(Integer id) {
+    public Observable<Event> get(Long id) {
         return eventService.getEvent(id);
     }
 
@@ -39,7 +39,7 @@ public class EventRepository implements BaseRepository<Event, Integer> {
     }
 
     @Override
-    public Observable<Void> delete(Integer id) {
+    public Observable<Void> delete(Long id) {
         return eventService.deleteEvent(id);
     }
 }

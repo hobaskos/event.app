@@ -1,10 +1,13 @@
 package io.hobaskos.event.eventapp.ui.events;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
-import io.hobaskos.event.eventapp.App;
+import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.data.repository.EventRepository;
 import io.hobaskos.event.eventapp.ui.base.BasePresenter;
+import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
@@ -14,33 +17,36 @@ import rx.subscriptions.CompositeSubscription;
  */
 public class EventsPresenter extends BasePresenter<EventsView> {
 
-    @Inject
-    public EventRepository repository;
-
+    private EventRepository eventRepository;
+    private Observable<List<Event>> eventsObservable;
     private CompositeSubscription subscriptions;
 
-    public EventsPresenter() {
+    @Inject
+    public EventsPresenter(EventRepository eventRepository) {
 
-        App.getInst().getDiComponent().inject(this);
-
+        this.eventRepository = eventRepository;
         this.subscriptions = new CompositeSubscription();
     }
 
     public void getEvents() {
         getView().showLoading();
 
-        repository.getAll()
+        eventsObservable = eventRepository.getAll()
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnNext((list) -> {
-                    getView().setData(list);
-                }).doOnError((throwable) -> {
-                    getView().showError(throwable.getMessage());
-                }).subscribe();
+                .observeOn(AndroidSchedulers.mainThread());
 
+        eventsObservable.subscribe(
+                    events -> getView().setData(events),
+                    throwable -> getView().showError(throwable.getMessage())
+                );
 
         //subscriptions.add(subscription);
     }
+
+    public Observable<List<Event>> getObservable() {
+        return eventsObservable;
+    }
+
     public void onStop() {
         subscriptions.unsubscribe();
     }
