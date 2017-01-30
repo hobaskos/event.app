@@ -1,10 +1,11 @@
-package io.hobaskos.event.eventapp;
+package io.hobaskos.event.eventapp.repository;
 
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 
 import org.junit.Rule;
 import org.junit.Test;
 
+import io.hobaskos.event.eventapp.config.TestConstants;
 import io.hobaskos.event.eventapp.data.api.ApiService;
 import io.hobaskos.event.eventapp.data.api.EventService;
 import io.hobaskos.event.eventapp.data.model.Event;
@@ -17,19 +18,19 @@ import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.put;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
-public class EventTest extends BaseApiTest {
+import static org.junit.Assert.*;
+
+public class EventRepositoryTest {
 
     @Rule
-    public WireMockRule wireMockRule = new WireMockRule(TEST_PORT);
+    public WireMockRule wireMockRule = new WireMockRule(TestConstants.TEST_PORT);
 
     private EventRepository eventRepository;
 
-    public EventTest()
+    public EventRepositoryTest()
     {
-        eventRepository = new EventRepository(ApiService.build(url)
+        eventRepository = new EventRepository(ApiService.build(TestConstants.HTTP_URL)
                 .createService(EventService.class));
     }
 
@@ -61,7 +62,7 @@ public class EventTest extends BaseApiTest {
                         .withHeader("Content-Type", "application/json")
                         .withBody(singleEvent)));
 
-        eventRepository.get(1).doOnNext((events) -> {
+        eventRepository.get(1L).doOnNext((events) -> {
             assertTrue(events.getId() == 1);
             assertTrue(events.getTitle().equals("event1"));
         }).subscribe();
@@ -114,7 +115,7 @@ public class EventTest extends BaseApiTest {
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")));
 
-        eventRepository.delete(1).doOnNext((Void) -> {
+        eventRepository.delete(1L).doOnNext((Void) -> {
             // mocking this seems a bit unnecessary...
         });
     }
