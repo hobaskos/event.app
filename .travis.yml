@@ -43,9 +43,11 @@ android:
     - 'google-gdk-license-.+'
 
 script:
-  - ./gradlew test
+  - ./gradlew clean
+  - ./gradlew test jacocoTestReport
   - sonar-scanner
-
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
 notifications:
   webhooks:
     on_success: change
