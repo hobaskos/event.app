@@ -39,7 +39,7 @@ public class EventActivity extends BasePresenterActivity<EventContract.Presenter
 
         Long eventId = getIntent().getExtras().getLong(EVENT_ID);
 
-        eventPresenter.attachView(this);
+        eventPresenter.onViewAttached(this);
         eventPresenter.getEvent(eventId);
     }
 
@@ -55,7 +55,7 @@ public class EventActivity extends BasePresenterActivity<EventContract.Presenter
         return new PresenterFactory<EventContract.Presenter>() {
             @NonNull @Override
             public EventPresenter create() {
-                return new EventPresenter();
+                return new EventPresenter(this);
             }
         };
     }
