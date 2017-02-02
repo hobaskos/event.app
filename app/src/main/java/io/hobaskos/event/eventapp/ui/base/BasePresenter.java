@@ -1,36 +1,20 @@
 package io.hobaskos.event.eventapp.ui.base;
 
-import android.support.annotation.Nullable;
-import android.support.annotation.UiThread;
-
-import java.lang.ref.WeakReference;
+import android.support.annotation.NonNull;
 
 /**
- * Created by andre on 1/27/2017.
+ * Created by andre on 2/2/2017.
  */
 
-public class BasePresenter<V extends View> implements Presenter<V> {
+public abstract class BasePresenter<V extends MvpView> implements MvpPresenter<V> {
 
-    private WeakReference<V> view;
-
-    @UiThread
-    @Override
-    public void attachView(V view) {
-        this.view = new WeakReference<V>(view);
+    public void onViewAttached(@NonNull V view) {
+        // TODO
     }
-
-    @UiThread
-    @Override
-    public void detachView() {
-        if (view != null) {
-            view.clear();
-            view = null;
-        }
+    public void onViewDetached() {
+        // TODO
     }
-
-    @UiThread
-    @Nullable
-    public V getView() {
-        return view == null ? null : view.get();
+    public void onDestroyed() {
+        // TODO
     }
 }

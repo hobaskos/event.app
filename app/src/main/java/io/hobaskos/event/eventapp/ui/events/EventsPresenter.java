@@ -6,7 +6,7 @@ import javax.inject.Inject;
 
 import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.data.repository.EventRepository;
-import io.hobaskos.event.eventapp.ui.base.BasePresenter;
+import io.hobaskos.event.eventapp.ui.base.old.BasePresenter;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
