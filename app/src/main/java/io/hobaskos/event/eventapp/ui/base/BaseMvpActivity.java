@@ -2,64 +2,62 @@ package io.hobaskos.event.eventapp.ui.base;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 /**
  * Created by andre on 2/2/2017.
  */
 
-public abstract class BasePresenterFragment<P extends MvpPresenter<V>,
-                                            V extends MvpView> extends Fragment {
+public abstract class BaseMvpActivity<P extends MvpPresenter<V>,
+                                            V extends MvpView> extends AppCompatActivity {
 
-    private static final String TAG = "base-fragment";
+    private static final String TAG = "base-activity";
     private static final int LOADER_ID = 101;
-
     private MvpPresenter<V> presenter;
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        Log.i(TAG, "onActivityCreated-" + tag());
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-        // LoaderCallbacks as an object, so no hint regarding loader will be leak to the subclasses.
-        getLoaderManager().initLoader(LOADER_ID, null, new LoaderManager.LoaderCallbacks<P>() {
+        // LoaderCallbacks as an object, so no hint regarding Loader will be leak to the subclasses.
+        getSupportLoaderManager().initLoader(LOADER_ID, null, new LoaderManager.LoaderCallbacks<P>() {
             @Override
             public final Loader<P> onCreateLoader(int id, Bundle args) {
-                Log.i(TAG, "onCreateLoader-" + tag());
-                return new PresenterLoader<>(getContext(), getPresenterFactory(), tag());
+                Log.i(TAG, "onCreateLoader");
+                return new PresenterLoader<>(BaseMvpActivity.this, getPresenterFactory(), tag());
             }
 
             @Override
             public final void onLoadFinished(Loader<P> loader, P presenter) {
-                Log.i(TAG, "onLoadFinished-" + tag());
-                BasePresenterFragment.this.presenter = presenter;
+                Log.i(TAG, "onLoadFinished");
+                BaseMvpActivity.this.presenter = presenter;
                 onPresenterPrepared(presenter);
             }
 
             @Override
             public final void onLoaderReset(Loader<P> loader) {
-                Log.i(TAG, "onLoaderReset-" + tag());
-                BasePresenterFragment.this.presenter = null;
+                Log.i(TAG, "onLoaderReset");
+                BaseMvpActivity.this.presenter = null;
                 onPresenterDestroyed();
             }
         });
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        Log.i(TAG, "onResume-" + tag());
+    protected void onStart() {
+        super.onStart();
+        Log.i(TAG, "onStart-" + tag());
         presenter.onViewAttached(getPresenterView());
     }
 
     @Override
-    public void onPause() {
+    protected void onStop() {
         presenter.onViewDetached();
-        super.onPause();
-        Log.i(TAG, "onPause-" + tag());
+        super.onStop();
+        Log.i(TAG, "onStop-" + tag());
     }
 
     /**

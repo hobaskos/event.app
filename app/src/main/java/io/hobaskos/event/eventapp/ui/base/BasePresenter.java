@@ -29,7 +29,7 @@ public abstract class BasePresenter<V extends MvpView> implements MvpPresenter<V
     }
 
     public void onDestroyed() {
-        // TODO
+        // Nothing atm
     }
 
     @UiThread
