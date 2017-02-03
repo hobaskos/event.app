@@ -17,11 +17,14 @@ public class EventPresenter extends BasePresenter<EventView> {
     private EventRepository eventRepository;
     private Observable<Event> eventObservable;
 
+    public static int counter = 1;
+
     //private CompositeSubscription subscriptions;
 
     @Inject
     public EventPresenter(EventRepository eventRepository) {
         this.eventRepository = eventRepository;
+        counter++;
     }
 
     public void getEvent(Long id) {

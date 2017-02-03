@@ -82,7 +82,7 @@ public class PresenterLoader<P extends MvpPresenter> extends Loader<P> {
     }
 
     /**
-     * will be call before the Loader gets destroyed, giving us the chance
+     * will be called before the Loader gets destroyed, giving us the chance
      * to communicate this to the Presenter in case some ongoing operation
      * could be cancelled or additional clean ups would be required.
      */

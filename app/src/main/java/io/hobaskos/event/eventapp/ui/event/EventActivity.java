@@ -8,8 +8,6 @@ import android.widget.Toast;
 
 import javax.inject.Inject;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.model.Event;
@@ -24,8 +22,9 @@ public class EventActivity extends BasePresenterActivity<EventPresenter, EventVi
 
     public final static String EVENT_ID = "eventId";
 
-    @BindView(R.id.event_title1) TextView eventTitle;
+    //@BindView(R.id.event_title1) TextView eventTitle;
 
+    TextView eventTitle;
 
     @Inject public EventPresenter eventPresenter;
 
@@ -33,16 +32,17 @@ public class EventActivity extends BasePresenterActivity<EventPresenter, EventVi
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        App.getInst().getComponent().inject(this);
+
         setContentView(R.layout.activity_event);
-        ButterKnife.bind(this);
+        //ButterKnife.bind(this);
+        eventTitle = (TextView) findViewById(R.id.event_title1);
         eventTitle.setText("TEST");
 
         //Long eventId = getIntent().getExtras().getLong(EVENT_ID);
-        Long eventId = Long.valueOf(1003);
+        Long eventId = Long.valueOf(1004);
 
-        eventPresenter.onViewAttached(this);
-        eventPresenter.getEvent(eventId);
+        //eventPresenter.onViewAttached(this);
+        //eventPresenter.getEvent(eventId);
     }
 
     @NonNull
@@ -54,23 +54,19 @@ public class EventActivity extends BasePresenterActivity<EventPresenter, EventVi
     @NonNull
     @Override
     protected PresenterFactory<EventPresenter> getPresenterFactory() {
+        App.getInst().getComponent().inject(this);
         return () -> eventPresenter;
     }
 
     @Override
     protected void onPresenterPrepared(@NonNull EventPresenter presenter) {
+        Log.i("event-activity", "Prev presenter");
         this.eventPresenter = presenter;
+        eventPresenter.onViewAttached(this);
+        Long eventId = Long.valueOf(1004);
+        eventPresenter.getEvent(eventId);
     }
 
-
-    private void renderView() {
-        setContentView(R.layout.activity_event);
-        ButterKnife.bind(this);
-    }
-
-    private void init(){
-        //list.setLayoutManager(new LinearLayoutManager(this));
-    }
 
     @Override
     public void showLoading() {
@@ -93,7 +89,7 @@ public class EventActivity extends BasePresenterActivity<EventPresenter, EventVi
 
     @Override
     public void setData(Event data) {
-        //eventTitle.setText(data.getTitle());
+        eventTitle.setText(data.getTitle() + EventPresenter.counter);
         //eventTitle.setText("TEST");
     }
 }
