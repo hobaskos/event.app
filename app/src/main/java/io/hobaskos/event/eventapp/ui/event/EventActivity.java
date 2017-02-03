@@ -2,7 +2,7 @@ package io.hobaskos.event.eventapp.ui.event;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,24 +20,26 @@ import io.hobaskos.event.eventapp.ui.base.PresenterFactory;
  * Created by andre on 1/26/2017.
  */
 
-public class EventActivity extends BasePresenterActivity<EventContract.Presenter, EventContract.View> implements EventContract.View {
+public class EventActivity extends BasePresenterActivity<EventPresenter, EventView> implements EventView<Event> {
 
     public final static String EVENT_ID = "eventId";
 
+    @BindView(R.id.event_title1) TextView eventTitle;
+
+
     @Inject public EventPresenter eventPresenter;
-
-
-    @BindView(R.id.event_title) TextView eventTitle;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         App.getInst().getComponent().inject(this);
-        renderView();
-        init();
+        setContentView(R.layout.activity_event);
+        ButterKnife.bind(this);
+        eventTitle.setText("TEST");
 
-        Long eventId = getIntent().getExtras().getLong(EVENT_ID);
+        //Long eventId = getIntent().getExtras().getLong(EVENT_ID);
+        Long eventId = Long.valueOf(1003);
 
         eventPresenter.onViewAttached(this);
         eventPresenter.getEvent(eventId);
@@ -46,31 +48,27 @@ public class EventActivity extends BasePresenterActivity<EventContract.Presenter
     @NonNull
     @Override
     protected String tag() {
-        return activity;
+        return "activity";
     }
 
     @NonNull
     @Override
-    protected PresenterFactory<EventContract.Presenter> getPresenterFactory() {
-        return new PresenterFactory<EventContract.Presenter>() {
-            @NonNull @Override
-            public EventPresenter create() {
-                return new EventPresenter(this);
-            }
-        };
+    protected PresenterFactory<EventPresenter> getPresenterFactory() {
+        return () -> eventPresenter;
     }
 
     @Override
-    protected void onPresenterPrepared(@NonNull EventContract.Presenter presenter) {
-
+    protected void onPresenterPrepared(@NonNull EventPresenter presenter) {
+        this.eventPresenter = presenter;
     }
 
-    public void renderView() {
+
+    private void renderView() {
         setContentView(R.layout.activity_event);
         ButterKnife.bind(this);
     }
 
-    public void init(){
+    private void init(){
         //list.setLayoutManager(new LinearLayoutManager(this));
     }
 
@@ -87,10 +85,15 @@ public class EventActivity extends BasePresenterActivity<EventContract.Presenter
     @Override
     public void showError(String errorMessage) {
         Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
+        Log.i("event-activity", errorMessage);
+        //eventTitle.setText("TEST");
     }
+
+
 
     @Override
     public void setData(Event data) {
-        eventTitle.setText(data.getTitle());
+        //eventTitle.setText(data.getTitle());
+        //eventTitle.setText("TEST");
     }
 }

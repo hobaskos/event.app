@@ -12,7 +12,7 @@ import rx.schedulers.Schedulers;
 /**
  * Created by andre on 1/26/2017.
  */
-public class EventPresenter extends BasePresenter<EventContract.View> {
+public class EventPresenter extends BasePresenter<EventView> {
 
     private EventRepository eventRepository;
     private Observable<Event> eventObservable;
@@ -40,8 +40,5 @@ public class EventPresenter extends BasePresenter<EventContract.View> {
         return eventObservable;
     }
 
-    public void onStop() {
-        //subscriptions.unsubscribe();
-    }
 }
 
