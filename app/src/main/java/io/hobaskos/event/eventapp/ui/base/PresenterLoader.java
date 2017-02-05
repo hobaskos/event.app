@@ -8,7 +8,7 @@ import android.util.Log;
  * Created by andre on 2/2/2017.
  */
 
-public class PresenterLoader<P extends MvpPresenter> extends Loader<P> {
+public class PresenterLoader<P extends BaseMvpPresenter> extends Loader<P> {
 
     private final PresenterFactory<P> factory;
     private P presenter;
@@ -90,7 +90,7 @@ public class PresenterLoader<P extends MvpPresenter> extends Loader<P> {
     protected void onReset() {
         Log.i("loader", "onReset-" + tag);
         if (presenter != null) {
-            presenter.onDestroyed();
+            //presenter.onDestroyed();
             presenter = null;
         }
     }

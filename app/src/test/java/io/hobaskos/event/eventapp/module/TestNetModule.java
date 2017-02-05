@@ -34,7 +34,7 @@ public class TestNetModule extends NetModule {
 
         when(eventService.getEvent(anyLong())).thenReturn(Observable.just(event));
 
-        when(eventService.getEvents()).thenReturn(Observable.just(eventList));
+        when(eventService.getEvents(1,10)).thenReturn(Observable.just(eventList));
 
         return eventService;
     }

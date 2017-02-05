@@ -11,12 +11,12 @@ import android.util.Log;
  * Created by andre on 2/2/2017.
  */
 
-public abstract class BaseMvpActivity<P extends MvpPresenter<V>,
-                                            V extends MvpView> extends AppCompatActivity {
+public abstract class BaseMvpActivity<P extends BaseMvpPresenter>
+        extends AppCompatActivity {
 
-    private static final String TAG = "base-activity";
+    private static final String TAG = BaseMvpActivity.class.getName();
     private static final int LOADER_ID = 101;
-    private MvpPresenter<V> presenter;
+    private BaseMvpPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,15 +49,13 @@ public abstract class BaseMvpActivity<P extends MvpPresenter<V>,
     @Override
     protected void onStart() {
         super.onStart();
-        Log.i(TAG, "onStart-" + tag());
-        presenter.onViewAttached(getPresenterView());
+        Log.i(TAG, "onStart - " + tag());
     }
 
     @Override
     protected void onStop() {
-        presenter.onViewDetached();
         super.onStop();
-        Log.i(TAG, "onStop-" + tag());
+        Log.i(TAG, "onStop - " + tag());
     }
 
     /**
@@ -74,7 +72,7 @@ public abstract class BaseMvpActivity<P extends MvpPresenter<V>,
     protected abstract PresenterFactory<P> getPresenterFactory();
 
     /**
-     * Hook for subclasses that deliver the {@link MvpPresenter} before its View is attached.
+     * Hook for subclasses that deliver the {@link BaseMvpPresenter} before its View is attached.
      * Can be use to initialize the Presenter or simple hold a reference to it.
      */
     protected abstract void onPresenterPrepared(@NonNull P presenter);
@@ -83,13 +81,5 @@ public abstract class BaseMvpActivity<P extends MvpPresenter<V>,
      * Hook for subclasses before the screen gets destroyed.
      */
     protected void onPresenterDestroyed() {
-    }
-
-    /**
-     * Override in case of fragment not implementing Presenter<View> interface
-     */
-    @NonNull
-    protected V getPresenterView() {
-        return (V) this;
     }
 }

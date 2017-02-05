@@ -1,4 +1,4 @@
-package io.hobaskos.event.eventapp.ui.createevent;
+package io.hobaskos.event.eventapp.ui.event;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;

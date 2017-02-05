@@ -3,6 +3,7 @@ package io.hobaskos.event.eventapp.data.api;
 import java.util.List;
 
 import io.hobaskos.event.eventapp.data.model.Event;
+import retrofit2.http.Query;
 import rx.Observable;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -17,7 +18,8 @@ import retrofit2.http.Path;
 public interface EventService
 {
     @GET("api/events")
-    Observable<List<Event>> getEvents();
+    Observable<List<Event>> getEvents(@Query("page") int page,
+                                      @Query("size") int pageSize);
 
     @GET("api/events/{id}")
     Observable<Event> getEvent(@Path("id") Long id);

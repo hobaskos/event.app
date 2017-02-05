@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.widget.TextView;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
@@ -26,6 +27,7 @@ import static org.junit.Assert.assertThat;
  */
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 23, application = TestApp.class)
+@Ignore
 public class EventIntTest {
 
     private EventActivity eventActivity;

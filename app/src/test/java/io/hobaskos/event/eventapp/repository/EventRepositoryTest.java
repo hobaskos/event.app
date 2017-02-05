@@ -46,7 +46,7 @@ public class EventRepositoryTest {
                         .withHeader("Content-Type", "application/json")
                         .withBody(jsonListOfEvents)));
 
-        eventRepository.getAll().doOnNext((events) -> {
+        eventRepository.getAll(1).doOnNext((events) -> {
             assertTrue(events.size() == 2);
         }).subscribe();
     }
