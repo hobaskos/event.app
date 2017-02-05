@@ -40,7 +40,7 @@ public class EventRepositoryTest {
         String jsonListOfEvents = "[{ \"id\": 1, \"title\": \"event1\"}," +
                 "{\"id\": 2, \"title\": \"event2\"}]";
 
-        stubFor(get(urlEqualTo("/api/events"))
+        stubFor(get(urlEqualTo("/api/events?page=1&size=20"))
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
