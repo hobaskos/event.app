@@ -10,7 +10,7 @@ import rx.Observable;
 
 public interface BaseRepository<T, I> {
 
-    Observable<List<T>> getAll();
+    Observable<List<T>> getAll(int page);
     Observable<T> get(I id);
     Observable<T> save(T item);
     Observable<T> update(T item);

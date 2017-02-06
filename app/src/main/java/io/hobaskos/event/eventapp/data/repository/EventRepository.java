@@ -15,13 +15,15 @@ public class EventRepository implements BaseRepository<Event, Long> {
 
     private final EventService eventService;
 
+    private final int pageSize = 20;
+
     @Inject
     public EventRepository(EventService eventService) {
         this.eventService = eventService;
     }
 
-    public Observable<List<Event>> getAll() {
-        return eventService.getEvents();
+    public Observable<List<Event>> getAll(int page) {
+        return eventService.getEvents(page, pageSize);
     }
 
     public Observable<Event> get(Long id) {

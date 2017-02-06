@@ -1,7 +1,8 @@
 package io.hobaskos.event.eventapp.ui.event;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.annotation.NonNull;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -10,63 +11,72 @@ import javax.inject.Inject;
 import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.model.Event;
+import io.hobaskos.event.eventapp.ui.base.BaseMvpActivity;
+import io.hobaskos.event.eventapp.ui.base.PresenterFactory;
+import rx.Observer;
 
 /**
  * Created by andre on 1/26/2017.
  */
-
-public class EventActivity extends AppCompatActivity implements EventView {
+public class EventActivity extends BaseMvpActivity<EventPresenter> implements Observer<Event> {
 
     public final static String EVENT_ID = "eventId";
+    public final static String TAG = EventActivity.class.getName();
+
+    private Long eventId;
+
+    //@BindView(R.id.event_title1) TextView eventTitle;
+
+    private TextView eventTitle;
 
     @Inject public EventPresenter eventPresenter;
-
-    //@BindView(R.id.event_title)
-    private TextView eventTitle;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        App.getInst().getComponent().inject(this);
-        //ButterKnife.bind(this);
-
-        renderView();
-        init();
-
-        Long eventId = getIntent().getExtras().getLong(EVENT_ID);
-
-        eventPresenter.attachView(this);
-        eventPresenter.getEvent(eventId);
-    }
-
-    public void renderView() {
         setContentView(R.layout.activity_event);
+        //ButterKnife.bind(this);
+        eventTitle = (TextView) findViewById(R.id.event_title1);
+        eventTitle.setText("TEST");
 
-        eventTitle = (TextView) findViewById(R.id.event_title);
+        eventId = getIntent().getExtras().getLong(EVENT_ID);
     }
 
-    public void init(){
-        //list.setLayoutManager(new LinearLayoutManager(this));
+    @NonNull
+    @Override
+    protected String tag() {
+        return TAG;
+    }
+
+    @NonNull
+    @Override
+    protected PresenterFactory<EventPresenter> getPresenterFactory() {
+        App.getInst().getComponent().inject(this);
+        return () -> eventPresenter;
     }
 
     @Override
-    public void showLoading() {
-
+    protected void onPresenterPrepared(@NonNull EventPresenter presenter) {
+        Log.i(TAG, "onPresenterPrepared");
+        this.eventPresenter = presenter;
+        eventPresenter.getEvent(eventId);
+        eventPresenter.subscribe(this);
     }
 
     @Override
-    public void showContent() {
-
+    public void onNext(Event event) {
+        eventTitle.setText(String.format("ID:%d, TITLE:%s", event.getId(), event.getTitle()));
     }
 
     @Override
-    public void showError(String errorMessage) {
-        Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
+    public void onError(Throwable e) {
+        Log.i("event-activity", e.getMessage());
+        Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void setData(Event data) {
-        eventTitle.setText(data.getTitle());
+    public void onCompleted() {
+        // not needed as of now.
     }
 }

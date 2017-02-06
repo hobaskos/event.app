@@ -1,7 +1,7 @@
-package io.hobaskos.event.eventapp.ui.events;
+package io.hobaskos.event.eventapp.ui.event;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,21 +11,24 @@ import java.util.List;
 
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.model.Event;
+import rx.functions.Action1;
 
 /**
  * Created by andre on 1/26/2017.
  */
 public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder> {
-    private final OnItemClickListener listener;
+
+    public final static String TAG = EventsAdapter.class.getName();
+
     private List<Event> data;
-    private Context context;
+    private final Action1<Event> onItemClick;
+    private final Action1<Integer> onListBottom;
 
-    public EventsAdapter(Context context, List<Event> data, OnItemClickListener listener) {
+    public EventsAdapter(List<Event> data, Action1<Event> onItemClick, Action1<Integer> onListBottom) {
         this.data = data;
-        this.listener = listener;
-        this.context = context;
+        this.onItemClick = onItemClick;
+        this.onListBottom = onListBottom;
     }
-
 
     @Override
     public EventsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -36,23 +39,24 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
         return new ViewHolder(view);
     }
 
-
     @Override
     public void onBindViewHolder(EventsAdapter.ViewHolder holder, int position) {
-        holder.click(data.get(position), listener);
-        holder.eventTitle.setText(data.get(position).getTitle());
-        holder.eventId.setText(data.get(position).getId() + "");
-    }
 
+        Event event = data.get(position);
+
+        holder.click(event, onItemClick);
+        holder.eventTitle.setText(event.getTitle());
+        holder.eventId.setText(String.valueOf(event.getId()));
+
+        if ((position >= getItemCount() - 1)) {
+            Log.i(TAG, " - bottom of list: " + position);
+            onListBottom.call(position);
+        }
+    }
 
     @Override
     public int getItemCount() {
         return data.size();
-    }
-
-
-    public interface OnItemClickListener {
-        void onClick(Event Item);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -64,19 +68,10 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
             eventTitle = (TextView) itemView.findViewById(R.id.event_title);
             eventId = (TextView) itemView.findViewById(R.id.event_id);
             //background = (ImageView) itemView.findViewById(R.id.image);
-
         }
 
-
-        public void click(final Event event, final OnItemClickListener listener) {
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    listener.onClick(event);
-                }
-            });
+        public void click(final Event event, Action1<Event> listener) {
+            itemView.setOnClickListener((i) -> listener.call(event));
         }
     }
-
-
 }
