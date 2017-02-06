@@ -11,13 +11,13 @@ import android.util.Log;
  * Created by andre on 2/2/2017.
  */
 
-public abstract class BaseMvpFragment<P extends MvpPresenter<V>,
-                                            V extends MvpView> extends Fragment {
+public abstract class BaseMvpFragment<P extends BaseMvpPresenter>
+        extends Fragment {
 
     private static final String TAG = "base-fragment";
     private static final int LOADER_ID = 101;
 
-    private MvpPresenter<V> presenter;
+    private BaseMvpPresenter presenter;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -52,12 +52,10 @@ public abstract class BaseMvpFragment<P extends MvpPresenter<V>,
     public void onResume() {
         super.onResume();
         Log.i(TAG, "onResume-" + tag());
-        presenter.onViewAttached(getPresenterView());
     }
 
     @Override
     public void onPause() {
-        presenter.onViewDetached();
         super.onPause();
         Log.i(TAG, "onPause-" + tag());
     }
@@ -76,7 +74,7 @@ public abstract class BaseMvpFragment<P extends MvpPresenter<V>,
     protected abstract PresenterFactory<P> getPresenterFactory();
 
     /**
-     * Hook for subclasses that deliver the {@link MvpPresenter} before its View is attached.
+     * Hook for subclasses that deliver the {@link BaseMvpPresenter} before its View is attached.
      * Can be use to initialize the Presenter or simple hold a reference to it.
      */
     protected abstract void onPresenterPrepared(@NonNull P presenter);
@@ -85,13 +83,5 @@ public abstract class BaseMvpFragment<P extends MvpPresenter<V>,
      * Hook for subclasses before the screen gets destroyed.
      */
     protected void onPresenterDestroyed() {
-    }
-
-    /**
-     * Override in case of fragment not implementing Presenter<View> interface
-     */
-    @NonNull
-    protected V getPresenterView() {
-        return (V) this;
     }
 }

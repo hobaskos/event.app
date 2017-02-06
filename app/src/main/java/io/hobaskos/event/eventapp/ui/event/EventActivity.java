@@ -13,18 +13,21 @@ import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.ui.base.BaseMvpActivity;
 import io.hobaskos.event.eventapp.ui.base.PresenterFactory;
+import rx.Observer;
 
 /**
  * Created by andre on 1/26/2017.
  */
-
-public class EventActivity extends BaseMvpActivity<EventPresenter, EventView> implements EventView<Event> {
+public class EventActivity extends BaseMvpActivity<EventPresenter> implements Observer<Event> {
 
     public final static String EVENT_ID = "eventId";
+    public final static String TAG = EventActivity.class.getName();
+
+    private Long eventId;
 
     //@BindView(R.id.event_title1) TextView eventTitle;
 
-    TextView eventTitle;
+    private TextView eventTitle;
 
     @Inject public EventPresenter eventPresenter;
 
@@ -32,23 +35,18 @@ public class EventActivity extends BaseMvpActivity<EventPresenter, EventView> im
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         setContentView(R.layout.activity_event);
         //ButterKnife.bind(this);
         eventTitle = (TextView) findViewById(R.id.event_title1);
         eventTitle.setText("TEST");
 
-        //Long eventId = getIntent().getExtras().getLong(EVENT_ID);
-        Long eventId = Long.valueOf(1004);
-
-        //eventPresenter.onViewAttached(this);
-        //eventPresenter.getEvent(eventId);
+        eventId = getIntent().getExtras().getLong(EVENT_ID);
     }
 
     @NonNull
     @Override
     protected String tag() {
-        return "activity";
+        return TAG;
     }
 
     @NonNull
@@ -60,36 +58,25 @@ public class EventActivity extends BaseMvpActivity<EventPresenter, EventView> im
 
     @Override
     protected void onPresenterPrepared(@NonNull EventPresenter presenter) {
-        Log.i("event-activity", "Prev presenter");
+        Log.i(TAG, "onPresenterPrepared");
         this.eventPresenter = presenter;
-        eventPresenter.onViewAttached(this);
-        Long eventId = Long.valueOf(1004);
         eventPresenter.getEvent(eventId);
-    }
-
-
-    @Override
-    public void showLoading() {
-
+        eventPresenter.subscribe(this);
     }
 
     @Override
-    public void showContent() {
-
+    public void onNext(Event event) {
+        eventTitle.setText(String.format("ID:%d, TITLE:%s", event.getId(), event.getTitle()));
     }
 
     @Override
-    public void showError(String errorMessage) {
-        Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
-        Log.i("event-activity", errorMessage);
-        //eventTitle.setText("TEST");
+    public void onError(Throwable e) {
+        Log.i("event-activity", e.getMessage());
+        Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
-
-
     @Override
-    public void setData(Event data) {
-        eventTitle.setText(data.getTitle() + EventPresenter.counter);
-        //eventTitle.setText("TEST");
+    public void onCompleted() {
+        // not needed as of now.
     }
 }
