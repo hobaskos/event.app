@@ -1,4 +1,4 @@
-package io.hobaskos.event.eventapp.ui.event;
+package io.hobaskos.event.eventapp.ui.events;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,6 +20,7 @@ import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.ui.base.BaseMvpActivity;
 import io.hobaskos.event.eventapp.ui.base.PresenterFactory;
+import io.hobaskos.event.eventapp.ui.event.EventActivity;
 import rx.Observer;
 
 /**
