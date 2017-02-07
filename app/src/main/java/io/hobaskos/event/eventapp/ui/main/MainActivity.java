@@ -87,8 +87,11 @@ public class MainActivity extends AppCompatActivity
         }
 
         // Open new fragment
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+        if (fragment != null) { // Temporary fix while having empty items(links to no fragment)
+            // TODO: Add fragments to a container / viewpager
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+        }
 
         // Close drawer
         drawerLayout.closeDrawer(GravityCompat.START);
