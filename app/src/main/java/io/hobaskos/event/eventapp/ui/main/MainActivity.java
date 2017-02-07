@@ -2,6 +2,8 @@ package io.hobaskos.event.eventapp.ui.main;
 
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -11,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import io.hobaskos.event.eventapp.R;
+import io.hobaskos.event.eventapp.ui.events.EventsFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -66,11 +69,11 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
 
-        //Fragment fragment = new Fragment();
+        Fragment fragment = null;
 
         switch (item.getItemId()) {
             case R.id.nav_events:
-
+                fragment = new EventsFragment();
                 break;
             case R.id.nav_create_event:
 
@@ -83,11 +86,12 @@ public class MainActivity extends AppCompatActivity
                 break;
         }
 
+        // Open new fragment
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 
         // Close drawer
         drawerLayout.closeDrawer(GravityCompat.START);
-        //FragmentManager fragmentManager = getFragmentManager();
-        //fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
         return true;
     }
 }

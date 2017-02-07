@@ -67,13 +67,13 @@ public class EventsActivity extends BaseMvpActivity<EventsPresenter> implements 
         return () -> eventsPresenter;
     }
 
-    public  void renderView() {
+    private  void renderView() {
         setContentView(R.layout.activity_events);
         list = (RecyclerView) findViewById(R.id.list);
         progressBar = (ProgressBar) findViewById(R.id.progress);
     }
 
-    public void init() {
+    private void init() {
         Log.i(TAG, "init");
 
         list.setLayoutManager(new LinearLayoutManager(this));
