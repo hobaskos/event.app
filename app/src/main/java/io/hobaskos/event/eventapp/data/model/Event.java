@@ -1,7 +1,13 @@
 package io.hobaskos.event.eventapp.data.model;
 
+import android.util.Log;
+
 import com.google.gson.annotations.SerializedName;
 
+import org.joda.time.DateTime;
+import org.joda.time.LocalDateTime;
+
+import java.util.Date;
 import java.util.Set;
 
 /**
@@ -22,10 +28,10 @@ public class Event {
     private String imageUrl;
 
     @SerializedName("fromDate")
-    private String fromDate;
+    public LocalDateTime fromDate;
 
     @SerializedName("toDate")
-    private String toDate;
+    public LocalDateTime toDate;
 
     @SerializedName("ownerId")
     private long ownerId;
@@ -65,19 +71,19 @@ public class Event {
         this.imageUrl = imageUrl;
     }
 
-    public String getFromDate() {
+    public LocalDateTime getFromDate() {
         return fromDate;
     }
 
-    public void setFromDate(String fromDate) {
+    public void setFromDate(LocalDateTime fromDate) {
         this.fromDate = fromDate;
     }
 
-    public String getToDate() {
+    public LocalDateTime getToDate() {
         return toDate;
     }
 
-    public void setToDate(String toDate) {
+    public void setToDate(LocalDateTime toDate) {
         this.toDate = toDate;
     }
 

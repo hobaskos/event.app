@@ -1,5 +1,8 @@
 package io.hobaskos.event.eventapp.data.model;
 
+import org.joda.time.DateTime;
+import org.joda.time.LocalDateTime;
+
 /**
  * Created by osvold.hans.petter on 08.02.2017.
  */
@@ -11,8 +14,8 @@ public class Location {
     private String description;
     private GeoPoint geoPoint;
     private int vector;
-    private String fromDate;
-    private String toDate;
+    public LocalDateTime fromDate;
+    public LocalDateTime toDate;
     private int eventId;
 
     public long getId() {
@@ -55,19 +58,19 @@ public class Location {
         this.vector = vector;
     }
 
-    public String getFromDate() {
+    public LocalDateTime getFromDate() {
         return fromDate;
     }
 
-    public void setFromDate(String fromDate) {
+    public void setFromDate(LocalDateTime fromDate) {
         this.fromDate = fromDate;
     }
 
-    public String getToDate() {
+    public LocalDateTime getToDate() {
         return toDate;
     }
 
-    public void setToDate(String toDate) {
+    public void setToDate(LocalDateTime toDate) {
         this.toDate = toDate;
     }
 
