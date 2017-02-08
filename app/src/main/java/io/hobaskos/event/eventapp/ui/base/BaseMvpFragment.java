@@ -15,7 +15,7 @@ public abstract class BaseMvpFragment<P extends BaseMvpPresenter>
         extends Fragment {
 
     private static final String TAG = "base-fragment";
-    private static final int LOADER_ID = 101;
+    private static final int LOADER_ID = 102;
 
     private BaseMvpPresenter presenter;
 
@@ -46,6 +46,12 @@ public abstract class BaseMvpFragment<P extends BaseMvpPresenter>
                 onPresenterDestroyed();
             }
         });
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.i(TAG, "onStart - " + tag());
     }
 
     @Override

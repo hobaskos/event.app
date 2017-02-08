@@ -45,8 +45,6 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:25.1.0'
-    compile 'com.android.support:recyclerview-v7:25.1.0'
 
     // Mosby:
     compile "com.hannesdorfmann.mosby:mvp:${mosby_version}"
@@ -72,15 +70,19 @@ dependencies {
     compile "io.reactivex:rxandroid:${rxandroid_version}"
     compile "io.reactivex:rxjava:${rxjava_version}"
 
-
     // Dagger2
     apt "com.google.dagger:dagger-compiler:${dagger_version}"
     compile "com.google.dagger:dagger:${dagger_version}"
-    provided "javax.annotation:jsr250-api:1.0"
 
-    testCompile "junit:junit:4.12"
-    testCompile "org.khronos:opengl-api:gl1.1-android-2.1_r1" // hack for the robolectric api > 22 problem
+    // hack for the robolectric api > 22 problem
     testCompile "org.robolectric:robolectric:${robolectric_version}"
     testCompile "org.mockito:mockito-core:${mockito_version}"
     testCompile "com.github.tomakehurst:wiremock-standalone:${wiremock_version}"
+    compile 'com.android.support:appcompat-v7:25.1.0'
+    compile 'com.android.support:recyclerview-v7:25.1.0'
+    compile 'com.android.support:support-v4:25.1.0'
+    compile 'com.android.support:design:25.1.0'
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.khronos:opengl-api:gl1.1-android-2.1_r1'
+    provided 'javax.annotation:jsr250-api:1.0'
 }
