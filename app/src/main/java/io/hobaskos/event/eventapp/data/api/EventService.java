@@ -24,6 +24,14 @@ public interface EventService
     @GET("api/events/{id}")
     Observable<Event> getEvent(@Path("id") Long id);
 
+    @GET("api/_search/events")
+    Observable<Event> search(@Query("page") int page,
+                                   @Query("size") int pageSize,
+                                   @Query("query") String query,
+                                   @Query("lat") double lat,
+                                   @Query("lon") double lon,
+                                   @Query("distance") String distance);
+
     @POST("api/events")
     Observable<Event> saveEvent(@Body Event event);
 
