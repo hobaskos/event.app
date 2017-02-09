@@ -8,6 +8,7 @@ import javax.inject.Singleton;
 import android.content.SharedPreferences.Editor;
 
 import dagger.Module;
+import io.hobaskos.event.eventapp.App;
 
 /**
  * Created by osvold.hans.petter on 09.02.2017.
@@ -17,21 +18,25 @@ import dagger.Module;
 @Module
 public class LocalStorage {
 
+    private App app;
+    private String PREFS_NAME = "local_storage";
+
     @Inject
-    private Context context;
-    @Inject
-    private String PREFS_NAME;
+    public LocalStorage(App app)
+    {
+        this.app = app;
+    }
 
     public String get(String key)
     {
-        SharedPreferences settings = context.getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences settings = app.getBaseContext().getSharedPreferences(PREFS_NAME, 0);
 
         return settings.getString(key, "");
     }
 
     public void put(String key, String value)
     {
-        SharedPreferences settings = context.getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences settings = app.getBaseContext().getSharedPreferences(PREFS_NAME, 0);
 
         if(settings.contains(key))
         {
