@@ -1,5 +1,7 @@
 package io.hobaskos.event.eventapp.data.model;
 
+import android.util.EventLogTags;
+
 import org.joda.time.DateTime;
 import org.joda.time.LocalDateTime;
 
@@ -80,5 +82,10 @@ public class Location {
 
     public void setEventId(int eventId) {
         this.eventId = eventId;
+    }
+
+    @Override
+    public String toString() {
+        return getName();
     }
 }

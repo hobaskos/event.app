@@ -102,4 +102,5 @@ public class Event {
     public void setLocations(Set<Location> locations) {
         this.locations = locations;
     }
+
 }

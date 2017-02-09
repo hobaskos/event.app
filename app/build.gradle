@@ -92,4 +92,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
     testCompile 'org.khronos:opengl-api:gl1.1-android-2.1_r1'
     provided 'javax.annotation:jsr250-api:1.0'
+
+    // Picasso Image Downloader
+    compile "com.squareup.picasso:picasso:2.5.0"
 }
