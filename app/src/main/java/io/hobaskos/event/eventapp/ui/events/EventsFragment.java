@@ -3,6 +3,7 @@ package io.hobaskos.event.eventapp.ui.events;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -37,6 +38,9 @@ public class EventsFragment extends BaseMvpFragment<EventsPresenter> implements 
     private ProgressBar progressBar;
     private Toolbar toolbar;
 
+    private LinearLayoutManager linearLayoutManager;
+    private DividerItemDecoration dividerItemDecoration;
+
     // Model
     private List<Event> eventsList = new ArrayList<>();
     private EventsAdapter eventsAdapter;
@@ -58,8 +62,8 @@ public class EventsFragment extends BaseMvpFragment<EventsPresenter> implements 
         // Configure toolbar:
         configureToolbar();
 
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        linearLayoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(linearLayoutManager);
         eventsAdapter = new EventsAdapter(eventsList,
                 event -> {
                     Intent intent = new Intent(getActivity(), EventActivity.class);
@@ -73,7 +77,9 @@ public class EventsFragment extends BaseMvpFragment<EventsPresenter> implements 
 
         recyclerView.setAdapter(eventsAdapter);
 
-
+        dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
+                linearLayoutManager.getOrientation());
+        recyclerView.addItemDecoration(dividerItemDecoration);
 
         return rootView;
     }

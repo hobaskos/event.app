@@ -11,7 +11,9 @@
         android:layout_height="match_parent"
         android:layout_gravity="bottom|center"
         android:orientation="vertical"
-        android:paddingLeft="16dp">
+        android:paddingLeft="16dp"
+        android:paddingBottom="8dp"
+        android:paddingTop="8dp">
 
         <TextView
             android:id="@+id/event_title"
@@ -19,7 +21,6 @@
             android:layout_height="wrap_content"
             android:text="Årsfest hos Accenture"
             android:textColor="@android:color/black"
-            android:layout_marginTop="10dp"
             android:textSize="20sp"/>
 
         <TextView
