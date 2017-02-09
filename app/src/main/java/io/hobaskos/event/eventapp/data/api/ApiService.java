@@ -1,5 +1,13 @@
 package io.hobaskos.event.eventapp.data.api;
 
+import com.fatboyindustrial.gsonjodatime.Converters;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializer;
+
+import org.joda.time.DateTime;
+import org.joda.time.LocalDateTime;
+
 import okhttp3.Cache;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
@@ -15,10 +23,15 @@ public class ApiService
     private final OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
     private final Retrofit.Builder builder = new Retrofit.Builder();
 
+    private final Gson serializer = new GsonBuilder().registerTypeAdapter(LocalDateTime.class,
+            (JsonDeserializer<LocalDateTime>) (json, type, jsonDeserializationContext) ->
+                    DateTime.parse(json.getAsJsonPrimitive().getAsString()).toLocalDateTime()).create();
+
     private ApiService(HttpUrl httpUrl) {
+
         builder.baseUrl(httpUrl)
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create());
+                .addConverterFactory(GsonConverterFactory.create(serializer));
     }
 
     public static ApiService build(HttpUrl httpUrl) {
