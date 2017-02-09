@@ -1,7 +1,6 @@
 package io.hobaskos.event.eventapp.ui.events;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +31,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
 
     @Override
     public EventsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_event, null);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_event, null);
         view.setLayoutParams(new RecyclerView.
                 LayoutParams(RecyclerView.LayoutParams.
                 MATCH_PARENT, RecyclerView.LayoutParams.WRAP_CONTENT));
@@ -46,12 +45,14 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
 
         holder.click(event, onItemClick);
         holder.eventTitle.setText(event.getTitle());
-        holder.eventId.setText(String.valueOf(event.getId()));
+        //holder.eventId.setText(String.valueOf(event.getId()));
 
+        /*
         if ((position >= getItemCount() - 1)) {
             Log.i(TAG, " - bottom of list: " + position);
             onListBottom.call(position);
         }
+        */
     }
 
     @Override
@@ -66,7 +67,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
         public ViewHolder(View itemView) {
             super(itemView);
             eventTitle = (TextView) itemView.findViewById(R.id.event_title);
-            eventId = (TextView) itemView.findViewById(R.id.event_id);
+            //eventId = (TextView) itemView.findViewById(R.id.event_id);
             //background = (ImageView) itemView.findViewById(R.id.image);
         }
 
