@@ -3,6 +3,7 @@ package io.hobaskos.event.eventapp.ui.events;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -37,6 +38,7 @@ public class EventsFragment extends BaseMvpFragment<EventsPresenter> implements 
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
     private Toolbar toolbar;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     private LinearLayoutManager linearLayoutManager;
     private DividerItemDecoration dividerItemDecoration;
@@ -58,10 +60,16 @@ public class EventsFragment extends BaseMvpFragment<EventsPresenter> implements 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.list);
         progressBar = (ProgressBar) rootView.findViewById(R.id.progress);
         toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+        swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.content_view);
 
         // Configure toolbar:
         configureToolbar();
 
+        // Configure Swipe refresh:
+        //swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(true));
+        swipeRefreshLayout.setOnRefreshListener(() -> eventsPresenter.getFreshData());
+
+        // Configure recyclerview:
         linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
         eventsAdapter = new EventsAdapter(eventsList,
@@ -124,6 +132,7 @@ public class EventsFragment extends BaseMvpFragment<EventsPresenter> implements 
     public void onNext(List<Event> events) {
         eventsList.addAll(events);
         eventsAdapter.notifyDataSetChanged();
+        swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(false));
         stopLoading();
     }
 

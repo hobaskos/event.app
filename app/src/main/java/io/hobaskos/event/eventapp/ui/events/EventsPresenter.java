@@ -45,6 +45,12 @@ public class EventsPresenter implements BaseMvpPresenter<List<Event>> {
         replaySubject.subscribe(observer);
     }
 
+    public void getFreshData() {
+        replaySubject.empty(); // TODO: Doesn't work. Have a workaround coming later.
+        currentPage = 0;
+        fetchData(currentPage);
+    }
+
     public void requestNext() {
         fetchData(++currentPage);
     }
