@@ -65,7 +65,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="16.30 - 02.00"
+        android:text="@string/time_value"
         android:id="@+id/time_text"
         android:layout_alignTop="@+id/time_icon"
         android:layout_toEndOf="@+id/time_icon"
@@ -91,7 +91,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Dr. Jekyll's Pub Oslo"
+        android:text="@string/location_name"
         android:id="@+id/place_text"
         android:layout_alignTop="@+id/place_icon"
         android:layout_toEndOf="@+id/place_icon"
@@ -126,7 +126,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Skal"
+                android:text="@string/attending_label"
                 android:gravity="center"
                 android:layout_marginRight="25dp"
                 android:layout_marginLeft="25dp"
@@ -134,7 +134,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Interessert"
+                android:text="@string/interested_label"
                 android:gravity="center"
                 android:layout_marginRight="25dp"
                 android:layout_marginLeft="25dp"
@@ -142,7 +142,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Venner"
+                android:text="@string/friends_label"
                 android:gravity="center"
                 android:layout_marginRight="25dp"
                 android:layout_marginLeft="25dp"
@@ -153,7 +153,7 @@
             <TextView
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
-                android:text="89"
+                android:text="@string/attending_value"
                 android:background="@drawable/back"
                 android:padding="3dp"
                 android:textAlignment="textEnd"
@@ -163,7 +163,7 @@
             <TextView
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
-                android:text="103"
+                android:text="@string/interested_value"
                 android:background="@drawable/back"
                 android:padding="3dp"
                 android:textAlignment="textEnd"
@@ -173,7 +173,7 @@
             <TextView
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
-                android:text="7"
+                android:text="@string/friends_value"
                 android:background="@drawable/back"
                 android:padding="3dp"
                 android:textAlignment="textEnd"
@@ -203,11 +203,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Velkommen til PubCrawl 2017!
-Bar til bar runde gjennom Oslo's beste pubber
-Happy Hour fra 16.00-18.00
-Konkurranse med beste kostyme
-Inviter alle du kjenner å bli med på festligheten!"
+        android:text="@string/info_text"
         android:layout_below="@+id/description_label"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         />
@@ -218,7 +214,7 @@ Inviter alle du kjenner å bli med på festligheten!"
         android:layout_width="100dp"
         android:layout_height="50dp"
         android:background="#000000"
-        android:text="+"
+        android:text="@string/button_name"
         android:textColor="#ffffff"
         android:textSize="30dp"
         android:id="@+id/button"

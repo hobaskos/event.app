@@ -66,6 +66,12 @@ dependencies {
     // GSON
     compile "com.google.code.gson:gson:${gson_version}"
 
+    // jodatime
+    compile 'joda-time:joda-time:2.9.7'
+
+    // gson-jodatime-serialisers
+    compile 'com.fatboyindustrial.gson-jodatime-serialisers:gson-jodatime-serialisers:1.5.0'
+
     // Rxjava
     compile "io.reactivex:rxandroid:${rxandroid_version}"
     compile "io.reactivex:rxjava:${rxjava_version}"
