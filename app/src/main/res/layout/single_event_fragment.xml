@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <!-- Date Value -->
+    <TextView
+        android:text="@string/date_value"
+        android:textSize="@dimen/activity_horizontal_margin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/date_value"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        />
+
+
+    <!-- Event text -->
+    <TextView
+        android:text="@string/event_name"
+        android:textSize="@dimen/activity_horizontal_margin"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:id="@+id/event_name"
+        android:layout_alignBaseline="@+id/date_value"
+        android:layout_alignBottom="@+id/date_value"
+        android:layout_centerHorizontal="true" />
+
+
+    <!-- Horizontal Line 2dp -->
+    <ImageView
+        android:id="@+id/line1"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#000000"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:layout_below="@id/event_name"
+        />
+
+
+    <!-- Event image -->
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_below="@+id/line1"
+        android:id="@+id/image"
+        android:background="@android:color/holo_red_dark"
+        android:layout_marginTop="3dp"
+        />
+
+    <!-- Time icon -->
+    <ImageView
+        android:id="@+id/time_icon"
+        android:src="@drawable/ic_access_time_black_24dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/image"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        />
+
+
+    <!-- Time text -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="16.30 - 02.00"
+        android:id="@+id/time_text"
+        android:layout_alignTop="@+id/time_icon"
+        android:layout_toEndOf="@+id/time_icon"
+        android:layout_alignBottom="@+id/time_icon"
+        android:gravity="center"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        />
+
+
+    <!-- Place icon -->
+    <ImageView
+        android:id="@+id/place_icon"
+        android:src="@drawable/ic_location_on_black_24dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/time_icon"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        />
+
+
+    <!-- Place text -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Dr. Jekyll's Pub Oslo"
+        android:id="@+id/place_text"
+        android:layout_alignTop="@+id/place_icon"
+        android:layout_toEndOf="@+id/place_icon"
+        android:layout_alignBottom="@+id/place_icon"
+        android:gravity="center"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        />
+
+    <!-- Map icon -->
+    <ImageView
+        android:id="@+id/map_icon"
+        android:src="@drawable/ic_map_black_24dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/place_text"
+        android:layout_toEndOf="@+id/place_text"
+        android:layout_alignBottom="@+id/place_text"
+        android:gravity="center"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        />
+
+    <TableLayout
+        android:id="@+id/tablelayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/map_icon"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        >
+        <TableRow
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Skal"
+                android:gravity="center"
+                android:layout_marginRight="25dp"
+                android:layout_marginLeft="25dp"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Interessert"
+                android:gravity="center"
+                android:layout_marginRight="25dp"
+                android:layout_marginLeft="25dp"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Venner"
+                android:gravity="center"
+                android:layout_marginRight="25dp"
+                android:layout_marginLeft="25dp"
+                />
+        </TableRow>
+
+        <TableRow>
+            <TextView
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:text="89"
+                android:background="@drawable/back"
+                android:padding="3dp"
+                android:textAlignment="textEnd"
+                android:layout_marginRight="25dp"
+                android:layout_marginLeft="25dp"
+                />
+            <TextView
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:text="103"
+                android:background="@drawable/back"
+                android:padding="3dp"
+                android:textAlignment="textEnd"
+                android:layout_marginRight="25dp"
+                android:layout_marginLeft="25dp"
+                />
+            <TextView
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:text="7"
+                android:background="@drawable/back"
+                android:padding="3dp"
+                android:textAlignment="textEnd"
+                android:layout_marginRight="25dp"
+                android:layout_marginLeft="25dp"
+                />
+        </TableRow>
+
+
+    </TableLayout>
+
+    <!-- Description label -->
+    <TextView
+        android:id="@+id/description_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/description_label"
+        android:layout_below="@+id/tablelayout"
+        android:textStyle="bold"
+        android:textColor="#000"
+        android:textSize="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        />
+
+    <!-- Description text -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Velkommen til PubCrawl 2017!
+Bar til bar runde gjennom Oslo's beste pubber
+Happy Hour fra 16.00-18.00
+Konkurranse med beste kostyme
+Inviter alle du kjenner å bli med på festligheten!"
+        android:layout_below="@+id/description_label"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        />
+
+
+    <!-- Plus button -->
+    <Button
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:background="#000000"
+        android:text="+"
+        android:textColor="#ffffff"
+        android:textSize="30dp"
+        android:id="@+id/button"
+        android:layout_marginBottom="20dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+
+
+
+</RelativeLayout>

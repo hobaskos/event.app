@@ -6,4 +6,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="event_name">Santa Claus Pub Crawl Event</string>
+    <string name="date_value">12. Jan</string>
+    <string name="description_label">Beskrivelse</string>
 </resources>
