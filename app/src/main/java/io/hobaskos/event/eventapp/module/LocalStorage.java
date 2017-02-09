@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import android.content.SharedPreferences.Editor;
+import android.support.annotation.NonNull;
 
 import dagger.Module;
 import io.hobaskos.event.eventapp.App;
@@ -20,31 +21,42 @@ public class LocalStorage {
 
     private App app;
     private String PREFS_NAME = "local_storage";
+    private String key;
+    private String defaultValue;
 
     @Inject
-    public LocalStorage(App app)
+    public LocalStorage(@NonNull App app, @NonNull String key, @NonNull String defaultValue)
     {
         this.app = app;
+        this.key = key;
+        this.defaultValue = defaultValue;
     }
 
-    public String get(String key)
+    public String get()
     {
-        SharedPreferences settings = app.getBaseContext().getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences preferences = app.getBaseContext().getSharedPreferences(PREFS_NAME, 0);
 
-        return settings.getString(key, "");
+        return preferences.getString(key, defaultValue);
     }
 
-    public void put(String key, String value)
+    public void put(String value)
     {
-        SharedPreferences settings = app.getBaseContext().getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences preferences = app.getBaseContext().getSharedPreferences(PREFS_NAME, 0);
 
-        if(settings.contains(key))
+        if(preferences.contains(key))
         {
-            Editor editor = settings.edit();
-            editor.putString(key, value);
             // Todo: apply vs commit
-            editor.commit();
+            preferences.edit()
+                       .putString(key, value)
+                       .apply();
         }
+    }
+
+    public boolean isSet()
+    {
+        return app.getBaseContext()
+                .getSharedPreferences(PREFS_NAME, 0)
+                .contains(key);
     }
 
 }
