@@ -47,6 +47,8 @@ public class EventsPresenter implements BaseMvpPresenter<List<Event>> {
 
     public void getFreshData() {
         replaySubject.empty(); // TODO: Doesn't work. Have a workaround coming later.
+        // "ReplaySubject doesn't offer a means to clear the buffer"
+        // Solution, use simple MvpView interfaces. Store cache here as before as a List<Event>
         currentPage = 0;
         fetchData(currentPage);
     }
