@@ -14,8 +14,8 @@ public class Location {
     private String description;
     private GeoPoint geoPoint;
     private int vector;
-    public LocalDateTime fromDate;
-    public LocalDateTime toDate;
+    private LocalDateTime fromDate;
+    private LocalDateTime toDate;
     private int eventId;
 
     public long getId() {
