@@ -11,6 +11,7 @@ import io.hobaskos.event.eventapp.data.api.ApiService;
 import io.hobaskos.event.eventapp.data.api.EventService;
 import io.hobaskos.event.eventapp.data.api.JWTTokenIntercepter;
 import io.hobaskos.event.eventapp.data.repository.EventRepository;
+import io.hobaskos.event.eventapp.data.service.JwtTokenProxy;
 import okhttp3.Cache;
 import okhttp3.HttpUrl;
 
@@ -54,7 +55,7 @@ public class NetModule {
 
     @Singleton
     @Provides
-    public JWTTokenIntercepter providesIntercepter(PersistentStorage storage) {
-        return new JWTTokenIntercepter(storage);
+    public JWTTokenIntercepter providesIntercepter(JwtTokenProxy storageProxy) {
+        return new JWTTokenIntercepter(storageProxy);
     }
 }

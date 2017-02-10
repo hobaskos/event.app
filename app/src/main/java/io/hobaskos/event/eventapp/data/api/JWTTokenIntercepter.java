@@ -3,6 +3,7 @@ package io.hobaskos.event.eventapp.data.api;
 import java.io.IOException;
 
 import io.hobaskos.event.eventapp.data.PersistentStorage;
+import io.hobaskos.event.eventapp.data.service.JwtTokenProxy;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -16,9 +17,9 @@ public class JWTTokenIntercepter implements Interceptor {
     private String authToken;
 
 
-    public JWTTokenIntercepter(PersistentStorage storage)
+    public JWTTokenIntercepter(JwtTokenProxy storageProxy)
     {
-        authToken = storage.getJWTToken();
+        authToken = storageProxy.get();
     }
 
     @Override

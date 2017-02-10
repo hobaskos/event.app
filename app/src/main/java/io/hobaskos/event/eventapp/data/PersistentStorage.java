@@ -12,14 +12,12 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class PersistentStorage {
 
-    private App app;
     private String PREFS_NAME = "ls";
     private int MODE = MODE_PRIVATE;
     private SharedPreferences preferences;
 
     public PersistentStorage(App app)
     {
-        this.app = app;
         preferences = app.getBaseContext().getSharedPreferences(PREFS_NAME, MODE);
     }
 
@@ -28,24 +26,17 @@ public class PersistentStorage {
         return preferences.getString(key, "");
     }
 
-    public String getJWTToken()
-    {
-        return get("id_token");
-    }
-
     public boolean put(String key, String value)
     {
-        preferences = app.getBaseContext().getSharedPreferences(PREFS_NAME, MODE);
-
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString(key, value);
         editor.apply();
         return true;
     }
 
-    public boolean putJWTToken(String value)
+    public boolean isSet(String key)
     {
-        return put("id_token", value);
+        return preferences.contains(key);
     }
 }
 
