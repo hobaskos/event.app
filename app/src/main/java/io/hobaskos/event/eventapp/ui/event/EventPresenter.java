@@ -4,16 +4,17 @@ import javax.inject.Inject;
 
 import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.data.repository.EventRepository;
-import io.hobaskos.event.eventapp.ui.base.BaseMvpPresenter;
+import io.hobaskos.event.eventapp.ui.base.MvpPresenter;
 import rx.Observable;
-import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
  * Created by andre on 1/26/2017.
  */
-public class EventPresenter implements BaseMvpPresenter<Event> {
+public class EventPresenter implements MvpPresenter<EventView> {
+
+    private EventView view;
 
     private EventRepository eventRepository;
     private Observable<Event> eventObservable = Observable.empty();
@@ -28,15 +29,20 @@ public class EventPresenter implements BaseMvpPresenter<Event> {
         eventObservable = eventRepository.get(id)
                .subscribeOn(Schedulers.io())
                .observeOn(AndroidSchedulers.mainThread());
-    }
 
-    @Override
-    public void subscribe(Observer<Event> observer) {
-        eventObservable.subscribe(observer);
+        eventObservable.subscribe(
+                event -> view.setData(event),
+                throwable -> view.showError(throwable)
+        );
     }
 
     public Observable<Event> getObservable() {
         return eventObservable;
+    }
+
+    @Override
+    public void onAttachView(EventView view) {
+        this.view = view;
     }
 }
 

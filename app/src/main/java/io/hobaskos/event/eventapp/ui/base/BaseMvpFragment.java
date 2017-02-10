@@ -11,13 +11,13 @@ import android.util.Log;
  * Created by andre on 2/2/2017.
  */
 
-public abstract class BaseMvpFragment<P extends BaseMvpPresenter>
+public abstract class BaseMvpFragment<P extends MvpPresenter>
         extends Fragment {
 
     private static final String TAG = "base-fragment";
     private static final int LOADER_ID = 102;
 
-    private BaseMvpPresenter presenter;
+    private MvpPresenter presenter;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -80,7 +80,7 @@ public abstract class BaseMvpFragment<P extends BaseMvpPresenter>
     protected abstract PresenterFactory<P> getPresenterFactory();
 
     /**
-     * Hook for subclasses that deliver the {@link BaseMvpPresenter} before its View is attached.
+     * Hook for subclasses that deliver the {@link MvpPresenter} before its View is attached.
      * Can be use to initialize the Presenter or simple hold a reference to it.
      */
     protected abstract void onPresenterPrepared(@NonNull P presenter);

@@ -11,12 +11,12 @@ import android.util.Log;
  * Created by andre on 2/2/2017.
  */
 
-public abstract class BaseMvpActivity<P extends BaseMvpPresenter>
+public abstract class BaseMvpActivity<P extends MvpPresenter>
         extends AppCompatActivity {
 
     private static final String TAG = BaseMvpActivity.class.getName();
     private static final int LOADER_ID = 101;
-    private BaseMvpPresenter presenter;
+    private MvpPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +72,7 @@ public abstract class BaseMvpActivity<P extends BaseMvpPresenter>
     protected abstract PresenterFactory<P> getPresenterFactory();
 
     /**
-     * Hook for subclasses that deliver the {@link BaseMvpPresenter} before its View is attached.
+     * Hook for subclasses that deliver the {@link MvpPresenter} before its View is attached.
      * Can be use to initialize the Presenter or simple hold a reference to it.
      */
     protected abstract void onPresenterPrepared(@NonNull P presenter);

@@ -56,7 +56,7 @@ public class EventsActivity extends BaseMvpActivity<EventsPresenter> implements 
     protected void onPresenterPrepared(@NonNull EventsPresenter presenter) {
         Log.i(TAG, "onPresenterPrepared");
         this.eventsPresenter = presenter;
-        eventsPresenter.subscribe(this);
+        //eventsPresenter.subscribe(this);
     }
 
     @NonNull

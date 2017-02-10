@@ -27,10 +27,9 @@ import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.ui.base.BaseMvpFragment;
 import io.hobaskos.event.eventapp.ui.base.PresenterFactory;
 import io.hobaskos.event.eventapp.ui.event.EventActivity;
-import rx.Observer;
 
 
-public class EventsFragment extends BaseMvpFragment<EventsPresenter> implements Observer<List<Event>>  {
+public class EventsFragment extends BaseMvpFragment<EventsPresenter> implements EventsView  {
 
     public final static String TAG = EventsActivity.class.getName();
 
@@ -67,7 +66,7 @@ public class EventsFragment extends BaseMvpFragment<EventsPresenter> implements 
 
         // Configure Swipe refresh:
         //swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(true));
-        swipeRefreshLayout.setOnRefreshListener(() -> eventsPresenter.getFreshData());
+        swipeRefreshLayout.setOnRefreshListener(() -> eventsPresenter.refreshData());
 
         // Configure recyclerview:
         linearLayoutManager = new LinearLayoutManager(getContext());
@@ -115,29 +114,41 @@ public class EventsFragment extends BaseMvpFragment<EventsPresenter> implements 
     @Override
     protected void onPresenterPrepared(@NonNull EventsPresenter presenter) {
         this.eventsPresenter = presenter;
-        eventsPresenter.subscribe(this);
+        eventsPresenter.onAttachView(this);
+        //eventsPresenter.refreshData();
+    }
+
+
+    @Override
+    public void showLoading() {
+        progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
-    public void onCompleted() {
-        // not needed as of now.
-    }
-
-    @Override
-    public void onError(Throwable e) {
+    public void showError(Throwable e) {
+        stopLoading();
         Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
     }
 
     @Override
-    public void onNext(List<Event> events) {
-        eventsList.addAll(events);
-        eventsAdapter.notifyDataSetChanged();
-        swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(false));
+    public void showContent() {
         stopLoading();
     }
 
-    private void showLoading() {
-        progressBar.setVisibility(View.VISIBLE);
+    @Override
+    public void setData(List<Event> data) {
+        eventsList.clear();
+        eventsList.addAll(data);
+        eventsAdapter.notifyDataSetChanged();
+        stopLoading();
+        swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(false));
+    }
+
+    @Override
+    public void appendData(List<Event> data) {
+        eventsList.addAll(data);
+        eventsAdapter.notifyDataSetChanged();
+        stopLoading();
     }
 
     private void stopLoading() {

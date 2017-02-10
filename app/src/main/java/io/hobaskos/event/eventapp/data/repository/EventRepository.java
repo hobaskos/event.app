@@ -1,7 +1,6 @@
 package io.hobaskos.event.eventapp.data.repository;
 
 import java.util.List;
-import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -25,6 +24,10 @@ public class EventRepository implements BaseRepository<Event, Long> {
 
     public Observable<List<Event>> getAll(int page) {
         return eventService.getEvents(page, pageSize);
+    }
+
+    public Observable<List<Event>> getPages(int pages) {
+        return eventService.getEvents(0, pages * pageSize);
     }
 
     public Observable<Event> get(Long id) {
