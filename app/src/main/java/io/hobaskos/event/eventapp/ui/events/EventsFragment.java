@@ -8,6 +8,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -141,6 +142,7 @@ public class EventsFragment extends BaseMvpFragment<EventsPresenter> implements 
 
     @Override
     public void setData(List<Event> data) {
+        Log.i(TAG, "SET DATA");
         eventsList.clear();
         eventsList.addAll(data);
         eventsAdapter.notifyDataSetChanged();
