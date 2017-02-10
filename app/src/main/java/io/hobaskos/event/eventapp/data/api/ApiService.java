@@ -8,6 +8,7 @@ import com.google.gson.JsonDeserializer;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDateTime;
 
+import io.hobaskos.event.eventapp.data.model.Event;
 import okhttp3.Cache;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
