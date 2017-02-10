@@ -1,9 +1,8 @@
 package io.hobaskos.event.eventapp.data.service;
 
-import android.content.SharedPreferences;
+import javax.inject.Inject;
 
 import io.hobaskos.event.eventapp.data.PersistentStorage;
-import io.hobaskos.event.eventapp.data.api.EventService;
 
 /**
  * Created by osvold.hans.petter on 10.02.2017.
@@ -11,12 +10,13 @@ import io.hobaskos.event.eventapp.data.api.EventService;
 
 public class JwtTokenProxy {
 
-    public PersistentStorage persistentStorage;
+    private final PersistentStorage persistentStorage;
     private final String KEY = "jwt_token";
 
-    public JwtTokenProxy()
+    @Inject
+    public JwtTokenProxy(PersistentStorage persistentStorage)
     {
-
+        this.persistentStorage = persistentStorage;
     }
 
     public String get()

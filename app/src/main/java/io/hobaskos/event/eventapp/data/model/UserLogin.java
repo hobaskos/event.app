@@ -31,4 +31,12 @@ public class UserLogin {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public boolean isRememberMe() {
+        return rememberMe;
+    }
+
+    public void setRememberMe(boolean rememberMe) {
+        this.rememberMe = rememberMe;
+    }
 }

@@ -46,14 +46,7 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-        App.getInst().getComponent().inject(this);
-
-        Log.i("PS_TEST", "Adding to JWT-token to Storage.");
-        storage.putJWTToken("TESTING-JEW-TOKEN");
-        String token = storage.getJWTToken();
-        Log.i("PS_TEST", "Retrieved JWT-token from Storage: " + token);
-
+        
         // Temp solution, Initial fragment:
         //FragmentManager fragmentManager = getSupportFragmentManager();
         //fragmentManager.beginTransaction().replace(R.id.content_frame, new EventsFragment()).commit();

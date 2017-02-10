@@ -10,6 +10,7 @@ import io.hobaskos.event.eventapp.data.PersistentStorage;
 import io.hobaskos.event.eventapp.data.api.ApiService;
 import io.hobaskos.event.eventapp.data.api.EventService;
 import io.hobaskos.event.eventapp.data.api.JWTTokenIntercepter;
+import io.hobaskos.event.eventapp.data.api.UserJWTService;
 import io.hobaskos.event.eventapp.data.repository.EventRepository;
 import io.hobaskos.event.eventapp.data.service.JwtTokenProxy;
 import okhttp3.Cache;
@@ -45,6 +46,12 @@ public class NetModule {
     @Provides
     public EventService.Authenticated providesEventServiceAuthenticated(Cache cache, JWTTokenIntercepter intercepter) {
         return ApiService.build(httpUrl).createService(EventService.Authenticated.class, cache, intercepter);
+    }
+
+    @Singleton
+    @Provides
+    public UserJWTService providesUserJWTService(Cache cache, JWTTokenIntercepter intercepter) {
+        return ApiService.build(httpUrl).createService(UserJWTService.class, cache, intercepter);
     }
 
     @Singleton
