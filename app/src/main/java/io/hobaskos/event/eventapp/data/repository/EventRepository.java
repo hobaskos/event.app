@@ -14,40 +14,42 @@ import rx.Observable;
  */
 public class EventRepository implements BaseRepository<Event, Long> {
 
-    private final EventService eventService;
+    private final EventService.Anonymously eventServiceAnonymously;
+    private final EventService.Authenticated eventServiceAuthenticated;
 
     private final int pageSize = 20;
 
     @Inject
-    public EventRepository(EventService eventService) {
-        this.eventService = eventService;
+    public EventRepository(EventService.Anonymously eventServiceAnonymously, EventService.Authenticated eventServiceAuthenticated) {
+        this.eventServiceAnonymously = eventServiceAnonymously;
+        this.eventServiceAuthenticated = eventServiceAuthenticated;
     }
 
     public Observable<List<Event>> getAll(int page) {
-        return eventService.getEvents(page, pageSize);
+        return eventServiceAnonymously.getEvents(page, pageSize);
     }
 
     public Observable<Event> get(Long id) {
-        return eventService.getEvent(id);
+        return eventServiceAnonymously.getEvent(id);
     }
 
     @Override
     public Observable<Event> search(int page, String query, double lat, double lon, String distance) {
-        return eventService.search(page, pageSize, query, lat, lon, distance);
+        return eventServiceAnonymously.search(page, pageSize, query, lat, lon, distance);
     }
 
     @Override
     public Observable<Event> save(Event item) {
-        return eventService.saveEvent(item);
+        return eventServiceAuthenticated.saveEvent(item);
     }
 
     @Override
     public Observable<Event> update(Event item) {
-        return eventService.putEvent(item);
+        return eventServiceAuthenticated.putEvent(item);
     }
 
     @Override
     public Observable<Void> delete(Long id) {
-        return eventService.deleteEvent(id);
+        return eventServiceAuthenticated.deleteEvent(id);
     }
 }

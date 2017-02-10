@@ -10,6 +10,7 @@ import org.joda.time.LocalDateTime;
 
 import okhttp3.Cache;
 import okhttp3.HttpUrl;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
@@ -32,6 +33,7 @@ public class ApiService
         builder.baseUrl(httpUrl)
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(serializer));
+
     }
 
     public static ApiService build(HttpUrl httpUrl) {
@@ -48,5 +50,13 @@ public class ApiService
         return builder.client(httpClient.build())
                 .build()
                 .create(serviceClass);
+    }
+
+    public <S> S createService(Class<S> serviceClass, Cache cache, Interceptor interceptor) {
+        return builder.client(httpClient
+                .cache(cache)
+                .addInterceptor(interceptor)
+                .build()
+        ).build().create(serviceClass);
     }
 }

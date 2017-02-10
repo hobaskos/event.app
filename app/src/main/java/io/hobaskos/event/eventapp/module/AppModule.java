@@ -27,7 +27,7 @@ public class AppModule {
 
     @Provides
     @Singleton
-    public PersistentStorage storage(App app){
+    public PersistentStorage providesStorage(App app){
         return new PersistentStorage(app);
     }
 }

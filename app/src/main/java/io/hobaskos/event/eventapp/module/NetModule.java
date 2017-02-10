@@ -6,8 +6,10 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import io.hobaskos.event.eventapp.App;
+import io.hobaskos.event.eventapp.data.PersistentStorage;
 import io.hobaskos.event.eventapp.data.api.ApiService;
 import io.hobaskos.event.eventapp.data.api.EventService;
+import io.hobaskos.event.eventapp.data.api.JWTTokenIntercepter;
 import io.hobaskos.event.eventapp.data.repository.EventRepository;
 import okhttp3.Cache;
 import okhttp3.HttpUrl;
@@ -34,13 +36,25 @@ public class NetModule {
 
     @Singleton
     @Provides
-    public EventService providesEventService(Cache cache) {
-        return ApiService.build(httpUrl).createService(EventService.class, cache);
+    public EventService.Anonymously providesEventServiceAnon(Cache cache) {
+        return ApiService.build(httpUrl).createService(EventService.Anonymously.class, cache);
     }
 
     @Singleton
     @Provides
-    public EventRepository providesEventRepository(EventService eventService) {
-        return new EventRepository(eventService);
+    public EventService.Authenticated providesEventServiceAuthenticated(Cache cache, JWTTokenIntercepter intercepter) {
+        return ApiService.build(httpUrl).createService(EventService.Authenticated.class, cache, intercepter);
+    }
+
+    @Singleton
+    @Provides
+    public EventRepository providesEventRepository(EventService.Anonymously eventServiceAnonymously, EventService.Authenticated eventServiceAuthenticated) {
+        return new EventRepository(eventServiceAnonymously, eventServiceAuthenticated);
+    }
+
+    @Singleton
+    @Provides
+    public JWTTokenIntercepter providesIntercepter(PersistentStorage storage) {
+        return new JWTTokenIntercepter(storage);
     }
 }

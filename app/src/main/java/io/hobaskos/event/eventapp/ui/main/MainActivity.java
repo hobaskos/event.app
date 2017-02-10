@@ -9,16 +9,24 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import javax.inject.Inject;
+
+import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
+import io.hobaskos.event.eventapp.data.PersistentStorage;
 import io.hobaskos.event.eventapp.ui.events.EventsFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawerLayout;
+
+    @Inject
+    public PersistentStorage storage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +46,13 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        App.getInst().getComponent().inject(this);
+
+        Log.i("PS_TEST", "Adding to JWT-token to Storage.");
+        storage.putJWTToken("TESTING-JEW-TOKEN");
+        String token = storage.getJWTToken();
+        Log.i("PS_TEST", "Retrieved JWT-token from Storage: " + token);
 
         // Temp solution, Initial fragment:
         //FragmentManager fragmentManager = getSupportFragmentManager();

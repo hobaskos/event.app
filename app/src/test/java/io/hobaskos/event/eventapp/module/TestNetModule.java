@@ -28,7 +28,7 @@ public class TestNetModule extends NetModule {
     }
 
     @Override
-    public EventService providesEventService(Cache cache) {
+    public EventService.Anon providesEventService(Cache cache) {
 
         EventService eventService = mock(EventService.class);
 

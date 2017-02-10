@@ -37,15 +37,10 @@ public class PersistentStorage {
     {
         preferences = app.getBaseContext().getSharedPreferences(PREFS_NAME, MODE);
 
-        if(preferences.contains(key))
-        {
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putString(key, value);
-            editor.commit();
-            return true;
-        }
-
-        return false;
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(key, value);
+        editor.apply();
+        return true;
     }
 
     public boolean putJWTToken(String value)
