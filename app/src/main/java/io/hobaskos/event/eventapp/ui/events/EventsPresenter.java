@@ -40,6 +40,7 @@ public class EventsPresenter implements MvpPresenter<EventsView> {
             );
     }
 
+    /*
     private void fetchPages(int pages) {
         eventRepository.getPages(pages)
                 .subscribeOn(Schedulers.io())
@@ -49,6 +50,26 @@ public class EventsPresenter implements MvpPresenter<EventsView> {
                         throwable -> view.showError(throwable)
                 );
     }
+    */
+
+    private void fetchPages(int pages) {
+        eventRepository.getPages(pages)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe(() -> {
+                    view.showLoading(true);
+                })
+                .doOnCompleted(() -> {
+                    view.showLoading(false);
+                })
+                .doOnNext(list -> {
+                    view.setData(list);
+                })
+                .doOnError(throwable -> {
+                    view.showError(throwable);
+                }).subscribe();
+    }
+
 
     public void refreshData() {
         fetchPages(currentPage + 1);
@@ -62,6 +83,6 @@ public class EventsPresenter implements MvpPresenter<EventsView> {
     @Override
     public void onAttachView(EventsView view) {
         this.view = view;
-        fetchPage(currentPage);
     }
+
 }

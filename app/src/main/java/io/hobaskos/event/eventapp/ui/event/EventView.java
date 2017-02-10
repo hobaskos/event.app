@@ -8,7 +8,7 @@ import io.hobaskos.event.eventapp.ui.base.MvpView;
  */
 
 public interface EventView extends MvpView {
-    void showLoading();
+    void showLoading(boolean loading);
 
     void showError(Throwable e);
 

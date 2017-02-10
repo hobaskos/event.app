@@ -71,7 +71,7 @@ public class EventActivity extends BaseMvpActivity<EventPresenter> implements Ev
 
 
     @Override
-    public void showLoading() {
+    public void showLoading(boolean loading) {
 
     }
 

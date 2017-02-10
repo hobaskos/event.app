@@ -78,7 +78,7 @@ public class EventsFragment extends BaseMvpFragment<EventsPresenter> implements 
                     startActivity(intent);
                 },
                 itemCount -> {
-                    showLoading();
+                    //showLoading();
                     eventsPresenter.requestNext();
                 });
 
@@ -115,13 +115,17 @@ public class EventsFragment extends BaseMvpFragment<EventsPresenter> implements 
     protected void onPresenterPrepared(@NonNull EventsPresenter presenter) {
         this.eventsPresenter = presenter;
         eventsPresenter.onAttachView(this);
-        //eventsPresenter.refreshData();
+        eventsPresenter.refreshData();
     }
 
 
     @Override
-    public void showLoading() {
-        progressBar.setVisibility(View.VISIBLE);
+    public void showLoading(boolean loading) {
+        if (loading) {
+            progressBar.setVisibility(View.VISIBLE);
+        } else {
+            progressBar.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -140,7 +144,7 @@ public class EventsFragment extends BaseMvpFragment<EventsPresenter> implements 
         eventsList.clear();
         eventsList.addAll(data);
         eventsAdapter.notifyDataSetChanged();
-        stopLoading();
+        //stopLoading();
         swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(false));
     }
 
@@ -148,7 +152,7 @@ public class EventsFragment extends BaseMvpFragment<EventsPresenter> implements 
     public void appendData(List<Event> data) {
         eventsList.addAll(data);
         eventsAdapter.notifyDataSetChanged();
-        stopLoading();
+        //stopLoading();
     }
 
     private void stopLoading() {

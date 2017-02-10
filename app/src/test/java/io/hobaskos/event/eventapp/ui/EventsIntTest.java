@@ -39,7 +39,7 @@ public class EventsIntTest {
                 .start()
                 .get();
 
-        eventsActivity.eventsPresenter.getObservable().subscribe(testSubscriber);
+        //eventsActivity.eventsPresenter.getObservable().subscribe(testSubscriber);
     }
 
     @Test

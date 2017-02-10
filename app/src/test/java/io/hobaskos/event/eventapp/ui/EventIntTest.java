@@ -46,7 +46,7 @@ public class EventIntTest {
                 .start()
                 .get();
 
-        eventActivity.eventPresenter.getObservable().subscribe(testSubscriber);
+        //eventActivity.eventPresenter.getObservable().subscribe(testSubscriber);
     }
 
     @Test
