@@ -8,4 +8,8 @@ public interface MvpPresenter<V extends MvpView> {
 
     void onAttachView(V view);
 
+    void onDetachView();
+
+    void onDestroy();
+
 }

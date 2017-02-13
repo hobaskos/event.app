@@ -1,5 +1,6 @@
 package io.hobaskos.event.eventapp.ui.events;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -7,6 +8,8 @@ import javax.inject.Inject;
 import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.data.repository.EventRepository;
 import io.hobaskos.event.eventapp.ui.base.MvpPresenter;
+import rx.Observable;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -21,9 +24,12 @@ public class EventsPresenter implements MvpPresenter<EventsView> {
 
     private EventRepository eventRepository;
 
-    private List<Event> eventsCache;
-
     private int currentPage = 0;
+
+    private Subscription subscription;
+    private Observable observable;
+
+    private List<Event> cache = new ArrayList<>();
 
     @Inject
     public EventsPresenter(EventRepository eventRepository) {
@@ -31,7 +37,7 @@ public class EventsPresenter implements MvpPresenter<EventsView> {
     }
 
     private void fetchPage(int page) {
-        eventRepository.getAll(page)
+        subscription = eventRepository.getAll(page)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
@@ -53,7 +59,8 @@ public class EventsPresenter implements MvpPresenter<EventsView> {
     */
 
     private void fetchPages(int pages) {
-        eventRepository.getPages(pages)
+
+        observable = eventRepository.getPages(pages)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(() -> {
@@ -63,11 +70,22 @@ public class EventsPresenter implements MvpPresenter<EventsView> {
                     view.showLoading(false);
                 })
                 .doOnNext(list -> {
+                    cache.clear();
+                    cache.addAll(list);
                     view.setData(list);
                 })
                 .doOnError(throwable -> {
                     view.showError(throwable);
-                }).subscribe();
+                });
+        subscription = observable.subscribe();
+    }
+
+    public void getCache() {
+        if (!cache.isEmpty()) {
+            view.setData(cache);
+        } else {
+            refreshData();
+        }
     }
 
 
@@ -83,6 +101,16 @@ public class EventsPresenter implements MvpPresenter<EventsView> {
     @Override
     public void onAttachView(EventsView view) {
         this.view = view;
+    }
+
+    @Override
+    public void onDetachView() {
+
+    }
+
+    @Override
+    public void onDestroy() {
+
     }
 
 }

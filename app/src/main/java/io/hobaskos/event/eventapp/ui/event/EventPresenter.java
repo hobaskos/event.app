@@ -44,5 +44,15 @@ public class EventPresenter implements MvpPresenter<EventView> {
     public void onAttachView(EventView view) {
         this.view = view;
     }
+
+    @Override
+    public void onDetachView() {
+
+    }
+
+    @Override
+    public void onDestroy() {
+
+    }
 }
 
