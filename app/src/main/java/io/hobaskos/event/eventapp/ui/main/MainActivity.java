@@ -23,7 +23,11 @@ import io.hobaskos.event.eventapp.ui.events.EventsFragment;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    // Views:
+    private NavigationView navigationView;
     private DrawerLayout drawerLayout;
+    private Toolbar toolbar;
+    //private ViewPager viewPager;
 
     @Inject
     public PersistentStorage storage;
@@ -33,18 +37,21 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Find views:
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        //viewPager = (ViewPager) findViewById(R.id.view_pager);
+
         // Set toolbar:
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // Init Navigation Drawer
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        // Setup Navigation Drawer
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         
         // Temp solution, Initial fragment:
@@ -53,13 +60,12 @@ public class MainActivity extends AppCompatActivity
     }
 
     /**
-     * When open Navigation Drawer button is pressed.
+     * When Navigation Drawer button is pressed.
      */
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }
@@ -88,21 +94,18 @@ public class MainActivity extends AppCompatActivity
                 fragment = new EventsFragment();
                 break;
             case R.id.nav_create_event:
-
                 break;
             case R.id.nav_friends:
-
                 break;
             case R.id.nav_profile:
-
                 break;
         }
 
         // Open new fragment
         if (fragment != null) { // Temporary fix while having empty items(links to no fragment)
-            // TODO: Add fragments to a container / viewpager
+            // TODO: Add fragments to a container / viewpager?
             FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+            fragmentManager.beginTransaction().replace(R.id.main_pane, fragment).commit();
         }
 
         // Close drawer
