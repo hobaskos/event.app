@@ -2,12 +2,14 @@ package io.hobaskos.event.eventapp.ui.event;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
+
 
 import javax.inject.Inject;
 
@@ -34,9 +36,6 @@ public class EventActivity extends BaseMvpActivity<EventPresenter> implements Ob
     //private TextView eventTitle;
     private TextView eventTitle;
     private TextView date;
-    String day;
-    String month;
-    int tempMonth;
     private ImageView eventImg;
     private TextView eventTime;
     private TextView eventPlace;
@@ -98,50 +97,7 @@ public class EventActivity extends BaseMvpActivity<EventPresenter> implements Ob
         eventTitle.setText(String.format(event.getTitle()));
 
         // Event date
-        day = event.getFromDate().getDayOfMonth()+"";
-        tempMonth = event.getFromDate().getMonthOfYear();
-
-        switch (tempMonth) {
-            case 1:
-                month = "Jan";
-                break;
-            case 2:
-                month = "Feb";
-                break;
-            case 3:
-                month = "Mar";
-                break;
-            case 4:
-                month = "Apr";
-                break;
-            case 5:
-                month = "Mai";
-                break;
-            case 6:
-                month = "Jun";
-                break;
-            case 7:
-                month = "Jul";
-                break;
-            case 8:
-                month = "Aug";
-                break;
-            case 9:
-                month = "Sep";
-                break;
-            case 10:
-                month = "Okt";
-                break;
-            case 11:
-                month = "Nov";
-                break;
-            case 12:
-                month = "Des";
-                break;
-            default:
-                break;
-        }
-        date.setText(String.format("" + day + " " + month));
+        date.setText(DateUtils.getRelativeTimeSpanString(event.getFromDate().toDate().getTime()));
 
         // Event Image
         Picasso.with(this).load(event.getImageUrl()).into(eventImg);
