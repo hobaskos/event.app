@@ -6,27 +6,27 @@ package io.hobaskos.event.eventapp.data.model;
 
 public class GeoPoint {
 
-    private int lat;
-    private int lon;
+    private double lat;
+    private double lon;
 
-    public GeoPoint(int lat, int lon) {
+    public GeoPoint(Double lat, Double lon) {
         this.lat = lat;
         this.lon = lon;
     }
 
-    public int getLat() {
+    public Double getLat() {
         return lat;
     }
 
-    public void setLat(int lat) {
+    public void setLat(Double lat) {
         this.lat = lat;
     }
 
-    public int getLon() {
+    public Double getLon() {
         return lon;
     }
 
-    public void setLon(int lon) {
+    public void setLon(Double lon) {
         this.lon = lon;
     }
 }

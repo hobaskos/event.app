@@ -5,6 +5,7 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import io.hobaskos.event.eventapp.App;
+import io.hobaskos.event.eventapp.data.PersistentStorage;
 
 /**
  * Created by alex on 1/26/17.
@@ -22,5 +23,11 @@ public class AppModule {
     @Singleton
     public App providesApp() {
         return app;
+    }
+
+    @Provides
+    @Singleton
+    public PersistentStorage providesStorage(App app){
+        return new PersistentStorage(app);
     }
 }
