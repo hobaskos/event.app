@@ -10,15 +10,14 @@
 
     <EditText android:id="@+id/field_login"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content">
+        <requestFocus />
+    </EditText>
 
     <EditText android:id="@+id/field_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPassword">
-
-        <requestFocus />
-
     </EditText>
 
     <Button

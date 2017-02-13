@@ -21,5 +21,6 @@ public interface DiComponent {
     void inject(EventsFragment eventsFragment);
     void inject(EventActivity eventActivity);
     void inject(LoginActivity loginActivity);
+    void inject(MainActivity mainActivity);
 
 }

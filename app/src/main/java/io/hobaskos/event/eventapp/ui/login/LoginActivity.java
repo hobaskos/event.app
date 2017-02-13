@@ -1,6 +1,9 @@
 package io.hobaskos.event.eventapp.ui.login;
 
+import android.app.Notification;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcel;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
@@ -14,7 +17,12 @@ import javax.inject.Inject;
 import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.model.UserLogin;
+import io.hobaskos.event.eventapp.data.model.response.Notifiable;
+import io.hobaskos.event.eventapp.data.model.response.Response;
 import io.hobaskos.event.eventapp.ui.base.PresenterFactory;
+import io.hobaskos.event.eventapp.ui.event.EventActivity;
+import io.hobaskos.event.eventapp.ui.events.EventsActivity;
+import io.hobaskos.event.eventapp.ui.main.MainActivity;
 import rx.Observer;
 
 import io.hobaskos.event.eventapp.ui.base.BaseMvpActivity;
@@ -23,7 +31,7 @@ import io.hobaskos.event.eventapp.ui.base.BaseMvpActivity;
  * Created by osvold.hans.petter on 13.02.2017.
  */
 
-public class LoginActivity extends BaseMvpActivity<LoginPresenter> implements Observer<UserLogin> {
+public class LoginActivity extends BaseMvpActivity<LoginPresenter> implements Observer<rx.Notification<Response>> {
 
     @Inject
     public LoginPresenter loginPresenter;
@@ -56,10 +64,11 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter> implements Ob
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(LoginActivity.this, "Login button clicked!",
-                        Toast.LENGTH_SHORT).show();
+                loginPresenter.login(field_login.getText().toString(), field_password.getText().toString(), false);
             }
         });
+
+
     }
 
     @NonNull
@@ -82,6 +91,7 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter> implements Ob
         loginPresenter.subscribe(this);
     }
 
+
     @Override
     public void onCompleted() {
         title.setText("blah");
@@ -94,8 +104,18 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter> implements Ob
     }
 
     @Override
-    public void onNext(UserLogin user) {
+    public void onNext(rx.Notification<Response> notification) {
         Log.i("login-activity", "LoginActivity.onNext");
-        Toast.makeText(this, "LoginActivity.onNext", Toast.LENGTH_SHORT).show();
+
+        Response response = notification.getValue();
+
+        Toast.makeText(this, response.getMessage(), Toast.LENGTH_SHORT).show();
+
+        if(response.getStatus())
+        {
+            startActivity(new Intent(this, MainActivity.class));
+        }
+
+
     }
 }

@@ -1,5 +1,6 @@
 package io.hobaskos.event.eventapp.ui.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -18,7 +19,9 @@ import javax.inject.Inject;
 import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.PersistentStorage;
+import io.hobaskos.event.eventapp.data.service.JwtTokenProxy;
 import io.hobaskos.event.eventapp.ui.events.EventsFragment;
+import io.hobaskos.event.eventapp.ui.login.LoginActivity;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -30,11 +33,15 @@ public class MainActivity extends AppCompatActivity
     //private ViewPager viewPager;
 
     @Inject
-    public PersistentStorage storage;
+    public JwtTokenProxy jwtTokenProxy;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        App.getInst().getComponent().inject(this);
+
         setContentView(R.layout.activity_main);
 
         // Find views:
@@ -42,6 +49,14 @@ public class MainActivity extends AppCompatActivity
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         //viewPager = (ViewPager) findViewById(R.id.view_pager);
+
+        if(isLoggedIn())
+        {
+           navigationView.getMenu().findItem(R.id.nav_login).setVisible(false);
+        }
+        else {
+            navigationView.getMenu().setGroupVisible(R.id.navigational_menu_logged_in, false);
+        }
 
         // Set toolbar:
         setSupportActionBar(toolbar);
@@ -99,6 +114,12 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.nav_profile:
                 break;
+            case R.id.nav_login:
+                startActivity(new Intent(this, LoginActivity.class));
+                break;
+            case R.id.nav_logout:
+                logout();
+                break;
         }
 
         // Open new fragment
@@ -111,5 +132,17 @@ public class MainActivity extends AppCompatActivity
         // Close drawer
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private boolean isLoggedIn()
+    {
+        return jwtTokenProxy.isSet();
+
+    }
+
+    private void logout()
+    {
+        jwtTokenProxy.remove();
+        startActivity(new Intent(this, MainActivity.class));
     }
 }

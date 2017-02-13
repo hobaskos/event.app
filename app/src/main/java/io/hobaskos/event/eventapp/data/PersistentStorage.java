@@ -38,5 +38,11 @@ public class PersistentStorage {
     {
         return preferences.contains(key);
     }
+
+    public void remove(String key){
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.remove(key);
+        editor.apply();
+    }
 }
 

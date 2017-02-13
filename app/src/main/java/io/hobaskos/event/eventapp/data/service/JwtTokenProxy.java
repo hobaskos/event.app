@@ -39,4 +39,12 @@ public class JwtTokenProxy {
         return persistentStorage.put(KEY, token);
     }
 
+    public void remove()
+    {
+        if(isSet())
+        {
+            persistentStorage.remove(KEY);
+        }
+    }
+
 }

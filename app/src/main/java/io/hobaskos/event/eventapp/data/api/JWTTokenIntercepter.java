@@ -16,7 +16,6 @@ public class JWTTokenIntercepter implements Interceptor {
 
     private String authToken;
 
-
     public JWTTokenIntercepter(JwtTokenProxy storageProxy)
     {
         authToken = storageProxy.get();
