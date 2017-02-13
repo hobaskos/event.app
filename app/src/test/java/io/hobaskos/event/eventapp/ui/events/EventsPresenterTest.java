@@ -14,6 +14,8 @@ import java.util.List;
 
 import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.data.repository.EventRepository;
+import io.hobaskos.event.eventapp.ui.events.old.EventsPresenter;
+import io.hobaskos.event.eventapp.ui.events.old.EventsView;
 import rx.Observable;
 import rx.Scheduler;
 import rx.android.plugins.RxAndroidPlugins;

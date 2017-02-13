@@ -1,4 +1,4 @@
-package io.hobaskos.event.eventapp.ui.events;
+package io.hobaskos.event.eventapp.ui.events.old;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;

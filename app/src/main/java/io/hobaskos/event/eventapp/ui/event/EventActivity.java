@@ -11,8 +11,8 @@ import javax.inject.Inject;
 import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.model.Event;
-import io.hobaskos.event.eventapp.ui.base.BaseMvpActivity;
-import io.hobaskos.event.eventapp.ui.base.PresenterFactory;
+import io.hobaskos.event.eventapp.ui.base.old.BaseMvpActivity;
+import io.hobaskos.event.eventapp.ui.base.old.PresenterFactory;
 
 /**
  * Created by andre on 1/26/2017.

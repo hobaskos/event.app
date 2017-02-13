@@ -1,116 +1,84 @@
 package io.hobaskos.event.eventapp.ui.events;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.data.repository.EventRepository;
-import io.hobaskos.event.eventapp.ui.base.MvpPresenter;
+import io.hobaskos.event.eventapp.ui.base.presenter.BaseRxLcePresenter;
 import rx.Observable;
-import rx.Subscription;
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
- * Created by andre on 1/26/2017.
+ * Created by andre on 2/13/2017.
  */
-public class EventsPresenter implements MvpPresenter<EventsView> {
 
-    public final static String TAG = EventsPresenter.class.getName();
+public class EventsPresenter extends BaseRxLcePresenter<EventsView, List<Event>> {
 
-    private EventsView view;
+    protected EventRepository eventRepository;
 
-    private EventRepository eventRepository;
-
-    private int currentPage = 0;
-
-    private Subscription subscription;
-    private Observable observable;
-
-    private List<Event> cache = new ArrayList<>();
+    private int queryLimit = 20;
+    private Subscriber<List<Event>> moreEventSubscriber;
 
     @Inject
     public EventsPresenter(EventRepository eventRepository) {
         this.eventRepository = eventRepository;
     }
 
-    private void fetchPage(int page) {
-        subscription = eventRepository.getAll(page)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                    list -> view.appendData(list),
-                    throwable -> view.showError(throwable)
-            );
+    public void loadEvents(boolean pullToRefresh) {
+        // in case the previous action was load more we have to reset the view
+        if (isViewAttached()) {
+            getView().showLoadMore(false);
+        }
+
+        subscribe(eventRepository.getAll(0), pullToRefresh);
     }
 
-    /*
-    private void fetchPages(int pages) {
-        eventRepository.getPages(pages)
-                .subscribeOn(Schedulers.io())
+    public void loadMoreEvents(int nextPage) {
+        // Cancel any previous query
+        unsubscribe();
+
+        final Observable<List<Event>> observable = eventRepository.getAll(nextPage);
+
+        if (isViewAttached()) {
+            getView().showLoadMore(true);
+        }
+
+        moreEventSubscriber = new Subscriber<List<Event>>() {
+            @Override public void onCompleted() {
+            }
+
+            @Override  public void onError(Throwable e) {
+                if (isViewAttached()) {
+                    getView().showLoadMoreError(e);
+                    getView().showLoadMore(false);
+                }
+            }
+
+            @Override public void onNext(List<Event> events) {
+                if (isViewAttached()) {
+                    getView().addMoreData(events);
+                    getView().showLoadMore(false);
+                }
+            }
+        };
+
+        // start
+        observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        list -> view.setData(list),
-                        throwable -> view.showError(throwable)
-                );
-    }
-    */
+                .subscribe(moreEventSubscriber);
 
-    private void fetchPages(int pages) {
-
-        observable = eventRepository.getPages(pages)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(() -> {
-                    view.showLoading(true);
-                })
-                .doOnCompleted(() -> {
-                    view.showLoading(false);
-                })
-                .doOnNext(list -> {
-                    cache.clear();
-                    cache.addAll(list);
-                    view.setData(list);
-                })
-                .doOnError(throwable -> {
-                    view.showError(throwable);
-                });
-        subscription = observable.subscribe();
     }
 
-    public void getCache() {
-        if (!cache.isEmpty()) {
-            view.setData(cache);
-        } else {
-            refreshData();
+    @Override protected void unsubscribe() {
+        super.unsubscribe();
+        if (moreEventSubscriber != null && !moreEventSubscriber.isUnsubscribed()) {
+            moreEventSubscriber.unsubscribe();
         }
     }
 
-
-    public void refreshData() {
-        fetchPages(currentPage + 1);
-    }
-
-    public void requestNext() {
-        fetchPage(++currentPage);
-    }
-
-
-    @Override
-    public void onAttachView(EventsView view) {
-        this.view = view;
-    }
-
-    @Override
-    public void onDetachView() {
-
-    }
-
-    @Override
-    public void onDestroy() {
-
-    }
 
 }

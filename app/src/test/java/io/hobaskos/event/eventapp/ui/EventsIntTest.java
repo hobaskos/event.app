@@ -13,7 +13,7 @@ import java.util.List;
 import io.hobaskos.event.eventapp.BuildConfig;
 import io.hobaskos.event.eventapp.TestApp;
 import io.hobaskos.event.eventapp.data.model.Event;
-import io.hobaskos.event.eventapp.ui.events.EventsActivity;
+import io.hobaskos.event.eventapp.ui.events.old.EventsActivity;
 import rx.observers.TestSubscriber;
 
 import static org.junit.Assert.assertTrue;

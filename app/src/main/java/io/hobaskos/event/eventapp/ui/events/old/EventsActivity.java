@@ -1,4 +1,4 @@
-package io.hobaskos.event.eventapp.ui.events;
+package io.hobaskos.event.eventapp.ui.events.old;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,8 +18,8 @@ import javax.inject.Inject;
 import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.model.Event;
-import io.hobaskos.event.eventapp.ui.base.BaseMvpActivity;
-import io.hobaskos.event.eventapp.ui.base.PresenterFactory;
+import io.hobaskos.event.eventapp.ui.base.old.BaseMvpActivity;
+import io.hobaskos.event.eventapp.ui.base.old.PresenterFactory;
 import io.hobaskos.event.eventapp.ui.event.EventActivity;
 import rx.Observer;
 

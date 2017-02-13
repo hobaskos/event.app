@@ -1,4 +1,4 @@
-package io.hobaskos.event.eventapp.ui.base;
+package io.hobaskos.event.eventapp.ui.base.old;
 
 /**
  * Created by andre on 2/2/2017.

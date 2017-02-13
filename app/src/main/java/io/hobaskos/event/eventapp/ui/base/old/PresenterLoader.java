@@ -1,4 +1,4 @@
-package io.hobaskos.event.eventapp.ui.base;
+package io.hobaskos.event.eventapp.ui.base.old;
 
 import android.content.Context;
 import android.support.v4.content.Loader;

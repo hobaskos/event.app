@@ -4,8 +4,8 @@ import javax.inject.Singleton;
 
 import dagger.Component;
 import io.hobaskos.event.eventapp.ui.event.EventActivity;
-import io.hobaskos.event.eventapp.ui.events.EventsActivity;
-import io.hobaskos.event.eventapp.ui.events.EventsFragment;
+import io.hobaskos.event.eventapp.ui.events.old.EventsActivity;
+import io.hobaskos.event.eventapp.ui.events.old.EventsFragment;
 
 /**
  * Created by alex on 1/26/17.

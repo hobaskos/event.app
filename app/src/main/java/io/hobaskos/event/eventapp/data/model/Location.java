@@ -1,13 +1,15 @@
 package io.hobaskos.event.eventapp.data.model;
 
-import org.joda.time.DateTime;
+import android.os.Parcelable;
+
 import org.joda.time.LocalDateTime;
+import org.parceler.Parcel;
 
 /**
  * Created by osvold.hans.petter on 08.02.2017.
  */
-
-public class Location {
+@Parcel
+public class Location implements Parcelable {
 
     private long id;
     private String name;
@@ -81,4 +83,48 @@ public class Location {
     public void setEventId(int eventId) {
         this.eventId = eventId;
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(android.os.Parcel dest, int flags) {
+        dest.writeLong(this.id);
+        dest.writeString(this.name);
+        dest.writeString(this.description);
+        dest.writeParcelable(this.geoPoint, flags);
+        dest.writeInt(this.vector);
+        dest.writeSerializable(this.fromDate);
+        dest.writeSerializable(this.toDate);
+        dest.writeInt(this.eventId);
+    }
+
+    public Location() {
+    }
+
+    protected Location(android.os.Parcel in) {
+        this.id = in.readLong();
+        this.name = in.readString();
+        this.description = in.readString();
+        this.geoPoint = in.readParcelable(GeoPoint.class.getClassLoader());
+        this.vector = in.readInt();
+        this.fromDate = (LocalDateTime) in.readSerializable();
+        this.toDate = (LocalDateTime) in.readSerializable();
+        this.eventId = in.readInt();
+    }
+
+    public static final Parcelable.Creator<Location> CREATOR = new Parcelable.Creator<Location>() {
+        @Override
+        public Location createFromParcel(android.os.Parcel source) {
+            return new Location(source);
+        }
+
+        @Override
+        public Location[] newArray(int size) {
+            return new Location[size];
+        }
+    };
 }
