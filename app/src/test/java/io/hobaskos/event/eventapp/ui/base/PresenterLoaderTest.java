@@ -7,9 +7,13 @@ package io.hobaskos.event.eventapp.ui.base;
 
 import android.support.annotation.NonNull;
 
+import junit.framework.Assert;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
@@ -17,7 +21,6 @@ import org.robolectric.annotation.Config;
 import io.hobaskos.event.eventapp.BuildConfig;
 import io.hobaskos.event.eventapp.TestApp;
 import io.hobaskos.event.eventapp.data.repository.EventRepository;
-import io.hobaskos.event.eventapp.repository.EventRepositoryTest;
 import io.hobaskos.event.eventapp.ui.events.EventsPresenter;
 import io.hobaskos.event.eventapp.util.SupportLoaderTestCase;
 
@@ -27,39 +30,41 @@ public class PresenterLoaderTest extends SupportLoaderTestCase {
 
     String tag = "test";
 
+    @Mock
+    EventRepository eventRepositoryMock;
+
+    @Mock
+    EventsPresenter eventsPresenterMock;
+
     /**
      * Test that given a presenterfactory, the loader returns a presenter
      */
     @Test
     public void testPresenterFactory() {
+        MockitoAnnotations.initMocks(this);
+
+
+        //EventsPresenter presenter = new EventsPresenter(eventRepositoryMock);
+
         PresenterFactory<EventsPresenter> eventsPresenterPresenterFactory = new PresenterFactory<EventsPresenter>() {
             @NonNull
             @Override
             public EventsPresenter create() {
-                return new EventsPresenter(new EventRepository());
+                return eventsPresenterMock;
             }
         };
 
-        PresenterLoader<EventsPresenter> spyPresenterLoader = setupPresenterLoaderForTest(
+        PresenterLoader<EventsPresenter> spyPresenterLoader = Mockito.spy(
                 new PresenterLoader(RuntimeEnvironment.application, eventsPresenterPresenterFactory,
                         tag));
 
+        EventsPresenter presenter2 = getLoaderResultSynchronously(spyPresenterLoader);
+
+        Assert.assertNotNull(presenter2);
+        Assert.assertEquals(eventsPresenterMock, presenter2);
 
     }
 
-    private PresenterLoader setupPresenterLoaderForTest(PresenterLoader loader) {
-        PresenterLoader spyPresenterLoader = Mockito.spy(loader);
-
-        /*
-        Mockito.doAnswer(new Answer() {
-            @Override
-            public Object answer(InvocationOnMock invocation) throws Throwable {
-                String
-            }
-        })
-        */
-        return spyPresenterLoader;
-    }
 
 
 }
