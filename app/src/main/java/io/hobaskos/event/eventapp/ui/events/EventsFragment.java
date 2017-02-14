@@ -5,9 +5,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
@@ -34,13 +34,15 @@ public class EventsFragment extends
         BaseLceViewStateFragment<SwipeRefreshLayout, List<Event>, EventsView, EventsPresenter>
         implements EventsView {
 
+    public final static String TAG = EventsFragment.class.getName();
+
     // Views
     @BindView(R.id.recyclerView)RecyclerView recyclerView;
     @BindView(R.id.progress) ProgressBar progressBar;
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.contentView) SwipeRefreshLayout swipeRefreshLayout;
 
-    private LinearLayoutManager linearLayoutManager;
+    private NpaLinearLayoutManager linearLayoutManager;
     private DividerItemDecoration dividerItemDecoration;
 
     // Model
@@ -87,8 +89,10 @@ public class EventsFragment extends
         swipeRefreshLayout.setOnRefreshListener(() -> eventsPresenter.loadEvents(true));
 
         // Configure recyclerview:
-        linearLayoutManager = new LinearLayoutManager(getContext());
+        linearLayoutManager = new NpaLinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
+        //linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+        //recyclerView.addOnScrollListener();
         adapter = new EventsAdapter(eventsList,
                 event -> {
                     Intent intent = new Intent(getActivity(), EventActivity.class);
@@ -96,10 +100,26 @@ public class EventsFragment extends
                     startActivity(intent);
                 },
                 itemCount -> {
-                    presenter.loadMoreEvents(++page);
+                        //presenter.loadMoreEvents(++page);
                 });
 
         recyclerView.setAdapter(adapter);
+
+
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                int visibleItemCount = linearLayoutManager.getChildCount();
+                int totalItemCount = linearLayoutManager.getItemCount();
+
+                int lastVisibleItemPosition = linearLayoutManager.findLastVisibleItemPosition();
+
+                if (canLoadMore && !isLoadingMore && lastVisibleItemPosition == totalItemCount - 1) {
+                    Log.i(TAG, "HEEEEEY");
+                    presenter.loadMoreEvents(++page);
+                }
+            }
+        });
 
         dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
                 linearLayoutManager.getOrientation());
@@ -137,6 +157,7 @@ public class EventsFragment extends
 
     @Override public void onNewViewStateInstance() {
         presenter.loadEvents(false);
+
     }
 
     @Override
@@ -147,7 +168,11 @@ public class EventsFragment extends
 
     @Override
     protected String getErrorMessage(Throwable e, boolean pullToRefresh) {
-        return null;
+        if (pullToRefresh) {
+            return "An error has occurred!";
+        } else {
+            return "An error has occurred. Click here to retry";
+        }
     }
 
 
@@ -160,7 +185,7 @@ public class EventsFragment extends
 
     @Override
     public void showLoadMoreError(Throwable e) {
-
+        Toast.makeText(getActivity(), "An error has occurred while loading older events", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -169,7 +194,7 @@ public class EventsFragment extends
 
         if (model.isEmpty()) {
             canLoadMore = false;
-            Toast.makeText(getActivity(), "No more events to show", Toast.LENGTH_SHORT);
+            Toast.makeText(getActivity(), "No more events to show", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -182,10 +207,14 @@ public class EventsFragment extends
 
     @Override
     public void loadData(boolean pullToRefresh) {
-        if (pullToRefresh) {
-            presenter.loadEvents(pullToRefresh);
-            canLoadMore = true;
-        }
+        presenter.loadEvents(pullToRefresh);
+        canLoadMore = true;
+    }
+
+    @Override
+    public void showContent() {
+        super.showContent();
+        //showLoadMore(true);
     }
 
 
