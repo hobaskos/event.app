@@ -20,7 +20,6 @@ public class EventsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     public final static String TAG = EventsAdapter.class.getName();
 
-    private LoadMoreViewHolder loadMoreView;
 
     private List<Event> items;
     private final Action1<Event> onItemClick;
@@ -89,7 +88,7 @@ public class EventsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             view.setLayoutParams(new RecyclerView.
                     LayoutParams(RecyclerView.LayoutParams.
                     MATCH_PARENT, RecyclerView.LayoutParams.WRAP_CONTENT));
-            return new EventsAdapter.ViewHolder(view);
+            return new EventViewHolder(view);
         }
     }
 
@@ -97,7 +96,7 @@ public class EventsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         switch (holder.getItemViewType()) {
             case 0:
-                EventsAdapter.ViewHolder holder0 = (EventsAdapter.ViewHolder) holder;
+                EventViewHolder holder0 = (EventViewHolder) holder;
                 Event event = items.get(position);
 
                 holder0.click(event, onItemClick);
@@ -109,11 +108,11 @@ public class EventsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class EventViewHolder extends RecyclerView.ViewHolder {
         TextView eventTitle, eventId;
         //ImageView background;
 
-        public ViewHolder(View itemView) {
+        public EventViewHolder(View itemView) {
             super(itemView);
             eventTitle = (TextView) itemView.findViewById(R.id.event_title);
             //eventId = (TextView) itemView.findViewById(R.id.event_id);

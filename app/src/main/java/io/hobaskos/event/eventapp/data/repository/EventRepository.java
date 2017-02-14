@@ -15,7 +15,7 @@ public class EventRepository implements BaseRepository<Event, Long> {
 
     private final EventService eventService;
 
-    private final int pageSize = 20;
+    private final int pageSize = 5;
 
     @Inject
     public EventRepository(EventService eventService) {

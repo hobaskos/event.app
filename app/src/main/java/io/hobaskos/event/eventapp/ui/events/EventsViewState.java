@@ -29,9 +29,16 @@ public class EventsViewState extends CastedArrayListLceViewState<List<Event>, Ev
     // Constructors;
     public EventsViewState() {};
 
+
+
     protected EventsViewState(Parcel source) {
         super(source);
     }
+
+    public void setLoadingMore(boolean loadingMore) {
+        this.loadingMore = loadingMore;
+    }
+
 
     @Override public void apply(EventsView view, boolean retained) {
         super.apply(view, retained);

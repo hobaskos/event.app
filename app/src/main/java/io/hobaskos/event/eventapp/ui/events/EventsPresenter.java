@@ -20,7 +20,7 @@ public class EventsPresenter extends BaseRxLcePresenter<EventsView, List<Event>>
 
     protected EventRepository eventRepository;
 
-    private int queryLimit = 20;
+    //private int queryLimit = 20;
     private Subscriber<List<Event>> moreEventSubscriber;
 
     @Inject

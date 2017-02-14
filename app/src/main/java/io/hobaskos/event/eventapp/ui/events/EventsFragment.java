@@ -12,8 +12,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.ProgressBar;
-
-import com.hannesdorfmann.mosby.mvp.viewstate.lce.LceViewState;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,8 +37,7 @@ public class EventsFragment extends
     // Views
     @BindView(R.id.recyclerView)RecyclerView recyclerView;
     @BindView(R.id.progress) ProgressBar progressBar;
-    //@BindView(R.id.toolbar) Toolbar toolbar;
-    Toolbar toolbar;
+    @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.contentView) SwipeRefreshLayout swipeRefreshLayout;
 
     private LinearLayoutManager linearLayoutManager;
@@ -48,6 +46,10 @@ public class EventsFragment extends
     // Model
     private List<Event> eventsList = new ArrayList<>();
     private EventsAdapter adapter;
+
+    boolean canLoadMore = true;
+    boolean isLoadingMore = false;
+    int page = 0;
 
     @Inject
     public io.hobaskos.event.eventapp.ui.events.EventsPresenter eventsPresenter;
@@ -94,8 +96,7 @@ public class EventsFragment extends
                     startActivity(intent);
                 },
                 itemCount -> {
-                    //showLoading();
-                    eventsPresenter.loadMoreEvents(1);
+                    presenter.loadMoreEvents(++page);
                 });
 
         recyclerView.setAdapter(adapter);
@@ -119,14 +120,23 @@ public class EventsFragment extends
     }
 
     @Override
-    public LceViewState createViewState() {
+    public EventsViewState createViewState() {
         return new EventsViewState();
+    }
+
+    @Override
+    public EventsViewState getViewState() {
+        return (EventsViewState) super.getViewState();
     }
 
     @Override
     public EventsPresenter createPresenter() {
         App.getInst().getComponent().inject(this);
         return eventsPresenter;
+    }
+
+    @Override public void onNewViewStateInstance() {
+        presenter.loadEvents(false);
     }
 
     @Override
@@ -144,6 +154,8 @@ public class EventsFragment extends
     @Override
     public void showLoadMore(boolean showLoadMore) {
         adapter.setLoadMore(showLoadMore);
+        getViewState().setLoadingMore(showLoadMore);
+        isLoadingMore = showLoadMore;
     }
 
     @Override
@@ -153,12 +165,16 @@ public class EventsFragment extends
 
     @Override
     public void addMoreData(List<Event> model) {
+        adapter.addItems(model);
 
+        if (model.isEmpty()) {
+            canLoadMore = false;
+            Toast.makeText(getActivity(), "No more events to show", Toast.LENGTH_SHORT);
+        }
     }
 
     @Override
     public void setData(List<Event> data) {
-        adapter.setLoadMore(true);
         adapter.setItems(data);
         adapter.notifyDataSetChanged();
         swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(false));
@@ -166,28 +182,11 @@ public class EventsFragment extends
 
     @Override
     public void loadData(boolean pullToRefresh) {
-
-    }
-
-
-    @Override public void showContent() {
-        super.showContent();
-    }
-
-    @Override public void showLoading(boolean pullToRefresh) {
-        super.showLoading(pullToRefresh);
-        if (!pullToRefresh) {
-            //emptyView.setVisibility(View.GONE);
+        if (pullToRefresh) {
+            presenter.loadEvents(pullToRefresh);
+            canLoadMore = true;
         }
     }
-
-    @Override public void showError(Throwable e, boolean pullToRefresh) {
-        super.showError(e, pullToRefresh);
-        if (!pullToRefresh) {
-            //emptyView.setVisibility(View.GONE);
-        }
-    }
-
 
 
 }
