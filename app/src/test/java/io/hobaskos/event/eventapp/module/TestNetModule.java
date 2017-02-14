@@ -4,7 +4,6 @@ import java.util.List;
 
 import dagger.Module;
 import io.hobaskos.event.eventapp.data.api.EventService;
-import io.hobaskos.event.eventapp.data.api.JWTTokenIntercepter;
 import io.hobaskos.event.eventapp.data.model.Event;
 import okhttp3.Cache;
 import okhttp3.HttpUrl;

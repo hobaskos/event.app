@@ -6,13 +6,12 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import io.hobaskos.event.eventapp.App;
-import io.hobaskos.event.eventapp.data.PersistentStorage;
 import io.hobaskos.event.eventapp.data.api.ApiService;
 import io.hobaskos.event.eventapp.data.api.EventService;
-import io.hobaskos.event.eventapp.data.api.JWTTokenIntercepter;
+import io.hobaskos.event.eventapp.data.api.JWTTokenInterceptor;
 import io.hobaskos.event.eventapp.data.api.UserJWTService;
 import io.hobaskos.event.eventapp.data.repository.EventRepository;
-import io.hobaskos.event.eventapp.data.service.JwtTokenProxy;
+import io.hobaskos.event.eventapp.data.service.JwtStorageProxy;
 import okhttp3.Cache;
 import okhttp3.HttpUrl;
 
@@ -44,13 +43,13 @@ public class NetModule {
 
     @Singleton
     @Provides
-    public EventService.Authenticated providesEventServiceAuthenticated(Cache cache, JWTTokenIntercepter intercepter) {
+    public EventService.Authenticated providesEventServiceAuthenticated(Cache cache, JWTTokenInterceptor intercepter) {
         return ApiService.build(httpUrl).createService(EventService.Authenticated.class, cache, intercepter);
     }
 
     @Singleton
     @Provides
-    public UserJWTService providesUserJWTService(Cache cache, JWTTokenIntercepter intercepter) {
+    public UserJWTService providesUserJWTService(Cache cache, JWTTokenInterceptor intercepter) {
         return ApiService.build(httpUrl).createService(UserJWTService.class, cache, intercepter);
     }
 
@@ -62,7 +61,7 @@ public class NetModule {
 
     @Singleton
     @Provides
-    public JWTTokenIntercepter providesIntercepter(JwtTokenProxy storageProxy) {
-        return new JWTTokenIntercepter(storageProxy);
+    public JWTTokenInterceptor providesIntercepter(JwtStorageProxy storageProxy) {
+        return new JWTTokenInterceptor(storageProxy);
     }
 }

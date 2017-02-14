@@ -4,11 +4,9 @@ import android.util.Log;
 
 import javax.inject.Inject;
 
-import io.hobaskos.event.eventapp.data.model.User;
-import io.hobaskos.event.eventapp.data.model.UserLogin;
-import io.hobaskos.event.eventapp.data.model.response.Notifiable;
+import io.hobaskos.event.eventapp.data.model.LoginVM;
 import io.hobaskos.event.eventapp.data.model.response.Response;
-import io.hobaskos.event.eventapp.data.repository.UserJWTRepository;
+import io.hobaskos.event.eventapp.data.repository.JwtRepository;
 import io.hobaskos.event.eventapp.ui.base.BaseMvpPresenter;
 import rx.Notification;
 import rx.Observable;
@@ -21,18 +19,18 @@ import rx.subjects.PublishSubject;
 
 public class LoginPresenter implements BaseMvpPresenter<Notification<Response>> {
 
-    private UserJWTRepository repository;
+    private JwtRepository repository;
     private PublishSubject<Notification<Response>> userLoginObservable = PublishSubject.create();
 
     @Inject
-    public LoginPresenter(UserJWTRepository repository) {
+    public LoginPresenter(JwtRepository repository) {
         this.repository = repository;
     }
 
     public void login(String login, String password, boolean rememberMe)
     {
-        UserLogin userLogin = new UserLogin(login, password, rememberMe);
-        repository.login(userLogin, this);
+        LoginVM loginVM = new LoginVM(login, password, rememberMe);
+        repository.login(loginVM, this);
     }
 
     public void callbackOnSuccess()

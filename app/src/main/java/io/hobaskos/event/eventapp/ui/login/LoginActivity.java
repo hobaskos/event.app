@@ -1,9 +1,7 @@
 package io.hobaskos.event.eventapp.ui.login;
 
-import android.app.Notification;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcel;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
@@ -16,12 +14,8 @@ import javax.inject.Inject;
 
 import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
-import io.hobaskos.event.eventapp.data.model.UserLogin;
-import io.hobaskos.event.eventapp.data.model.response.Notifiable;
 import io.hobaskos.event.eventapp.data.model.response.Response;
 import io.hobaskos.event.eventapp.ui.base.PresenterFactory;
-import io.hobaskos.event.eventapp.ui.event.EventActivity;
-import io.hobaskos.event.eventapp.ui.events.EventsActivity;
 import io.hobaskos.event.eventapp.ui.main.MainActivity;
 import rx.Observer;
 

@@ -10,7 +10,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -18,8 +17,7 @@ import javax.inject.Inject;
 
 import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
-import io.hobaskos.event.eventapp.data.PersistentStorage;
-import io.hobaskos.event.eventapp.data.service.JwtTokenProxy;
+import io.hobaskos.event.eventapp.data.service.JwtStorageProxy;
 import io.hobaskos.event.eventapp.ui.events.EventsFragment;
 import io.hobaskos.event.eventapp.ui.login.LoginActivity;
 
@@ -33,7 +31,7 @@ public class MainActivity extends AppCompatActivity
     //private ViewPager viewPager;
 
     @Inject
-    public JwtTokenProxy jwtTokenProxy;
+    public JwtStorageProxy jwtStorageProxy;
 
 
     @Override
@@ -136,13 +134,13 @@ public class MainActivity extends AppCompatActivity
 
     private boolean isLoggedIn()
     {
-        return jwtTokenProxy.isSet();
+        return jwtStorageProxy.isSet();
 
     }
 
     private void logout()
     {
-        jwtTokenProxy.remove();
+        jwtStorageProxy.remove();
         startActivity(new Intent(this, MainActivity.class));
     }
 }
