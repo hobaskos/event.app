@@ -17,6 +17,7 @@ public interface DiComponent {
 
     void inject(EventsActivity eventsActivity);
     void inject(EventsFragment eventsFragment);
+    void inject(io.hobaskos.event.eventapp.ui.events.EventsFragment eventsFragment);
     void inject(EventActivity eventActivity);
 
 }

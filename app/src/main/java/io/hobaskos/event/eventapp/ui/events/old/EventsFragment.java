@@ -55,11 +55,11 @@ public class EventsFragment extends BaseMvpFragment<EventsPresenter> implements 
         // Inflate the layout:
         View rootView = inflater.inflate(R.layout.fragment_events, container, false);
 
-        // Find views:
-        recyclerView = (RecyclerView) rootView.findViewById(R.id.list);
-        progressBar = (ProgressBar) rootView.findViewById(R.id.progress);
-        toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
-        swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.content_view);
+            // Find views:
+            recyclerView = (RecyclerView) rootView.findViewById(R.id.list);
+            progressBar = (ProgressBar) rootView.findViewById(R.id.progress);
+            toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+            swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.content_view);
 
         // Configure toolbar:
         configureToolbar();

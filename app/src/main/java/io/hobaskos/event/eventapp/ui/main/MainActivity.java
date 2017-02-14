@@ -13,7 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import io.hobaskos.event.eventapp.R;
-import io.hobaskos.event.eventapp.ui.events.old.EventsFragment;
+import io.hobaskos.event.eventapp.ui.events.EventsFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {

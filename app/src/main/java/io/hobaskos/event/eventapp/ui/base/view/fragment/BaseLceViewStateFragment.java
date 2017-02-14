@@ -20,7 +20,8 @@ import icepick.Icepick;
  */
 
 public abstract class BaseLceViewStateFragment<CV extends View, M, V extends MvpLceView<M>,
-        P extends MvpPresenter<V>> extends MvpLceViewStateFragment<CV, M, V, P> {
+        P extends MvpPresenter<V>>
+        extends MvpLceViewStateFragment<CV, M, V, P> {
 
     protected Unbinder unbinder;
 
