@@ -8,13 +8,13 @@ import io.hobaskos.event.eventapp.data.PersistentStorage;
  * Created by osvold.hans.petter on 10.02.2017.
  */
 
-public class JwtTokenProxy {
+public class JwtStorageProxy {
 
     private final PersistentStorage persistentStorage;
     private final String KEY = "jwt_token";
 
     @Inject
-    public JwtTokenProxy(PersistentStorage persistentStorage)
+    public JwtStorageProxy(PersistentStorage persistentStorage)
     {
         this.persistentStorage = persistentStorage;
     }

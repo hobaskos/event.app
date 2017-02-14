@@ -4,13 +4,13 @@ package io.hobaskos.event.eventapp.data.model;
  * Created by osvold.hans.petter on 10.02.2017.
  */
 
-public class UserLogin {
+public class LoginVM {
 
     private String username;
     private String password;
     private boolean rememberMe = false;
 
-    public UserLogin(String username, String password, boolean rememberMe) {
+    public LoginVM(String username, String password, boolean rememberMe) {
         this.username = username;
         this.password = password;
         this.rememberMe = rememberMe;
