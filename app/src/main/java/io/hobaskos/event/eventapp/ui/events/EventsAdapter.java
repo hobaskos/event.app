@@ -16,9 +16,11 @@ import rx.functions.Action1;
  * Created by andre on 2/14/2017.
  */
 
-public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder> {
+public class EventsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     public final static String TAG = EventsAdapter.class.getName();
+
+    private LoadMoreViewHolder loadMoreView;
 
     private List<Event> items;
     private final Action1<Event> onItemClick;
@@ -46,10 +48,22 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
         notifyItemRangeInserted(startPosition, events.size());
     }
 
+    public void setLoadMore(boolean enabled) {
+        if (showLoadMore != enabled) {
+            if (showLoadMore) {
+                showLoadMore = false;
+                notifyItemRemoved(items.size()); // Remove last position
+            } else {
+                showLoadMore = true;
+                notifyItemInserted(items.size());
+            }
+        }
+    }
+
     @Override public int getItemViewType(int position) {
 
         if (showLoadMore && position == items.size()) { // At last position add one
-            //return R.layout.list_item_loadmore;
+            return 1;
         }
 
         return super.getItemViewType(position);
@@ -62,32 +76,38 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
 
 
     @Override
-    public EventsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_event, null);
-        view.setLayoutParams(new RecyclerView.
-                LayoutParams(RecyclerView.LayoutParams.
-                MATCH_PARENT, RecyclerView.LayoutParams.WRAP_CONTENT));
-        return new EventsAdapter.ViewHolder(view);
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view;
+        if (viewType == 1) { // viewType = 1 (show load more item)
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_loadmore, null);
+            view.setLayoutParams(new RecyclerView.
+                    LayoutParams(RecyclerView.LayoutParams.
+                    MATCH_PARENT, RecyclerView.LayoutParams.WRAP_CONTENT));
+            return new LoadMoreViewHolder(view);
+        } else { // viewType = 0 (Event item)
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_event, null);
+            view.setLayoutParams(new RecyclerView.
+                    LayoutParams(RecyclerView.LayoutParams.
+                    MATCH_PARENT, RecyclerView.LayoutParams.WRAP_CONTENT));
+            return new EventsAdapter.ViewHolder(view);
+        }
     }
 
     @Override
-    public void onBindViewHolder(EventsAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        switch (holder.getItemViewType()) {
+            case 0:
+                EventsAdapter.ViewHolder holder0 = (EventsAdapter.ViewHolder) holder;
+                Event event = items.get(position);
 
-        Event event = items.get(position);
-
-        holder.click(event, onItemClick);
-        holder.eventTitle.setText(event.getTitle());
-        //holder.eventId.setText(String.valueOf(event.getId()));
-
-        /*
-        if ((position >= getItemCount() - 1)) {
-            Log.i(TAG, " - bottom of list: " + position);
-            onListBottom.call(position);
+                holder0.click(event, onItemClick);
+                holder0.eventTitle.setText(event.getTitle());
+                break;
+            case 1:
+                //LoadMoreViewHolder holder1 = (LoadMoreViewHolder) holder;
+                break;
         }
-        */
     }
-
-
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView eventTitle, eventId;
@@ -102,6 +122,13 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
 
         public void click(final Event event, Action1<Event> listener) {
             itemView.setOnClickListener((i) -> listener.call(event));
+        }
+    }
+
+    public class LoadMoreViewHolder extends RecyclerView.ViewHolder {
+
+        public LoadMoreViewHolder(View itemView) {
+            super(itemView);
         }
     }
 }

@@ -143,7 +143,7 @@ public class EventsFragment extends
 
     @Override
     public void showLoadMore(boolean showLoadMore) {
-
+        adapter.setLoadMore(showLoadMore);
     }
 
     @Override
@@ -158,6 +158,7 @@ public class EventsFragment extends
 
     @Override
     public void setData(List<Event> data) {
+        adapter.setLoadMore(true);
         adapter.setItems(data);
         adapter.notifyDataSetChanged();
         swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(false));
