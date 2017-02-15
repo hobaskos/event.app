@@ -108,9 +108,6 @@ public class EventsFragment extends
                     Intent intent = new Intent(getActivity(), EventActivity.class);
                     intent.putExtra(EventActivity.EVENT_ID, event.getId());
                     startActivity(intent);
-                },
-                itemCount -> {
-                        //presenter.loadMoreEvents(++page);
                 });
 
         recyclerView.setAdapter(adapter);

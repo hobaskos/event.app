@@ -63,6 +63,8 @@ public class EventsFragmentTest {
         assertNotNull(fragment);
     }
 
+    @Test
+    @UiThreadTest
     public void testRecyclerView() {
         mainActivity = Robolectric.buildActivity(MainActivity.class)
                 .create()
