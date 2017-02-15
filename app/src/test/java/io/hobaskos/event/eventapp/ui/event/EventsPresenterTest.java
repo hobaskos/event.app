@@ -1,10 +1,11 @@
-package io.hobaskos.event.eventapp.ui.events;
+package io.hobaskos.event.eventapp.ui.event;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.InOrder;
-import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -13,6 +14,8 @@ import java.util.List;
 
 import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.data.repository.EventRepository;
+import io.hobaskos.event.eventapp.ui.events.old.EventsPresenter;
+import io.hobaskos.event.eventapp.ui.events.old.EventsView;
 import rx.Observable;
 import rx.Scheduler;
 import rx.android.plugins.RxAndroidPlugins;
@@ -20,28 +23,34 @@ import rx.android.plugins.RxAndroidSchedulersHook;
 import rx.schedulers.Schedulers;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyListOf;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 
 /**
- * Created by andre on 2/15/2017.
+ * Created by andre on 2/10/2017.
  */
-
+/*
+@RunWith(RobolectricTestRunner.class)
+@Config(constants = BuildConfig.class,
+        sdk = 23, application = TestApp.class)
+*/
 public class EventsPresenterTest {
+
     private List<Event> eventList;
 
     //@Mock
     //private EventRepository eventRepository;
 
     @Mock
-    private EventsView view;
+    private EventsView mockEventsView;
+
+    @Captor
+    private ArgumentCaptor<Observable> observableArgumentCaptor;
 
     private EventsPresenter eventsPresenter;
 
@@ -51,7 +60,7 @@ public class EventsPresenterTest {
         MockitoAnnotations.initMocks(this);
         // Initialize class to be tested
         //eventsPresenter = new EventsPresenter(eventRepository);
-        //eventsPresenter.onAttachView(view);
+        //eventsPresenter.onAttachView(mockEventsView);
         eventList = new ArrayList<>();
 
         RxAndroidPlugins.getInstance().registerSchedulersHook(new RxAndroidSchedulersHook() {
@@ -68,50 +77,25 @@ public class EventsPresenterTest {
     }
 
     @Test
-    public void testLoadEventsSuccess() {
+    public void testRefreshData() {
         EventRepository eventRepository =  mock(EventRepository.class);
 
         eventsPresenter = new EventsPresenter(eventRepository);
-        when(eventRepository.getAll(0)).thenReturn(Observable.create((subscriber) -> {
+        eventsPresenter.onAttachView(mockEventsView);
+
+        when(eventRepository.getPages(1)).thenReturn(Observable.create((subscriber) -> {
             subscriber.onNext(eventList);
             subscriber.onCompleted();
         }));
 
-        boolean pullToRefresh = true;
+        eventsPresenter.refreshData();
 
-        eventsPresenter.attachView(view);
-        eventsPresenter.loadEvents(pullToRefresh);
+        InOrder inOrder = inOrder(mockEventsView);
 
-        InOrder inOrder = inOrder(view);
-        verify(view, never()).showError(any(Exception.class), anyBoolean());
-        inOrder.verify(view, times(1)).showLoadMore(false);
-        inOrder.verify(view, times(1)).showLoading(pullToRefresh);
-        inOrder.verify(view, times(1)).setData(anyListOf(Event.class));
-        inOrder.verify(view, times(1)).showContent();
-        verifyNoMoreInteractions(view);
-    }
+        inOrder.verify(mockEventsView, times(1)).showLoading(true);
+        inOrder.verify(mockEventsView, times(1)).setData(anyListOf(Event.class));
+        inOrder.verify(mockEventsView, times(1)).showLoading(false);
 
-    @Test
-    public void testLoadEventsError() {
-        EventRepository eventRepository =  mock(EventRepository.class);
-
-        eventsPresenter = new EventsPresenter(eventRepository);
-        when(eventRepository.getAll(0)).thenReturn(Observable.create((subscriber) -> {
-            subscriber.onError(new Exception());
-            subscriber.onCompleted();
-        }));
-
-        boolean pullToRefresh = true;
-
-        eventsPresenter.attachView(view);
-        eventsPresenter.loadEvents(pullToRefresh);
-
-        InOrder inOrder = inOrder(view);
-        inOrder.verify(view, times(1)).showLoadMore(false);
-        inOrder.verify(view, times(1)).showLoading(pullToRefresh);
-        inOrder.verify(view, times(1)).showError(any(Exception.class), Matchers.eq(pullToRefresh));
-        verify(view, never()).showContent();
-        verify(view, never()).setData(anyListOf(Event.class));
-        verifyNoMoreInteractions(view);
+        verify(mockEventsView, never()).showError(any(Throwable.class));
     }
 }
