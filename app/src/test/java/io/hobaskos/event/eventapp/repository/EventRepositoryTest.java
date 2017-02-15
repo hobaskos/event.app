@@ -39,8 +39,9 @@ public class EventRepositoryTest {
 
     public EventRepositoryTest()
     {
-        eventRepository = new EventRepository(ApiService.build(TestConstants.HTTP_URL)
-                .createService(EventService.class));
+        eventRepository = new EventRepository(
+                ApiService.build(TestConstants.HTTP_URL).createService(EventService.Anonymously.class),
+                ApiService.build(TestConstants.HTTP_URL).createService(EventService.Authenticated.class));
     }
 
     @Test

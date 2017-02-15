@@ -28,9 +28,9 @@ public class TestNetModule extends NetModule {
     }
 
     @Override
-    public EventService providesEventService(Cache cache) {
+    public EventService.Anonymously providesEventServiceAnon(Cache cache) {
 
-        EventService eventService = mock(EventService.class);
+        EventService.Anonymously eventService = mock(EventService.Anonymously.class);
 
         when(eventService.getEvent(anyLong())).thenReturn(Observable.just(event));
 
