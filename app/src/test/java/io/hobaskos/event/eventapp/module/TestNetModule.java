@@ -9,6 +9,7 @@ import okhttp3.Cache;
 import okhttp3.HttpUrl;
 import rx.Observable;
 
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -34,7 +35,7 @@ public class TestNetModule extends NetModule {
 
         when(eventService.getEvent(anyLong())).thenReturn(Observable.just(event));
 
-        when(eventService.getEvents(1, 10)).thenReturn(Observable.just(eventList));
+        when(eventService.getEvents(anyInt(), anyInt())).thenReturn(Observable.just(eventList));
 
         return eventService;
     }
