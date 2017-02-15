@@ -38,7 +38,7 @@ public class EventsPresenterTest {
     private List<Event> eventList;
 
     //@Mock
-    //private EventRepository eventRepository;
+    private EventRepository eventRepository;
 
     @Mock
     private EventsView view;
@@ -50,8 +50,8 @@ public class EventsPresenterTest {
         // Inject mocks with the @Mock annotation.
         MockitoAnnotations.initMocks(this);
         // Initialize class to be tested
-        //eventsPresenter = new EventsPresenter(eventRepository);
-        //eventsPresenter.onAttachView(view);
+        eventRepository =  mock(EventRepository.class);
+        eventsPresenter = new EventsPresenter(eventRepository);
         eventList = new ArrayList<>();
 
         RxAndroidPlugins.getInstance().registerSchedulersHook(new RxAndroidSchedulersHook() {
@@ -67,18 +67,21 @@ public class EventsPresenterTest {
         RxAndroidPlugins.getInstance().reset();
     }
 
+
+    @Test
+    public void testAttachView() {
+        eventsPresenter.attachView(view);
+        verifyNoMoreInteractions(view);
+    }
+
     @Test
     public void testLoadEventsSuccess() {
-        EventRepository eventRepository =  mock(EventRepository.class);
-
-        eventsPresenter = new EventsPresenter(eventRepository);
         when(eventRepository.getAll(0)).thenReturn(Observable.create((subscriber) -> {
             subscriber.onNext(eventList);
             subscriber.onCompleted();
         }));
 
         boolean pullToRefresh = true;
-
         eventsPresenter.attachView(view);
         eventsPresenter.loadEvents(pullToRefresh);
 
@@ -93,16 +96,12 @@ public class EventsPresenterTest {
 
     @Test
     public void testLoadEventsError() {
-        EventRepository eventRepository =  mock(EventRepository.class);
-
-        eventsPresenter = new EventsPresenter(eventRepository);
         when(eventRepository.getAll(0)).thenReturn(Observable.create((subscriber) -> {
             subscriber.onError(new Exception());
             subscriber.onCompleted();
         }));
 
         boolean pullToRefresh = true;
-
         eventsPresenter.attachView(view);
         eventsPresenter.loadEvents(pullToRefresh);
 
@@ -112,6 +111,44 @@ public class EventsPresenterTest {
         inOrder.verify(view, times(1)).showError(any(Exception.class), Matchers.eq(pullToRefresh));
         verify(view, never()).showContent();
         verify(view, never()).setData(anyListOf(Event.class));
+        verifyNoMoreInteractions(view);
+    }
+
+    @Test
+    public void testLoadMoreEventsSuccess() {
+        int page = 1;
+        when(eventRepository.getAll(page)).thenReturn(Observable.create((subscriber) -> {
+            subscriber.onNext(eventList);
+            subscriber.onCompleted();
+        }));
+
+        eventsPresenter.attachView(view);
+        eventsPresenter.loadMoreEvents(page);
+
+        InOrder inOrder = inOrder(view);
+        inOrder.verify(view, times(1)).showLoadMore(true);
+        inOrder.verify(view, times(1)).addMoreData(eventList);
+        inOrder.verify(view, times(1)).showLoadMore(false);
+        verify(view, never()).showLoadMoreError(any(Exception.class));
+        verifyNoMoreInteractions(view);
+    }
+
+    @Test
+    public void testLoadMoreEventsError() {
+        int page = 1;
+        when(eventRepository.getAll(page)).thenReturn(Observable.create((subscriber) -> {
+            subscriber.onError(new Exception());
+            subscriber.onCompleted();
+        }));
+
+        eventsPresenter.attachView(view);
+        eventsPresenter.loadMoreEvents(page);
+
+        InOrder inOrder = inOrder(view);
+        inOrder.verify(view, times(1)).showLoadMore(true);
+        inOrder.verify(view, times(1)).showLoadMoreError(any(Exception.class));
+        inOrder.verify(view, times(1)).showLoadMore(false);
+        verify(view, never()).addMoreData(anyListOf(Event.class));
         verifyNoMoreInteractions(view);
     }
 }

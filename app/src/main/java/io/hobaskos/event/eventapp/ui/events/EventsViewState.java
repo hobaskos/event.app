@@ -1,7 +1,6 @@
 package io.hobaskos.event.eventapp.ui.events;
 
 import android.os.Parcel;
-import android.util.Log;
 
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.CastedArrayListLceViewState;
 
@@ -44,7 +43,7 @@ public class EventsViewState extends CastedArrayListLceViewState<List<Event>, Ev
 
 
     @Override public void apply(EventsView view, boolean retained) {
-        Log.i(TAG, "apply()");
+        //Log.i(TAG, "apply()");
         super.apply(view, retained);
 
         if (currentViewState == STATE_SHOW_CONTENT) {
