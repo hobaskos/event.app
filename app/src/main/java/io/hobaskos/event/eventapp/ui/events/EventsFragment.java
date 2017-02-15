@@ -55,7 +55,7 @@ public class EventsFragment extends
     public static final String PAGE_KEY = "PAGE";
 
     @Inject
-    public io.hobaskos.event.eventapp.ui.events.EventsPresenter eventsPresenter;
+    public EventsPresenter eventsPresenter;
 
     @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
