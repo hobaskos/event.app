@@ -52,13 +52,26 @@ public class EventsFragment extends
     boolean canLoadMore = true;
     boolean isLoadingMore = false;
     int page = 0;
+    public static final String PAGE_KEY = "PAGE";
 
     @Inject
     public io.hobaskos.event.eventapp.ui.events.EventsPresenter eventsPresenter;
 
+    @Override public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+    }
 
     @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        Log.i(TAG, "onViewCreated()");
         super.onViewCreated(view, savedInstanceState);
+        /*
+        if (savedInstanceState != null) {
+            page = savedInstanceState.getInt(PAGE_KEY, 0);
+        }
+        */
+        Log.i(TAG, "page: " + page );
+        //Icepick.restoreInstanceState(this, savedInstanceState);
 
         // Configure toolbar:
         toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
@@ -85,14 +98,11 @@ public class EventsFragment extends
         });
 
         // Configure Swipe refresh:
-        //swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(true));
-        swipeRefreshLayout.setOnRefreshListener(() -> eventsPresenter.loadEvents(true));
+        swipeRefreshLayout.setOnRefreshListener(() -> loadData(true));
 
         // Configure recyclerview:
         linearLayoutManager = new NpaLinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
-        //linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-        //recyclerView.addOnScrollListener();
         adapter = new EventsAdapter(eventsList,
                 event -> {
                     Intent intent = new Intent(getActivity(), EventActivity.class);
@@ -104,19 +114,15 @@ public class EventsFragment extends
                 });
 
         recyclerView.setAdapter(adapter);
-
-
-
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 int visibleItemCount = linearLayoutManager.getChildCount();
                 int totalItemCount = linearLayoutManager.getItemCount();
-
                 int lastVisibleItemPosition = linearLayoutManager.findLastVisibleItemPosition();
 
                 if (canLoadMore && !isLoadingMore && lastVisibleItemPosition == totalItemCount - 1) {
-                    Log.i(TAG, "HEEEEEY");
                     presenter.loadMoreEvents(++page);
+                    Log.i(TAG, "page: " + page );
                 }
             }
         });
@@ -128,6 +134,7 @@ public class EventsFragment extends
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        Log.i(TAG, "onCreateOptionsMenu()");
         inflater.inflate(R.menu.events_toolbar, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -141,33 +148,39 @@ public class EventsFragment extends
 
     @Override
     public EventsViewState createViewState() {
+        Log.i(TAG, "createViewState()");
         return new EventsViewState();
     }
 
     @Override
     public EventsViewState getViewState() {
+        Log.i(TAG, "getViewState()");
         return (EventsViewState) super.getViewState();
     }
 
     @Override
     public EventsPresenter createPresenter() {
+        Log.i(TAG, "createPresenter()");
         App.getInst().getComponent().inject(this);
         return eventsPresenter;
     }
 
     @Override public void onNewViewStateInstance() {
+        Log.i(TAG, "onNewViewStateInstance()");
         presenter.loadEvents(false);
 
     }
 
     @Override
     public List<Event> getData() {
+        Log.i(TAG, "getData()");
         return adapter.getItems();
     }
 
 
     @Override
     protected String getErrorMessage(Throwable e, boolean pullToRefresh) {
+        Log.i(TAG, "getErrorMessage()");
         if (pullToRefresh) {
             return "An error has occurred!";
         } else {
@@ -178,6 +191,7 @@ public class EventsFragment extends
 
     @Override
     public void showLoadMore(boolean showLoadMore) {
+        Log.i(TAG, "showLoadMore()");
         adapter.setLoadMore(showLoadMore);
         getViewState().setLoadingMore(showLoadMore);
         isLoadingMore = showLoadMore;
@@ -185,37 +199,44 @@ public class EventsFragment extends
 
     @Override
     public void showLoadMoreError(Throwable e) {
+        Log.i(TAG, "showLoadMoreError()");
         Toast.makeText(getActivity(), "An error has occurred while loading older events", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void addMoreData(List<Event> model) {
-        adapter.addItems(model);
+        Log.i(TAG, "addMoreData()");
 
         if (model.isEmpty()) {
             canLoadMore = false;
             Toast.makeText(getActivity(), "No more events to show", Toast.LENGTH_SHORT).show();
+        } else {
+            adapter.addItems(model);
         }
     }
 
     @Override
     public void setData(List<Event> data) {
+        Log.i(TAG, "setData()");
         adapter.setItems(data);
         adapter.notifyDataSetChanged();
         swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(false));
+
     }
 
     @Override
     public void loadData(boolean pullToRefresh) {
+        Log.i(TAG, "loadData()");
+        if (pullToRefresh) {
+            page = 0;
+        }
         presenter.loadEvents(pullToRefresh);
         canLoadMore = true;
     }
 
     @Override
     public void showContent() {
+        Log.i(TAG, "showContent()");
         super.showContent();
-        //showLoadMore(true);
     }
-
-
 }

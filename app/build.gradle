@@ -40,7 +40,7 @@ repositories {
     jcenter()
 }
 
-
+apply plugin: 'com.neenbedankt.android-apt'
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
@@ -58,7 +58,7 @@ dependencies {
 
     // IcePick
     compile 'frankiesardo:icepick:3.2.0'
-    provided 'frankiesardo:icepick-processor:3.2.0'
+    apt 'frankiesardo:icepick-processor:3.2.0'
 
     // Parceler
     compile 'org.parceler:parceler-api:1.1.6'
