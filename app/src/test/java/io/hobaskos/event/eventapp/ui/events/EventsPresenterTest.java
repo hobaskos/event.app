@@ -76,10 +76,12 @@ public class EventsPresenterTest {
 
     @Test
     public void testLoadEventsSuccess() {
+        /*
         when(eventRepository.getAll(0)).thenReturn(Observable.create((subscriber) -> {
             subscriber.onNext(eventList);
             subscriber.onCompleted();
         }));
+        */
 
         boolean pullToRefresh = true;
         eventsPresenter.attachView(view);

@@ -21,17 +21,20 @@ public class EventsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     public final static String TAG = EventsAdapter.class.getName();
 
+    private final int VIEW_TYPE_ITEM = 0;
+    private final int VIEW_TYPE_LOADING = 1;
+
 
     private List<Event> items;
     private final Action1<Event> onItemClick;
-    private final Action1<Integer> onListBottom;
+    //private final Action1<Integer> onListBottom;
 
     private boolean showLoadMore = false;
 
-    public EventsAdapter(List<Event> items, Action1<Event> onItemClick, Action1<Integer> onListBottom) {
+    public EventsAdapter(List<Event> items, Action1<Event> onItemClick) {
         this.items = items;
         this.onItemClick = onItemClick;
-        this.onListBottom = onListBottom;
+        //this.onListBottom = onListBottom;
     }
 
     public List<Event> getItems() {
@@ -70,10 +73,10 @@ public class EventsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @Override public int getItemViewType(int position) {
 
         if (showLoadMore && position == items.size()) { // At last position add load more item
-            return 1;
+            return VIEW_TYPE_LOADING;
+        } else {
+            return VIEW_TYPE_ITEM;
         }
-
-        return super.getItemViewType(position);
     }
 
     @Override
@@ -82,21 +85,30 @@ public class EventsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
 
+    public Event getItemAtPosition(int position) {
+        return items.get(position);
+    }
+
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
-        if (viewType == 1) { // viewType = 1 (show load more item)
-            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_loadmore, null);
-            view.setLayoutParams(new RecyclerView.
-                    LayoutParams(RecyclerView.LayoutParams.
-                    MATCH_PARENT, RecyclerView.LayoutParams.WRAP_CONTENT));
-            return new LoadMoreViewHolder(view);
-        } else { // viewType = 0 (Event item)
-            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_event, null);
-            view.setLayoutParams(new RecyclerView.
-                    LayoutParams(RecyclerView.LayoutParams.
-                    MATCH_PARENT, RecyclerView.LayoutParams.WRAP_CONTENT));
-            return new EventViewHolder(view);
+        switch (viewType) {
+            case 0: // viewType = 0 (Event item)
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_event, null);
+                view.setLayoutParams(new RecyclerView.
+                        LayoutParams(RecyclerView.LayoutParams.
+                        MATCH_PARENT, RecyclerView.LayoutParams.WRAP_CONTENT));
+                EventViewHolder holder = new EventViewHolder(view);
+                return new EventViewHolder(view);
+            case 1: // viewType = 1 (show load more item)
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_loadmore, null);
+                view.setLayoutParams(new RecyclerView.
+                        LayoutParams(RecyclerView.LayoutParams.
+                        MATCH_PARENT, RecyclerView.LayoutParams.WRAP_CONTENT));
+                return new LoadMoreViewHolder(view);
+            default:
+                return null;
         }
     }
 
@@ -121,6 +133,7 @@ public class EventsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         */
     }
 
+
     public class EventViewHolder extends RecyclerView.ViewHolder {
         TextView eventTitle, eventId;
         //ImageView background;
@@ -135,6 +148,8 @@ public class EventsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         public void click(final Event event, Action1<Event> listener) {
             itemView.setOnClickListener((i) -> listener.call(event));
         }
+
+
     }
 
     public class LoadMoreViewHolder extends RecyclerView.ViewHolder {
