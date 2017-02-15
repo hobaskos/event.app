@@ -1,24 +1,18 @@
 package io.hobaskos.event.eventapp.ui.event;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.util.Log;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import javax.inject.Inject;
 
-import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.model.Event;
-import io.hobaskos.event.eventapp.ui.base.BaseMvpActivity;
-import io.hobaskos.event.eventapp.ui.base.PresenterFactory;
-import rx.Observer;
+import io.hobaskos.event.eventapp.ui.base.view.activity.BaseActivity;
 
 /**
  * Created by andre on 1/26/2017.
  */
-public class EventActivity extends BaseMvpActivity<EventPresenter> implements Observer<Event> {
+public class EventActivity extends BaseActivity implements EventView {
 
     public final static String EVENT_ID = "eventId";
     public final static String TAG = EventActivity.class.getName();
@@ -43,40 +37,39 @@ public class EventActivity extends BaseMvpActivity<EventPresenter> implements Ob
         eventId = getIntent().getExtras().getLong(EVENT_ID);
     }
 
-    @NonNull
-    @Override
-    protected String tag() {
-        return TAG;
-    }
 
-    @NonNull
-    @Override
-    protected PresenterFactory<EventPresenter> getPresenterFactory() {
-        App.getInst().getComponent().inject(this);
-        return () -> eventPresenter;
-    }
+
+
 
     @Override
-    protected void onPresenterPrepared(@NonNull EventPresenter presenter) {
-        Log.i(TAG, "onPresenterPrepared");
-        this.eventPresenter = presenter;
-        eventPresenter.getEvent(eventId);
-        eventPresenter.subscribe(this);
+    public void showLoading(boolean loading) {
+
+    }
+
+    /*
+    public void showError(Throwable e) {
+        Log.i("event-activity", e.getMessage());
+        Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+    }
+    */
+
+    @Override
+    public void showContent() {
+
     }
 
     @Override
-    public void onNext(Event event) {
+    public void showError(Throwable e, boolean pullToRefresh) {
+
+    }
+
+    @Override
+    public void setData(Event event) {
         eventTitle.setText(String.format("ID:%d, TITLE:%s", event.getId(), event.getTitle()));
     }
 
     @Override
-    public void onError(Throwable e) {
-        Log.i("event-activity", e.getMessage());
-        Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
-    }
+    public void loadData(boolean pullToRefresh) {
 
-    @Override
-    public void onCompleted() {
-        // not needed as of now.
     }
 }

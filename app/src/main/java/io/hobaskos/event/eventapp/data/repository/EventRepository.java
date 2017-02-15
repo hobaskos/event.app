@@ -1,7 +1,6 @@
 package io.hobaskos.event.eventapp.data.repository;
 
 import java.util.List;
-import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -17,7 +16,7 @@ public class EventRepository implements BaseRepository<Event, Long> {
     private final EventService.Anonymously eventServiceAnonymously;
     private final EventService.Authenticated eventServiceAuthenticated;
 
-    private final int pageSize = 20;
+    private final int pageSize = 10;
 
     @Inject
     public EventRepository(EventService.Anonymously eventServiceAnonymously, EventService.Authenticated eventServiceAuthenticated) {

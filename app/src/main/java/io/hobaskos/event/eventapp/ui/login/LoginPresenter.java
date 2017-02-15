@@ -4,10 +4,11 @@ import android.util.Log;
 
 import javax.inject.Inject;
 
+import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.data.model.LoginVM;
 import io.hobaskos.event.eventapp.data.model.response.Response;
 import io.hobaskos.event.eventapp.data.repository.JwtRepository;
-import io.hobaskos.event.eventapp.ui.base.BaseMvpPresenter;
+import io.hobaskos.event.eventapp.ui.base.presenter.BaseRxLcePresenter;
 import rx.Notification;
 import rx.Observable;
 import rx.Observer;
@@ -17,7 +18,7 @@ import rx.subjects.PublishSubject;
  * Created by osvold.hans.petter on 13.02.2017.
  */
 
-public class LoginPresenter implements BaseMvpPresenter<Notification<Response>> {
+public class LoginPresenter extends BaseRxLcePresenter<LoginView, Event> {
 
     private JwtRepository repository;
     private PublishSubject<Notification<Response>> userLoginObservable = PublishSubject.create();
@@ -52,7 +53,7 @@ public class LoginPresenter implements BaseMvpPresenter<Notification<Response>> 
         userLoginObservable.onNext(notification);
     }
 
-    @Override
+
     public void subscribe(Observer<Notification<Response>> observer) {
         userLoginObservable.subscribe(observer);
     }

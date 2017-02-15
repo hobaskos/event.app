@@ -4,10 +4,11 @@ import javax.inject.Singleton;
 
 import dagger.Component;
 import io.hobaskos.event.eventapp.ui.event.EventActivity;
-import io.hobaskos.event.eventapp.ui.events.EventsActivity;
 import io.hobaskos.event.eventapp.ui.events.EventsFragment;
 import io.hobaskos.event.eventapp.ui.login.LoginActivity;
 import io.hobaskos.event.eventapp.ui.main.MainActivity;
+
+
 
 /**
  * Created by alex on 1/26/17.
@@ -17,9 +18,8 @@ import io.hobaskos.event.eventapp.ui.main.MainActivity;
                       NetModule.class})
 public interface DiComponent {
 
-    void inject(EventsActivity eventsActivity);
-    void inject(EventsFragment eventsFragment);
     void inject(EventActivity eventActivity);
+    void inject(EventsFragment eventsFragment);
     void inject(LoginActivity loginActivity);
     void inject(MainActivity mainActivity);
 

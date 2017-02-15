@@ -24,7 +24,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.events.EventsActivity"></activity>
+        <activity android:name=".ui.events.old.EventsActivity"></activity>
         <activity android:name=".ui.event.EventActivity"></activity>
         <activity android:name=".ui.createevent.CreateEventActivity"></activity>
         <activity android:name=".ui.login.LoginActivity" android:parentActivityName=".ui.main.MainActivity"></activity>
