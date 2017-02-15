@@ -93,6 +93,8 @@ dependencies {
     testCompile "org.robolectric:shadows-support-v4:${robolectric_version}"
     testCompile "org.mockito:mockito-core:${mockito_version}"
     testCompile "com.github.tomakehurst:wiremock-standalone:${wiremock_version}"
+    testCompile 'com.squareup.assertj:assertj-android:1.1.0'
+    testCompile 'com.squareup.assertj:assertj-android-recyclerview-v7:1.1.0@aar'
     compile 'com.android.support:appcompat-v7:25.1.0'
     compile 'com.android.support:recyclerview-v7:25.1.0'
     compile 'com.android.support:support-v4:25.1.0'

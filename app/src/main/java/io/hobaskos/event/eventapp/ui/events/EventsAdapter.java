@@ -1,6 +1,7 @@
 package io.hobaskos.event.eventapp.ui.events;
 
 import android.os.Handler;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,8 @@ import rx.functions.Action1;
 public class EventsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     public final static String TAG = EventsAdapter.class.getName();
+
+    private Fragment context;
 
 
     private List<Event> items;
@@ -81,6 +84,14 @@ public class EventsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         return items.size() + (showLoadMore ? 1 : 0);
     }
 
+
+    public Event getItemAtPosition(int position) {
+        return items.get(position);
+    }
+
+    public void setContext(Fragment context) {
+        this.context = context;
+    }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

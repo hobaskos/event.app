@@ -1,5 +1,6 @@
 package io.hobaskos.event.eventapp.ui.events;
 
+import android.support.v7.widget.RecyclerView;
 import android.test.UiThreadTest;
 
 import org.junit.After;
@@ -10,15 +11,15 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
+import java.util.List;
+
 import io.hobaskos.event.eventapp.BuildConfig;
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.TestApp;
+import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.ui.main.MainActivity;
-import rx.Scheduler;
-import rx.android.plugins.RxAndroidPlugins;
-import rx.android.plugins.RxAndroidSchedulersHook;
-import rx.schedulers.Schedulers;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 /**
@@ -29,27 +30,23 @@ import static org.junit.Assert.assertNotNull;
 @Config(constants = BuildConfig.class, sdk = 23, application = TestApp.class)
 public class EventsFragmentTest {
 
+
     private MainActivity mainActivity;
-    private EventsFragment eventsFragment = new EventsFragment();
-    private EventsPresenter presenter;
+    private EventsFragment fragment;
+
+    RecyclerView recyclerView;
+    EventsAdapter adapter;
+    List<Event> eventList;
+
 
     @Before
     public void setup() {
-        RxAndroidPlugins.getInstance().registerSchedulersHook(new RxAndroidSchedulersHook() {
-            @Override
-            public Scheduler getMainThreadScheduler() {
-                return Schedulers.immediate();
-            }
-        });
 
-        //startFragment(eventsFragment);
-
-        //presenter = eventsFragment.getPresenter();
     }
 
     @After
     public void tearDown() {
-        RxAndroidPlugins.getInstance().reset();
+
     }
 
     @Test
@@ -60,8 +57,36 @@ public class EventsFragmentTest {
                 .start()
                 .get();
 
-        mainActivity.getSupportFragmentManager().beginTransaction().replace(R.id.main_pane, eventsFragment).commit();
+        fragment = new EventsFragment();
+        mainActivity.getSupportFragmentManager().beginTransaction().replace(R.id.main_pane, fragment).commit();
 
-        assertNotNull(eventsFragment);
+        assertNotNull(fragment);
+    }
+
+    public void testRecyclerView() {
+        mainActivity = Robolectric.buildActivity(MainActivity.class)
+                .create()
+                .start()
+                .get();
+
+        fragment = new EventsFragment();
+        mainActivity.getSupportFragmentManager().beginTransaction().replace(R.id.main_pane, fragment).commit();
+        assertNotNull(fragment);
+
+        recyclerView = (RecyclerView) fragment.getView().findViewById(R.id.recyclerView);
+        // Manually measure and lay out recyclerView:
+        recyclerView.measure(0, 0);
+        recyclerView.layout(0, 0, 100, 10000);
+
+        assertNotNull(recyclerView);
+
+        adapter = (EventsAdapter) recyclerView.getAdapter();
+
+        eventList = adapter.getItems();
+
+        Event event = eventList.get(0);
+        Long id = event.getId();
+        Long idToMatch = 1L;
+        assertEquals(id, idToMatch);
     }
 }
