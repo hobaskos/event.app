@@ -67,7 +67,11 @@ public class EventsFragment extends BaseMvpFragment<EventsPresenter> implements 
 
         // Configure Swipe refresh:
         //swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(true));
-        swipeRefreshLayout.setOnRefreshListener(() -> eventsPresenter.getFreshData());
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            eventsList.clear();
+            eventsAdapter.notifyDataSetChanged();
+            eventsPresenter.getFreshData();
+        });
 
         // Configure recyclerview:
         linearLayoutManager = new LinearLayoutManager(getContext());
