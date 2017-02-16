@@ -1,5 +1,6 @@
 package io.hobaskos.event.eventapp.ui.events;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -10,21 +11,33 @@ import io.hobaskos.event.eventapp.ui.base.presenter.BaseRxLcePresenter;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
  * Created by andre on 2/13/2017.
  */
 
-public class EventsPresenter extends BaseRxLcePresenter<EventsView, List<Event>> {
+public class EventsPresenter extends BaseRxLcePresenter<EventsView, List<EventsPresentationModel>> {
 
     protected EventRepository eventRepository;
 
-    private Subscriber<List<Event>> moreEventSubscriber;
+    private Subscriber<List<EventsPresentationModel>> moreEventSubscriber;
+
+    private Func1<List<Event>, List<EventsPresentationModel>> presentationModelTransformation;
+
 
     @Inject
     public EventsPresenter(EventRepository eventRepository) {
         this.eventRepository = eventRepository;
+        presentationModelTransformation = events -> {
+            List<EventsPresentationModel> pmEvents = new ArrayList<>();
+            for (Event event : events) {
+                EventsPresentationModel pm = new EventsPresentationModel(event);
+                pmEvents.add(pm);
+            }
+            return pmEvents;
+        };
     }
 
     public void loadEvents(boolean pullToRefresh) {
@@ -33,20 +46,24 @@ public class EventsPresenter extends BaseRxLcePresenter<EventsView, List<Event>>
             getView().showLoadMore(false);
         }
 
-        subscribe(eventRepository.getAll(0), pullToRefresh);
+        final Observable<List<EventsPresentationModel>> observable =
+                eventRepository.getAll(0).map(presentationModelTransformation);
+
+        subscribe(observable, pullToRefresh);
     }
 
     public void loadMoreEvents(int nextPage) {
         // Cancel any previous query
         unsubscribe();
 
-        final Observable<List<Event>> observable = eventRepository.getAll(nextPage);
+        final Observable<List<EventsPresentationModel>> observable =
+                eventRepository.getAll(nextPage).map(presentationModelTransformation);
 
         if (isViewAttached()) {
             getView().showLoadMore(true);
         }
 
-        moreEventSubscriber = new Subscriber<List<Event>>() {
+        moreEventSubscriber = new Subscriber<List<EventsPresentationModel>>() {
             @Override public void onCompleted() {
             }
 
@@ -57,7 +74,7 @@ public class EventsPresenter extends BaseRxLcePresenter<EventsView, List<Event>>
                 }
             }
 
-            @Override public void onNext(List<Event> events) {
+            @Override public void onNext(List<EventsPresentationModel> events) {
                 if (isViewAttached()) {
                     getView().addMoreData(events);
                     getView().showLoadMore(false);

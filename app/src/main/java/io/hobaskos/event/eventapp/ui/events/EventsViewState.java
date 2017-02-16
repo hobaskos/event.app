@@ -6,13 +6,11 @@ import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.CastedArrayListLceViewSta
 
 import java.util.List;
 
-import io.hobaskos.event.eventapp.data.model.Event;
-
 /**
  * Created by andre on 2/13/2017.
  */
 
-public class EventsViewState extends CastedArrayListLceViewState<List<Event>, EventsView> {
+public class EventsViewState extends CastedArrayListLceViewState<List<EventsPresentationModel>, EventsView> {
 
     public final static String TAG = EventsViewState.class.getName();
 

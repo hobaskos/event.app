@@ -22,7 +22,6 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
-import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.ui.base.view.fragment.BaseLceViewStateFragment;
 import io.hobaskos.event.eventapp.ui.event.EventActivity;
 
@@ -31,7 +30,7 @@ import io.hobaskos.event.eventapp.ui.event.EventActivity;
  */
 
 public class EventsFragment extends
-        BaseLceViewStateFragment<SwipeRefreshLayout, List<Event>, EventsView, EventsPresenter>
+        BaseLceViewStateFragment<SwipeRefreshLayout, List<EventsPresentationModel>, EventsView, EventsPresenter>
         implements EventsView {
 
     public final static String TAG = EventsFragment.class.getName();
@@ -46,7 +45,7 @@ public class EventsFragment extends
     private DividerItemDecoration dividerItemDecoration;
 
     // Model
-    private List<Event> eventsList = new ArrayList<>();
+    private List<EventsPresentationModel> eventsList = new ArrayList<>();
     private EventsAdapter adapter;
 
     boolean canLoadMore = true;
@@ -169,7 +168,7 @@ public class EventsFragment extends
     }
 
     @Override
-    public List<Event> getData() {
+    public List<EventsPresentationModel> getData() {
         Log.i(TAG, "getData()");
         return adapter.getItems();
     }
@@ -202,7 +201,7 @@ public class EventsFragment extends
     }
 
     @Override
-    public void addMoreData(List<Event> model) {
+    public void addMoreData(List<EventsPresentationModel> model) {
         Log.i(TAG, "addMoreData()");
 
         if (model.isEmpty()) {
@@ -214,7 +213,7 @@ public class EventsFragment extends
     }
 
     @Override
-    public void setData(List<Event> data) {
+    public void setData(List<EventsPresentationModel> data) {
         Log.i(TAG, "setData()");
         adapter.setItems(data);
         adapter.notifyDataSetChanged();

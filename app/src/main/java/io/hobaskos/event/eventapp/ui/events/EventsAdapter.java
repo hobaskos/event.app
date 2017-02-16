@@ -10,7 +10,6 @@ import android.widget.TextView;
 import java.util.List;
 
 import io.hobaskos.event.eventapp.R;
-import io.hobaskos.event.eventapp.data.model.Event;
 import rx.functions.Action1;
 
 /**
@@ -25,27 +24,27 @@ public class EventsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private final int VIEW_TYPE_LOADING = 1;
 
 
-    private List<Event> items;
-    private final Action1<Event> onItemClick;
+    private List<EventsPresentationModel> items;
+    private final Action1<EventsPresentationModel> onItemClick;
     //private final Action1<Integer> onListBottom;
 
     private boolean showLoadMore = false;
 
-    public EventsAdapter(List<Event> items, Action1<Event> onItemClick) {
+    public EventsAdapter(List<EventsPresentationModel> items, Action1<EventsPresentationModel> onItemClick) {
         this.items = items;
         this.onItemClick = onItemClick;
         //this.onListBottom = onListBottom;
     }
 
-    public List<Event> getItems() {
+    public List<EventsPresentationModel> getItems() {
         return items;
     }
 
-    public void setItems(List<Event> events) {
+    public void setItems(List<EventsPresentationModel> events) {
         this.items = events;
     }
 
-    public void addItems(List<Event> events) {
+    public void addItems(List<EventsPresentationModel> events) {
         int startPosition = items.size();
         items.addAll(events);
         notifyItemRangeInserted(startPosition, events.size());
@@ -85,7 +84,7 @@ public class EventsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
 
-    public Event getItemAtPosition(int position) {
+    public EventsPresentationModel getItemAtPosition(int position) {
         return items.get(position);
     }
 
@@ -116,11 +115,14 @@ public class EventsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         switch (holder.getItemViewType()) {
             case 0:
-                EventViewHolder holder0 = (EventViewHolder) holder;
-                Event event = items.get(position);
+                EventViewHolder eventHolder = (EventViewHolder) holder;
+                EventsPresentationModel event = items.get(position);
 
-                holder0.click(event, onItemClick);
-                holder0.eventTitle.setText(event.getTitle());
+                eventHolder.click(event, onItemClick);
+                eventHolder.eventTitle.setText(event.getTitle());
+                eventHolder.eventLocation.setText(event.getLocation());
+
+                eventHolder.eventDate.setText(event.getDate());
                 break;
             case 1:
                 //LoadMoreViewHolder holder1 = (LoadMoreViewHolder) holder;
@@ -135,17 +137,20 @@ public class EventsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
 
     public class EventViewHolder extends RecyclerView.ViewHolder {
-        TextView eventTitle, eventId;
+        TextView eventTitle, eventLocation, eventDate;
         //ImageView background;
 
         public EventViewHolder(View itemView) {
             super(itemView);
             eventTitle = (TextView) itemView.findViewById(R.id.event_title);
+            eventLocation = (TextView) itemView.findViewById(R.id.event_location);
+            eventDate = (TextView) itemView.findViewById(R.id.event_time);
+
             //eventId = (TextView) itemView.findViewById(R.id.event_id);
             //background = (ImageView) itemView.findViewById(R.id.image);
         }
 
-        public void click(final Event event, Action1<Event> listener) {
+        public void click(final EventsPresentationModel event, Action1<EventsPresentationModel> listener) {
             itemView.setOnClickListener((i) -> listener.call(event));
         }
 
