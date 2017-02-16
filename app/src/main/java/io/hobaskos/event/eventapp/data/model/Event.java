@@ -1,5 +1,6 @@
 package io.hobaskos.event.eventapp.data.model;
 
+import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
@@ -36,6 +37,9 @@ public class Event implements Parcelable {
 
     @SerializedName("locations")
     private List<Location> locations;
+
+    @SerializedName("eventCategory")
+    private EventCategory category;
 
     public Long getId() {
         return id;
@@ -101,13 +105,20 @@ public class Event implements Parcelable {
         this.locations = locations;
     }
 
+    public EventCategory getEventCategory() {
+        return category;
+    }
+
+    public Event() {
+    }
+
     @Override
     public int describeContents() {
         return 0;
     }
 
     @Override
-    public void writeToParcel(android.os.Parcel dest, int flags) {
+    public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(this.id);
         dest.writeString(this.title);
         dest.writeString(this.description);
@@ -115,13 +126,11 @@ public class Event implements Parcelable {
         dest.writeSerializable(this.fromDate);
         dest.writeSerializable(this.toDate);
         dest.writeLong(this.ownerId);
-        dest.writeList(this.locations);
+        dest.writeTypedList(this.locations);
+        dest.writeParcelable(this.category, flags);
     }
 
-    public Event() {
-    }
-
-    protected Event(android.os.Parcel in) {
+    protected Event(Parcel in) {
         this.id = (Long) in.readValue(Long.class.getClassLoader());
         this.title = in.readString();
         this.description = in.readString();
@@ -129,12 +138,13 @@ public class Event implements Parcelable {
         this.fromDate = (LocalDateTime) in.readSerializable();
         this.toDate = (LocalDateTime) in.readSerializable();
         this.ownerId = in.readLong();
-        in.readList(this.locations, List.class.getClassLoader());
+        this.locations = in.createTypedArrayList(Location.CREATOR);
+        this.category = in.readParcelable(EventCategory.class.getClassLoader());
     }
 
-    public static final Parcelable.Creator<Event> CREATOR = new Parcelable.Creator<Event>() {
+    public static final Creator<Event> CREATOR = new Creator<Event>() {
         @Override
-        public Event createFromParcel(android.os.Parcel source) {
+        public Event createFromParcel(Parcel source) {
             return new Event(source);
         }
 
@@ -143,5 +153,4 @@ public class Event implements Parcelable {
             return new Event[size];
         }
     };
-
 }
