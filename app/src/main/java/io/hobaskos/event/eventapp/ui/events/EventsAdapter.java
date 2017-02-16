@@ -126,11 +126,6 @@ public class EventsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 //LoadMoreViewHolder holder1 = (LoadMoreViewHolder) holder;
                 break;
         }
-        /*
-        if ((position >= getItemCount() - 1)) {
-            onListBottom.call(position);
-        }
-        */
     }
 
 

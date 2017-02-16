@@ -9,11 +9,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.hannesdorfmann.mosby.mvp.MvpPresenter;
-import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
-import com.hannesdorfmann.mosby.mvp.viewstate.lce.LceViewState;
 import com.squareup.picasso.Picasso;
 
 import javax.inject.Inject;
@@ -21,7 +17,6 @@ import javax.inject.Inject;
 import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.model.Event;
-import io.hobaskos.event.eventapp.ui.base.view.activity.BaseActivity;
 import io.hobaskos.event.eventapp.ui.base.view.activity.BaseLceViewStateActivity;
 
 /**
@@ -77,8 +72,6 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
             //intent.putExtra()
             startActivity(new Intent(this, MapsActivity.class));
         });
-
-        eventPresenter.getEvent(eventId);
     }
 
     @NonNull
@@ -89,8 +82,19 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     }
 
     @Override
-    public LceViewState<Event, EventView> createViewState() {
+    public EventViewState createViewState() {
         return new EventViewState();
+    }
+
+    @Override
+    public EventViewState getViewState() {
+        Log.i(TAG, "getViewState()");
+        return (EventViewState) super.getViewState();
+    }
+
+    @Override public void onNewViewStateInstance() {
+        Log.i(TAG, "onNewViewStateInstance()");
+        loadData(false); // load data from presenter
     }
 
     @Override
@@ -121,7 +125,9 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
         //eventTime.setText(String.format(event.getFromDate().getHourOfDay()+"."+event.getFromDate().getMinuteOfHour()+ " - " + event.getToDate().getHourOfDay()+"."+event.getToDate().getMinuteOfHour()));
 
         // Event Place
-        eventPlace.setText(event.getLocations().get(0).getName());
+        if (!event.getLocations().isEmpty()) {
+            eventPlace.setText(event.getLocations().get(0).getName());
+        }
 
         // Event interested
         eventInterested.setText(String.format("30"));
@@ -136,6 +142,6 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
 
     @Override
     public void loadData(boolean pullToRefresh) {
-
+        presenter.getEvent(eventId);
     }
 }
