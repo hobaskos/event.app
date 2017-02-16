@@ -17,6 +17,8 @@ import rx.Observable;
 import rx.Scheduler;
 import rx.android.plugins.RxAndroidPlugins;
 import rx.android.plugins.RxAndroidSchedulersHook;
+import rx.functions.Func1;
+import rx.plugins.RxJavaHooks;
 import rx.schedulers.Schedulers;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -32,7 +34,6 @@ import static org.mockito.internal.verification.VerificationModeFactory.times;
 /**
  * Created by andre on 2/15/2017.
  */
-//TODO: Inorder seems to randomly sometimes not work. Remove maybe
 
 public class EventsPresenterTest {
 
@@ -40,6 +41,7 @@ public class EventsPresenterTest {
     @Mock private EventRepository eventRepository;
     @Mock private EventsView view;
     private EventsPresenter eventsPresenter;
+
 
     @Before
     public void setup() {
@@ -49,21 +51,41 @@ public class EventsPresenterTest {
         eventsPresenter = new EventsPresenter(eventRepository);
         eventList = new ArrayList<>();
 
+        // Override RxJava schedulers
+        RxJavaHooks.setOnIOScheduler(new Func1<Scheduler, Scheduler>() {
+            @Override
+            public Scheduler call(Scheduler scheduler) {
+                return Schedulers.immediate();
+            }
+        });
+
+        RxJavaHooks.setOnComputationScheduler(new Func1<Scheduler, Scheduler>() {
+            @Override
+            public Scheduler call(Scheduler scheduler) {
+                return Schedulers.immediate();
+            }
+        });
+
+        RxJavaHooks.setOnNewThreadScheduler(new Func1<Scheduler, Scheduler>() {
+            @Override
+            public Scheduler call(Scheduler scheduler) {
+                return Schedulers.immediate();
+            }
+        });
+
         RxAndroidPlugins.getInstance().registerSchedulersHook(new RxAndroidSchedulersHook() {
             @Override
             public Scheduler getMainThreadScheduler() {
                 return Schedulers.immediate();
             }
         });
+
     }
 
     @After
     public void tearDown() {
+        RxJavaHooks.reset();
         RxAndroidPlugins.getInstance().reset();
-        eventRepository = null;
-        eventsPresenter = null;
-        eventList = null;
-        view = null;
     }
 
 
@@ -87,11 +109,11 @@ public class EventsPresenterTest {
         eventsPresenter.loadEvents(pullToRefresh);
 
         InOrder inOrder = inOrder(view);
-        verify(view, never()).showError(any(Exception.class), anyBoolean());
         inOrder.verify(view, times(1)).showLoadMore(false);
         inOrder.verify(view, times(1)).showLoading(pullToRefresh);
         inOrder.verify(view, times(1)).setData(anyListOf(Event.class));
         inOrder.verify(view, times(1)).showContent();
+        verify(view, never()).showError(any(Exception.class), anyBoolean());
         verifyNoMoreInteractions(view);
     }
 
@@ -99,7 +121,6 @@ public class EventsPresenterTest {
     public void testLoadEventsError() {
         when(eventRepository.getAll(0)).thenReturn(Observable.create((subscriber) -> {
             subscriber.onError(new Exception());
-            subscriber.onCompleted();
         }));
 
         boolean pullToRefresh = true;
@@ -139,7 +160,6 @@ public class EventsPresenterTest {
         int page = 1;
         when(eventRepository.getAll(page)).thenReturn(Observable.create((subscriber) -> {
             subscriber.onError(new Exception());
-            subscriber.onCompleted();
         }));
 
         eventsPresenter.attachView(view);
