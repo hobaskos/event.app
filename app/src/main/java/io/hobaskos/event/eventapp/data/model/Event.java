@@ -28,10 +28,10 @@ public class Event {
     private String imageUrl;
 
     @SerializedName("fromDate")
-    public LocalDateTime fromDate;
+    private LocalDateTime fromDate;
 
     @SerializedName("toDate")
-    public LocalDateTime toDate;
+    private LocalDateTime toDate;
 
     @SerializedName("ownerId")
     private long ownerId;

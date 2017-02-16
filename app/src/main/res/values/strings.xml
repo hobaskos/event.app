@@ -19,4 +19,5 @@
     <string name="attending_label">Skal</string>
     <string name="description_text">Velkommen til PubCrawl 2017! </string>
     <string name="friends_label">Venner</string>
+    <string name="btn_login">Login</string>
 </resources>

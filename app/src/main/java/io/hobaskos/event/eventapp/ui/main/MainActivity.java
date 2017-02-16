@@ -1,5 +1,6 @@
 package io.hobaskos.event.eventapp.ui.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -12,8 +13,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import javax.inject.Inject;
+
+import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
+import io.hobaskos.event.eventapp.data.service.JwtStorageProxy;
 import io.hobaskos.event.eventapp.ui.events.EventsFragment;
+import io.hobaskos.event.eventapp.ui.login.LoginActivity;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -24,9 +30,16 @@ public class MainActivity extends AppCompatActivity
     private Toolbar toolbar;
     //private ViewPager viewPager;
 
+    @Inject
+    public JwtStorageProxy jwtStorageProxy;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        App.getInst().getComponent().inject(this);
+
         setContentView(R.layout.activity_main);
 
         // Find views:
@@ -34,6 +47,14 @@ public class MainActivity extends AppCompatActivity
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         //viewPager = (ViewPager) findViewById(R.id.view_pager);
+
+        if(isLoggedIn())
+        {
+           navigationView.getMenu().findItem(R.id.nav_login).setVisible(false);
+        }
+        else {
+            navigationView.getMenu().setGroupVisible(R.id.navigational_menu_logged_in, false);
+        }
 
         // Set toolbar:
         setSupportActionBar(toolbar);
@@ -45,7 +66,7 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
 
         navigationView.setNavigationItemSelectedListener(this);
-
+        
         // Temp solution, Initial fragment:
         //FragmentManager fragmentManager = getSupportFragmentManager();
         //fragmentManager.beginTransaction().replace(R.id.content_frame, new EventsFragment()).commit();
@@ -91,6 +112,12 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.nav_profile:
                 break;
+            case R.id.nav_login:
+                startActivity(new Intent(this, LoginActivity.class));
+                break;
+            case R.id.nav_logout:
+                logout();
+                break;
         }
 
         // Open new fragment
@@ -103,5 +130,17 @@ public class MainActivity extends AppCompatActivity
         // Close drawer
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private boolean isLoggedIn()
+    {
+        return jwtStorageProxy.isSet();
+
+    }
+
+    private void logout()
+    {
+        jwtStorageProxy.remove();
+        startActivity(new Intent(this, MainActivity.class));
     }
 }
