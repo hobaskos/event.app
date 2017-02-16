@@ -36,9 +36,5 @@ public class EventPresenter extends BaseRxLcePresenter<EventView, Event> {
         );
     }
 
-    public Observable<Event> getObservable() {
-        return eventObservable;
-    }
-
 }
 

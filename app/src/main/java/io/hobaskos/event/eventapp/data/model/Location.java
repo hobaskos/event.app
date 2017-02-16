@@ -1,7 +1,13 @@
 package io.hobaskos.event.eventapp.data.model;
 
+<<<<<<< HEAD
 import android.os.Parcelable;
 
+=======
+import android.util.EventLogTags;
+
+import org.joda.time.DateTime;
+>>>>>>> #FRONTEND-7
 import org.joda.time.LocalDateTime;
 import org.parceler.Parcel;
 
@@ -127,4 +133,10 @@ public class Location implements Parcelable {
             return new Location[size];
         }
     };
+
+    @Override
+    public String toString() {
+        return getName();
+    }
+
 }

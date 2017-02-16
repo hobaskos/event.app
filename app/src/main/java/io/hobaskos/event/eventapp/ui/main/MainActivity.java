@@ -1,5 +1,8 @@
 package io.hobaskos.event.eventapp.ui.main;
 
+import android.support.v7.app.AppCompatActivity;
+
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -12,6 +15,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 
 import javax.inject.Inject;
 
@@ -42,6 +49,10 @@ public class MainActivity extends AppCompatActivity
 
         setContentView(R.layout.activity_main);
 
+        if (googleServicesAvailable()) {
+            Toast.makeText(this, "Google Play Services er på plass!", Toast.LENGTH_LONG).show();
+        }
+
         // Find views:
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -70,6 +81,21 @@ public class MainActivity extends AppCompatActivity
         // Temp solution, Initial fragment:
         //FragmentManager fragmentManager = getSupportFragmentManager();
         //fragmentManager.beginTransaction().replace(R.id.content_frame, new EventsFragment()).commit();
+    }
+
+    public boolean googleServicesAvailable() {
+        GoogleApiAvailability api = GoogleApiAvailability.getInstance();
+        int isAvailable = api.isGooglePlayServicesAvailable(this);
+
+        if (isAvailable == ConnectionResult.SUCCESS) {
+            return true;
+        } else if (api.isUserResolvableError(isAvailable)) {
+            Dialog dialog = api.getErrorDialog(this,isAvailable,0);
+            dialog.show();
+        } else {
+            Toast.makeText(this, "Kan ikke koble til Google Play Services!", Toast.LENGTH_LONG).show();
+        }
+        return false;
     }
 
     /**

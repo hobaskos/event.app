@@ -101,7 +101,6 @@ public class Event implements Parcelable {
         this.locations = locations;
     }
 
-
     @Override
     public int describeContents() {
         return 0;
@@ -144,4 +143,5 @@ public class Event implements Parcelable {
             return new Event[size];
         }
     };
+
 }
