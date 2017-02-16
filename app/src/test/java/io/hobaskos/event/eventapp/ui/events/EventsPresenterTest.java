@@ -23,7 +23,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyListOf;
 import static org.mockito.Mockito.inOrder;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -36,14 +35,10 @@ import static org.mockito.internal.verification.VerificationModeFactory.times;
 //TODO: Inorder seems to randomly sometimes not work. Remove maybe
 
 public class EventsPresenterTest {
+
     private List<Event> eventList;
-
-    //@Mock
-    private EventRepository eventRepository;
-
-    @Mock
-    private EventsView view;
-
+    @Mock private EventRepository eventRepository;
+    @Mock private EventsView view;
     private EventsPresenter eventsPresenter;
 
     @Before
@@ -51,7 +46,6 @@ public class EventsPresenterTest {
         // Inject mocks with the @Mock annotation.
         MockitoAnnotations.initMocks(this);
         // Initialize class to be tested
-        eventRepository =  mock(EventRepository.class);
         eventsPresenter = new EventsPresenter(eventRepository);
         eventList = new ArrayList<>();
 
