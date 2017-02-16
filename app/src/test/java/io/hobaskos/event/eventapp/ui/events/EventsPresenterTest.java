@@ -33,6 +33,7 @@ import static org.mockito.internal.verification.VerificationModeFactory.times;
 /**
  * Created by andre on 2/15/2017.
  */
+//TODO: Inorder seems to randomly sometimes not work. Remove maybe
 
 public class EventsPresenterTest {
     private List<Event> eventList;
@@ -65,6 +66,10 @@ public class EventsPresenterTest {
     @After
     public void tearDown() {
         RxAndroidPlugins.getInstance().reset();
+        eventRepository = null;
+        eventsPresenter = null;
+        eventList = null;
+        view = null;
     }
 
 
@@ -76,12 +81,12 @@ public class EventsPresenterTest {
 
     @Test
     public void testLoadEventsSuccess() {
-        /*
+
         when(eventRepository.getAll(0)).thenReturn(Observable.create((subscriber) -> {
             subscriber.onNext(eventList);
             subscriber.onCompleted();
         }));
-        */
+
 
         boolean pullToRefresh = true;
         eventsPresenter.attachView(view);
