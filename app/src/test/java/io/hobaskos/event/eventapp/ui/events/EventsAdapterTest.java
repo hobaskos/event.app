@@ -47,7 +47,7 @@ public class EventsAdapterTest {
     private Fragment mockFragment;
 
     @Mock
-    private List<Event> eventList;
+    private List<EventsPresentationModel> eventList;
 
     @Before
     public void setup() throws Exception {
@@ -59,7 +59,7 @@ public class EventsAdapterTest {
 
     @Test
     public void itemCount() {
-        Event event = new Event();
+        EventsPresentationModel event = new EventsPresentationModel(new Event());
         adapter.setItems(Arrays.asList(event, event, event));
         assertThat(adapter.getItemCount()).isEqualTo(3);
     }
@@ -67,36 +67,18 @@ public class EventsAdapterTest {
 
     @Test
     public void getItemAtPosition() {
-        Event firstEvent = new Event();
-        Event secondEvent = new Event();
+        EventsPresentationModel firstEvent = new EventsPresentationModel(new Event());
+        EventsPresentationModel secondEvent = new EventsPresentationModel(new Event());
         adapter.setItems(Arrays.asList(firstEvent, secondEvent));
-        //assertThat(adapter.getItemAtPosition(0)).isEqualTo(firstEvent);
-        //assertThat(adapter.getItemAtPosition(1)).isEqualTo(secondEvent);
+        assertThat(adapter.getItemAtPosition(0)).isEqualTo(firstEvent);
+        assertThat(adapter.getItemAtPosition(1)).isEqualTo(secondEvent);
     }
 
-    /*
-    @Test
-    public void onBindViewHolder() {
-        Event event = new Event();
-        event.setTitle("Tittel");
-        event.setId(1L);
-
-        adapter.setItems(Arrays.asList(event));
-        adapter.notifyDataSetChanged();
-        adapter.setContext(mockFragment);
-        LayoutInflater inflater = (LayoutInflater) RuntimeEnvironment.application.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        //We have a layout especially for the items in our recycler view. We will see it in a moment.
-        View listItemView = inflater.inflate(R.layout.list_item_event, null, false);
-        eventViewHolder = adapter.new EventViewHolder(listItemView);
-        adapter.onBindViewHolder(eventViewHolder, 0);
-
-
-        assertThat(eventViewHolder.eventTitle.getText().toString()).isEqualTo(event.getTitle());
+    /* TODO:
         eventViewHolder.itemView.performClick();
         Intent intent = new Intent(mockFragment.getActivity(), EventActivity.class);
         intent.putExtra("event", 1L);
         verify(mockFragment).startActivity(intent);
-    }
     */
 
     @Test
@@ -105,12 +87,14 @@ public class EventsAdapterTest {
         Event event1 = new Event();
         event1.setTitle("Tittel 1");
         event1.setId(1L);
+        EventsPresentationModel pmEvent1 = new EventsPresentationModel(event1);
 
         Event event2 = new Event();
         event2.setTitle("Tittel 2");
         event2.setId(2L);
+        EventsPresentationModel pmEvent2 = new EventsPresentationModel(event2);
 
-        List<Event> events = Arrays.asList(event1, event2);
+        List<EventsPresentationModel> events = Arrays.asList(pmEvent1, pmEvent2);
         EventsAdapter adapter = new EventsAdapter(events, null);
         RecyclerView rvParent = new RecyclerView(context);
         rvParent.setLayoutManager(new LinearLayoutManager(context));

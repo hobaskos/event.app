@@ -11,6 +11,8 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import io.hobaskos.event.eventapp.BuildConfig;
@@ -36,12 +38,14 @@ public class EventsFragmentTest {
 
     RecyclerView recyclerView;
     EventsAdapter adapter;
-    List<Event> eventList;
+    List<EventsPresentationModel> eventList2;
 
 
     @Before
     public void setup() {
-
+        EventsPresentationModel pMevents = new EventsPresentationModel(new Event());
+        eventList2 = new ArrayList<>();
+        eventList2.addAll(Arrays.asList(pMevents, pMevents, pMevents));
     }
 
     @After
@@ -84,9 +88,9 @@ public class EventsFragmentTest {
 
         adapter = (EventsAdapter) recyclerView.getAdapter();
 
-        eventList = adapter.getItems();
+        List<EventsPresentationModel> eventList = adapter.getItems();
 
-        Event event = eventList.get(0);
+        EventsPresentationModel event = eventList2.get(0);
         Long id = event.getId();
         Long idToMatch = 1L;
         assertEquals(id, idToMatch);

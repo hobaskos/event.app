@@ -8,8 +8,6 @@ import org.mockito.MockitoAnnotations;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.hobaskos.event.eventapp.data.model.Event;
-
 import static org.mockito.ArgumentMatchers.anyListOf;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -24,7 +22,7 @@ public class EventsViewStateTest {
     @Mock
     private EventsView view;
 
-    private List<Event> eventList;
+    private List<EventsPresentationModel> eventList;
     private EventsViewState viewState;
 
     private boolean pullToRefresh = false;
@@ -44,7 +42,7 @@ public class EventsViewStateTest {
         viewState.apply(view, false);
 
         verify(view, times(1)).showLoadMore(true);
-        verify(view, times(1)).setData(anyListOf(Event.class));
+        verify(view, times(1)).setData(anyListOf(EventsPresentationModel.class));
         verify(view, times(1)).showContent();
         verifyNoMoreInteractions(view);
     }
@@ -56,7 +54,7 @@ public class EventsViewStateTest {
         viewState.apply(view, false);
 
         verify(view, times(1)).showLoadMore(false);
-        verify(view, times(1)).setData(anyListOf(Event.class));
+        verify(view, times(1)).setData(anyListOf(EventsPresentationModel.class));
         verify(view, times(1)).showContent();
         verifyNoMoreInteractions(view);
     }

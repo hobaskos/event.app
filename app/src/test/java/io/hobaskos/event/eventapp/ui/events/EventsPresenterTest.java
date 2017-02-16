@@ -36,6 +36,7 @@ import static org.mockito.internal.verification.VerificationModeFactory.times;
 
 public class EventsPresenterTest {
     private List<Event> eventList;
+    private List<EventsPresentationModel> eventsPresentationModelList;
 
     //@Mock
     private EventRepository eventRepository;
@@ -53,6 +54,7 @@ public class EventsPresenterTest {
         eventRepository =  mock(EventRepository.class);
         eventsPresenter = new EventsPresenter(eventRepository);
         eventList = new ArrayList<>();
+        eventsPresentationModelList = new ArrayList<>();
 
         RxAndroidPlugins.getInstance().registerSchedulersHook(new RxAndroidSchedulersHook() {
             @Override
@@ -76,12 +78,11 @@ public class EventsPresenterTest {
 
     @Test
     public void testLoadEventsSuccess() {
-        /*
+
         when(eventRepository.getAll(0)).thenReturn(Observable.create((subscriber) -> {
             subscriber.onNext(eventList);
             subscriber.onCompleted();
         }));
-        */
 
         boolean pullToRefresh = true;
         eventsPresenter.attachView(view);
@@ -91,7 +92,7 @@ public class EventsPresenterTest {
         verify(view, never()).showError(any(Exception.class), anyBoolean());
         inOrder.verify(view, times(1)).showLoadMore(false);
         inOrder.verify(view, times(1)).showLoading(pullToRefresh);
-        inOrder.verify(view, times(1)).setData(anyListOf(Event.class));
+        inOrder.verify(view, times(1)).setData(anyListOf(EventsPresentationModel.class));
         inOrder.verify(view, times(1)).showContent();
         verifyNoMoreInteractions(view);
     }
@@ -112,7 +113,7 @@ public class EventsPresenterTest {
         inOrder.verify(view, times(1)).showLoading(pullToRefresh);
         inOrder.verify(view, times(1)).showError(any(Exception.class), Matchers.eq(pullToRefresh));
         verify(view, never()).showContent();
-        verify(view, never()).setData(anyListOf(Event.class));
+        verify(view, never()).setData(anyListOf(EventsPresentationModel.class));
         verifyNoMoreInteractions(view);
     }
 
@@ -129,7 +130,7 @@ public class EventsPresenterTest {
 
         InOrder inOrder = inOrder(view);
         inOrder.verify(view, times(1)).showLoadMore(true);
-        inOrder.verify(view, times(1)).addMoreData(eventList);
+        inOrder.verify(view, times(1)).addMoreData(eventsPresentationModelList);
         inOrder.verify(view, times(1)).showLoadMore(false);
         verify(view, never()).showLoadMoreError(any(Exception.class));
         verifyNoMoreInteractions(view);
@@ -150,7 +151,7 @@ public class EventsPresenterTest {
         inOrder.verify(view, times(1)).showLoadMore(true);
         inOrder.verify(view, times(1)).showLoadMoreError(any(Exception.class));
         inOrder.verify(view, times(1)).showLoadMore(false);
-        verify(view, never()).addMoreData(anyListOf(Event.class));
+        verify(view, never()).addMoreData(anyListOf(EventsPresentationModel.class));
         verifyNoMoreInteractions(view);
     }
 }
