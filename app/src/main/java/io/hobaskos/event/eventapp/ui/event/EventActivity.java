@@ -1,13 +1,16 @@
 package io.hobaskos.event.eventapp.ui.event;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.text.format.DateUtils;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.view.View;
 
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.squareup.picasso.Picasso;
 
 
@@ -43,32 +46,35 @@ public class EventActivity extends BaseMvpActivity<EventPresenter> implements Ob
     private TextView eventInterested;
     private TextView eventAttending;
     private TextView eventFriends;
-
+    private Button mapButton;
 
     @Inject public EventPresenter eventPresenter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        setContentView(R.layout.activity_event);
         super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.event_fragment);
-        //setContentView(R.layout.activity_event);
-
-        //ButterKnife.bind(this);
 
         eventTitle = (TextView) findViewById(R.id.event_name);
         date = (TextView) findViewById(R.id.date_value);
         eventTime = (TextView) findViewById(R.id.time_text);
         eventPlace = (TextView) findViewById(R.id.place_text);
+        mapButton = (Button) findViewById(R.id.mapButton);
         eventDescription = (TextView) findViewById(R.id.description_text);
         eventImg = (ImageView) findViewById(R.id.eventImage);
         eventInterested = (TextView) findViewById(R.id.interested_value);
         eventAttending = (TextView) findViewById(R.id.attending_value);
         eventFriends = (TextView) findViewById(R.id.friends_value);
-
-
         eventId = getIntent().getExtras().getLong(EVENT_ID);
+
+        //Event Handler
+        mapButton.setOnClickListener((View v) -> {
+            //Intent intent = new Intent(this, MapsActivity.class);
+            //intent.putExtra()
+            startActivity(new Intent(this, MapsActivity.class));
+        });
     }
+
 
     @NonNull
     @Override
@@ -97,13 +103,13 @@ public class EventActivity extends BaseMvpActivity<EventPresenter> implements Ob
         eventTitle.setText(String.format(event.getTitle()));
 
         // Event date
-        date.setText(DateUtils.getRelativeTimeSpanString(event.getFromDate().toDate().getTime()));
+        //date.setText(DateUtils.getRelativeTimeSpanString(event.getFromDate().toDate().getTime()));
 
         // Event Image
         Picasso.with(this).load(event.getImageUrl()).into(eventImg);
 
         // Event Time
-        eventTime.setText(String.format(event.getFromDate().getHourOfDay()+"."+event.getFromDate().getMinuteOfHour()+ " - " + event.getToDate().getHourOfDay()+"."+event.getToDate().getMinuteOfHour()));
+        //eventTime.setText(String.format(event.getFromDate().getHourOfDay()+"."+event.getFromDate().getMinuteOfHour()+ " - " + event.getToDate().getHourOfDay()+"."+event.getToDate().getMinuteOfHour()));
 
         // Event Place
         eventPlace.setText(String.format(event.getLocations().toString()));
@@ -119,8 +125,6 @@ public class EventActivity extends BaseMvpActivity<EventPresenter> implements Ob
         eventDescription.setText(String.format(event.getDescription()));
 
 
-
-
     }
 
     @Override
@@ -133,4 +137,5 @@ public class EventActivity extends BaseMvpActivity<EventPresenter> implements Ob
     public void onCompleted() {
         // not needed as of now.
     }
+
 }

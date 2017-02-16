@@ -67,10 +67,8 @@ dependencies {
     compile "com.google.code.gson:gson:${gson_version}"
 
     // jodatime
-    compile 'joda-time:joda-time:2.9.7'
 
     // gson-jodatime-serialisers
-    compile 'com.fatboyindustrial.gson-jodatime-serialisers:gson-jodatime-serialisers:1.5.0'
 
     // Rxjava
     compile "io.reactivex:rxandroid:${rxandroid_version}"
@@ -84,15 +82,22 @@ dependencies {
     testCompile "org.robolectric:robolectric:${robolectric_version}"
     testCompile "org.mockito:mockito-core:${mockito_version}"
     testCompile "com.github.tomakehurst:wiremock-standalone:${wiremock_version}"
+
+    // Picasso Image Downloader
+    compile 'com.squareup.picasso:picasso:2.5.0'
+
+    //Google Maps
+    compile 'joda-time:joda-time:2.9.7'
+    compile 'com.fatboyindustrial.gson-jodatime-serialisers:gson-jodatime-serialisers:1.5.0'
     compile 'com.android.support:appcompat-v7:25.1.0'
     compile 'com.android.support:recyclerview-v7:25.1.0'
     compile 'com.android.support:support-v4:25.1.0'
     compile 'com.android.support:design:25.1.0'
     compile 'com.android.support:gridlayout-v7:25.1.0'
+    compile 'com.google.android.gms:play-services:9.8.0'
+    compile 'com.google.maps.android:android-maps-utils:0.4'
     testCompile 'junit:junit:4.12'
     testCompile 'org.khronos:opengl-api:gl1.1-android-2.1_r1'
     provided 'javax.annotation:jsr250-api:1.0'
-
-    // Picasso Image Downloader
-    compile "com.squareup.picasso:picasso:2.5.0"
 }
+
