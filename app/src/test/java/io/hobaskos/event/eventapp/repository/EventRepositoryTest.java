@@ -16,6 +16,7 @@ import io.hobaskos.event.eventapp.config.TestConstants;
 import io.hobaskos.event.eventapp.data.api.ApiService;
 import io.hobaskos.event.eventapp.data.api.EventService;
 import io.hobaskos.event.eventapp.data.model.Event;
+import io.hobaskos.event.eventapp.data.model.EventCategoryTheme;
 import io.hobaskos.event.eventapp.data.model.GeoPoint;
 import io.hobaskos.event.eventapp.data.model.Location;
 import io.hobaskos.event.eventapp.data.repository.EventRepository;
@@ -74,6 +75,14 @@ public class EventRepositoryTest {
                 "\"fromDate\": \"2017-02-21T14:06:48.783+01:00\", " +
                 "\"toDate\": \"2017-02-21T14:06:51.416+01:00\", " +
                 "\"ownerId\": 1," +
+                "\"eventCategory\": {" +
+                    "\"id\": 1," +
+                    "\"title\": \"Swank\"," +
+                    "\"iconUrl\": \"/files/715cdac2-4200-425c-aa57-62b137d3c85e.png\"," +
+                    "\"icon\": null," +
+                    "\"iconContentType\": null," +
+                    "\"theme\": \"INDIGO\"" +
+                "}," +
                 "\"locations\": [" +
                 "      {" +
                 "        \"id\": 1, " +
@@ -105,6 +114,9 @@ public class EventRepositoryTest {
         assertTrue(event.getDescription().equals("desc1"));
         assertTrue(event.getImageUrl().equals("image-url1"));
         assertTrue(event.getOwnerId() == 1);
+        assertTrue(event.getEventCategory().getTitle().equals("Swank"));
+        assertTrue(event.getEventCategory().getTheme().equals(EventCategoryTheme.INDIGO));
+        assertTrue(event.getEventCategory().getIconUrl().contains("files"));
         assertTrue(event.getFromDate().getYear() == 2017);
         assertTrue(event.getFromDate().getMonthOfYear() == 2);
         assertTrue(event.getFromDate().getDayOfMonth() == 21);

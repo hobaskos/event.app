@@ -39,6 +39,9 @@ public class Event {
     @SerializedName("locations")
     private Set<Location> locations;
 
+    @SerializedName("eventCategory")
+    private EventCategory category;
+
     public Long getId() {
         return id;
     }
@@ -101,5 +104,9 @@ public class Event {
 
     public void setLocations(Set<Location> locations) {
         this.locations = locations;
+    }
+
+    public EventCategory getEventCategory() {
+        return category;
     }
 }
