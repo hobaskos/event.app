@@ -52,7 +52,7 @@ public class LoginPresenter extends MvpBasePresenter<LoginView> {
                 {
                     getView().showSuccess(new Response(true, "Success"));
                 }
-            }   
+            }
         });
 
 
