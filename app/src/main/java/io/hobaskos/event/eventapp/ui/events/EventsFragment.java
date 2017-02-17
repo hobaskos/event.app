@@ -164,7 +164,6 @@ public class EventsFragment extends
     @Override public void onNewViewStateInstance() {
         Log.i(TAG, "onNewViewStateInstance()");
         presenter.loadEvents(false);
-
     }
 
     @Override

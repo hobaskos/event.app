@@ -7,9 +7,11 @@ import dagger.Module;
 import dagger.Provides;
 import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.data.api.ApiService;
+import io.hobaskos.event.eventapp.data.api.EventCategoryService;
 import io.hobaskos.event.eventapp.data.api.EventService;
 import io.hobaskos.event.eventapp.data.api.JWTTokenInterceptor;
 import io.hobaskos.event.eventapp.data.api.UserJWTService;
+import io.hobaskos.event.eventapp.data.repository.EventCategoryRepository;
 import io.hobaskos.event.eventapp.data.repository.EventRepository;
 import io.hobaskos.event.eventapp.data.service.JwtStorageProxy;
 import okhttp3.Cache;
@@ -63,5 +65,17 @@ public class NetModule {
     @Provides
     public JWTTokenInterceptor providesIntercepter(JwtStorageProxy storageProxy) {
         return new JWTTokenInterceptor(storageProxy);
+    }
+
+    @Singleton
+    @Provides
+    public EventCategoryService providesEventCategoryService(Cache cache) {
+        return ApiService.build(httpUrl).createService(EventCategoryService.class, cache);
+    }
+
+    @Singleton
+    @Provides
+    public EventCategoryRepository providesEventCategoryRepository(EventCategoryService eventCategoryService) {
+        return new EventCategoryRepository(eventCategoryService);
     }
 }

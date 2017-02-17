@@ -46,7 +46,6 @@ public abstract class BaseLceViewStateFragment<CV extends View, M, V extends Mvp
     }
 
     @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        injectDependencies();
         super.onViewCreated(view, savedInstanceState);
         unbinder = ButterKnife.bind(this, view);
     }
@@ -54,13 +53,5 @@ public abstract class BaseLceViewStateFragment<CV extends View, M, V extends Mvp
     @Override public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
-    }
-
-
-    /**
-     * Inject the dependencies
-     */
-    protected void injectDependencies() {
-
     }
 }

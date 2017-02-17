@@ -18,7 +18,6 @@ public abstract class BaseViewStateActivity<V extends MvpView, P extends MvpPres
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        injectDependencies();
         super.onCreate(savedInstanceState);
         Icepick.restoreInstanceState(this, savedInstanceState);
     }
@@ -33,9 +32,5 @@ public abstract class BaseViewStateActivity<V extends MvpView, P extends MvpPres
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         Icepick.saveInstanceState(this, outState);
-    }
-
-    protected void injectDependencies() {
-
     }
 }

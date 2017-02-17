@@ -1,7 +1,5 @@
 package io.hobaskos.event.eventapp.ui.login;
 
-import android.util.Log;
-
 import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
 
 import javax.inject.Inject;
@@ -9,6 +7,9 @@ import javax.inject.Inject;
 import io.hobaskos.event.eventapp.data.model.LoginVM;
 import io.hobaskos.event.eventapp.data.model.response.Response;
 import io.hobaskos.event.eventapp.data.repository.JwtRepository;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 
 /**
@@ -28,32 +29,32 @@ public class LoginPresenter extends MvpBasePresenter<LoginView> {
     {
         LoginVM loginVM = new LoginVM(login, password, rememberMe);
 
-        repository.login(loginVM, this);
-    }
+        repository.login(loginVM, this)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Void>() {
+            @Override
+            public void onCompleted() {
 
-    public void callbackOnSuccess()
-    {
-        Log.i("loginPresenter", "callback success");
+            }
 
-        Response response = new Response(true, "Success");
+            @Override
+            public void onError(Throwable e) {
+                if(isViewAttached())
+                {
+                    getView().showError(new Response(false, e.getMessage()));
+                }
+            }
 
-        if(isViewAttached())
-        {
-            getView().showSuccess(response);
-        }
+            @Override
+            public void onNext(Void aBoolean) {
+                if(isViewAttached())
+                {
+                    getView().showSuccess(new Response(true, "Success"));
+                }
+            }
+        });
 
-    }
-
-    public void callbackOnError(Throwable throwable)
-    {
-        Log.i("loginPresenter", "callbackError(" + throwable.getMessage() + ")");
-
-        Response response = new Response(false, throwable.getMessage());
-
-        if(isViewAttached())
-        {
-            getView().showError(response);
-        }
 
     }
 }

@@ -26,18 +26,8 @@ public class EventPresenter extends BaseRxLcePresenter<EventView, Event> {
 
     public void getEvent(Long id) {
 
-        eventObservable = eventRepository.get(id)
-               .subscribeOn(Schedulers.io())
-               .observeOn(AndroidSchedulers.mainThread());
-
-        eventObservable.subscribe(
-                event -> view.setData(event),
-                throwable -> view.showError(throwable, false)
-        );
-    }
-
-    public Observable<Event> getObservable() {
-        return eventObservable;
+        eventObservable = eventRepository.get(id);
+        subscribe(eventObservable, false);
     }
 
 }
