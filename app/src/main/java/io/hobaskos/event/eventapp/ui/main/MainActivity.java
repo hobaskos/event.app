@@ -1,7 +1,5 @@
 package io.hobaskos.event.eventapp.ui.main;
 
-import android.support.v7.app.AppCompatActivity;
-
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -158,14 +156,12 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    private boolean isLoggedIn()
-    {
+    private boolean isLoggedIn() {
         return jwtStorageProxy.isSet();
 
     }
 
-    private void logout()
-    {
+    private void logout() {
         jwtStorageProxy.remove();
         startActivity(new Intent(this, MainActivity.class));
     }
