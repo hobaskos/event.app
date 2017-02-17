@@ -5,31 +5,24 @@
     android:layout_height="match_parent"
     tools:context="io.hobaskos.event.eventapp.ui.events.EventsFragment">
 
-
+    <include layout="@layout/view_loading"/>
+    <include layout="@layout/view_error"/>
+    <include layout="@layout/view_empty"/>
 
     <!-- SWIPEREFRESH / RECYCLERVIEW (LIST) -->
     <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/content_view"
+        android:id="@+id/contentView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/list"
+            android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp"
-            tools:listitem="@layout/list_item_event"/>
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:clipToPadding="false"/>
 
     </android.support.v4.widget.SwipeRefreshLayout>
-
-
-    <ProgressBar
-        android:id="@+id/progress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_centerInParent="true"/>
-
 
 </RelativeLayout>

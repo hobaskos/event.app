@@ -1,19 +1,18 @@
 package io.hobaskos.event.eventapp.data.model;
 
-import android.util.Log;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
-import org.joda.time.DateTime;
 import org.joda.time.LocalDateTime;
 
-import java.util.Date;
-import java.util.Set;
+import java.util.List;
 
 /**
  * Created by andre on 1/25/2017.
  */
-public class Event {
+public class Event implements Parcelable {
 
     @SerializedName("id")
     public Long id;
@@ -37,7 +36,7 @@ public class Event {
     private long ownerId;
 
     @SerializedName("locations")
-    private Set<Location> locations;
+    private List<Location> locations;
 
     @SerializedName("eventCategory")
     private EventCategory category;
@@ -98,15 +97,60 @@ public class Event {
         this.ownerId = ownerId;
     }
 
-    public Set<Location> getLocations() {
+    public List<Location> getLocations() {
         return locations;
     }
 
-    public void setLocations(Set<Location> locations) {
+    public void setLocations(List<Location> locations) {
         this.locations = locations;
     }
 
     public EventCategory getEventCategory() {
         return category;
     }
+
+    public Event() {
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(this.id);
+        dest.writeString(this.title);
+        dest.writeString(this.description);
+        dest.writeString(this.imageUrl);
+        dest.writeSerializable(this.fromDate);
+        dest.writeSerializable(this.toDate);
+        dest.writeLong(this.ownerId);
+        dest.writeTypedList(this.locations);
+        dest.writeParcelable(this.category, flags);
+    }
+
+    protected Event(Parcel in) {
+        this.id = (Long) in.readValue(Long.class.getClassLoader());
+        this.title = in.readString();
+        this.description = in.readString();
+        this.imageUrl = in.readString();
+        this.fromDate = (LocalDateTime) in.readSerializable();
+        this.toDate = (LocalDateTime) in.readSerializable();
+        this.ownerId = in.readLong();
+        this.locations = in.createTypedArrayList(Location.CREATOR);
+        this.category = in.readParcelable(EventCategory.class.getClassLoader());
+    }
+
+    public static final Creator<Event> CREATOR = new Creator<Event>() {
+        @Override
+        public Event createFromParcel(Parcel source) {
+            return new Event(source);
+        }
+
+        @Override
+        public Event[] newArray(int size) {
+            return new Event[size];
+        }
+    };
 }

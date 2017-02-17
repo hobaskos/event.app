@@ -1,7 +1,6 @@
 package io.hobaskos.event.eventapp.data.repository;
 
 import java.util.List;
-import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -17,7 +16,7 @@ public class EventRepository implements BaseRepository<Event, Long> {
     private final EventService.Anonymously eventServiceAnonymously;
     private final EventService.Authenticated eventServiceAuthenticated;
 
-    private final int pageSize = 20;
+    public static final int PAGE_SIZE = 10;
 
     @Inject
     public EventRepository(EventService.Anonymously eventServiceAnonymously, EventService.Authenticated eventServiceAuthenticated) {
@@ -26,7 +25,7 @@ public class EventRepository implements BaseRepository<Event, Long> {
     }
 
     public Observable<List<Event>> getAll(int page) {
-        return eventServiceAnonymously.getEvents(page, pageSize);
+        return eventServiceAnonymously.getEvents(page, PAGE_SIZE);
     }
 
     public Observable<Event> get(Long id) {
@@ -35,7 +34,7 @@ public class EventRepository implements BaseRepository<Event, Long> {
 
     @Override
     public Observable<Event> search(int page, String query, double lat, double lon, String distance) {
-        return eventServiceAnonymously.search(page, pageSize, query, lat, lon, distance);
+        return eventServiceAnonymously.search(page, PAGE_SIZE, query, lat, lon, distance);
     }
 
     @Override

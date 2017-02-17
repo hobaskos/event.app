@@ -1,16 +1,11 @@
 package io.hobaskos.event.eventapp.repository;
 
-import android.util.Log;
-
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 
-import org.joda.time.DateTime;
-import org.joda.time.LocalDateTime;
 import org.junit.Rule;
 import org.junit.Test;
 
-import java.util.Date;
-import java.util.Set;
+import java.util.List;
 
 import io.hobaskos.event.eventapp.config.TestConstants;
 import io.hobaskos.event.eventapp.data.api.ApiService;
@@ -18,6 +13,7 @@ import io.hobaskos.event.eventapp.data.api.EventService;
 import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.data.model.EventCategoryTheme;
 import io.hobaskos.event.eventapp.data.model.GeoPoint;
+
 import io.hobaskos.event.eventapp.data.model.Location;
 import io.hobaskos.event.eventapp.data.repository.EventRepository;
 
@@ -28,8 +24,8 @@ import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.put;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class EventRepositoryTest {
 
@@ -51,13 +47,15 @@ public class EventRepositoryTest {
         String jsonListOfEvents = "[{ \"id\": 1, \"title\": \"event1\"}," +
                 "{\"id\": 2, \"title\": \"event2\"}]";
 
-        stubFor(get(urlEqualTo("/api/events?page=1&size=20"))
+        int page = 1;
+
+        stubFor(get(urlEqualTo(String.format("/api/events?page=%d&size=%d", page, EventRepository.PAGE_SIZE)))
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
                         .withBody(jsonListOfEvents)));
 
-        eventRepository.getAll(1).doOnNext((events) -> {
+        eventRepository.getAll(page).doOnNext((events) -> {
             assertTrue(events.size() == 2);
         }).subscribe();
     }
@@ -133,7 +131,7 @@ public class EventRepositoryTest {
         assertTrue(event.getToDate().getMillisOfSecond() == 416);
 
 
-        Set<Location> locations = event.getLocations();
+        List<Location> locations = event.getLocations();
 
         assertFalse(locations.size() == 0);
 
