@@ -36,8 +36,10 @@ public class EventsPresentationModel implements Parcelable {
         this.ownerId = event.getOwnerId();
         this.fromDate = event.getFromDate();
         this.toDate = event.getToDate();
-        this.date = DateUtils.formatDateTime(App.getInst(),
-                fromDate.toDate().getTime(), DateUtils.FORMAT_SHOW_DATE);
+        if (fromDate != null) {
+            this.date = DateUtils.formatDateTime(App.getInst(),
+                    fromDate.toDate().getTime(), DateUtils.FORMAT_SHOW_DATE);
+        }
         if (event.getLocations() != null && !event.getLocations().isEmpty()) {
             this.location = event.getLocations().get(0).getName();
         }
