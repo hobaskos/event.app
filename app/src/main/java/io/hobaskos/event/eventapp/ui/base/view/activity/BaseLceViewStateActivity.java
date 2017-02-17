@@ -18,7 +18,6 @@ public abstract class BaseLceViewStateActivity<CV extends View, M, V extends Mvp
         P extends MvpPresenter<V>> extends MvpLceViewStateActivity<CV, M, V, P> {
 
     @Override protected void onCreate(Bundle savedInstanceState) {
-        injectDependencies();
         super.onCreate(savedInstanceState);
         Icepick.restoreInstanceState(this, savedInstanceState);
     }
@@ -31,9 +30,5 @@ public abstract class BaseLceViewStateActivity<CV extends View, M, V extends Mvp
     @Override protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         Icepick.saveInstanceState(this, outState);
-    }
-
-    protected void injectDependencies() {
-
     }
 }

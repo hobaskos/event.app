@@ -13,7 +13,6 @@ import icepick.Icepick;
 public class BaseActivity extends AppCompatActivity {
 
     @Override protected void onCreate(Bundle savedInstanceState) {
-        injectDependencies();
         super.onCreate(savedInstanceState);
         Icepick.restoreInstanceState(this, savedInstanceState);
     }
@@ -26,9 +25,5 @@ public class BaseActivity extends AppCompatActivity {
     @Override protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         Icepick.saveInstanceState(this, outState);
-    }
-
-    protected void injectDependencies() {
-
     }
 }
