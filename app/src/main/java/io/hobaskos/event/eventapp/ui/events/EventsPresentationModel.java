@@ -13,6 +13,9 @@ import io.hobaskos.event.eventapp.data.model.Event;
  * Created by andre on 2/16/2017.
  */
 
+/**
+ * A Events Presentation Model
+ */
 public class EventsPresentationModel implements Parcelable {
 
     public Long id;
