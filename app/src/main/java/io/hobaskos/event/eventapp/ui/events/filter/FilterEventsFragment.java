@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.SeekBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import javax.inject.Inject;
 
@@ -29,6 +30,7 @@ public class FilterEventsFragment extends BaseFragment implements FilterEventsVi
     @BindView(R.id.locationAutoCompleteTextView)
     MultiAutoCompleteTextView locationAutoCompleteTextView;
     @BindView(R.id.seekBar) SeekBar seekBar;
+    @BindView(R.id.seekBarText) TextView seekBarText;
     @BindView(R.id.categorySpinner) Spinner spinner;
 
     @Inject
@@ -61,7 +63,25 @@ public class FilterEventsFragment extends BaseFragment implements FilterEventsVi
         });
         */
 
-        
+        seekBar = (SeekBar) getView().findViewById(R.id.seekBar);
+        seekBarText = (TextView) getView().findViewById(R.id.seekBarText);
+
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress,boolean fromUser) {
+                String progressText = String.valueOf(progress) + " km";
+                seekBarText.setText(progressText);
+                int seek_label_pos = (((seekBar.getRight() - seekBar.getLeft()) * seekBar.getProgress()) / seekBar.getMax()) + seekBar.getLeft();
+                seekBarText.setX(seek_label_pos - seekBarText.getWidth() / 2);
+            }
+        });
+
     }
 
     @Override
