@@ -7,8 +7,14 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
+import android.widget.MultiAutoCompleteTextView;
+import android.widget.SeekBar;
+import android.widget.Spinner;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
+import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.ui.base.view.fragment.BaseFragment;
 
@@ -16,10 +22,22 @@ import io.hobaskos.event.eventapp.ui.base.view.fragment.BaseFragment;
  * Created by andre on 2/20/2017.
  */
 
-public class FilterEventsFragment extends BaseFragment {
+public class FilterEventsFragment extends BaseFragment implements FilterEventsView {
     public final static String TAG = FilterEventsFragment.class.getName();
 
     @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.locationAutoCompleteTextView)
+    MultiAutoCompleteTextView locationAutoCompleteTextView;
+    @BindView(R.id.seekBar) SeekBar seekBar;
+    @BindView(R.id.categorySpinner) Spinner spinner;
+
+    @Inject
+    public FilterEventsPresenter presenter;
+
+    @Override public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        App.getInst().getComponent().inject(this);
+    }
 
     @Override
     protected int getLayoutRes() {
@@ -42,6 +60,8 @@ public class FilterEventsFragment extends BaseFragment {
             }
         });
         */
+
+        
     }
 
     @Override
@@ -51,4 +71,13 @@ public class FilterEventsFragment extends BaseFragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
+    @Override
+    public void setDistance(int defaultValue) {
+
+    }
+
+    @Override
+    public void setCategory() {
+
+    }
 }
