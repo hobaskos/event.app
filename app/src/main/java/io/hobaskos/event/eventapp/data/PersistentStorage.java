@@ -34,6 +34,19 @@ public class PersistentStorage {
         return true;
     }
 
+    public boolean putInt(String key, int value)
+    {
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putInt(key, value);
+        editor.apply();
+        return true;
+    }
+    public int getInt(String key, int defaultValue)
+    {
+        return preferences.getInt(key, defaultValue);
+    }
+
+
     public boolean isSet(String key)
     {
         return preferences.contains(key);

@@ -23,7 +23,7 @@ public class FilterEventsFragment extends BaseFragment {
 
     @Override
     protected int getLayoutRes() {
-        return R.layout.fragment_events;
+        return R.layout.fragment_filter_events;
     }
 
     @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
