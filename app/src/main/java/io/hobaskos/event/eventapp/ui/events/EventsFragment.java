@@ -3,6 +3,7 @@ package io.hobaskos.event.eventapp.ui.events;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
@@ -24,6 +25,7 @@ import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.ui.base.view.fragment.BaseLceViewStateFragment;
 import io.hobaskos.event.eventapp.ui.event.EventActivity;
+import io.hobaskos.event.eventapp.ui.events.filter.FilterEventsFragment;
 
 /**
  * Created by andre on 2/13/2017.
@@ -87,10 +89,17 @@ public class EventsFragment extends
                     // TODO: Create search fragment/activity
                     return true;
                 case R.id.action_filter:
-                    // TODO: Create filter fragment/activity
-                    return true;
-                case R.id.action_create:
-                    // TODO: Create "create event" fragment/activity
+                    FilterEventsFragment fragment = new FilterEventsFragment();
+
+                    FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                    //ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                    ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right);
+                    //android.app.FragmentTransaction ft = getActivity().getFragmentManager().beginTransaction();
+                    //ft.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out, android.R.animator.fade_in, android.R.animator.fade_out);
+
+                    ft.replace(R.id.main_pane, fragment);
+                    ft.addToBackStack(null);
+                    ft.commit();
                     return true;
             }
             return false;
