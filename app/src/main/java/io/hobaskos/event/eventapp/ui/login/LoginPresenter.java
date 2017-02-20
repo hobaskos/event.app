@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import io.hobaskos.event.eventapp.data.model.LoginVM;
 import io.hobaskos.event.eventapp.data.model.response.Response;
 import io.hobaskos.event.eventapp.data.repository.JwtRepository;
+import io.hobaskos.event.eventapp.data.service.JwtStorageProxy;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -19,12 +20,14 @@ import rx.schedulers.Schedulers;
 public class LoginPresenter extends MvpBasePresenter<LoginView> {
 
     private JwtRepository repository;
+    private JwtStorageProxy storageProxy;
 
     @Inject
     public LoginPresenter(JwtRepository repository) {
         this.repository = repository;
     }
 
+    // Username/Password-login
     public void login(String login, String password, boolean rememberMe)
     {
         LoginVM loginVM = new LoginVM(login, password, rememberMe);
