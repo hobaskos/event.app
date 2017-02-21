@@ -8,10 +8,14 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.MultiAutoCompleteTextView;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
+import com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment;
 
 import javax.inject.Inject;
 
@@ -28,8 +32,6 @@ public class FilterEventsFragment extends BaseFragment implements FilterEventsVi
     public final static String TAG = FilterEventsFragment.class.getName();
 
     @BindView(R.id.toolbar) Toolbar toolbar;
-    @BindView(R.id.locationAutoCompleteTextView)
-    MultiAutoCompleteTextView locationAutoCompleteTextView;
     @BindView(R.id.seekBar) SeekBar seekBar;
     @BindView(R.id.seekBarText) TextView seekBarText;
     @BindView(R.id.categorySpinner) Spinner spinner;
@@ -54,6 +56,24 @@ public class FilterEventsFragment extends BaseFragment implements FilterEventsVi
 
     @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        SupportPlaceAutocompleteFragment autocompleteFragment = (SupportPlaceAutocompleteFragment)
+                getChildFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                // TODO: Get info about the selected place.
+                Log.i(TAG, "Place: " + place.getName());
+            }
+
+            @Override
+            public void onError(Status status) {
+                // TODO: Handle the error.
+                Log.i(TAG, "An error occurred: " + status);
+            }
+        });
+
 
         toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
 
