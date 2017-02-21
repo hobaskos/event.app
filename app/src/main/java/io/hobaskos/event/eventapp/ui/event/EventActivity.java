@@ -10,13 +10,20 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 import javax.inject.Inject;
 
 import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.model.Event;
+import io.hobaskos.event.eventapp.data.model.Location;
 import io.hobaskos.event.eventapp.ui.base.view.activity.BaseLceViewStateActivity;
 
 /**
@@ -44,6 +51,7 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     private TextView eventAttending;
     private TextView eventFriends;
     private Button mapButton;
+    private ArrayList<Location> locations = new ArrayList<>();
 
     private Event event;
 
@@ -66,11 +74,14 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
         eventFriends = (TextView) findViewById(R.id.friends_value);
         eventId = getIntent().getExtras().getLong(EVENT_ID);
 
+
         //Event Handler
         mapButton.setOnClickListener((View v) -> {
-            //Intent intent = new Intent(this, MapsActivity.class);
-            //intent.putExtra()
-            startActivity(new Intent(this, MapsActivity.class));
+            Intent i = new Intent(this, MapsActivity.class);
+            Bundle b = new Bundle();
+            b.putParcelableArrayList("loc",locations);
+            i.putExtras(b);
+            startActivity(i);
         });
     }
 
@@ -124,10 +135,28 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
         // Event Time
         //eventTime.setText(String.format(event.getFromDate().getHourOfDay()+"."+event.getFromDate().getMinuteOfHour()+ " - " + event.getToDate().getHourOfDay()+"."+event.getToDate().getMinuteOfHour()));
 
+
         // Event Place
         if (!event.getLocations().isEmpty()) {
             eventPlace.setText(event.getLocations().get(0).getName());
+            for (int i = 0; i < event.getLocations().size(); i++) {
+                locations.add(event.getLocations().get(i));
+            }
         }
+
+        //Sorts the List of location by Vector 0 ->> last.
+        Collections.sort(locations, new Comparator<Location>() {
+            @Override
+            public int compare(Location o1, Location o2) {
+                return Integer.valueOf(o1.getVector()).compareTo(o2.getVector());
+            }
+        });
+
+
+        for (Location lok : locations) {
+            Log.i("Lokasjon : ", lok.getVector() + " \n" + lok.getGeoPoint().getLat() + " " + lok.getGeoPoint().getLon() + "\n");
+        }
+
 
         // Event interested
         eventInterested.setText(String.format("30"));
