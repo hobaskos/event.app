@@ -21,12 +21,12 @@ public class FilterEventsPresenter extends MvpBasePresenter<FilterEventsView> {
         this.persistentStorage = persistentStorage;
     }
 
-    public void setDistance(int distance) {
+    public void storeDistance(int distance) {
         persistentStorage.putInt(FILTER_EVENTS_DISTANCE_KEY, distance);
     }
 
-    public void getDistance(int distance) {
-        persistentStorage.getInt(FILTER_EVENTS_DISTANCE_KEY, 10);
+    public void loadDistance() {
+        getView().setDistance(persistentStorage.getInt(FILTER_EVENTS_DISTANCE_KEY, 10));
     }
 
 }

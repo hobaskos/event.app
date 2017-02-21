@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.SeekBar;
 import android.widget.Spinner;
@@ -32,6 +33,10 @@ public class FilterEventsFragment extends BaseFragment implements FilterEventsVi
     @BindView(R.id.seekBar) SeekBar seekBar;
     @BindView(R.id.seekBarText) TextView seekBarText;
     @BindView(R.id.categorySpinner) Spinner spinner;
+    @BindView(R.id.applyFiltersButton)
+    Button button;
+
+    private int seekBarProgress;
 
     @Inject
     public FilterEventsPresenter presenter;
@@ -39,6 +44,7 @@ public class FilterEventsFragment extends BaseFragment implements FilterEventsVi
     @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         App.getInst().getComponent().inject(this);
+        presenter.attachView(this);
     }
 
     @Override
@@ -65,16 +71,25 @@ public class FilterEventsFragment extends BaseFragment implements FilterEventsVi
 
         seekBar = (SeekBar) getView().findViewById(R.id.seekBar);
         seekBarText = (TextView) getView().findViewById(R.id.seekBarText);
+        button = (Button) getView().findViewById(R.id.applyFiltersButton);
+
+
+        button.setOnClickListener(v -> presenter.storeDistance(seekBarProgress));
+
+
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
+                seekBarText.setVisibility(View.GONE);
             }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
+                seekBarText.setVisibility(View.VISIBLE);
             }
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress,boolean fromUser) {
+                seekBarProgress = progress;
                 String progressText = String.valueOf(progress) + " km";
                 seekBarText.setText(progressText);
                 int seek_label_pos = (((seekBar.getRight() - seekBar.getLeft()) * seekBar.getProgress()) / seekBar.getMax()) + seekBar.getLeft();
@@ -82,6 +97,7 @@ public class FilterEventsFragment extends BaseFragment implements FilterEventsVi
             }
         });
 
+        presenter.loadDistance();
     }
 
     @Override
@@ -93,11 +109,20 @@ public class FilterEventsFragment extends BaseFragment implements FilterEventsVi
 
     @Override
     public void setDistance(int defaultValue) {
-
+        seekBarProgress = defaultValue;
+        seekBar.setProgress(seekBarProgress);
     }
 
     @Override
     public void setCategory() {
 
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        presenter.detachView(false);
+    }
+
+
 }

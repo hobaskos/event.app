@@ -93,7 +93,7 @@ public class EventsFragment extends
 
                     FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
                     //ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                    ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right);
+                    //ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right);
                     //android.app.FragmentTransaction ft = getActivity().getFragmentManager().beginTransaction();
                     //ft.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out, android.R.animator.fade_in, android.R.animator.fade_out);
 
