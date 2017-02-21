@@ -1,5 +1,9 @@
 package io.hobaskos.event.eventapp.data.repository;
 
+import android.util.Log;
+
+import org.joda.time.DateTime;
+
 import java.util.List;
 
 import javax.inject.Inject;
@@ -16,7 +20,7 @@ public class EventRepository implements BaseRepository<Event, Long> {
     private final EventService.Anonymously eventServiceAnonymously;
     private final EventService.Authenticated eventServiceAuthenticated;
 
-    public static final int PAGE_SIZE = 10;
+    public static final int PAGE_SIZE = 100;
 
     @Inject
     public EventRepository(EventService.Anonymously eventServiceAnonymously, EventService.Authenticated eventServiceAuthenticated) {
@@ -35,7 +39,14 @@ public class EventRepository implements BaseRepository<Event, Long> {
     @Override
     public Observable<List<Event>> search(int page, double lat, double lon, String distance) {
         //return eventServiceAnonymously.search(page, PAGE_SIZE, lat, lon, distance);
-        return eventServiceAuthenticated.search(page, PAGE_SIZE, lat, lon, distance);
+
+        DateTime fromDate = DateTime.now();
+        DateTime toDate = fromDate.plusYears(2);
+
+        Log.i("EventReposiory", "fromDate: " + fromDate + ", toDate: " + toDate);
+
+        return eventServiceAuthenticated
+                .search(page, PAGE_SIZE, lat, lon, distance, fromDate, toDate, "fromDate,asc");
     }
 
     @Override

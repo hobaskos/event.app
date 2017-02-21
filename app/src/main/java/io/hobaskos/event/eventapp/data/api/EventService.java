@@ -1,5 +1,7 @@
 package io.hobaskos.event.eventapp.data.api;
 
+import org.joda.time.DateTime;
+
 import java.util.List;
 
 import io.hobaskos.event.eventapp.data.model.Event;
@@ -31,7 +33,8 @@ public interface EventService
                                  @Query("size") int pageSize,
                                  @Query("lat") double lat,
                                  @Query("lon") double lon,
-                                 @Query("distance") String distance);
+                                 @Query("distance") String distance,
+                                 @Query("sort") String sort);
 
     }
 
@@ -50,6 +53,9 @@ public interface EventService
                                        @Query("size") int pageSize,
                                        @Query("lat") double lat,
                                        @Query("lon") double lon,
-                                       @Query("distance") String distance);
+                                       @Query("distance") String distance,
+                                       @Query("fromDate") DateTime fromDate,
+                                       @Query("toDate") DateTime toDate,
+                                       @Query("sort") String sort);
     }
 }

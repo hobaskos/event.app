@@ -1,7 +1,5 @@
 package io.hobaskos.event.eventapp.ui.events;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,8 +53,6 @@ public class EventsPresenter extends BaseRxLcePresenter<EventsView, List<EventsP
 
         int distance = persistentStorage.getInt(FilterEventsPresenter.FILTER_EVENTS_DISTANCE_KEY, 10);
 
-        Log.i("EVENTSPRESENTER", "distance: " + distance);
-
         final Observable<List<EventsPresentationModel>> observable =
                 eventRepository.search(0, 59.89736562413801, 10.646479578394581, distance + "km")
                         .map(presentationModelTransformation);
@@ -70,8 +66,14 @@ public class EventsPresenter extends BaseRxLcePresenter<EventsView, List<EventsP
         // Cancel any previous query
         unsubscribe();
 
+        //final Observable<List<EventsPresentationModel>> observable =
+                //eventRepository.getAll(nextPage).map(presentationModelTransformation);
+
+        int distance = persistentStorage.getInt(FilterEventsPresenter.FILTER_EVENTS_DISTANCE_KEY, 10);
+
         final Observable<List<EventsPresentationModel>> observable =
-                eventRepository.getAll(nextPage).map(presentationModelTransformation);
+                eventRepository.search(nextPage, 59.89736562413801, 10.646479578394581, distance + "km")
+                        .map(presentationModelTransformation);
 
         if (isViewAttached()) {
             getView().showLoadMore(true);
