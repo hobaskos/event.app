@@ -1,13 +1,17 @@
 package io.hobaskos.event.eventapp.ui.events;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
+import io.hobaskos.event.eventapp.data.PersistentStorage;
 import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.data.repository.EventRepository;
 import io.hobaskos.event.eventapp.ui.base.presenter.BaseRxLcePresenter;
+import io.hobaskos.event.eventapp.ui.events.filter.FilterEventsPresenter;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -26,9 +30,10 @@ public class EventsPresenter extends BaseRxLcePresenter<EventsView, List<EventsP
 
     private Func1<List<Event>, List<EventsPresentationModel>> presentationModelTransformation;
 
+    PersistentStorage persistentStorage;
 
     @Inject
-    public EventsPresenter(EventRepository eventRepository) {
+    public EventsPresenter(EventRepository eventRepository, PersistentStorage persistentStorage) {
         this.eventRepository = eventRepository;
         presentationModelTransformation = events -> {
             List<EventsPresentationModel> pmEvents = new ArrayList<>();
@@ -38,6 +43,8 @@ public class EventsPresenter extends BaseRxLcePresenter<EventsView, List<EventsP
             }
             return pmEvents;
         };
+
+        this.persistentStorage = persistentStorage;
     }
 
     public void loadEvents(boolean pullToRefresh) {
@@ -46,8 +53,15 @@ public class EventsPresenter extends BaseRxLcePresenter<EventsView, List<EventsP
             getView().showLoadMore(false);
         }
 
+        int distance = persistentStorage.getInt(FilterEventsPresenter.FILTER_EVENTS_DISTANCE_KEY, 10);
+
+        Log.i("EVENTSPRESENTER", "distance: " + distance);
+
         final Observable<List<EventsPresentationModel>> observable =
-                eventRepository.getAll(0).map(presentationModelTransformation);
+                eventRepository.search(0, 59.89736562413801, 10.646479578394581, distance + "km")
+                        .map(presentationModelTransformation);
+                //eventRepository.getAll(0).map(presentationModelTransformation);
+
 
         subscribe(observable, pullToRefresh);
     }

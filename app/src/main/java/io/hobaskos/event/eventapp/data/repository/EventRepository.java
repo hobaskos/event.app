@@ -33,8 +33,9 @@ public class EventRepository implements BaseRepository<Event, Long> {
     }
 
     @Override
-    public Observable<Event> search(int page, String query, double lat, double lon, String distance) {
-        return eventServiceAnonymously.search(page, PAGE_SIZE, query, lat, lon, distance);
+    public Observable<List<Event>> search(int page, double lat, double lon, String distance) {
+        //return eventServiceAnonymously.search(page, PAGE_SIZE, lat, lon, distance);
+        return eventServiceAuthenticated.search(page, PAGE_SIZE, lat, lon, distance);
     }
 
     @Override

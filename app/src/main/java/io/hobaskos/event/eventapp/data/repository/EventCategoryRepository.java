@@ -5,7 +5,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.hobaskos.event.eventapp.data.api.EventCategoryService;
-import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.data.model.EventCategory;
 import rx.Observable;
 
@@ -35,7 +34,7 @@ public class EventCategoryRepository implements BaseRepository<EventCategory, Lo
     }
 
     @Override
-    public Observable<EventCategory> search(int page, String query, double lat, double lon, String distance) {
+    public Observable<List<EventCategory>> search(int page, double lat, double lon, String distance) {
         throw new UnsupportedOperationException();
     }
 
