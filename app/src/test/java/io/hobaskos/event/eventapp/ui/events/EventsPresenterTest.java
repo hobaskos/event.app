@@ -11,6 +11,7 @@ import org.mockito.MockitoAnnotations;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.hobaskos.event.eventapp.data.PersistentStorage;
 import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.data.repository.EventRepository;
 import rx.Observable;
@@ -23,7 +24,10 @@ import rx.schedulers.Schedulers;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.anyDouble;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyListOf;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -42,6 +46,7 @@ public class EventsPresenterTest {
 
     private List<Event> eventList;
     @Mock private EventRepository eventRepository;
+    @Mock private PersistentStorage persistentStorage;
     @Mock private EventsView view;
     private EventsPresenter eventsPresenter;
 
@@ -51,7 +56,7 @@ public class EventsPresenterTest {
         // Inject mocks with the @Mock annotation.
         MockitoAnnotations.initMocks(this);
         // Initialize class to be tested
-        eventsPresenter = new EventsPresenter(eventRepository);
+        eventsPresenter = new EventsPresenter(eventRepository, persistentStorage);
         eventList = new ArrayList<>();
         eventsPresentationModelList = new ArrayList<>();
 
@@ -102,7 +107,7 @@ public class EventsPresenterTest {
     @Test
     public void testLoadEventsSuccess() {
 
-        when(eventRepository.getAll(0)).thenReturn(Observable.create((subscriber) -> {
+        when(eventRepository.search(anyInt(), anyDouble(), anyDouble(), anyString())).thenReturn(Observable.create((subscriber) -> {
             subscriber.onNext(eventList);
             subscriber.onCompleted();
         }));
@@ -122,7 +127,7 @@ public class EventsPresenterTest {
 
     @Test
     public void testLoadEventsError() {
-        when(eventRepository.getAll(0)).thenReturn(Observable.create((subscriber) -> {
+        when(eventRepository.search(anyInt(), anyDouble(), anyDouble(), anyString())).thenReturn(Observable.create((subscriber) -> {
             subscriber.onError(new Exception());
         }));
 
@@ -142,7 +147,7 @@ public class EventsPresenterTest {
     @Test
     public void testLoadMoreEventsSuccess() {
         int page = 1;
-        when(eventRepository.getAll(page)).thenReturn(Observable.create((subscriber) -> {
+        when(eventRepository.search(anyInt(), anyDouble(), anyDouble(), anyString())).thenReturn(Observable.create((subscriber) -> {
             subscriber.onNext(eventList);
             subscriber.onCompleted();
         }));
@@ -161,7 +166,7 @@ public class EventsPresenterTest {
     @Test
     public void testLoadMoreEventsError() {
         int page = 1;
-        when(eventRepository.getAll(page)).thenReturn(Observable.create((subscriber) -> {
+        when(eventRepository.search(anyInt(), anyDouble(), anyDouble(), anyString())).thenReturn(Observable.create((subscriber) -> {
             subscriber.onError(new Exception());
         }));
 

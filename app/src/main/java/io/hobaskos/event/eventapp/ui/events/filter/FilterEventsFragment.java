@@ -162,4 +162,11 @@ public class FilterEventsFragment extends BaseFragment implements FilterEventsVi
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mGoogleApiClient.stopAutoManage(getActivity());
+        mGoogleApiClient.disconnect();
+    }
 }
