@@ -28,13 +28,14 @@ public interface EventService
         @GET("api/events/{id}")
         Observable<Event> getEvent(@Path("id") Long id);
 
-        @GET("api/_search/events-nearby")
         Observable<List<Event>> search(@Query("page") int page,
-                                 @Query("size") int pageSize,
-                                 @Query("lat") double lat,
-                                 @Query("lon") double lon,
-                                 @Query("distance") String distance,
-                                 @Query("sort") String sort);
+                                       @Query("size") int pageSize,
+                                       @Query("lat") double lat,
+                                       @Query("lon") double lon,
+                                       @Query("distance") String distance,
+                                       @Query("fromDate") DateTime fromDate,
+                                       @Query("toDate") DateTime toDate,
+                                       @Query("sort") String sort);
 
     }
 
