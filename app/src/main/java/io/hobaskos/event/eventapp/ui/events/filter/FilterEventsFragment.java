@@ -1,6 +1,7 @@
 package io.hobaskos.event.eventapp.ui.events.filter;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -12,8 +13,11 @@ import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment;
 
@@ -28,7 +32,7 @@ import io.hobaskos.event.eventapp.ui.base.view.fragment.BaseFragment;
  * Created by andre on 2/20/2017.
  */
 
-public class FilterEventsFragment extends BaseFragment implements FilterEventsView {
+public class FilterEventsFragment extends BaseFragment implements FilterEventsView, GoogleApiClient.OnConnectionFailedListener {
     public final static String TAG = FilterEventsFragment.class.getName();
 
     @BindView(R.id.toolbar) Toolbar toolbar;
@@ -40,6 +44,8 @@ public class FilterEventsFragment extends BaseFragment implements FilterEventsVi
 
     private int seekBarProgress;
 
+    private GoogleApiClient mGoogleApiClient;
+
     @Inject
     public FilterEventsPresenter presenter;
 
@@ -47,6 +53,13 @@ public class FilterEventsFragment extends BaseFragment implements FilterEventsVi
         super.onCreate(savedInstanceState);
         App.getInst().getComponent().inject(this);
         presenter.attachView(this);
+
+        mGoogleApiClient = new GoogleApiClient
+                .Builder(getActivity())
+                .addApi(Places.GEO_DATA_API)
+                .addApi(Places.PLACE_DETECTION_API)
+                .enableAutoManage(getActivity(), this)
+                .build();
     }
 
     @Override
@@ -145,4 +158,8 @@ public class FilterEventsFragment extends BaseFragment implements FilterEventsVi
     }
 
 
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
 }
