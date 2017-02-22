@@ -46,6 +46,10 @@ public class FilterEventsFragment extends BaseFragment implements FilterEventsVi
 
     private GoogleApiClient mGoogleApiClient;
 
+    String location;
+    double lat;
+    double lon;
+
     @Inject
     public FilterEventsPresenter presenter;
 
@@ -73,10 +77,14 @@ public class FilterEventsFragment extends BaseFragment implements FilterEventsVi
         SupportPlaceAutocompleteFragment autocompleteFragment = (SupportPlaceAutocompleteFragment)
                 getChildFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
 
+
+
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
-                // TODO: Get info about the selected place.
+                location = place.getName().toString();
+                lat = place.getLatLng().latitude;
+                lon = place.getLatLng().longitude;
                 Log.i(TAG, "Place: " + place.getName());
             }
 
@@ -86,6 +94,8 @@ public class FilterEventsFragment extends BaseFragment implements FilterEventsVi
                 Log.i(TAG, "An error occurred: " + status);
             }
         });
+
+        autocompleteFragment.setText("Oslo");
 
 
         toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
