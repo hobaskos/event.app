@@ -52,11 +52,11 @@ public class LoginPresenterTest {
     @Test
     public void loginWithWrongCredentialsShouldCallOnErrorMethod()
     {
-        LoginVM loginVM = new LoginVM("user", "admin", true);
+        LoginVM loginVM = new LoginVM("user", "admin");
 
-        repository.login(loginVM, loginPresenter);
+        repository.login(loginVM);
 
-        when(repository.login(loginVM, loginPresenter)).thenReturn(Observable.create((subscriber) -> {
+        when(repository.login(loginVM)).thenReturn(Observable.create((subscriber) -> {
             subscriber.onError(new Exception());
             subscriber.onCompleted();
         }));
@@ -67,9 +67,9 @@ public class LoginPresenterTest {
     @Test
     public void loginWithCorrectCredentialsShouldCallSuccessMethod()
     {
-        LoginVM loginVM = new LoginVM("admin", "admin", true);
+        LoginVM loginVM = new LoginVM("admin", "admin");
 
-        repository.login(loginVM, loginPresenter);
+        repository.login(loginVM);
 
     }
 
