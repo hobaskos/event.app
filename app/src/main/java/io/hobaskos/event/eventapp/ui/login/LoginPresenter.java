@@ -28,11 +28,11 @@ public class LoginPresenter extends MvpBasePresenter<LoginView> {
     }
 
     // Username/Password-login
-    public void login(String login, String password, boolean rememberMe)
+    public void login(String login, String password)
     {
-        LoginVM loginVM = new LoginVM(login, password, rememberMe);
+        LoginVM loginVM = new LoginVM(login, password);
 
-        repository.login(loginVM, this)
+        repository.login(loginVM)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<Void>() {

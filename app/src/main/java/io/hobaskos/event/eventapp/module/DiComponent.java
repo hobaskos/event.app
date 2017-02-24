@@ -3,6 +3,7 @@ package io.hobaskos.event.eventapp.module;
 import javax.inject.Singleton;
 
 import dagger.Component;
+import io.hobaskos.event.eventapp.ui.SplashActivity;
 import io.hobaskos.event.eventapp.ui.event.EventActivity;
 import io.hobaskos.event.eventapp.ui.events.EventsFragment;
 import io.hobaskos.event.eventapp.ui.login.LoginActivity;
@@ -23,5 +24,6 @@ public interface DiComponent {
     void inject(EventsFragment eventsFragment);
     void inject(LoginFragment loginFragment);
     void inject(MainActivity mainActivity);
+    void inject(SplashActivity splashActivity);
 
 }

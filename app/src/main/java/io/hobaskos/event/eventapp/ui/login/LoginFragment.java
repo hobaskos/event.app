@@ -127,7 +127,7 @@ public class LoginFragment extends BaseViewStateFragment<LoginView, LoginPresent
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loginPresenter.login(fieldEmail.getText().toString(), fieldEmail.getText().toString(), false);
+                loginPresenter.login(fieldEmail.getText().toString(), fieldEmail.getText().toString());
             }
         });
     }

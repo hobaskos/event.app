@@ -30,7 +30,7 @@ public class JwtRepository {
         this.jwtStorageProxy = jwtStorageProxy;
     }
 
-    public Observable<Void> login(LoginVM loginVM, LoginPresenter loginPresenter)
+    public Observable<Void> login(LoginVM loginVM)
     {
         Log.i("JwtRepository", "JwtRepository->login()");
         Observable<JwtToken> tokenService = userJWTService.login(loginVM);
@@ -43,5 +43,4 @@ public class JwtRepository {
             return null;
         });
     }
-
 }

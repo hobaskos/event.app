@@ -8,12 +8,11 @@ public class LoginVM {
 
     private String username;
     private String password;
-    private boolean rememberMe = false;
+    private boolean rememberMe = true;
 
-    public LoginVM(String username, String password, boolean rememberMe) {
+    public LoginVM(String username, String password) {
         this.username = username;
         this.password = password;
-        this.rememberMe = rememberMe;
     }
 
     public String getUsername() {
@@ -30,13 +29,5 @@ public class LoginVM {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public boolean isRememberMe() {
-        return rememberMe;
-    }
-
-    public void setRememberMe(boolean rememberMe) {
-        this.rememberMe = rememberMe;
     }
 }

@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.facebook.login.LoginManager;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
@@ -23,6 +24,7 @@ import javax.inject.Inject;
 import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.service.JwtStorageProxy;
+import io.hobaskos.event.eventapp.ui.SplashActivity;
 import io.hobaskos.event.eventapp.ui.events.EventsFragment;
 import io.hobaskos.event.eventapp.ui.login.LoginActivity;
 
@@ -137,7 +139,7 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_profile:
                 break;
             case R.id.nav_login:
-                startActivity(new Intent(this, LoginActivity.class));
+                startActivity(new Intent(this, SplashActivity.class));
                 break;
             case R.id.nav_logout:
                 logout();
@@ -162,7 +164,13 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void logout() {
+        // Remove token from database
         jwtStorageProxy.remove();
+
+        // Logout from Facebook
+        // TODO: hva skjer om kunden er logget inn med brukernavn/passord
+        LoginManager.getInstance().logOut();
+
         startActivity(new Intent(this, MainActivity.class));
     }
 }
