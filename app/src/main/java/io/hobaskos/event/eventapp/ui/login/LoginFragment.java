@@ -14,7 +14,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
+
+import java.util.Arrays;
 
 import javax.inject.Inject;
 
@@ -37,9 +44,9 @@ public class LoginFragment extends BaseViewStateFragment<LoginView, LoginPresent
     public final static String TAG = LoginActivity.class.getName();
 
     private TextView title;
-    private EditText field_login;
-    private EditText field_password;
-    private Button btn_login;
+    private EditText fieldEmail;
+    private EditText fieldPassword;
+    private Button btnLogin;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -53,10 +60,12 @@ public class LoginFragment extends BaseViewStateFragment<LoginView, LoginPresent
     {
         super.onViewCreated(view, savedInstanceState);
         title = (TextView) view.findViewById(R.id.login_title);
-        field_login = (EditText) view.findViewById(R.id.field_login);
-        field_password = (EditText) view.findViewById(R.id.field_password);
-        btn_login = (Button) view.findViewById(R.id.btn_login);
-
+        fieldEmail = (EditText) view.findViewById(R.id.field_email);
+        fieldEmail.setHint(R.string.email);
+        fieldPassword = (EditText) view.findViewById(R.id.field_password);
+        fieldPassword.setHint(R.string.password);
+        btnLogin = (Button) view.findViewById(R.id.btn_login);
+        btnLogin.setText(R.string.login);
         addListenerOnButton();
     }
 
@@ -115,10 +124,10 @@ public class LoginFragment extends BaseViewStateFragment<LoginView, LoginPresent
 
     private void addListenerOnButton()
     {
-        btn_login.setOnClickListener(new View.OnClickListener() {
+        btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loginPresenter.login(field_login.getText().toString(), field_password.getText().toString(), false);
+                loginPresenter.login(fieldEmail.getText().toString(), fieldEmail.getText().toString(), false);
             }
         });
     }
