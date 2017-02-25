@@ -3,6 +3,8 @@ package io.hobaskos.event.eventapp.ui.main;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.MainThread;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,25 +13,35 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
 
 import javax.inject.Inject;
 
 import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.UserManager;
+import io.hobaskos.event.eventapp.data.model.User;
 import io.hobaskos.event.eventapp.data.storage.JwtStorageProxy;
+import io.hobaskos.event.eventapp.ui.base.view.activity.BaseViewStateActivity;
+import io.hobaskos.event.eventapp.ui.base.view.fragment.BaseViewStateFragment;
 import io.hobaskos.event.eventapp.ui.login.LoginActivity;
 import io.hobaskos.event.eventapp.ui.events.EventsFragment;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
+        implements NavigationView.OnNavigationItemSelectedListener, MainView {
 
     // Views:
     private NavigationView navigationView;
@@ -37,16 +49,28 @@ public class MainActivity extends AppCompatActivity
     private Toolbar toolbar;
     //private ViewPager viewPager;
 
+    private User user;
+
+    @Inject
+    public MainPresenter presenter;
+
     @Inject
     public UserManager userManager;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
 
         App.getInst().getComponent().inject(this);
         setContentView(R.layout.activity_main);
+
+        if(userManager.isLoggedIn())
+        {
+            presenter.fetchAccountInfo();
+        }
 
         if (googleServicesAvailable()) {
             Toast.makeText(this, "Google Play Services er på plass!", Toast.LENGTH_LONG).show();
@@ -60,7 +84,7 @@ public class MainActivity extends AppCompatActivity
 
         if(userManager.isLoggedIn())
         {
-           navigationView.getMenu().findItem(R.id.nav_login).setVisible(false);
+            navigationView.getMenu().findItem(R.id.nav_login).setVisible(false);
         }
         else {
             navigationView.getMenu().setGroupVisible(R.id.navigational_menu_logged_in, false);
@@ -80,6 +104,27 @@ public class MainActivity extends AppCompatActivity
         // Temp solution, Initial fragment:
         //FragmentManager fragmentManager = getSupportFragmentManager();
         //fragmentManager.beginTransaction().replace(R.id.content_frame, new EventsFragment()).commit();
+
+    }
+
+    public void updateNavHeader()
+    {
+        if(userManager.isLoggedIn() && user != null)
+        {
+            String name = user.getFirstName() + " " + user.getLastName();
+
+            View header = navigationView.getHeaderView(0);
+            TextView tvNavHeaderUsername = (TextView) header.findViewById(R.id.nav_header_username);
+
+            tvNavHeaderUsername.setText(name);
+        }
+    }
+
+    @NonNull
+    @Override
+    public MainPresenter createPresenter() {
+        App.getInst().getComponent().inject(this);
+        return presenter;
     }
 
     public boolean googleServicesAvailable() {
@@ -111,6 +156,8 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        Log.i("MainActivity", "onCreateOptionsMenu()");
+        presenter.fetchAccountInfo();
         // Inflate the menu; this adds items to the action bar if it is present.
         //getMenuInflater().inflate(R.menu.main, menu);
         return true;
@@ -160,5 +207,22 @@ public class MainActivity extends AppCompatActivity
     private void logout() {
         userManager.logout();
         startActivity(new Intent(this, MainActivity.class));
+    }
+
+    @Override
+    public void setUser(User user) {
+        Log.i("Main", "setUser()");
+        this.user = user;
+        updateNavHeader();
+    }
+
+    @Override
+    public ViewState<MainView> createViewState() {
+        return new MainViewState();
+    }
+
+    @Override
+    public void onNewViewStateInstance() {
+
     }
 }

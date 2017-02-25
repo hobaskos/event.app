@@ -3,7 +3,13 @@ package io.hobaskos.event.eventapp;
 import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
 
+import io.hobaskos.event.eventapp.data.model.User;
+import io.hobaskos.event.eventapp.data.repository.UserRepository;
 import io.hobaskos.event.eventapp.data.storage.JwtStorageProxy;
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by hansp on 25.02.2017.
@@ -11,22 +17,30 @@ import io.hobaskos.event.eventapp.data.storage.JwtStorageProxy;
 
 public class UserManager {
 
-    private JwtStorageProxy jwtStorageProxy;
+    private JwtStorageProxy localStorage;
+    private UserRepository repository;
 
-    public UserManager(JwtStorageProxy jwtStorageProxy)
+    public UserManager(JwtStorageProxy localStorage, UserRepository repository)
     {
-        this.jwtStorageProxy = jwtStorageProxy;
+        this.localStorage = localStorage;
+        this.repository = repository;
     }
 
     public boolean isLoggedIn()
     {
-        return jwtStorageProxy.isSet() || (AccessToken.getCurrentAccessToken() != null);
+        return localStorage.isSet() || (AccessToken.getCurrentAccessToken() != null);
     }
 
     public void logout()
     {
-        jwtStorageProxy.remove();
+        localStorage.remove();
         LoginManager.getInstance().logOut();
     }
+
+    public Observable<User> getAccount()
+    {
+        return repository.getAccount();
+    }
+
 
 }

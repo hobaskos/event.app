@@ -26,7 +26,7 @@ public class JWTTokenInterceptor implements Interceptor {
         Request original = chain.request();
 
         Request.Builder requestBuilder = original.newBuilder()
-                .header("Authorization: Bearer", authToken)
+                .header("Authorization: Bearer ", authToken)
                 .method(original.method(), original.body());
 
         Request request = requestBuilder.build();
