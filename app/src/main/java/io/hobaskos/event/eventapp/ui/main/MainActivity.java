@@ -24,9 +24,8 @@ import javax.inject.Inject;
 import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.service.JwtStorageProxy;
-import io.hobaskos.event.eventapp.ui.SplashActivity;
-import io.hobaskos.event.eventapp.ui.events.EventsFragment;
 import io.hobaskos.event.eventapp.ui.login.LoginActivity;
+import io.hobaskos.event.eventapp.ui.events.EventsFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -139,7 +138,7 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_profile:
                 break;
             case R.id.nav_login:
-                startActivity(new Intent(this, SplashActivity.class));
+                startActivity(new Intent(this, LoginActivity.class));
                 break;
             case R.id.nav_logout:
                 logout();

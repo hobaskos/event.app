@@ -9,7 +9,6 @@ import io.hobaskos.event.eventapp.data.model.JwtToken;
 import io.hobaskos.event.eventapp.data.model.LoginVM;
 import io.hobaskos.event.eventapp.data.model.response.Response;
 import io.hobaskos.event.eventapp.data.service.JwtStorageProxy;
-import io.hobaskos.event.eventapp.ui.login.LoginPresenter;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -32,7 +31,7 @@ public class JwtRepository {
 
     public Observable<Void> login(LoginVM loginVM)
     {
-        Log.i("JwtRepository", "JwtRepository->login()");
+        //Log.i("JwtRepository", "JwtRepository->login()");
         Observable<JwtToken> tokenService = userJWTService.login(loginVM);
 
         return tokenService
