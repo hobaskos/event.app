@@ -13,7 +13,7 @@ import io.hobaskos.event.eventapp.data.api.JWTTokenInterceptor;
 import io.hobaskos.event.eventapp.data.api.UserJWTService;
 import io.hobaskos.event.eventapp.data.repository.EventCategoryRepository;
 import io.hobaskos.event.eventapp.data.repository.EventRepository;
-import io.hobaskos.event.eventapp.data.service.JwtStorageProxy;
+import io.hobaskos.event.eventapp.data.storage.JwtStorageProxy;
 import okhttp3.Cache;
 import okhttp3.HttpUrl;
 

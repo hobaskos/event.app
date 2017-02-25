@@ -1,14 +1,11 @@
 package io.hobaskos.event.eventapp.data.repository;
 
-import android.util.Log;
-
 import javax.inject.Inject;
 
 import io.hobaskos.event.eventapp.data.api.UserJWTService;
 import io.hobaskos.event.eventapp.data.model.JwtToken;
 import io.hobaskos.event.eventapp.data.model.LoginVM;
-import io.hobaskos.event.eventapp.data.model.response.Response;
-import io.hobaskos.event.eventapp.data.service.JwtStorageProxy;
+import io.hobaskos.event.eventapp.data.storage.JwtStorageProxy;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -42,4 +39,7 @@ public class JwtRepository {
             return null;
         });
     }
+
+
+
 }

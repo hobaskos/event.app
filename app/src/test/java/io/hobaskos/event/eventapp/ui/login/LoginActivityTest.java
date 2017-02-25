@@ -1,8 +1,5 @@
 package io.hobaskos.event.eventapp.ui.login;
 
-import android.content.Intent;
-import android.support.design.widget.TabLayout;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -10,22 +7,17 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.Spy;
-import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
-import javax.inject.Inject;
-
-import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.BuildConfig;
 import io.hobaskos.event.eventapp.TestApp;
-import io.hobaskos.event.eventapp.data.PersistentStorage;
+import io.hobaskos.event.eventapp.data.storage.PersistentStorage;
 import io.hobaskos.event.eventapp.data.api.UserJWTService;
 import io.hobaskos.event.eventapp.data.model.JwtToken;
 import io.hobaskos.event.eventapp.data.model.LoginVM;
 import io.hobaskos.event.eventapp.data.repository.JwtRepository;
-import io.hobaskos.event.eventapp.data.service.JwtStorageProxy;
+import io.hobaskos.event.eventapp.data.storage.JwtStorageProxy;
 import okhttp3.MediaType;
 import okhttp3.ResponseBody;
 import retrofit2.Response;

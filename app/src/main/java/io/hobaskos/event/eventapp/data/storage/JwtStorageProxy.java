@@ -1,8 +1,6 @@
-package io.hobaskos.event.eventapp.data.service;
+package io.hobaskos.event.eventapp.data.storage;
 
 import javax.inject.Inject;
-
-import io.hobaskos.event.eventapp.data.PersistentStorage;
 
 /**
  * Created by osvold.hans.petter on 10.02.2017.
