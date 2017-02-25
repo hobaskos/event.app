@@ -158,13 +158,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void logout() {
-        // Remove token from database
         userManager.logout();
-
-        // Logout from Facebook
-        // TODO: hva skjer om kunden er logget inn med brukernavn/passord
-        LoginManager.getInstance().logOut();
-
         startActivity(new Intent(this, MainActivity.class));
     }
 }

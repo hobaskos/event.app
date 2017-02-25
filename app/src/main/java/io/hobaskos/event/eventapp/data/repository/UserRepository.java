@@ -1,10 +1,13 @@
 package io.hobaskos.event.eventapp.data.repository;
 
+import com.facebook.AccessToken;
+
 import javax.inject.Inject;
 
-import io.hobaskos.event.eventapp.data.model.AccessToken;
+import io.hobaskos.event.eventapp.data.api.UserService;
+import io.hobaskos.event.eventapp.data.model.JwtToken;
+import io.hobaskos.event.eventapp.data.model.LoginVM;
 import io.hobaskos.event.eventapp.data.model.SocialUserVM;
-import io.hobaskos.event.eventapp.data.storage.FBAccessTokenStorageProxy;
 import io.hobaskos.event.eventapp.data.storage.JwtStorageProxy;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -16,19 +19,35 @@ import rx.schedulers.Schedulers;
 
 public class UserRepository {
 
-    private FBAccessTokenStorageProxy storageProxy;
+    private final UserService service;
+    private final JwtStorageProxy localStorage;
 
     @Inject
-    public UserRepository(FBAccessTokenStorageProxy storageProxy)
+    public UserRepository(UserService service, JwtStorageProxy localStorage)
     {
-        this.storageProxy = storageProxy;
+        this.service = service;
+        this.localStorage = localStorage;
+    }
+
+    public Observable<Void> login(LoginVM loginVM)
+    {
+        Observable<JwtToken> token = service.login(loginVM);
+
+        return token
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .map(t -> {
+                    localStorage.put(t.getIdToken());
+                    return null;
+                });
     }
 
     public boolean login(SocialUserVM socialUserVM)
     {
-        AccessToken accessToken = new AccessToken(socialUserVM.getUserId(), socialUserVM.getAccessToken());
+        // Todo: Do some business logic
+        // Todo: save to server
 
-        return storageProxy.put(accessToken);
+        return AccessToken.getCurrentAccessToken() != null;
     }
 
 }

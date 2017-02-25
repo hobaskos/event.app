@@ -9,7 +9,6 @@ import javax.inject.Inject;
 import io.hobaskos.event.eventapp.data.model.LoginVM;
 import io.hobaskos.event.eventapp.data.model.SocialUserVM;
 import io.hobaskos.event.eventapp.data.model.response.Response;
-import io.hobaskos.event.eventapp.data.repository.JwtRepository;
 import io.hobaskos.event.eventapp.data.repository.UserRepository;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -21,12 +20,10 @@ import rx.schedulers.Schedulers;
 
 public class LoginPresenter extends MvpBasePresenter<LoginView> {
 
-    private JwtRepository jwtRepository;
-    private UserRepository userRepository;
+    public UserRepository userRepository;
 
     @Inject
-    public LoginPresenter(JwtRepository jwtRepository, UserRepository userRepository) {
-        this.jwtRepository = jwtRepository;
+    public LoginPresenter(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -35,7 +32,7 @@ public class LoginPresenter extends MvpBasePresenter<LoginView> {
     {
         Log.i("LoginPresenter", "Inside login(LoginVM loginVM)");
 
-        jwtRepository.login(loginVM)
+        userRepository.login(loginVM)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<Void>() {

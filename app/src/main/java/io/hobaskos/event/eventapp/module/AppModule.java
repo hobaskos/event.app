@@ -6,7 +6,6 @@ import dagger.Module;
 import dagger.Provides;
 import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.UserManager;
-import io.hobaskos.event.eventapp.data.storage.FBAccessTokenStorageProxy;
 import io.hobaskos.event.eventapp.data.storage.JwtStorageProxy;
 import io.hobaskos.event.eventapp.data.storage.PersistentStorage;
 
@@ -36,9 +35,8 @@ public class AppModule {
 
     @Provides
     @Singleton
-    public UserManager providesUserManagement(JwtStorageProxy jwtStorageProxy,
-                                              FBAccessTokenStorageProxy fbAccessTokenStorageProxy)
+    public UserManager providesUserManager(JwtStorageProxy jwtStorageProxy)
     {
-        return new UserManager(jwtStorageProxy, fbAccessTokenStorageProxy);
+        return new UserManager(jwtStorageProxy);
     }
 }

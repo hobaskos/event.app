@@ -12,11 +12,11 @@ import org.robolectric.annotation.Config;
 
 import io.hobaskos.event.eventapp.BuildConfig;
 import io.hobaskos.event.eventapp.TestApp;
+import io.hobaskos.event.eventapp.data.repository.UserRepository;
 import io.hobaskos.event.eventapp.data.storage.PersistentStorage;
-import io.hobaskos.event.eventapp.data.api.UserJWTService;
+import io.hobaskos.event.eventapp.data.api.UserService;
 import io.hobaskos.event.eventapp.data.model.JwtToken;
 import io.hobaskos.event.eventapp.data.model.LoginVM;
-import io.hobaskos.event.eventapp.data.repository.JwtRepository;
 import io.hobaskos.event.eventapp.data.storage.JwtStorageProxy;
 import okhttp3.MediaType;
 import okhttp3.ResponseBody;
@@ -44,24 +44,24 @@ import static org.mockito.Mockito.when;
 public class LoginActivityTest {
 
     @Mock
-    private UserJWTService service;
+    private UserService service;
 
     private JwtStorageProxy storageProxy;
 
     @Mock
-    private JwtRepository repository;
+    private UserRepository repository;
 
     @Before
     public void setup()
     {
         MockitoAnnotations.initMocks(this);
 
-        //service = mock(UserJWTService.class);
+        //service = mock(UserService.class);
 
         PersistentStorage persistentStorage = mock(PersistentStorage.class);
 
         storageProxy = new JwtStorageProxy(persistentStorage);
-        repository = new JwtRepository(service, storageProxy);
+        repository = new UserRepository(service, storageProxy);
 
         // Override RxJava schedulers
         RxJavaHooks.setOnIOScheduler(new Func1<Scheduler, Scheduler>() {
