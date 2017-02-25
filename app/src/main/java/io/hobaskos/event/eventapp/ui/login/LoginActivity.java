@@ -6,7 +6,7 @@ import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.ui.base.view.activity.BaseActivity;
 
 /**
- * Created by osvold.hans.petter on 13.02.2017.
+ * Created by hansp on 24.02.2017.
  */
 
 public class LoginActivity extends BaseActivity {

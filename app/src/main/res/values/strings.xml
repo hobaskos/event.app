@@ -16,4 +16,6 @@
     <string name="email">Epost</string>
     <string name="password">Passord</string>
     <string name="login">Logg inn</string>
+    <string name="login_success">Innlogging velykket</string>
+    <string name="login_failure">Problemer med innlogging</string>
 </resources>

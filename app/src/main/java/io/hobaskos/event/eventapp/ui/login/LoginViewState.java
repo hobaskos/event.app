@@ -1,23 +1,13 @@
 package io.hobaskos.event.eventapp.ui.login;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
-import com.hannesdorfmann.mosby.mvp.MvpView;
 import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
-import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.CastedArrayListLceViewState;
 
-import java.util.List;
-
-import io.hobaskos.event.eventapp.data.model.Event;
-import io.hobaskos.event.eventapp.data.model.LoginVM;
 import io.hobaskos.event.eventapp.data.model.response.Response;
-import io.hobaskos.event.eventapp.ui.events.EventsView;
-import io.hobaskos.event.eventapp.ui.events.EventsViewState;
 
 /**
- * Created by osvold.hans.petter on 15.02.2017.
+ * Created by hansp on 25.02.2017.
  */
+
 
 public class LoginViewState implements ViewState<LoginView> {
 

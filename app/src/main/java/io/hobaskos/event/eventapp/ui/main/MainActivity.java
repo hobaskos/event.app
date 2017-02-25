@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.facebook.login.LoginManager;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
@@ -22,9 +23,10 @@ import javax.inject.Inject;
 
 import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
-import io.hobaskos.event.eventapp.data.service.JwtStorageProxy;
-import io.hobaskos.event.eventapp.ui.events.EventsFragment;
+import io.hobaskos.event.eventapp.UserManager;
+import io.hobaskos.event.eventapp.data.storage.JwtStorageProxy;
 import io.hobaskos.event.eventapp.ui.login.LoginActivity;
+import io.hobaskos.event.eventapp.ui.events.EventsFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -36,7 +38,7 @@ public class MainActivity extends AppCompatActivity
     //private ViewPager viewPager;
 
     @Inject
-    public JwtStorageProxy jwtStorageProxy;
+    public UserManager userManager;
 
 
     @Override
@@ -44,7 +46,6 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
 
         App.getInst().getComponent().inject(this);
-
         setContentView(R.layout.activity_main);
 
         if (googleServicesAvailable()) {
@@ -57,7 +58,7 @@ public class MainActivity extends AppCompatActivity
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         //viewPager = (ViewPager) findViewById(R.id.view_pager);
 
-        if(isLoggedIn())
+        if(userManager.isLoggedIn())
         {
            navigationView.getMenu().findItem(R.id.nav_login).setVisible(false);
         }
@@ -156,13 +157,8 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    private boolean isLoggedIn() {
-        return jwtStorageProxy.isSet();
-
-    }
-
     private void logout() {
-        jwtStorageProxy.remove();
+        userManager.logout();
         startActivity(new Intent(this, MainActivity.class));
     }
 }

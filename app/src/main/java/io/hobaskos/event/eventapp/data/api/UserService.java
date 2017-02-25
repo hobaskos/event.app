@@ -10,7 +10,7 @@ import rx.Observable;
  * Created by osvold.hans.petter on 10.02.2017.
  */
 
-public interface UserJWTService {
+public interface UserService {
 
     @POST("api/authenticate")
     Observable<JwtToken> login(@Body LoginVM user);
