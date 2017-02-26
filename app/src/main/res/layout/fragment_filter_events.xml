@@ -7,7 +7,7 @@
     android:layout_marginRight="16dp"
     android:paddingTop="16dp">
 
-
+    <!-- LOCATION -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,6 +19,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Location"
+            android:textAllCaps="true"
+            android:textSize="16dp"
             android:id="@+id/locationTextView"
             android:labelFor="@+id/locationAutoCompleteTextView"/>
 
@@ -32,6 +34,7 @@
 
     </RelativeLayout>
 
+    <!-- DISTANCE -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -44,6 +47,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Distance"
+            android:textAllCaps="true"
+            android:textSize="16dp"
             android:id="@+id/distanceTextView" />
 
         <RelativeLayout
@@ -72,7 +77,10 @@
             android:id="@+id/seekBarText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:layout_above="@+id/seekBar"
+            android:layout_marginBottom="8dp"
+            android:visibility="gone"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <SeekBar
             style="@style/Widget.AppCompat.SeekBar"
@@ -84,6 +92,7 @@
             android:layout_below="@+id/distanceTextViews"/>
     </RelativeLayout>
 
+    <!-- CATEGORY -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -96,6 +105,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Category"
+            android:textAllCaps="true"
+            android:textSize="16dp"
             android:id="@+id/categoryTextView" />
 
         <Spinner

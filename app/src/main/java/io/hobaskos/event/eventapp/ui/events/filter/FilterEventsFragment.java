@@ -116,7 +116,10 @@ public class FilterEventsFragment extends BaseFragment implements FilterEventsVi
         button = (Button) getView().findViewById(R.id.applyFiltersButton);
 
 
-        button.setOnClickListener(v -> presenter.storeDistance(seekBarProgress));
+        button.setOnClickListener(v -> {
+            presenter.storeDistance(seekBarProgress);
+            presenter.storeLocation(location, lat, lon);
+        });
 
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -139,6 +142,7 @@ public class FilterEventsFragment extends BaseFragment implements FilterEventsVi
         });
 
         presenter.loadDistance();
+        presenter.loadLocation();
     }
 
     @Override
@@ -152,7 +156,6 @@ public class FilterEventsFragment extends BaseFragment implements FilterEventsVi
     public void setDistance(int defaultValue) {
         seekBarProgress = defaultValue;
         seekBar.setProgress(seekBarProgress);
-        seekBarText.setText("");
     }
 
     @Override
