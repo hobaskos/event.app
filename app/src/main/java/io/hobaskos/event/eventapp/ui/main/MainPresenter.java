@@ -47,15 +47,35 @@ public class MainPresenter extends MvpBasePresenter<MainView> {
             @Override
             public void onNext(User user) {
                 Log.i("MainPresenter", "User fetched successfully.");
-                getView().setUser(user);
-
+                Log.i("MainPresenter", "Name of user: " + user.getFirstName() + " " + user.getLastName());
+                if(isViewAttached())
+                {
+                    getView().updateNavHeaderText(user.getFirstName() + " " + user.getLastName());
+                }
             }
         });
     }
 
     public void logout()
     {
+        userManager.logout();
+    }
 
+    public void onCreateOptionsMenu()
+    {
+        Log.i("MainPresenter", "Inside MainPresenter.initMenu()");
+        if(isViewAttached())
+        {
+            Log.i("MainPresenter", "Inside MainPresenter.initMenu(). View IS attached");
+            if(userManager.isLoggedIn())
+            {
+                fetchAccountInfo();
+                getView().setMenuForLoggedIn();
+            }
+            else {
+                getView().setMenuForAnon();
+            }
+        }
     }
 
 

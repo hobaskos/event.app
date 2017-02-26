@@ -8,17 +8,21 @@ import org.joda.time.LocalDateTime;
 
 public class User {
 
-    private long id;
+    private String login;
     private String firstName;
     private String lastName;
     private String email;
-    private LocalDateTime createdDate;
-    private LocalDateTime lastModifiedDate;
-    private String login;
+    private String profileImageUrl;
     private boolean activated;
+    private String langKey;
+    private String[] authorities;
 
-    public long getId() {
-        return id;
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
     }
 
     public String getFirstName() {
@@ -45,28 +49,12 @@ public class User {
         this.email = email;
     }
 
-    public LocalDateTime getCreatedDate() {
-        return createdDate;
+    public String getProfileImageUrl() {
+        return profileImageUrl;
     }
 
-    public void setCreatedDate(LocalDateTime createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public LocalDateTime getLastModifiedDate() {
-        return lastModifiedDate;
-    }
-
-    public void setLastModifiedDate(LocalDateTime lastModifiedDate) {
-        this.lastModifiedDate = lastModifiedDate;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
+    public void setProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
     }
 
     public boolean isActivated() {
@@ -75,5 +63,21 @@ public class User {
 
     public void setActivated(boolean activated) {
         this.activated = activated;
+    }
+
+    public String getLangKey() {
+        return langKey;
+    }
+
+    public void setLangKey(String langKey) {
+        this.langKey = langKey;
+    }
+
+    public String[] getAuthorities() {
+        return authorities;
+    }
+
+    public void setAuthorities(String[] authorities) {
+        this.authorities = authorities;
     }
 }

@@ -10,6 +10,8 @@ import io.hobaskos.event.eventapp.data.model.User;
 
 public interface MainView extends MvpView {
 
-    void setUser(User user);
+    void updateNavHeaderText(String text);
+    void setMenuForLoggedIn();
+    void setMenuForAnon();
 
 }

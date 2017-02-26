@@ -109,7 +109,6 @@ public class LoginFragment extends BaseViewStateFragment<LoginView, LoginPresent
         callbackManager = CallbackManager.Factory.create();
 
         btnFacebook = (LoginButton) getView().findViewById(R.id.btn_login_facebook);
-        btnFacebook.setReadPermissions("email");
         btnFacebook.setFragment(this);
         Log.i("LoginActivity", "Just before registerCallback");
         btnFacebook.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
@@ -118,6 +117,29 @@ public class LoginFragment extends BaseViewStateFragment<LoginView, LoginPresent
                 Log.i("LoginActivity", "OnSuccess(token)");
                 Log.i("Login Token", loginResult.getAccessToken().getToken());
                 Log.i("Login UserId", loginResult.getAccessToken().getUserId());
+
+                GraphRequest mGrapRequest = GraphRequest.newMeRequest(
+                        loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
+
+                            @Override
+                            public void onCompleted(JSONObject object, GraphResponse response) {
+                                if (response.getError() != null) {
+
+                                } else {
+                                    String email = object.optString("email");
+                                    String name = object.optString("name");
+
+                                    Log.i("Facebook", email);
+                                    Log.i("Facebook", name);
+                                }
+                            }
+                        }
+                );
+
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "id,name,email,gender");
+                mGrapRequest.setParameters(parameters);
+                mGrapRequest.executeAsync();
 
                 String token = loginResult.getAccessToken().getToken();
                 String userId = loginResult.getAccessToken().getUserId();

@@ -19,5 +19,4 @@ public interface UserService {
 
     @GET("api/account")
     Observable<User> getAccount();
-
 }

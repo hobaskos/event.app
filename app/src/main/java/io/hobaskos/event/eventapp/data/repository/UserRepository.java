@@ -1,5 +1,7 @@
 package io.hobaskos.event.eventapp.data.repository;
 
+import android.util.Log;
+
 import com.facebook.AccessToken;
 
 import javax.inject.Inject;
@@ -53,6 +55,12 @@ public class UserRepository {
 
     public Observable<User> getAccount()
     {
+        if(localStorage.isSet())
+        {
+            Log.i("Token", "Token is set");
+            Log.i("Token", localStorage.get());
+        }
+
         return service.getAccount();
     }
 }

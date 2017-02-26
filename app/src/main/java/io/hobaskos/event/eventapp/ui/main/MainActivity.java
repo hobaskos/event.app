@@ -2,6 +2,7 @@ package io.hobaskos.event.eventapp.ui.main;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
@@ -21,8 +22,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
 
 import javax.inject.Inject;
@@ -49,14 +54,14 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
     private Toolbar toolbar;
     //private ViewPager viewPager;
 
-    private User user;
-
     @Inject
     public MainPresenter presenter;
 
-    @Inject
-    public UserManager userManager;
-
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
 
 
     @Override
@@ -66,11 +71,6 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
 
         App.getInst().getComponent().inject(this);
         setContentView(R.layout.activity_main);
-
-        if(userManager.isLoggedIn())
-        {
-            presenter.fetchAccountInfo();
-        }
 
         if (googleServicesAvailable()) {
             Toast.makeText(this, "Google Play Services er på plass!", Toast.LENGTH_LONG).show();
@@ -82,13 +82,8 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         //viewPager = (ViewPager) findViewById(R.id.view_pager);
 
-        if(userManager.isLoggedIn())
-        {
-            navigationView.getMenu().findItem(R.id.nav_login).setVisible(false);
-        }
-        else {
-            navigationView.getMenu().setGroupVisible(R.id.navigational_menu_logged_in, false);
-        }
+        presenter.attachView(this);
+        presenter.onCreateOptionsMenu();
 
         // Set toolbar:
         setSupportActionBar(toolbar);
@@ -100,24 +95,14 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
         toggle.syncState();
 
         navigationView.setNavigationItemSelectedListener(this);
-        
+
         // Temp solution, Initial fragment:
         //FragmentManager fragmentManager = getSupportFragmentManager();
         //fragmentManager.beginTransaction().replace(R.id.content_frame, new EventsFragment()).commit();
 
-    }
-
-    public void updateNavHeader()
-    {
-        if(userManager.isLoggedIn() && user != null)
-        {
-            String name = user.getFirstName() + " " + user.getLastName();
-
-            View header = navigationView.getHeaderView(0);
-            TextView tvNavHeaderUsername = (TextView) header.findViewById(R.id.nav_header_username);
-
-            tvNavHeaderUsername.setText(name);
-        }
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     @NonNull
@@ -134,7 +119,7 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
         if (isAvailable == ConnectionResult.SUCCESS) {
             return true;
         } else if (api.isUserResolvableError(isAvailable)) {
-            Dialog dialog = api.getErrorDialog(this,isAvailable,0);
+            Dialog dialog = api.getErrorDialog(this, isAvailable, 0);
             dialog.show();
         } else {
             Toast.makeText(this, "Kan ikke koble til Google Play Services!", Toast.LENGTH_LONG).show();
@@ -157,7 +142,7 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         Log.i("MainActivity", "onCreateOptionsMenu()");
-        presenter.fetchAccountInfo();
+        presenter.onCreateOptionsMenu();
         // Inflate the menu; this adds items to the action bar if it is present.
         //getMenuInflater().inflate(R.menu.main, menu);
         return true;
@@ -165,6 +150,7 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
 
     /**
      * Handles navigation view item clicks
+     *
      * @param item
      * @return
      */
@@ -183,6 +169,7 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
             case R.id.nav_friends:
                 break;
             case R.id.nav_profile:
+                startActivity(new Intent(this, MainActivity.class));
                 break;
             case R.id.nav_login:
                 startActivity(new Intent(this, LoginActivity.class));
@@ -205,16 +192,10 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
     }
 
     private void logout() {
-        userManager.logout();
+        presenter.logout();
         startActivity(new Intent(this, MainActivity.class));
     }
 
-    @Override
-    public void setUser(User user) {
-        Log.i("Main", "setUser()");
-        this.user = user;
-        updateNavHeader();
-    }
 
     @Override
     public ViewState<MainView> createViewState() {
@@ -224,5 +205,58 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
     @Override
     public void onNewViewStateInstance() {
 
+    }
+
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    public Action getIndexApiAction() {
+        Thing object = new Thing.Builder()
+                .setName("Main Page") // TODO: Define a title for the content shown.
+                // TODO: Make sure this auto-generated URL is correct.
+                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
+                .build();
+        return new Action.Builder(Action.TYPE_VIEW)
+                .setObject(object)
+                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
+                .build();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
+        AppIndex.AppIndexApi.start(client, getIndexApiAction());
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        AppIndex.AppIndexApi.end(client, getIndexApiAction());
+        client.disconnect();
+    }
+
+    @Override
+    public void updateNavHeaderText(String text) {
+        View header = navigationView.getHeaderView(0);
+        TextView tvNavHeaderUsername = (TextView) header.findViewById(R.id.nav_header_username);
+        tvNavHeaderUsername.setText(text);
+    }
+
+    @Override
+    public void setMenuForLoggedIn() {
+        navigationView.getMenu().findItem(R.id.nav_login).setVisible(false);
+    }
+
+    @Override
+    public void setMenuForAnon() {
+        navigationView.getMenu().setGroupVisible(R.id.navigational_menu_logged_in, false);
     }
 }
