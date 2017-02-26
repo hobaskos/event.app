@@ -30,6 +30,10 @@ public class EventsPresenter extends BaseRxLcePresenter<EventsView, List<EventsP
 
     PersistentStorage persistentStorage;
 
+    private int distance;
+    private double lat;
+    private double lon;
+
     @Inject
     public EventsPresenter(EventRepository eventRepository, PersistentStorage persistentStorage) {
         this.eventRepository = eventRepository;
@@ -51,7 +55,7 @@ public class EventsPresenter extends BaseRxLcePresenter<EventsView, List<EventsP
             getView().showLoadMore(false);
         }
 
-        int distance = persistentStorage.getInt(FilterEventsPresenter.FILTER_EVENTS_DISTANCE_KEY, 10);
+        loadFilterValues();
 
         final Observable<List<EventsPresentationModel>> observable =
                 eventRepository.search(0, 59.89736562413801, 10.646479578394581, distance + "km")
@@ -69,10 +73,10 @@ public class EventsPresenter extends BaseRxLcePresenter<EventsView, List<EventsP
         //final Observable<List<EventsPresentationModel>> observable =
                 //eventRepository.getAll(nextPage).map(presentationModelTransformation);
 
-        int distance = persistentStorage.getInt(FilterEventsPresenter.FILTER_EVENTS_DISTANCE_KEY, 10);
+        loadFilterValues();
 
         final Observable<List<EventsPresentationModel>> observable =
-                eventRepository.search(nextPage, 59.89736562413801, 10.646479578394581, distance + "km")
+                eventRepository.search(nextPage, lat, lon, distance + "km")
                         .map(presentationModelTransformation);
 
         if (isViewAttached()) {
@@ -110,6 +114,12 @@ public class EventsPresenter extends BaseRxLcePresenter<EventsView, List<EventsP
         if (moreEventSubscriber != null && !moreEventSubscriber.isUnsubscribed()) {
             moreEventSubscriber.unsubscribe();
         }
+    }
+
+    private void loadFilterValues() {
+        distance = persistentStorage.getInt(FilterEventsPresenter.FILTER_EVENTS_DISTANCE_KEY, 10);
+        lat = persistentStorage.getDouble(FilterEventsPresenter.FILTER_EVENTS_LOCATION_LAT_KEY, 0);
+        lon = persistentStorage.getDouble(FilterEventsPresenter.FILTER_EVENTS_LOCATION_LON_KEY, 0);
     }
 
 

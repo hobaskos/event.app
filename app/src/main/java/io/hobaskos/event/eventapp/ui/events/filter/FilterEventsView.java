@@ -9,5 +9,6 @@ import com.hannesdorfmann.mosby.mvp.MvpView;
 public interface FilterEventsView extends MvpView {
 
     void setDistance(int defaultValue);
+    void setLocation(String name, double lat, double lon);
     void setCategory(); //TODO: Create enum of event categories
 }

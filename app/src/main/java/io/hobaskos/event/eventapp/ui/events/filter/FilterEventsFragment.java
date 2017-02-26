@@ -43,6 +43,7 @@ public class FilterEventsFragment extends BaseFragment implements FilterEventsVi
     Button button;
 
     private int seekBarProgress;
+    private SupportPlaceAutocompleteFragment placeAutocompleteFragment;
 
     private GoogleApiClient mGoogleApiClient;
 
@@ -74,12 +75,12 @@ public class FilterEventsFragment extends BaseFragment implements FilterEventsVi
     @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        SupportPlaceAutocompleteFragment autocompleteFragment = (SupportPlaceAutocompleteFragment)
+        placeAutocompleteFragment = (SupportPlaceAutocompleteFragment)
                 getChildFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
 
 
 
-        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+        placeAutocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
                 location = place.getName().toString();
@@ -94,8 +95,6 @@ public class FilterEventsFragment extends BaseFragment implements FilterEventsVi
                 Log.i(TAG, "An error occurred: " + status);
             }
         });
-
-        autocompleteFragment.setText("Oslo");
 
 
         toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
@@ -118,7 +117,6 @@ public class FilterEventsFragment extends BaseFragment implements FilterEventsVi
 
 
         button.setOnClickListener(v -> presenter.storeDistance(seekBarProgress));
-
 
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -154,6 +152,15 @@ public class FilterEventsFragment extends BaseFragment implements FilterEventsVi
     public void setDistance(int defaultValue) {
         seekBarProgress = defaultValue;
         seekBar.setProgress(seekBarProgress);
+        seekBarText.setText("");
+    }
+
+    @Override
+    public void setLocation(String name, double lat, double lon) {
+        this.location = name;
+        placeAutocompleteFragment.setText(name);
+        this.lat = lat;
+        this.lon = lon;
     }
 
     @Override
