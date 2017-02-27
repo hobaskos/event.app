@@ -18,6 +18,7 @@ public class UserManager {
 
     private JwtStorageProxy localStorage;
     private UserRepository repository;
+    private User user;
 
     @Inject
     public UserManager(JwtStorageProxy localStorage, UserRepository repository)

@@ -48,9 +48,17 @@ public class MainPresenter extends MvpBasePresenter<MainView> {
             public void onNext(User user) {
                 Log.i("MainPresenter", "User fetched successfully.");
                 Log.i("MainPresenter", "Name of user: " + user.getFirstName() + " " + user.getLastName());
+                Log.i("User", user.toString());
                 if(isViewAttached())
                 {
-                    getView().updateNavHeaderText(user.getFirstName() + " " + user.getLastName());
+                    if(user.getProfileImageUrl() != null)
+                    {
+                        getView().setNavigationHeaderImage(user.getProfileImageUrl());
+                    } else {
+                        getView().setNavigationHeaderImage("");
+                    }
+
+                    getView().setNavigationHeaderText(user.getFirstName() + " " + user.getLastName());
                 }
             }
         });
@@ -59,21 +67,20 @@ public class MainPresenter extends MvpBasePresenter<MainView> {
     public void logout()
     {
         userManager.logout();
+        getView().hideNavigationHeader();
     }
 
     public void onCreateOptionsMenu()
     {
-        Log.i("MainPresenter", "Inside MainPresenter.initMenu()");
         if(isViewAttached())
         {
-            Log.i("MainPresenter", "Inside MainPresenter.initMenu(). View IS attached");
             if(userManager.isLoggedIn())
             {
                 fetchAccountInfo();
-                getView().setMenuForLoggedIn();
+                getView().viewAuthenticatedNavigation();
             }
             else {
-                getView().setMenuForAnon();
+                getView().viewAnonymousNavigation();
             }
         }
     }

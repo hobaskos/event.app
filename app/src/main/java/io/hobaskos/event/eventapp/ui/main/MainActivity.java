@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,6 +45,8 @@ import io.hobaskos.event.eventapp.ui.events.EventsFragment;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+
+import static android.R.drawable.sym_def_app_icon;
 
 public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
         implements NavigationView.OnNavigationItemSelectedListener, MainView {
@@ -82,6 +85,7 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         //viewPager = (ViewPager) findViewById(R.id.view_pager);
 
+        hideNavigationHeader();
         presenter.attachView(this);
         presenter.onCreateOptionsMenu();
 
@@ -244,19 +248,45 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
     }
 
     @Override
-    public void updateNavHeaderText(String text) {
+    public void setNavigationHeaderText(String text) {
         View header = navigationView.getHeaderView(0);
         TextView tvNavHeaderUsername = (TextView) header.findViewById(R.id.nav_header_username);
         tvNavHeaderUsername.setText(text);
     }
 
     @Override
-    public void setMenuForLoggedIn() {
+    public void viewAuthenticatedNavigation() {
         navigationView.getMenu().findItem(R.id.nav_login).setVisible(false);
     }
 
     @Override
-    public void setMenuForAnon() {
+    public void viewAnonymousNavigation() {
         navigationView.getMenu().setGroupVisible(R.id.navigational_menu_logged_in, false);
+    }
+
+    @Override
+    public void setNavigationHeaderImage(String url) {
+        View header = navigationView.getHeaderView(0);
+        ImageView imageView = (ImageView) header.findViewById(R.id.nav_header_profile_picture);
+
+        if(url.equals(""))
+        {
+            Log.i("Main", "url.equals('')");
+            imageView.setImageResource(sym_def_app_icon);
+            imageView.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            // do something else
+        }
+    }
+
+    @Override
+    public void hideNavigationHeader() {
+        View header = navigationView.getHeaderView(0);
+        TextView tvNavHeaderUsername = (TextView) header.findViewById(R.id.nav_header_username);
+        ImageView imageView = (ImageView) header.findViewById(R.id.nav_header_profile_picture);
+        tvNavHeaderUsername.setText("");
+        imageView.setVisibility(View.GONE);
     }
 }

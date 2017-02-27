@@ -1,6 +1,9 @@
 package io.hobaskos.event.eventapp.data.api;
 
+import android.net.Proxy;
+
 import com.fatboyindustrial.gsonjodatime.Converters;
+import com.google.android.gms.appdatasearch.GetRecentContextCall;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializer;
@@ -8,11 +11,17 @@ import com.google.gson.JsonDeserializer;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDateTime;
 
+import java.io.IOException;
+
 import io.hobaskos.event.eventapp.data.model.Event;
+import io.hobaskos.event.eventapp.data.model.JwtToken;
+import okhttp3.Authenticator;
 import okhttp3.Cache;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
