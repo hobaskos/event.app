@@ -1,7 +1,12 @@
 package io.hobaskos.event.eventapp.ui.events;
 
+import android.content.Intent;
+import android.content.pm.ResolveInfo;
+import android.provider.Settings;
 import android.support.v7.widget.RecyclerView;
 import android.test.UiThreadTest;
+
+import com.facebook.FacebookActivity;
 
 import org.junit.After;
 import org.junit.Before;
@@ -10,6 +15,7 @@ import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
+import org.robolectric.res.builder.RobolectricPackageManager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,6 +41,7 @@ public class EventsFragmentTest {
 
     private MainActivity mainActivity;
     private EventsFragment fragment;
+    private FacebookActivity facebookActivity;
 
     RecyclerView recyclerView;
     EventsAdapter adapter;

@@ -2,6 +2,8 @@ package io.hobaskos.event.eventapp;
 
 import android.app.Application;
 
+import com.facebook.FacebookSdk;
+
 import io.hobaskos.event.eventapp.config.Constants;
 import io.hobaskos.event.eventapp.module.AppModule;
 import io.hobaskos.event.eventapp.module.DaggerDiComponent;
@@ -26,6 +28,9 @@ public class App extends Application
         inst = this;
 
         initComponent();
+
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        FacebookSdk.getApplicationId();
     }
 
     protected HttpUrl getApiUrl() {

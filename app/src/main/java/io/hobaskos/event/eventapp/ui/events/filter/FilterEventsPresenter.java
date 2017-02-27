@@ -4,7 +4,7 @@ import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
 
 import javax.inject.Inject;
 
-import io.hobaskos.event.eventapp.data.PersistentStorage;
+import io.hobaskos.event.eventapp.data.storage.PersistentStorage;
 
 /**
  * Created by andre on 2/20/2017.

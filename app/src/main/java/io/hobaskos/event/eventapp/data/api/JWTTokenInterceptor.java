@@ -2,7 +2,7 @@ package io.hobaskos.event.eventapp.data.api;
 
 import java.io.IOException;
 
-import io.hobaskos.event.eventapp.data.service.JwtStorageProxy;
+import io.hobaskos.event.eventapp.data.storage.JwtStorageProxy;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;

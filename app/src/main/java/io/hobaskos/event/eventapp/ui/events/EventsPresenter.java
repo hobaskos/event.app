@@ -5,9 +5,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import io.hobaskos.event.eventapp.data.PersistentStorage;
 import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.data.repository.EventRepository;
+import io.hobaskos.event.eventapp.data.storage.PersistentStorage;
 import io.hobaskos.event.eventapp.ui.base.presenter.BaseRxLcePresenter;
 import io.hobaskos.event.eventapp.ui.events.filter.FilterEventsPresenter;
 import rx.Observable;
