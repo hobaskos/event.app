@@ -45,7 +45,7 @@ public class EventRepository implements BaseRepository<Event, Long> {
 
         Log.i("EventReposiory", "fromDate: " + fromDate + ", toDate: " + toDate);
 
-        return eventServiceAuthenticated
+        return eventServiceAnonymously
                 .search(page, PAGE_SIZE, lat, lon, distance, fromDate, toDate, "fromDate,asc");
     }
 

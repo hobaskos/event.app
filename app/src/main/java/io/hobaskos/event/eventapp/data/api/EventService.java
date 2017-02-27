@@ -28,6 +28,7 @@ public interface EventService
         @GET("api/events/{id}")
         Observable<Event> getEvent(@Path("id") Long id);
 
+        @GET("api/_search/events-nearby")
         Observable<List<Event>> search(@Query("page") int page,
                                        @Query("size") int pageSize,
                                        @Query("lat") double lat,
