@@ -54,46 +54,41 @@ public class EventsPresenter extends BaseRxLcePresenter<EventsView, List<EventsP
         if (isViewAttached()) {
             getView().showLoadMore(false);
         }
-
+        // Load filter values (from shared preferences)
         loadFilterValues();
-
+        // Setup observable:
         final Observable<List<EventsPresentationModel>> observable =
                 eventRepository.search(0, 59.89736562413801, 10.646479578394581, distance + "km")
                         .map(presentationModelTransformation);
                 //eventRepository.getAll(0).map(presentationModelTransformation);
 
-
+        // setup and start subscription:
         subscribe(observable, pullToRefresh);
     }
 
     public void loadMoreEvents(int nextPage) {
         // Cancel any previous query
         unsubscribe();
-
-        //final Observable<List<EventsPresentationModel>> observable =
-                //eventRepository.getAll(nextPage).map(presentationModelTransformation);
-
+        // Load filter values (from shared preferences)
         loadFilterValues();
-
+        // Setup observable:
         final Observable<List<EventsPresentationModel>> observable =
                 eventRepository.search(nextPage, lat, lon, distance + "km")
                         .map(presentationModelTransformation);
-
+        // Show loading in view:
         if (isViewAttached()) {
             getView().showLoadMore(true);
         }
-
+        // Setup subscriber:
         moreEventSubscriber = new Subscriber<List<EventsPresentationModel>>() {
             @Override public void onCompleted() {
             }
-
             @Override  public void onError(Throwable e) {
                 if (isViewAttached()) {
                     getView().showLoadMoreError(e);
                     getView().showLoadMore(false);
                 }
             }
-
             @Override public void onNext(List<EventsPresentationModel> events) {
                 if (isViewAttached()) {
                     getView().addMoreData(events);
@@ -101,12 +96,10 @@ public class EventsPresenter extends BaseRxLcePresenter<EventsView, List<EventsP
                 }
             }
         };
-
-        // start
+        // start subscription:
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(moreEventSubscriber);
-
     }
 
     @Override protected void unsubscribe() {

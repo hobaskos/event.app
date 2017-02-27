@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -42,6 +43,8 @@ public class EventsFragment extends
     @BindView(R.id.progress) ProgressBar progressBar;
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.contentView) SwipeRefreshLayout swipeRefreshLayout;
+
+    TextView emptyResultView;
 
     private NpaLinearLayoutManager linearLayoutManager;
     private DividerItemDecoration dividerItemDecoration;
@@ -73,6 +76,8 @@ public class EventsFragment extends
         */
         Log.i(TAG, "page: " + page );
         //Icepick.restoreInstanceState(this, savedInstanceState);
+
+        emptyResultView = (TextView) view.findViewById(R.id.emptyView);
 
         // Configure toolbar:
         toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
@@ -226,7 +231,6 @@ public class EventsFragment extends
         adapter.setItems(data);
         adapter.notifyDataSetChanged();
         swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(false));
-
     }
 
     @Override
@@ -241,7 +245,22 @@ public class EventsFragment extends
 
     @Override
     public void showContent() {
-        Log.i(TAG, "showContent()");
         super.showContent();
+        if (adapter.getItems().isEmpty()) {
+            contentView.setVisibility(View.GONE);
+            emptyResultView.setVisibility(View.VISIBLE);
+        } else {
+            emptyResultView.setVisibility(View.GONE);
+        }
+    }
+
+    @Override public void showError(Throwable e, boolean pullToRefresh) {
+        emptyResultView.setVisibility(View.GONE);
+        super.showError(e, pullToRefresh);
+    }
+
+    @Override public void showLoading(boolean pullToRefresh) {
+        emptyResultView.setVisibility(View.GONE);
+        super.showLoading(pullToRefresh);
     }
 }
