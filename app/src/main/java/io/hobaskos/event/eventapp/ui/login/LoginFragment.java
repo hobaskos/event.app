@@ -111,6 +111,7 @@ public class LoginFragment extends BaseViewStateFragment<LoginView, LoginPresent
         btnFacebook = (LoginButton) getView().findViewById(R.id.btn_login_facebook);
         btnFacebook.setFragment(this);
         Log.i("LoginActivity", "Just before registerCallback");
+        btnFacebook.setReadPermissions("email");
         btnFacebook.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
