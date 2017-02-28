@@ -4,6 +4,7 @@ package io.hobaskos.event.eventapp.ui.login;
  * Created by hansp on 25.02.2017.
  */
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,22 +13,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-import com.google.android.gms.games.social.Social;
 import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import javax.inject.Inject;
 
@@ -49,12 +42,14 @@ public class LoginFragment extends BaseViewStateFragment<LoginView, LoginPresent
     @Inject
     public LoginPresenter loginPresenter;
 
-    private EditText etEmail, etPassword;
+    private EditText etLogin;
+    private EditText etPassword;
     private Button btnLogin;
-
+    private LoginButton btnFacebook;
+    private Button btnSkip;
 
     private CallbackManager callbackManager;
-    private LoginButton btnFacebook;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -67,15 +62,22 @@ public class LoginFragment extends BaseViewStateFragment<LoginView, LoginPresent
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState)
     {
         super.onViewCreated(view, savedInstanceState);
-        etEmail = (EditText) view.findViewById(R.id.field_email);
-        etEmail.setHint(R.string.email);
-        etPassword = (EditText) view.findViewById(R.id.field_password);
-        etPassword.setHint(R.string.password);
 
-        initRegularLogin();
+        etLogin = (EditText) view.findViewById(R.id.field_username);
+        etPassword = (EditText) view.findViewById(R.id.field_password);
+
+        btnLogin = (Button) getView().findViewById(R.id.btn_login_username);
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                login();
+            }
+        });
+
         initFacebookLogin();
 
-        Button btnSkip = (Button) getView().findViewById(R.id.btn_skip_login);
+
+        btnSkip = (Button) view.findViewById(R.id.btn_skip_login);
         btnSkip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,38 +86,16 @@ public class LoginFragment extends BaseViewStateFragment<LoginView, LoginPresent
         });
     }
 
-    private void initRegularLogin()
-    {
-        etEmail = (EditText) getView().findViewById(R.id.field_email);
-        etEmail.setHint(R.string.email);
-
-        etPassword = (EditText) getView().findViewById(R.id.field_password);
-        etPassword.setHint(R.string.password);
-
-        btnLogin = (Button) getView().findViewById(R.id.btn_login_username);
-        btnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.i("LoginFragment", "Login button clicked!");
-                LoginVM loginVM = new LoginVM(etEmail.getText().toString(), etPassword.getText().toString());
-                presenter.login(loginVM);
-            }
-        });
-    }
-
     private void initFacebookLogin()
     {
-        Log.i("LoginFragment", "FacebookBtn clicked!");
         callbackManager = CallbackManager.Factory.create();
 
         btnFacebook = (LoginButton) getView().findViewById(R.id.btn_login_facebook);
         btnFacebook.setReadPermissions("email");
         btnFacebook.setFragment(this);
-        Log.i("LoginActivity", "Just before registerCallback");
         btnFacebook.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                Log.i("LoginActivity", "OnSuccess(token)");
                 Log.i("Login Token", loginResult.getAccessToken().getToken());
                 Log.i("Login UserId", loginResult.getAccessToken().getUserId());
 
@@ -128,21 +108,74 @@ public class LoginFragment extends BaseViewStateFragment<LoginView, LoginPresent
 
             @Override
             public void onCancel() {
-                Log.i("LoginActivityOnCancel", "onCancel");
             }
 
             @Override
             public void onError(FacebookException error) {
-                Log.i("LoginActivity", "onError(error)");
                 Log.i("Error:", error.toString());
-
             }
         });
     }
 
+    private void login()
+    {
+        if(!validate())
+        {
+            onLoginFailed();
+            return;
+        }
+
+        btnLogin.setEnabled(false);
+
+        final ProgressDialog progressDialog = new ProgressDialog(getActivity(), R.style.AppTheme);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage(getText(R.string.authenticating));
+        progressDialog.show();
+
+        LoginVM loginVM = new LoginVM(etLogin.getText().toString(), etPassword.getText().toString());
+
+        new android.os.Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                presenter.login(loginVM);
+                progressDialog.dismiss();
+            }
+        }, 3000);
+
+    }
+
+    public boolean validate() {
+        boolean valid = true;
+
+        String login = etLogin.getText().toString();
+        String password = etPassword.getText().toString();
+
+        if (login.isEmpty() ) {
+            etLogin.setError(getText(R.string.login_username_empty));
+            valid = false;
+        } else {
+            etLogin.setError(null);
+        }
+
+        if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
+            etPassword.setError(getText(R.string.login_password_error));
+            valid = false;
+        } else {
+            etPassword.setError(null);
+        }
+
+        return valid;
+    }
+
+    private void onLoginFailed()
+    {
+        Toast.makeText(getContext(), getText(R.string.login_failure), Toast.LENGTH_LONG).show();
+        btnLogin.setEnabled(true);
+    }
+
     @Override
     protected int getLayoutRes() {
-        return R.layout.activity_splash;
+        return R.layout.fragment_login;
     }
 
     @NonNull
@@ -176,8 +209,6 @@ public class LoginFragment extends BaseViewStateFragment<LoginView, LoginPresent
         LoginViewState loginViewState = (LoginViewState) viewState;
         loginViewState.setShowError();
         loginViewState.setResponse(response);
-
-        Log.i("LoginActivityError", response.getMessage());
         Toast.makeText(getActivity(), R.string.login_failure, Toast.LENGTH_SHORT).show();
     }
 
@@ -186,10 +217,7 @@ public class LoginFragment extends BaseViewStateFragment<LoginView, LoginPresent
         LoginViewState loginViewState = (LoginViewState) viewState;
         loginViewState.setShowSuccess();
         loginViewState.setResponse(response);
-
-        Log.i("LoginActivitySuccess", response.getMessage());
         Toast.makeText(getActivity(), R.string.login_success, Toast.LENGTH_SHORT).show();
-
         startActivity(new Intent(getActivity(), MainActivity.class));
     }
 

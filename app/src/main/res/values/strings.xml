@@ -14,8 +14,13 @@
     <string name="btn_login">Login</string>
     <string name="title_activity_maps">Map</string>
     <string name="email">Epost</string>
+    <string name="username">Brukernavn</string>
     <string name="password">Passord</string>
     <string name="login">Logg inn</string>
     <string name="login_success">Innlogging velykket</string>
+    <string name="login_username_empty">Vennligst fyll inn brukernavn.</string>
+    <string name="login_password_error">Vennligst fyll inn passord. 4 – 10 tegn.</string>
     <string name="login_failure">Problemer med innlogging</string>
+    <string name="login_skip">Skip</string>
+    <string name="authenticating">Logger inn...</string>
 </resources>
