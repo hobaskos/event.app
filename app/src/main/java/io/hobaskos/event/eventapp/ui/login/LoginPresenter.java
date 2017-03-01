@@ -28,8 +28,7 @@ public class LoginPresenter extends MvpBasePresenter<LoginView> {
     }
 
     // Username/Password-login
-    public void login(LoginVM loginVM)
-    {
+    public void login(LoginVM loginVM) {
         Log.i("LoginPresenter", "Inside login(LoginVM loginVM)");
 
         userRepository.login(loginVM)
@@ -59,8 +58,7 @@ public class LoginPresenter extends MvpBasePresenter<LoginView> {
                 });
     }
 
-    public void login(SocialUserVM socialLoginVM)
-    {
+    public void login(SocialUserVM socialLoginVM) {
         // Todo: login user at server
 
         if(userRepository.login(socialLoginVM))

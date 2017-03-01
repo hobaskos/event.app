@@ -21,6 +21,6 @@
     <string name="login_username_empty">Vennligst fyll inn brukernavn.</string>
     <string name="login_password_error">Vennligst fyll inn passord. 4 – 10 tegn.</string>
     <string name="login_failure">Problemer med innlogging</string>
-    <string name="login_skip">Skip</string>
+    <string name="login_skip">Gå videre uten konto</string>
     <string name="authenticating">Logger inn...</string>
 </resources>
