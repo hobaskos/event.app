@@ -6,21 +6,16 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="description_label">Beskrivelse</string>
+    <string name="description_label">Description</string>
     <string name="button_name">+</string>
-    <string name="interested_label">Interessert</string>
-    <string name="attending_label">Skal</string>
-    <string name="friends_label">Venner</string>
+    <string name="interested_label">Interested</string>
+    <string name="attending_label">Going</string>
+    <string name="friends_label">Friends</string>
     <string name="btn_login">Login</string>
     <string name="title_activity_maps">Map</string>
-    <string name="email">Epost</string>
-    <string name="username">Brukernavn</string>
-    <string name="password">Passord</string>
-    <string name="login">Logg inn</string>
-    <string name="login_success">Innlogging velykket</string>
-    <string name="login_username_empty">Vennligst fyll inn brukernavn.</string>
-    <string name="login_password_error">Vennligst fyll inn passord. 4 – 10 tegn.</string>
-    <string name="login_failure">Problemer med innlogging</string>
-    <string name="login_skip">Gå videre uten konto</string>
-    <string name="authenticating">Logger inn...</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="login_success">Login successful</string>
+    <string name="login_failure">Login failure</string>
 </resources>

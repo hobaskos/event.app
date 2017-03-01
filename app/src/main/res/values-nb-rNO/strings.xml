@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Eventure</string>
+    <string name="navigation_drawer_open">Åpne navigasjonsskuffen</string>
+    <string name="navigation_drawer_close">Lukk navigasjonsskuffen</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hallo blank fragment</string>
+    <string name="description_label">Beskrivelse</string>
+    <string name="button_name">+</string>
+    <string name="interested_label">Interessert</string>
+    <string name="attending_label">Skal</string>
+    <string name="friends_label">Venner</string>
+    <string name="btn_login">Logg inn</string>
+    <string name="title_activity_maps">Kart</string>
+    <string name="email">Epost</string>
+    <string name="password">Passord</string>
+    <string name="login">Logg inn</string>
+    <string name="login_success">Innlogging velykket</string>
+    <string name="login_failure">Problemer med innlogging</string>
+</resources>
