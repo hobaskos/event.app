@@ -10,7 +10,7 @@ public class SocialUserVM {
 
     private String accessToken;
 
-    private String type;
+    private SocialType type;
 
     private String firstName;
 
@@ -44,11 +44,11 @@ public class SocialUserVM {
         this.accessToken = accessToken;
     }
 
-    public String getType() {
+    public SocialType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(SocialType type) {
         this.type = type;
     }
 
