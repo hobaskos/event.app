@@ -14,8 +14,13 @@
     <string name="btn_login">Login</string>
     <string name="title_activity_maps">Map</string>
     <string name="email">Email</string>
+    <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="login">Login</string>
-    <string name="login_success">Login successful</string>
-    <string name="login_failure">Login failure</string>
+    <string name="login_success">You has been successfully logged in.</string>
+    <string name="login_failure">Could not log in. Please try again!</string>
+    <string name="login_username_empty">Username is a required field.</string>
+    <string name="login_password_error">Password is 4 – 10 characters.</string>
+    <string name="login_skip">Use without account</string>
+    <string name="authenticating">Authenticating…</string>
 </resources>
