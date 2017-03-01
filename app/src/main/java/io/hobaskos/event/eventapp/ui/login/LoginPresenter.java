@@ -19,7 +19,7 @@ import rx.schedulers.Schedulers;
  */
 
 public class LoginPresenter extends MvpBasePresenter<LoginView> {
-
+    private String TAG = "LoginPresenter";
     public UserRepository userRepository;
 
     @Inject
@@ -28,8 +28,7 @@ public class LoginPresenter extends MvpBasePresenter<LoginView> {
     }
 
     // Username/Password-login
-    public void login(LoginVM loginVM)
-    {
+    public void login(LoginVM loginVM) {
         Log.i("LoginPresenter", "Inside login(LoginVM loginVM)");
 
         userRepository.login(loginVM)
@@ -59,18 +58,28 @@ public class LoginPresenter extends MvpBasePresenter<LoginView> {
                 });
     }
 
-    public void login(SocialUserVM socialLoginVM)
-    {
+    public void login(SocialUserVM socialLoginVM) {
         // Todo: login user at server
+        Log.i(TAG, socialLoginVM.getAccessToken());
+        userRepository.login(socialLoginVM)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Void>() {
+            @Override
+            public void onCompleted() {
 
-        if(userRepository.login(socialLoginVM))
-        {
-            getView().showSuccess(new Response(true, ""));
-        }
-        else
-        {
-            getView().showError(new Response(false, "Error"));
-        }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                getView().showError(new Response(false, "Error"));
+            }
+
+            @Override
+            public void onNext(Void aVoid) {
+                getView().showSuccess(new Response(true, ""));
+            }
+        });
 
     }
 
