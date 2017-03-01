@@ -20,7 +20,7 @@ public class SocialUserVM {
 
     private String profileImageUrl;
 
-    private String langKey;
+    private String langKey = "en";
 
     public SocialUserVM(String userId, String accessToken)
     {
