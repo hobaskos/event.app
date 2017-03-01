@@ -24,6 +24,7 @@ import javax.inject.Inject;
 import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.model.LoginVM;
+import io.hobaskos.event.eventapp.data.model.SocialType;
 import io.hobaskos.event.eventapp.data.model.SocialUserVM;
 import io.hobaskos.event.eventapp.data.model.response.Response;
 import io.hobaskos.event.eventapp.ui.base.view.activity.BaseActivity;
@@ -95,6 +96,7 @@ public class LoginActivity extends MvpActivity<LoginView, LoginPresenter> implem
                 String userId = loginResult.getAccessToken().getUserId();
 
                 SocialUserVM socialUserVM = new SocialUserVM(userId, token);
+                socialUserVM.setType(SocialType.FACEBOOK);
                 presenter.login(socialUserVM);
             }
 
