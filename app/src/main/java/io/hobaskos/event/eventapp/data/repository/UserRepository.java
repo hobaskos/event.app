@@ -23,14 +23,12 @@ public class UserRepository {
     private final JwtStorageProxy localStorage;
 
     @Inject
-    public UserRepository(UserService service, JwtStorageProxy localStorage)
-    {
+    public UserRepository(UserService service, JwtStorageProxy localStorage) {
         this.service = service;
         this.localStorage = localStorage;
     }
 
-    public Observable<Void> login(LoginVM loginVM)
-    {
+    public Observable<Void> login(LoginVM loginVM) {
         Observable<JwtToken> token = service.login(loginVM);
 
         return token
@@ -42,12 +40,16 @@ public class UserRepository {
                 });
     }
 
-    public boolean login(SocialUserVM socialUserVM)
-    {
-        // Todo: Do some business logic
-        // Todo: save to server
+    public Observable<Void> login(SocialUserVM socialUserVM) {
+        Observable<JwtToken> token = service.login(socialUserVM);
 
-        return AccessToken.getCurrentAccessToken() != null;
+        return token
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .map(t -> {
+                    localStorage.put(t.getIdToken());
+                    return null;
+                });
     }
 
 }
