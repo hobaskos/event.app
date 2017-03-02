@@ -41,7 +41,6 @@ public class EventsFragmentTest {
 
     private MainActivity mainActivity;
     private EventsFragment fragment;
-    private FacebookActivity facebookActivity;
 
     RecyclerView recyclerView;
     EventsAdapter adapter;
