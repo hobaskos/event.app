@@ -4,7 +4,9 @@ import io.hobaskos.event.eventapp.data.model.JwtToken;
 import io.hobaskos.event.eventapp.data.model.LoginVM;
 import io.hobaskos.event.eventapp.data.model.SocialType;
 import io.hobaskos.event.eventapp.data.model.SocialUserVM;
+import io.hobaskos.event.eventapp.data.model.User;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
 import rx.Observable;
 
@@ -19,4 +21,7 @@ public interface UserService {
 
     @POST("api/authenticate/social")
     Observable<JwtToken> login(@Body SocialUserVM userVM);
+
+    @GET("api/account")
+    Observable<User> getAccount();
 }
