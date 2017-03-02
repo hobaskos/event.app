@@ -5,7 +5,7 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import io.hobaskos.event.eventapp.App;
-import io.hobaskos.event.eventapp.UserManager;
+import io.hobaskos.event.eventapp.AccountManager;
 import io.hobaskos.event.eventapp.data.repository.UserRepository;
 import io.hobaskos.event.eventapp.data.storage.JwtStorageProxy;
 import io.hobaskos.event.eventapp.data.storage.PersistentStorage;
@@ -36,8 +36,8 @@ public class AppModule {
 
     @Provides
     @Singleton
-    public UserManager providesUserManager(JwtStorageProxy jwtStorageProxy, UserRepository repository)
+    public AccountManager providesUserManager(JwtStorageProxy jwtStorageProxy, UserRepository repository)
     {
-        return new UserManager(jwtStorageProxy, repository);
+        return new AccountManager(jwtStorageProxy, repository);
     }
 }

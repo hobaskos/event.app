@@ -13,6 +13,5 @@ public interface MainView extends MvpView {
     void setNavigationHeaderText(String text);
     void viewAuthenticatedNavigation();
     void viewAnonymousNavigation();
-    void setNavigationHeaderImage(String url);
     void hideNavigationHeader();
 }

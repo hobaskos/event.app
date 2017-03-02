@@ -14,14 +14,14 @@ import rx.Observable;
  * Created by hansp on 25.02.2017.
  */
 
-public class UserManager {
+public class AccountManager {
 
     private JwtStorageProxy localStorage;
     private UserRepository repository;
     private User user;
 
     @Inject
-    public UserManager(JwtStorageProxy localStorage, UserRepository repository)
+    public AccountManager(JwtStorageProxy localStorage, UserRepository repository)
     {
         this.localStorage = localStorage;
         this.repository = repository;

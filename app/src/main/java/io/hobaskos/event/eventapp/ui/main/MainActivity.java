@@ -22,7 +22,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.facebook.login.LoginManager;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
@@ -35,18 +34,10 @@ import javax.inject.Inject;
 
 import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
-import io.hobaskos.event.eventapp.UserManager;
-import io.hobaskos.event.eventapp.data.model.User;
-import io.hobaskos.event.eventapp.data.storage.JwtStorageProxy;
 import io.hobaskos.event.eventapp.ui.base.view.activity.BaseViewStateActivity;
-import io.hobaskos.event.eventapp.ui.base.view.fragment.BaseViewStateFragment;
 import io.hobaskos.event.eventapp.ui.login.LoginActivity;
 import io.hobaskos.event.eventapp.ui.events.EventsFragment;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
-import static android.R.drawable.sym_def_app_icon;
 
 public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
         implements NavigationView.OnNavigationItemSelectedListener, MainView {
@@ -265,28 +256,11 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
     }
 
     @Override
-    public void setNavigationHeaderImage(String url) {
-        View header = navigationView.getHeaderView(0);
-        ImageView imageView = (ImageView) header.findViewById(R.id.nav_header_profile_picture);
-
-        if(url.equals(""))
-        {
-            Log.i("Main", "url.equals('')");
-            imageView.setImageResource(sym_def_app_icon);
-            imageView.setVisibility(View.VISIBLE);
-        }
-        else
-        {
-            // do something else
-        }
-    }
-
-    @Override
     public void hideNavigationHeader() {
         View header = navigationView.getHeaderView(0);
         TextView tvNavHeaderUsername = (TextView) header.findViewById(R.id.nav_header_username);
-        ImageView imageView = (ImageView) header.findViewById(R.id.nav_header_profile_picture);
+        ImageView imHeaderImage = (ImageView) header.findViewById(R.id.nav_header_profile_picture);
+        imHeaderImage.setVisibility(View.GONE);
         tvNavHeaderUsername.setText("");
-        imageView.setVisibility(View.GONE);
     }
 }

@@ -55,12 +55,6 @@ public class UserRepository {
 
     public Observable<User> getAccount()
     {
-        if(localStorage.isSet())
-        {
-            Log.i("Token", "Token is set");
-            Log.i("Token", localStorage.get());
-        }
-
         return service.getAccount();
     }
 }

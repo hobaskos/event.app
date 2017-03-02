@@ -6,7 +6,7 @@ import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
 
 import javax.inject.Inject;
 
-import io.hobaskos.event.eventapp.UserManager;
+import io.hobaskos.event.eventapp.AccountManager;
 import io.hobaskos.event.eventapp.data.model.User;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -18,12 +18,12 @@ import rx.schedulers.Schedulers;
 
 public class MainPresenter extends MvpBasePresenter<MainView> {
 
-    private UserManager userManager;
+    private AccountManager accountManager;
 
     @Inject
-    public MainPresenter(UserManager userManager)
+    public MainPresenter(AccountManager accountManager)
     {
-        this.userManager = userManager;
+        this.accountManager = accountManager;
     }
 
     public void fetchAccountInfo()
@@ -31,7 +31,7 @@ public class MainPresenter extends MvpBasePresenter<MainView> {
 
         Log.i("MainPresenter", "fetchAccountInfo()");
 
-        userManager.getAccount().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Subscriber<User>() {
+        accountManager.getAccount().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Subscriber<User>() {
             @Override
             public void onCompleted() {
 
@@ -51,13 +51,6 @@ public class MainPresenter extends MvpBasePresenter<MainView> {
                 Log.i("User", user.toString());
                 if(isViewAttached())
                 {
-                    if(user.getProfileImageUrl() != null)
-                    {
-                        getView().setNavigationHeaderImage(user.getProfileImageUrl());
-                    } else {
-                        getView().setNavigationHeaderImage("");
-                    }
-
                     getView().setNavigationHeaderText(user.getFirstName() + " " + user.getLastName());
                 }
             }
@@ -66,7 +59,7 @@ public class MainPresenter extends MvpBasePresenter<MainView> {
 
     public void logout()
     {
-        userManager.logout();
+        accountManager.logout();
         getView().hideNavigationHeader();
     }
 
@@ -74,7 +67,7 @@ public class MainPresenter extends MvpBasePresenter<MainView> {
     {
         if(isViewAttached())
         {
-            if(userManager.isLoggedIn())
+            if(accountManager.isLoggedIn())
             {
                 fetchAccountInfo();
                 getView().viewAuthenticatedNavigation();
