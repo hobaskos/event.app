@@ -13,11 +13,11 @@ import okhttp3.Response;
 
 public class JWTTokenInterceptor implements Interceptor {
 
-    private String authToken;
+    private JwtStorageProxy storageProxy;
 
     public JWTTokenInterceptor(JwtStorageProxy storageProxy)
     {
-        authToken = storageProxy.get();
+        this.storageProxy = storageProxy;
     }
 
     @Override
@@ -25,8 +25,10 @@ public class JWTTokenInterceptor implements Interceptor {
 
         Request original = chain.request();
 
+        String authToken = storageProxy.get();
+
         Request.Builder requestBuilder = original.newBuilder()
-                .header("Authorization: Bearer", authToken)
+                .header("Authorization", "Bearer " + authToken)
                 .method(original.method(), original.body());
 
         Request request = requestBuilder.build();

@@ -8,6 +8,7 @@ import io.hobaskos.event.eventapp.data.api.UserService;
 import io.hobaskos.event.eventapp.data.model.JwtToken;
 import io.hobaskos.event.eventapp.data.model.LoginVM;
 import io.hobaskos.event.eventapp.data.model.SocialUserVM;
+import io.hobaskos.event.eventapp.data.model.User;
 import io.hobaskos.event.eventapp.data.storage.JwtStorageProxy;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -50,6 +51,12 @@ public class UserRepository {
                     localStorage.put(t.getIdToken());
                     return null;
                 });
+    }
+
+    public Observable<User> getAccount() {
+        Observable<User> account = service.getAccount();
+
+        return account;
     }
 
 }
