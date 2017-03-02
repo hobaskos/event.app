@@ -12,6 +12,21 @@ public class User {
     private String firstName;
     private String lastName;
     private String email;
+    private String profileImageUrl;
+
+    public String getProfileImageUrl() {
+        return profileImageUrl;
+    }
+
+    public void setProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
+    }
+
+    public boolean hasProfilePicture()
+    {
+        return !profileImageUrl.equals("");
+    }
+
     private LocalDateTime createdDate;
     private LocalDateTime lastModifiedDate;
     private String login;
