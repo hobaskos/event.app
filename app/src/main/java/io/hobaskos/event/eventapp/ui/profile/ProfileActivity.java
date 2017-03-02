@@ -2,8 +2,6 @@ package io.hobaskos.event.eventapp.ui.profile;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TabHost;
 import android.widget.TextView;
@@ -27,8 +25,6 @@ import jp.wasabeef.picasso.transformations.CropCircleTransformation;
  * Created by Magnus on 22.02.2017.
  */
 
-
-
 public class ProfileActivity extends MvpActivity<ProfileView, ProfilePresenter> implements ProfileView {
 
     private static final String TAG = "ProfileActivity";
@@ -51,17 +47,17 @@ public class ProfileActivity extends MvpActivity<ProfileView, ProfilePresenter> 
         tab.setup();
 
         TabHost.TabSpec spec1 = tab.newTabSpec("TAB1");
-        spec1.setIndicator("Påmeldt");
+        spec1.setIndicator(getText(R.string.attending));
         spec1.setContent(R.id.TAB1);
         tab.addTab(spec1);
 
         TabHost.TabSpec spec2 = tab.newTabSpec("TAB2");
-        spec2.setIndicator("Arkivert");
+        spec2.setIndicator(getText(R.string.archived));
         spec2.setContent(R.id.TAB2);
         tab.addTab(spec2);
 
         TabHost.TabSpec spec3 = tab.newTabSpec("TAB3");
-        spec3.setIndicator("Mine");
+        spec3.setIndicator(getText(R.string.mine));
         spec3.setContent(R.id.TAB3);
         tab.addTab(spec3);
 
@@ -81,21 +77,15 @@ public class ProfileActivity extends MvpActivity<ProfileView, ProfilePresenter> 
 
     @Override
     public void setProfileData(User user) {
-        Log.i(ProfileActivity.TAG, "Name: " + user.getFirstName() + " " + user.getLastName());
         userProfileName.setText(user.getFirstName() + " " + user.getLastName());
 
         if(user.hasProfilePicture())
         {
-            Log.i(TAG, "Fetching user profile picture.");
             Picasso.with(getApplicationContext())
                     .load(user.getProfileImageUrl())
                     .transform(new CropCircleTransformation())
                     .fit()
                     .into(userProfilePhoto);
-        } else {
-            Log.i(TAG, "User does not have profile picture");
-            // add some generic photo
         }
-
     }
 }

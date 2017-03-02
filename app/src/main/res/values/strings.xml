@@ -24,4 +24,8 @@
     <string name="login_password_error">Password is 4 – 10 characters.</string>
     <string name="login_skip">Use without account</string>
     <string name="authenticating">Authenticating…</string>
+    <string name="attending">Attending</string>
+    <string name="archived">Archived</string>
+    <string name="mine">Mine</string>
+
 </resources>
