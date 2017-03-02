@@ -12,9 +12,6 @@ import com.squareup.picasso.Picasso;
 
 import javax.inject.Inject;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.model.User;
@@ -29,14 +26,11 @@ public class ProfileActivity extends MvpActivity<ProfileView, ProfilePresenter> 
 
     private static final String TAG = "ProfileActivity";
 
-    @BindView(R.id.user_profile_name)
-    TextView userProfileName;
-
-    @BindView(R.id.user_profile_photo)
-    ImageView userProfilePhoto;
+    private TextView userProfileName;
+    private ImageView userProfilePhoto;
 
     @Inject
-    ProfilePresenter presenter;
+    public ProfilePresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +57,6 @@ public class ProfileActivity extends MvpActivity<ProfileView, ProfilePresenter> 
 
         userProfileName = (TextView) findViewById(R.id.user_profile_name);
         userProfilePhoto = (ImageView) findViewById(R.id.user_profile_photo);
-        ButterKnife.bind(this);
 
         presenter.refreshProfileData();
     }
