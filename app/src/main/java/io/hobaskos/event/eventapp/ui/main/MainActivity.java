@@ -36,6 +36,7 @@ import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.ui.base.view.activity.BaseViewStateActivity;
 import io.hobaskos.event.eventapp.ui.login.LoginActivity;
+import io.hobaskos.event.eventapp.ui.profile.ProfileActivity;
 import io.hobaskos.event.eventapp.ui.events.EventsFragment;
 
 
@@ -164,7 +165,7 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
             case R.id.nav_friends:
                 break;
             case R.id.nav_profile:
-                startActivity(new Intent(this, MainActivity.class));
+                startActivity(new Intent(this, ProfileActivity.class));
                 break;
             case R.id.nav_login:
                 startActivity(new Intent(this, LoginActivity.class));
