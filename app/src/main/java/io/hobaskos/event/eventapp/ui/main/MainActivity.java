@@ -25,6 +25,7 @@ import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.service.JwtStorageProxy;
 import io.hobaskos.event.eventapp.ui.events.EventsFragment;
 import io.hobaskos.event.eventapp.ui.login.LoginActivity;
+import io.hobaskos.event.eventapp.ui.profile.ProfileActivity;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -135,6 +136,7 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_friends:
                 break;
             case R.id.nav_profile:
+                startActivity(new Intent(this, ProfileActivity.class));
                 break;
             case R.id.nav_login:
                 startActivity(new Intent(this, LoginActivity.class));

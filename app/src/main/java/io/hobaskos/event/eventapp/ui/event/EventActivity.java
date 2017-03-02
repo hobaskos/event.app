@@ -38,9 +38,6 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
 
     private Long eventId;
 
-    //@BindView(R.id.event_title1) TextView eventTitle;
-
-    //private TextView eventTitle;
     private TextView eventTitle;
     private TextView date;
     private ImageView eventImg;
