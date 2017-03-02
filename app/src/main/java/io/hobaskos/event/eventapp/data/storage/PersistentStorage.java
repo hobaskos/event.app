@@ -1,4 +1,4 @@
-package io.hobaskos.event.eventapp.data;
+package io.hobaskos.event.eventapp.data.storage;
 
 import android.content.SharedPreferences;
 
