@@ -5,7 +5,7 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import io.hobaskos.event.eventapp.App;
-import io.hobaskos.event.eventapp.AccountManager;
+import io.hobaskos.event.eventapp.data.AccountManager;
 import io.hobaskos.event.eventapp.data.repository.UserRepository;
 import io.hobaskos.event.eventapp.data.storage.JwtStorageProxy;
 import io.hobaskos.event.eventapp.data.storage.PersistentStorage;

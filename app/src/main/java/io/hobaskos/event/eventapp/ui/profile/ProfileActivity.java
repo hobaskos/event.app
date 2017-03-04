@@ -26,9 +26,19 @@ public class ProfileActivity extends MvpActivity<ProfileView, ProfilePresenter> 
 
     private static final String TAG = "ProfileActivity";
 
+    /**
+     *
+     */
     private TextView userProfileName;
+
+    /**
+     *
+     */
     private ImageView userProfilePhoto;
 
+    /**
+     *
+     */
     @Inject
     public ProfilePresenter presenter;
 
@@ -61,6 +71,10 @@ public class ProfileActivity extends MvpActivity<ProfileView, ProfilePresenter> 
         presenter.refreshProfileData();
     }
 
+    /**
+     *
+     * @return
+     */
     @NonNull
     @Override
     public ProfilePresenter createPresenter() {
@@ -68,6 +82,10 @@ public class ProfileActivity extends MvpActivity<ProfileView, ProfilePresenter> 
         return presenter;
     }
 
+    /**
+     *
+     * @param user
+     */
     @Override
     public void setProfileData(User user) {
         userProfileName.setText(user.getFirstName() + " " + user.getLastName());
