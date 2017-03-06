@@ -64,15 +64,14 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
         App.getInst().getComponent().inject(this);
         setContentView(R.layout.activity_main);
 
-        if (googleServicesAvailable()) {
-            Toast.makeText(this, "Google Play Services er på plass!", Toast.LENGTH_LONG).show();
+        if(!googleServicesAvailable()) {
+            Log.i("MainActivity", "Google services is not working");
         }
 
         // Find views:
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
-        //viewPager = (ViewPager) findViewById(R.id.view_pager);
 
         hideNavigationHeader();
         presenter.attachView(this);
@@ -89,13 +88,16 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
 
         navigationView.setNavigationItemSelectedListener(this);
 
-        // Temp solution, Initial fragment:
-        //FragmentManager fragmentManager = getSupportFragmentManager();
-        //fragmentManager.beginTransaction().replace(R.id.content_frame, new EventsFragment()).commit();
-
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+
+        // Temp solution, Initial fragment:
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.main_pane, new EventsFragment())
+                .commit();
+
     }
 
     @NonNull
