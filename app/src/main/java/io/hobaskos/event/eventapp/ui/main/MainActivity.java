@@ -64,8 +64,7 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
         App.getInst().getComponent().inject(this);
         setContentView(R.layout.activity_main);
 
-        if(!googleServicesAvailable())
-        {
+        if(!googleServicesAvailable()) {
             Log.i("MainActivity", "Google services is not working");
         }
 
