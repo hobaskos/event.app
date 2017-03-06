@@ -8,11 +8,11 @@
         <item
             android:id="@+id/nav_events"
             android:icon="@drawable/ic_search_white_24dp"
-            android:title="Search Events" />
+            android:title="@string/search_event" />
         <item
             android:id="@+id/nav_login"
             android:icon="@drawable/ic_person_black_24dp"
-            android:title="Login" />
+            android:title="@string/login" />
     </group>
 
     <group
@@ -22,19 +22,15 @@
         <item
             android:id="@+id/nav_create_event"
             android:icon="@drawable/ic_event_black_24dp"
-            android:title="Create Event" />
-        <item
-            android:id="@+id/nav_friends"
-            android:icon="@drawable/ic_people_black_24dp"
-            android:title="Friends" />
+            android:title="@string/create_event" />
         <item
             android:id="@+id/nav_profile"
             android:icon="@drawable/ic_person_black_24dp"
-            android:title="My Profile" />
+            android:title="@string/my_profile" />
         <item
             android:id="@+id/nav_logout"
             android:icon="@drawable/ic_person_black_24dp"
-            android:title="Logout" />
+            android:title="@string/logout" />
 
     </group>
 </menu>

@@ -161,8 +161,6 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
                 break;
             case R.id.nav_create_event:
                 break;
-            case R.id.nav_friends:
-                break;
             case R.id.nav_profile:
                 startActivity(new Intent(this, ProfileActivity.class));
                 break;
