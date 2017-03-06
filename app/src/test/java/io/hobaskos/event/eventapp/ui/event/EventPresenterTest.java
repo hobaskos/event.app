@@ -9,6 +9,8 @@ import org.mockito.MockitoAnnotations;
 
 import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.data.repository.EventRepository;
+import io.hobaskos.event.eventapp.ui.event.details.EventPresenter;
+import io.hobaskos.event.eventapp.ui.event.details.EventView;
 import rx.Observable;
 import rx.Scheduler;
 import rx.android.plugins.RxAndroidPlugins;

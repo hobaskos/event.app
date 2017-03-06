@@ -4,9 +4,8 @@ import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
 
 import javax.inject.Inject;
 
-import io.hobaskos.event.eventapp.AccountManager;
+import io.hobaskos.event.eventapp.data.AccountManager;
 import io.hobaskos.event.eventapp.data.model.User;
-import retrofit2.adapter.rxjava.HttpException;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;

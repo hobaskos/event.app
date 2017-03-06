@@ -1,4 +1,4 @@
-package io.hobaskos.event.eventapp.ui.events;
+package io.hobaskos.event.eventapp.ui.event.list;
 
 import java.util.List;
 

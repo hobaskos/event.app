@@ -1,4 +1,4 @@
-package io.hobaskos.event.eventapp.ui.events;
+package io.hobaskos.event.eventapp.ui.event.list;
 
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
@@ -132,7 +132,7 @@ public class EventsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
 
     public class EventViewHolder extends RecyclerView.ViewHolder {
-        TextView eventTitle, eventLocation, eventDate;
+        public TextView eventTitle, eventLocation, eventDate;
         //ImageView background;
 
         public EventViewHolder(View itemView) {

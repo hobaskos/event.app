@@ -6,7 +6,7 @@ package io.hobaskos.event.eventapp.ui.main;
 
         import javax.inject.Inject;
 
-        import io.hobaskos.event.eventapp.AccountManager;
+        import io.hobaskos.event.eventapp.data.AccountManager;
         import io.hobaskos.event.eventapp.data.model.User;
         import rx.Subscriber;
         import rx.android.schedulers.AndroidSchedulers;
