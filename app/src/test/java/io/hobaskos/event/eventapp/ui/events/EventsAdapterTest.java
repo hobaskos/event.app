@@ -21,6 +21,8 @@ import java.util.List;
 import io.hobaskos.event.eventapp.BuildConfig;
 import io.hobaskos.event.eventapp.TestApp;
 import io.hobaskos.event.eventapp.data.model.Event;
+import io.hobaskos.event.eventapp.ui.event.list.EventsAdapter;
+import io.hobaskos.event.eventapp.ui.event.list.EventsPresentationModel;
 
 import static org.assertj.android.recyclerview.v7.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThat;

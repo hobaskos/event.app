@@ -1,12 +1,7 @@
 package io.hobaskos.event.eventapp.ui.events;
 
-import android.content.Intent;
-import android.content.pm.ResolveInfo;
-import android.provider.Settings;
 import android.support.v7.widget.RecyclerView;
 import android.test.UiThreadTest;
-
-import com.facebook.FacebookActivity;
 
 import org.junit.After;
 import org.junit.Before;
@@ -15,7 +10,6 @@ import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
-import org.robolectric.res.builder.RobolectricPackageManager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,6 +19,9 @@ import io.hobaskos.event.eventapp.BuildConfig;
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.TestApp;
 import io.hobaskos.event.eventapp.data.model.Event;
+import io.hobaskos.event.eventapp.ui.event.list.EventsAdapter;
+import io.hobaskos.event.eventapp.ui.event.list.EventsFragment;
+import io.hobaskos.event.eventapp.ui.event.list.EventsPresentationModel;
 import io.hobaskos.event.eventapp.ui.main.MainActivity;
 
 import static org.junit.Assert.assertEquals;

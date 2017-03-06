@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -12,13 +11,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,7 +34,7 @@ import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.ui.base.view.activity.BaseViewStateActivity;
 import io.hobaskos.event.eventapp.ui.login.LoginActivity;
 import io.hobaskos.event.eventapp.ui.profile.ProfileActivity;
-import io.hobaskos.event.eventapp.ui.events.EventsFragment;
+import io.hobaskos.event.eventapp.ui.event.list.EventsFragment;
 
 
 public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>

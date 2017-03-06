@@ -45,7 +45,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.profile.ProfileActivity" />
-        <activity android:name=".ui.event.EventActivity" />
+        <activity android:name=".ui.event.details.EventActivity" />
         <activity android:name=".ui.createevent.CreateEventActivity" />
         <activity
             android:name=".ui.login.LoginActivity"
@@ -86,7 +86,7 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".ui.event.MapsActivity"
+            android:name=".ui.event.details.MapsActivity"
             android:label="@string/title_activity_maps">
         </activity>
 

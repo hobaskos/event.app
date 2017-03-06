@@ -1,4 +1,4 @@
-package io.hobaskos.event.eventapp.ui.event;
+package io.hobaskos.event.eventapp.ui.event.details;
 
 import android.os.Parcel;
 

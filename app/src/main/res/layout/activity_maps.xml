@@ -5,4 +5,4 @@
     android:name="com.google.android.gms.maps.MapFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="io.hobaskos.event.eventapp.ui.event.MapsActivity" />
+    tools:context="io.hobaskos.event.eventapp.ui.event.details.MapsActivity" />
