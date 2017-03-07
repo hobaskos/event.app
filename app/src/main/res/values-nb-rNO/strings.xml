@@ -30,4 +30,16 @@
     <string name="create_event">Opprett Event</string>
     <string name="my_profile">Min Profil</string>
     <string name="logout">Logg ut</string>
+    <string name="create_event_title">Opprett Event</string>
+    <string name="title">Tittel</string>
+    <string name="description">Beskrivelse</string>
+    <string name="image_url">Bildelenke</string>
+    <string name="category">Kategori</string>
+    <string name="submit">Send</string>
+    <string name="save">Lagre</string>
+    <string name="location">Lokasjon</string>
+    <string name="add">Legg til</string>
+    <string name="cancel">Avbryt</string>
+    <string name="add_location">+Lokasjon</string>
+
 </resources>

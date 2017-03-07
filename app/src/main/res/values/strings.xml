@@ -31,4 +31,15 @@
     <string name="create_event">Create Event</string>
     <string name="my_profile">My Profile</string>
     <string name="logout">Logout</string>
+    <string name="create_event_title">Create Event</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
+    <string name="image_url">Image Url</string>
+    <string name="categories">Categories</string>
+    <string name="submit">Submit</string>
+    <string name="save">Save</string>
+    <string name="location">Location</string>
+    <string name="add">Add</string>
+    <string name="cancel">Cancel</string>
+    <string name="add_location">+Location</string>
 </resources>
