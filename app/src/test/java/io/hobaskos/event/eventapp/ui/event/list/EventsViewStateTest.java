@@ -1,4 +1,4 @@
-package io.hobaskos.event.eventapp.ui.events;
+package io.hobaskos.event.eventapp.ui.event.list;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -7,10 +7,6 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import io.hobaskos.event.eventapp.ui.event.list.EventsPresentationModel;
-import io.hobaskos.event.eventapp.ui.event.list.EventsView;
-import io.hobaskos.event.eventapp.ui.event.list.EventsViewState;
 
 import static org.mockito.ArgumentMatchers.anyListOf;
 import static org.mockito.Mockito.verify;
