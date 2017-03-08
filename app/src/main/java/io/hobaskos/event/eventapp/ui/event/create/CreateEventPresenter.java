@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -11,6 +12,7 @@ import javax.inject.Inject;
 import io.hobaskos.event.eventapp.data.AccountManager;
 import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.data.model.EventCategory;
+import io.hobaskos.event.eventapp.data.model.Location;
 import io.hobaskos.event.eventapp.data.model.User;
 import io.hobaskos.event.eventapp.data.repository.EventCategoryRepository;
 import io.hobaskos.event.eventapp.data.repository.EventRepository;
@@ -39,8 +41,6 @@ public class CreateEventPresenter extends MvpBasePresenter<CreateEventView> {
         this.eventCategoryRepository = eventCategoryRepository;
         this.accountManager = accountManager;
 
-        // fetch Account information and store it inside AccountManager.User
-        //this.accountManager.refresh();
     }
 
     protected void getEventCategories()
@@ -72,21 +72,22 @@ public class CreateEventPresenter extends MvpBasePresenter<CreateEventView> {
                         }
                     }
                 });
-
     }
 
     protected void create(Event event)
     {
-        if(!accountManager.isLoggedIn())
-        {
+
+        if(isViewAttached()) {
+            getView().showLoader();
+        }
+
+        if(!accountManager.isLoggedIn()) {
             // bla bla
             return;
         }
 
         // check if Account information / username exists
 
-
     }
-
 
 }

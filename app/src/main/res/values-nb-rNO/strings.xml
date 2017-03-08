@@ -32,7 +32,10 @@
     <string name="logout">Logg ut</string>
     <string name="create_event_title">Opprett Event</string>
     <string name="title">Tittel</string>
-    <string name="description">Beskrivelse</string>
+    <string name="title_event">Tittel på eventet</string>
+    <string name="title_location">Tittel på lokasjonen</string>
+    <string name="description_event">Beskrivelse av eventet</string>
+    <string name="description_location">Beskrivelse av lokasjonen</string>
     <string name="image_url">Bildelenke</string>
     <string name="category">Kategori</string>
     <string name="submit">Send</string>
@@ -41,5 +44,10 @@
     <string name="add">Legg til</string>
     <string name="cancel">Avbryt</string>
     <string name="add_location">+Lokasjon</string>
-
+    <string name="create_event_location_list_empty">Listen er tom.</string>
+    <string name="saving">Lagrer...</string>
+    <string name="locations_name_is_required">Navn feltet er påkrevd.</string>
+    <string name="locations_description_is_required">Beskrivelses feltet er påkrevd.</string>
+    <string name="locations_location_is_required">Lokasjons feltet er påkrevd.</string>
+    <string name="add_location_title">Legg til lokasjon</string>
 </resources>
