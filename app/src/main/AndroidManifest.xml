@@ -44,6 +44,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.event.create.CreateEventActivity" />
         <activity android:name=".ui.profile.ProfileActivity" />
         <activity android:name=".ui.event.details.EventActivity" />
         <activity

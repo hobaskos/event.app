@@ -31,4 +31,27 @@
     <string name="create_event">Create Event</string>
     <string name="my_profile">My Profile</string>
     <string name="logout">Logout</string>
+    <string name="create_event_title">Create Event</string>
+    <string name="title_event">Title of the Event</string>
+    <string name="title_location">Title of the Location</string>
+    <string name="description_event">Description about the Event</string>
+    <string name="description_location">Description about the Location</string>
+    <string name="image_url">Image Url</string>
+    <string name="categories">Categories</string>
+    <string name="submit">Submit</string>
+    <string name="save">Save</string>
+    <string name="location">Location</string>
+    <string name="add">Add</string>
+    <string name="cancel">Cancel</string>
+    <string name="add_location">+Location</string>
+    <string name="create_event_location_list_empty">List is empty.s</string>
+    <string name="saving">Saving...</string>
+    <string name="locations_name_is_required">Name field is required.</string>
+    <string name="locations_description_is_required">Description field is required.</string>
+    <string name="locations_location_is_required">Location field is required.</string>
+    <string name="add_location_title">Add location</string>
+    <string name="from_date">Start date</string>
+    <string name="from_time">Start time</string>
+    <string name="to_date">To date</string>
+    <string name="to_time">To time</string>
 </resources>
