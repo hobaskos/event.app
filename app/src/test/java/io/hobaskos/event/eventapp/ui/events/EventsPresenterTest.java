@@ -11,9 +11,9 @@ import org.mockito.MockitoAnnotations;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.hobaskos.event.eventapp.data.PersistentStorage;
 import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.data.repository.EventRepository;
+import io.hobaskos.event.eventapp.data.storage.PersistentStorage;
 import rx.Observable;
 import rx.Scheduler;
 import rx.android.plugins.RxAndroidPlugins;
