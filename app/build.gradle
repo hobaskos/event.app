@@ -130,4 +130,3 @@ dependencies {
 
     provided 'javax.annotation:jsr250-api:1.0'
 }
-
