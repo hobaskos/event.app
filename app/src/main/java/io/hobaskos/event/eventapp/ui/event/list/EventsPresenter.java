@@ -1,4 +1,4 @@
-package io.hobaskos.event.eventapp.ui.events;
+package io.hobaskos.event.eventapp.ui.event.list;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +9,7 @@ import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.data.repository.EventRepository;
 import io.hobaskos.event.eventapp.data.storage.PersistentStorage;
 import io.hobaskos.event.eventapp.ui.base.presenter.BaseRxLcePresenter;
-import io.hobaskos.event.eventapp.ui.events.filter.FilterEventsPresenter;
+import io.hobaskos.event.eventapp.ui.event.filter.FilterEventsPresenter;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;

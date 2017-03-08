@@ -15,7 +15,7 @@ import io.hobaskos.event.eventapp.BuildConfig;
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.TestApp;
 import io.hobaskos.event.eventapp.data.model.Event;
-import io.hobaskos.event.eventapp.ui.event.EventActivity;
+import io.hobaskos.event.eventapp.ui.event.details.EventActivity;
 import rx.observers.TestSubscriber;
 
 import static org.hamcrest.CoreMatchers.equalTo;

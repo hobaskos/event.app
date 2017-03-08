@@ -1,4 +1,4 @@
-package io.hobaskos.event.eventapp.ui.events.filter;
+package io.hobaskos.event.eventapp.ui.event.filter;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;

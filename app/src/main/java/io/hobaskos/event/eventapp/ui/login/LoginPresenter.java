@@ -28,8 +28,7 @@ public class LoginPresenter extends MvpBasePresenter<LoginView> {
     }
 
     // Username/Password-login
-    public void login(LoginVM loginVM)
-    {
+    public void login(LoginVM loginVM) {
         Log.i("LoginPresenter", "Inside login(LoginVM loginVM)");
 
         userRepository.login(loginVM)
@@ -59,19 +58,32 @@ public class LoginPresenter extends MvpBasePresenter<LoginView> {
                 });
     }
 
-    public void login(SocialUserVM socialLoginVM)
-    {
-        // Todo: login user at server
+    public void login(SocialUserVM socialLoginVM) {
+        userRepository.login(socialLoginVM)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Void>() {
+                    @Override
+                    public void onCompleted() {
 
-        if(userRepository.login(socialLoginVM))
-        {
-            getView().showSuccess(new Response(true, ""));
-        }
-        else
-        {
-            getView().showError(new Response(false, "Error"));
-        }
+                    }
 
+                    @Override
+                    public void onError(Throwable e) {
+                        if(isViewAttached())
+                        {
+                            getView().showError(new Response(false, e.getMessage()));
+                        }
+                    }
+
+                    @Override
+                    public void onNext(Void aVoid) {
+                        if(isViewAttached())
+                        {
+                            getView().showSuccess(new Response(true, ""));
+                        }
+                    }
+                });
     }
 
 }

@@ -13,6 +13,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -98,6 +99,7 @@ dependencies {
     testCompile "org.robolectric:shadows-support-v4:${robolectric_version}"
     testCompile "org.mockito:mockito-core:${mockito_version}"
     testCompile "com.github.tomakehurst:wiremock-standalone:${wiremock_version}"
+    testCompile "org.robolectric:shadows-multidex:${robolectric_version}"
     testCompile 'junit:junit:4.12'
     testCompile 'org.khronos:opengl-api:gl1.1-android-2.1_r1'
 
@@ -109,6 +111,8 @@ dependencies {
 
     // Picasso Image Downloader
     compile 'com.squareup.picasso:picasso:2.5.0'
+    compile 'jp.wasabeef:picasso-transformations:2.1.0'
+    compile 'jp.co.cyberagent.android.gpuimage:gpuimage-library:1.4.1'
 
     //Google Maps
     compile 'joda-time:joda-time:2.9.7'
@@ -118,14 +122,11 @@ dependencies {
     compile 'com.android.support:support-v4:25.1.0'
     compile 'com.android.support:design:25.1.0'
     compile 'com.android.support:gridlayout-v7:25.1.0'
-    compile 'com.google.android.gms:play-services:9.8.0'
+    compile 'com.google.android.gms:play-services:10.0.1'
     compile 'com.google.maps.android:android-maps-utils:0.4'
 
     // Facebook
     compile 'com.facebook.android:facebook-android-sdk:[4,5)'
-
-
-
 
     provided 'javax.annotation:jsr250-api:1.0'
 }

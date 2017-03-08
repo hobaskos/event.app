@@ -1,4 +1,4 @@
-package io.hobaskos.event.eventapp.ui.event;
+package io.hobaskos.event.eventapp.ui.event.details;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,13 +10,11 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -38,9 +36,6 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
 
     private Long eventId;
 
-    //@BindView(R.id.event_title1) TextView eventTitle;
-
-    //private TextView eventTitle;
     private TextView eventTitle;
     private TextView date;
     private ImageView eventImg;

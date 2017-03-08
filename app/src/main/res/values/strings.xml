@@ -6,16 +6,29 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="description_label">Beskrivelse</string>
+    <string name="description_label">Description</string>
     <string name="button_name">+</string>
-    <string name="interested_label">Interessert</string>
-    <string name="attending_label">Skal</string>
-    <string name="friends_label">Venner</string>
+    <string name="interested_label">Interested</string>
+    <string name="attending_label">Going</string>
+    <string name="friends_label">Friends</string>
     <string name="btn_login">Login</string>
     <string name="title_activity_maps">Map</string>
-    <string name="email">Epost</string>
-    <string name="password">Passord</string>
-    <string name="login">Logg inn</string>
-    <string name="login_success">Innlogging velykket</string>
-    <string name="login_failure">Problemer med innlogging</string>
+    <string name="title_activity_prifile">PrifileActivity</string>
+    <string name="email">Email</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="login_success">You has been successfully logged in.</string>
+    <string name="login_failure">Could not log in. Please try again!</string>
+    <string name="login_username_empty">Username is a required field.</string>
+    <string name="login_password_error">Password is 4 – 10 characters.</string>
+    <string name="login_skip">Use without account</string>
+    <string name="authenticating">Authenticating…</string>
+    <string name="attending">Attending</string>
+    <string name="archived">Archived</string>
+    <string name="mine">Mine</string>
+    <string name="search_event">Events</string>
+    <string name="create_event">Create Event</string>
+    <string name="my_profile">My Profile</string>
+    <string name="logout">Logout</string>
 </resources>

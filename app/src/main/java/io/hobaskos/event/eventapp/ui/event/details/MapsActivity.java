@@ -1,6 +1,5 @@
-package io.hobaskos.event.eventapp.ui.event;
+package io.hobaskos.event.eventapp.ui.event.details;
 
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
@@ -24,19 +23,16 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.android.gms.nearby.messages.PublishCallback;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import io.hobaskos.event.eventapp.Manifest;
 import io.hobaskos.event.eventapp.R;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,

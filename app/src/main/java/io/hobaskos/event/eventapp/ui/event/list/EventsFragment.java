@@ -1,4 +1,4 @@
-package io.hobaskos.event.eventapp.ui.events;
+package io.hobaskos.event.eventapp.ui.event.list;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,8 +25,8 @@ import butterknife.BindView;
 import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.ui.base.view.fragment.BaseLceViewStateFragment;
-import io.hobaskos.event.eventapp.ui.event.EventActivity;
-import io.hobaskos.event.eventapp.ui.events.filter.FilterEventsFragment;
+import io.hobaskos.event.eventapp.ui.event.filter.FilterEventsFragment;
+import io.hobaskos.event.eventapp.ui.event.details.EventActivity;
 
 /**
  * Created by andre on 2/13/2017.
