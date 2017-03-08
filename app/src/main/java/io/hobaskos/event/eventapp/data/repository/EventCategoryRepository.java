@@ -33,7 +33,7 @@ public class EventCategoryRepository implements BaseRepository<EventCategory, Lo
         return eventCategoryService.getEventCategory(id);
     }
 
-    @Override
+
     public Observable<List<EventCategory>> search(int page, double lat, double lon, String distance) {
         throw new UnsupportedOperationException();
     }
