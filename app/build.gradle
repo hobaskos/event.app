@@ -5,7 +5,7 @@ apply plugin: 'jacoco-android'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.1"
+    buildToolsVersion "25.0.2"
     defaultConfig {
         applicationId "io.hobaskos.event.eventapp"
         minSdkVersion 21
@@ -49,10 +49,11 @@ dependencies {
     })
 
     // Android Support:
-    compile 'com.android.support:appcompat-v7:25.1.0'
-    compile 'com.android.support:recyclerview-v7:25.1.0'
-    compile 'com.android.support:support-v4:25.1.0'
-    compile 'com.android.support:design:25.1.0'
+    compile 'com.android.support:appcompat-v7:25.2.0'
+    compile 'com.android.support:recyclerview-v7:25.2.0'
+    compile 'com.android.support:support-v4:25.2.0'
+    compile 'com.android.support:design:25.2.0'
+    compile 'com.android.support:gridlayout-v7:25.2.0'
 
     // Mosby:
     compile "com.hannesdorfmann.mosby:mvp:${mosby_version}"
@@ -103,6 +104,8 @@ dependencies {
     testCompile 'junit:junit:4.12'
     testCompile 'org.khronos:opengl-api:gl1.1-android-2.1_r1'
 
+    testCompile 'com.android.support:support-annotations:25.2.0'
+    testCompile 'com.android.support:support-compat:25.2.0'
     testCompile 'com.squareup.assertj:assertj-android:1.1.1'
     testCompile('com.squareup.assertj:assertj-android-recyclerview-v7:1.1.1') {
         exclude group: 'com.android.support', module: 'recyclerview-v7'
@@ -117,17 +120,17 @@ dependencies {
     //Google Maps
     compile 'joda-time:joda-time:2.9.7'
     compile 'com.fatboyindustrial.gson-jodatime-serialisers:gson-jodatime-serialisers:1.5.0'
-    compile 'com.android.support:appcompat-v7:25.1.0'
-    compile 'com.android.support:recyclerview-v7:25.1.0'
-    compile 'com.android.support:support-v4:25.1.0'
-    compile 'com.android.support:design:25.1.0'
-    compile 'com.android.support:gridlayout-v7:25.1.0'
-    compile 'com.google.android.gms:play-services:10.0.1'
+    compile 'com.google.android.gms:play-services:10.2.0'
     compile 'com.google.maps.android:android-maps-utils:0.4'
 
     // Facebook
     compile 'com.facebook.android:facebook-android-sdk:[4,5)'
 
     provided 'javax.annotation:jsr250-api:1.0'
+
+    // Material Date/Time Picker
+    compile 'co.infinum:materialdatetimepicker-support:3.1.3'
+
+
 }
 

@@ -9,7 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
+
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
+import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
+
+import java.util.Calendar;
 
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.model.GeoPoint;
@@ -19,12 +23,30 @@ import io.hobaskos.event.eventapp.data.model.Location;
  * Created by hansp on 07.03.2017.
  */
 
-public class AddLocationFragment extends Fragment {
+public class AddLocationFragment extends Fragment implements
+        TimePickerDialog.OnTimeSetListener,
+        DatePickerDialog.OnDateSetListener {
 
+    private Context context;
     private LocationListener activity;
     private EditText etTitle;
     private EditText etDescription;
+    private EditText etFromDate;
+    private EditText etToDate;
+    private EditText etFromTime;
+    private EditText etToTime;
     private Button btnAdd;
+
+    private DatePickerState datePickerState;
+    private TimePickerState timePickerState;
+
+    private enum DatePickerState {
+        TO, FROM
+    }
+
+    private enum TimePickerState {
+        TO, FROM
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,6 +61,44 @@ public class AddLocationFragment extends Fragment {
 
         etTitle = (EditText) view.findViewById(R.id.fragment_add_location_field_title);
         etDescription = (EditText) view.findViewById(R.id.fragment_add_location_field_description);
+
+        etFromTime = (EditText) view.findViewById(R.id.fragment_add_location_field_from_time);
+        etFromTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                timePickerState = TimePickerState.FROM;
+                showTimePickerDialog();
+            }
+        });
+
+        etFromDate = (EditText) view.findViewById(R.id.fragment_add_location_field_from_date);
+        etFromDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                datePickerState = DatePickerState.FROM;
+                showDatePickerDialog();
+            }
+        });
+
+        etToTime = (EditText) view.findViewById(R.id.fragment_add_location_field_to_time);
+        etToTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                timePickerState = TimePickerState.TO;
+                showTimePickerDialog();
+            }
+        });
+
+        etToDate = (EditText) view.findViewById(R.id.fragment_add_location_field_to_date);
+        etToDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                datePickerState = DatePickerState.TO;
+                showDatePickerDialog();
+            }
+        });
+
+
         btnAdd = (Button) view.findViewById(R.id.fragment_add_location_button_add);
         btnAdd.setOnClickListener(v -> callback());
 
@@ -49,6 +109,7 @@ public class AddLocationFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        this.context = context;
         // Verify that the host activity implements the callback interface
         try {
             // Instantiate the NoticeDialogListener so we can send events to the host
@@ -63,13 +124,15 @@ public class AddLocationFragment extends Fragment {
     private void callback() {
         if(validate())
         {
-            Location location = new Location();
-            location.setName(etTitle.getText().toString());
-            location.setDescription(etDescription.getText().toString());
-            location.setGeoPoint(new GeoPoint(59.91, 10.45));
 
-            activity.addLocation(location);
         }
+
+        Location location = new Location();
+        location.setName(etTitle.getText().toString());
+        location.setDescription(etDescription.getText().toString());
+        location.setGeoPoint(new GeoPoint(59.91, 10.45));
+
+        activity.addLocation(location);
     }
 
     private boolean validate() {
@@ -98,4 +161,47 @@ public class AddLocationFragment extends Fragment {
         return valid;
     }
 
+    @Override
+    public void onTimeSet(TimePickerDialog view, int hourOfDay, int minute, int second) {
+        switch (timePickerState) {
+            case FROM:
+                etFromTime.setText(hourOfDay + ":" + minute);
+                break;
+            case TO:
+                etToTime.setText(hourOfDay + " : " + minute);
+                break;
+        }
+    }
+
+    @Override
+    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+        switch (datePickerState) {
+            case FROM:
+                etFromDate.setText(dayOfMonth + " / " + monthOfYear + " - " + year);
+                break;
+            case TO:
+                etToDate.setText(dayOfMonth + " / " + monthOfYear + " - " + year);
+                break;
+        }
+    }
+
+    private void showTimePickerDialog()
+    {
+        Calendar now = Calendar.getInstance();
+        TimePickerDialog tpd = TimePickerDialog.newInstance(AddLocationFragment.this,
+                now.get(Calendar.HOUR),
+                now.get(Calendar.MINUTE), true);
+        tpd.show(getFragmentManager(), "TimePickerDialog");
+    }
+
+    private void showDatePickerDialog()
+    {
+        Calendar now = Calendar.getInstance();
+        DatePickerDialog dpd = DatePickerDialog.newInstance(AddLocationFragment.this,
+                now.get(Calendar.YEAR),
+                now.get(Calendar.MONTH),
+                now.get(Calendar.DAY_OF_MONTH));
+        dpd.show(getFragmentManager(), "DatePickerDialog");
+
+    }
 }

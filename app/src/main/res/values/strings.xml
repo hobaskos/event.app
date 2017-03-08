@@ -50,4 +50,8 @@
     <string name="locations_description_is_required">Description field is required.</string>
     <string name="locations_location_is_required">Location field is required.</string>
     <string name="add_location_title">Add location</string>
+    <string name="from_date">Start date</string>
+    <string name="from_time">Start time</string>
+    <string name="to_date">To date</string>
+    <string name="to_time">To time</string>
 </resources>

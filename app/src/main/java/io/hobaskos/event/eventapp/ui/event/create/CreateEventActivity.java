@@ -191,6 +191,7 @@ public class CreateEventActivity extends MvpActivity<CreateEventView, CreateEven
     public void addLocation(Location location) {
         //this.locations.add(location);
         onLocationListUpdated(location);
+
         Toast.makeText(this, "Location is added", Toast.LENGTH_SHORT).show();
     }
 }
