@@ -56,8 +56,10 @@ public class FilterEventsFragment extends BaseFragment
     String location;
     double lat;
     double lon;
+    long selectedCategoryId;
 
     ArrayList<EventCategory> categories;
+    ArrayAdapter<EventCategory> spinnerAdapter;
 
     @Inject
     public FilterEventsPresenter presenter;
@@ -122,11 +124,14 @@ public class FilterEventsFragment extends BaseFragment
         spinner = (Spinner) getView().findViewById(R.id.categorySpinner);
         button = (Button) getView().findViewById(R.id.applyFiltersButton);
 
-        presenter.loadCategories();
-
         button.setOnClickListener(v -> {
             presenter.storeDistance(seekBarProgress);
             presenter.storeLocation(location, lat, lon);
+
+            if(!(spinner.getSelectedItem() == null)) {
+                EventCategory category = (EventCategory) spinner.getSelectedItem();
+                presenter.storeCategoryId(category.getId());
+            }
         });
 
 
@@ -151,6 +156,8 @@ public class FilterEventsFragment extends BaseFragment
 
         presenter.loadDistance();
         presenter.loadLocation();
+        presenter.loadCategoryId();
+        presenter.loadCategories();
     }
 
     @Override
@@ -177,17 +184,30 @@ public class FilterEventsFragment extends BaseFragment
     @Override
     public void setCategories(List<EventCategory> categories) {
         this.categories = new ArrayList<>();
+
+        // Create category object representing all categories:
+        EventCategory allCategoriesOption = new EventCategory("All", 0);
+
+        this.categories.add(allCategoriesOption);
         this.categories.addAll(categories);
 
-        ArrayAdapter<EventCategory> spinnerAdapter = new ArrayAdapter<EventCategory>(getContext(),
-                android.R.layout.simple_spinner_item, this.categories);
+        spinnerAdapter = new ArrayAdapter<EventCategory>(getContext(),
+                android.R.layout.simple_spinner_dropdown_item, this.categories);
         spinner.setAdapter(spinnerAdapter);
+
+        // Initalize stored category as the selected one in spinner:
+        for (EventCategory c : categories) {
+            if (c.getId() == selectedCategoryId) {
+                spinner.setSelection(spinnerAdapter.getPosition(c));
+                break;
+            }
+        }
     }
 
 
     @Override
-    public void setCategory() {
-
+    public void setCategory(long id) {
+        selectedCategoryId = id;
     }
 
     @Override

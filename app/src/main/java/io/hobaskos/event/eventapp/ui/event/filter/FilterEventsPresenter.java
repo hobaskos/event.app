@@ -23,6 +23,7 @@ public class FilterEventsPresenter extends MvpBasePresenter<FilterEventsView> {
     public static final String FILTER_EVENTS_LOCATION_NAME_KEY = "filter_events_location_name_key";
     public static final String FILTER_EVENTS_LOCATION_LAT_KEY = "filter_events_location_lat_key";
     public static final String FILTER_EVENTS_LOCATION_LON_KEY = "filter_events_location_lon_key";
+    public static final String FILTER_EVENTS_CATEGORY_KEY = "filter_events_category_key";
 
     @Inject
     public FilterEventsPresenter(PersistentStorage persistentStorage,
@@ -46,6 +47,14 @@ public class FilterEventsPresenter extends MvpBasePresenter<FilterEventsView> {
         double lat = persistentStorage.getDouble(FILTER_EVENTS_LOCATION_LAT_KEY, 0);
         double lon = persistentStorage.getDouble(FILTER_EVENTS_LOCATION_LAT_KEY, 0);
         getView().setLocation(name, lat, lon);
+    }
+
+    public void storeCategoryId(long categoryId) {
+        persistentStorage.putLong(FILTER_EVENTS_CATEGORY_KEY, categoryId);
+    }
+
+    public void loadCategoryId() {
+        getView().setCategory(persistentStorage.getLong(FILTER_EVENTS_CATEGORY_KEY, 0));
     }
 
     public void loadDistance() {

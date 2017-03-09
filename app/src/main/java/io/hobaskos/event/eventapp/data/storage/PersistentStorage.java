@@ -55,6 +55,16 @@ public class PersistentStorage {
         return Double.longBitsToDouble(value);
     }
 
+    public boolean putLong(String key, long value) {
+        return preferences.edit()
+                .putLong(key, value)
+                .commit();
+    }
+
+    public long getLong(String key, long defaultValue) {
+        return preferences.getLong(key, defaultValue);
+    }
+
 
     public boolean isSet(String key)
     {
