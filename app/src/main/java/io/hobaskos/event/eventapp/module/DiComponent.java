@@ -3,9 +3,11 @@ package io.hobaskos.event.eventapp.module;
 import javax.inject.Singleton;
 
 import dagger.Component;
-import io.hobaskos.event.eventapp.ui.login.LoginActivity;
 import io.hobaskos.event.eventapp.ui.event.details.EventActivity;
+import io.hobaskos.event.eventapp.ui.event.filter.FilterEventsFragment;
 import io.hobaskos.event.eventapp.ui.event.list.EventsFragment;
+import io.hobaskos.event.eventapp.ui.login.LoginActivity;
+import io.hobaskos.event.eventapp.ui.login.LoginPresenter;
 import io.hobaskos.event.eventapp.ui.main.MainActivity;
 import io.hobaskos.event.eventapp.ui.profile.ProfileActivity;
 
@@ -20,6 +22,9 @@ public interface DiComponent {
     void inject(EventActivity eventActivity);
     void inject(EventsFragment eventsFragment);
     void inject(MainActivity mainActivity);
+    void inject(FilterEventsFragment filterEventsFragment);
+    void inject(LoginPresenter loginPresenter);
     void inject(LoginActivity loginActivity);
     void inject(ProfileActivity profileActivity);
+
 }

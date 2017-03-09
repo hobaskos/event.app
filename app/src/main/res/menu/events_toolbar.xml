@@ -13,10 +13,4 @@
         android:icon="@drawable/ic_filter_list_white_24dp"
         android:title="Filter"
         app:showAsAction="always" />
-    <item
-        android:id="@+id/action_create"
-        android:enabled="true"
-        android:icon="@drawable/ic_add_white_24dp"
-        android:title="Create"
-        app:showAsAction="always" />
 </menu>

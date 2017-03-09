@@ -22,7 +22,6 @@ public class JWTTokenInterceptor implements Interceptor {
 
     @Override
     public Response intercept(Chain chain) throws IOException {
-
         Request original = chain.request();
 
         String authToken = storageProxy.get();

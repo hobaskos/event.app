@@ -3,6 +3,7 @@ package io.hobaskos.event.eventapp.ui.event.list;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
@@ -12,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -23,6 +25,7 @@ import butterknife.BindView;
 import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.ui.base.view.fragment.BaseLceViewStateFragment;
+import io.hobaskos.event.eventapp.ui.event.filter.FilterEventsFragment;
 import io.hobaskos.event.eventapp.ui.event.details.EventActivity;
 
 /**
@@ -41,6 +44,8 @@ public class EventsFragment extends
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.contentView) SwipeRefreshLayout swipeRefreshLayout;
 
+    TextView emptyResultView;
+
     private NpaLinearLayoutManager linearLayoutManager;
     private DividerItemDecoration dividerItemDecoration;
 
@@ -48,10 +53,10 @@ public class EventsFragment extends
     private List<EventsPresentationModel> eventsList = new ArrayList<>();
     private EventsAdapter adapter;
 
+    // State
     boolean canLoadMore = true;
     boolean isLoadingMore = false;
     int page = 0;
-    public static final String PAGE_KEY = "PAGE";
 
     @Inject
     public EventsPresenter eventsPresenter;
@@ -72,6 +77,8 @@ public class EventsFragment extends
         Log.i(TAG, "page: " + page );
         //Icepick.restoreInstanceState(this, savedInstanceState);
 
+        emptyResultView = (TextView) view.findViewById(R.id.emptyView);
+
         // Configure toolbar:
         toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
         recyclerView = (RecyclerView) getView().findViewById(R.id.recyclerView);
@@ -84,13 +91,20 @@ public class EventsFragment extends
         toolbar.setOnMenuItemClickListener(menuItem -> {
             switch(menuItem.getItemId()){
                 case R.id.action_search:
-                    // TODO: Create search fragment/activity
+                    // TODO: Create searchNearby fragment/activity
                     return true;
                 case R.id.action_filter:
-                    // TODO: Create filter fragment/activity
-                    return true;
-                case R.id.action_create:
-                    // TODO: Create "create event" fragment/activity
+                    FilterEventsFragment fragment = new FilterEventsFragment();
+
+                    FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                    //ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                    //ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right);
+                    //android.app.FragmentTransaction ft = getActivity().getFragmentManager().beginTransaction();
+                    //ft.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out, android.R.animator.fade_in, android.R.animator.fade_out);
+
+                    ft.replace(R.id.main_pane, fragment);
+                    ft.addToBackStack(null);
+                    ft.commit();
                     return true;
             }
             return false;
@@ -217,7 +231,6 @@ public class EventsFragment extends
         adapter.setItems(data);
         adapter.notifyDataSetChanged();
         swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(false));
-
     }
 
     @Override
@@ -232,7 +245,22 @@ public class EventsFragment extends
 
     @Override
     public void showContent() {
-        Log.i(TAG, "showContent()");
         super.showContent();
+        if (adapter.getItems().isEmpty()) {
+            contentView.setVisibility(View.GONE);
+            emptyResultView.setVisibility(View.VISIBLE);
+        } else {
+            emptyResultView.setVisibility(View.GONE);
+        }
+    }
+
+    @Override public void showError(Throwable e, boolean pullToRefresh) {
+        emptyResultView.setVisibility(View.GONE);
+        super.showError(e, pullToRefresh);
+    }
+
+    @Override public void showLoading(boolean pullToRefresh) {
+        emptyResultView.setVisibility(View.GONE);
+        super.showLoading(pullToRefresh);
     }
 }

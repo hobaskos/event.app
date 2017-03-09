@@ -1,5 +1,7 @@
 package io.hobaskos.event.eventapp.data.repository;
 
+import org.joda.time.DateTime;
+
 import java.util.List;
 
 import javax.inject.Inject;
@@ -16,7 +18,7 @@ public class EventRepository implements BaseRepository<Event, Long> {
     private final EventService.Anonymously eventServiceAnonymously;
     private final EventService.Authenticated eventServiceAuthenticated;
 
-    public static final int PAGE_SIZE = 10;
+    public static final int PAGE_SIZE = 20;
 
     @Inject
     public EventRepository(EventService.Anonymously eventServiceAnonymously, EventService.Authenticated eventServiceAuthenticated) {
@@ -24,18 +26,16 @@ public class EventRepository implements BaseRepository<Event, Long> {
         this.eventServiceAuthenticated = eventServiceAuthenticated;
     }
 
+    @Override
     public Observable<List<Event>> getAll(int page) {
         return eventServiceAnonymously.getEvents(page, PAGE_SIZE);
     }
 
+    @Override
     public Observable<Event> get(Long id) {
         return eventServiceAnonymously.getEvent(id);
     }
 
-    @Override
-    public Observable<Event> search(int page, String query, double lat, double lon, String distance) {
-        return eventServiceAnonymously.search(page, PAGE_SIZE, query, lat, lon, distance);
-    }
 
     @Override
     public Observable<Event> save(Event item) {
@@ -50,5 +50,12 @@ public class EventRepository implements BaseRepository<Event, Long> {
     @Override
     public Observable<Void> delete(Long id) {
         return eventServiceAuthenticated.deleteEvent(id);
+    }
+
+    public Observable<List<Event>> searchNearby(int page, double lat, double lon, String distance,
+                                                DateTime fromDate, DateTime toDate) {
+        //return eventServiceAnonymously.searchNearby(page, PAGE_SIZE, lat, lon, distance);
+        return eventServiceAuthenticated
+                .search(page, PAGE_SIZE, lat, lon, distance, fromDate, toDate, "fromDate,asc");
     }
 }

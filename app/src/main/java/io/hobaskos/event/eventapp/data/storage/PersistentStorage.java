@@ -16,8 +16,7 @@ public class PersistentStorage {
     private int MODE = MODE_PRIVATE;
     private SharedPreferences preferences;
 
-    public PersistentStorage(App app)
-    {
+    public PersistentStorage(App app) {
         preferences = app.getBaseContext().getSharedPreferences(PREFS_NAME, MODE);
     }
 
@@ -26,13 +25,36 @@ public class PersistentStorage {
         return preferences.getString(key, "");
     }
 
-    public boolean put(String key, String value)
-    {
+    public boolean put(String key, String value) {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString(key, value);
         editor.apply();
         return true;
     }
+
+    public boolean putInt(String key, int value) {
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putInt(key, value);
+        return editor.commit();
+    }
+
+    public int getInt(String key, int defaultValue) {
+        return preferences.getInt(key, defaultValue);
+    }
+
+    // http://stackoverflow.com/questions/16319237/cant-put-double-sharedpreferences
+    public boolean putDouble(String key, double value) {
+        Long longValue = Double.doubleToLongBits(value);
+        return preferences.edit()
+                            .putLong(key, longValue)
+                            .commit();
+    }
+
+    public double getDouble(String key, double defaultValue) {
+        Long value = preferences.getLong(key, Double.doubleToRawLongBits(defaultValue));
+        return Double.longBitsToDouble(value);
+    }
+
 
     public boolean isSet(String key)
     {
