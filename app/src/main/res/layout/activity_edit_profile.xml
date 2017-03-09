@@ -63,6 +63,7 @@
 
             <TextView
                 android:id="@+id/change_img"
+                android:clickable="true"
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
                 android:layout_alignTop="@+id/change_img_icon"
@@ -85,6 +86,7 @@
 
             <TextView
                 android:id="@+id/delete_img"
+                android:clickable="true"
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
                 android:textSize="15dp"
