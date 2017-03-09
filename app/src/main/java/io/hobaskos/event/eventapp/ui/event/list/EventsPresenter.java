@@ -1,5 +1,7 @@
 package io.hobaskos.event.eventapp.ui.event.list;
 
+import org.joda.time.DateTime;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,11 +58,14 @@ public class EventsPresenter extends BaseRxLcePresenter<EventsView, List<EventsP
         }
         // Load filter values (from shared preferences)
         loadFilterValues();
+
+        DateTime fromDate = DateTime.now();
+        DateTime toDate = fromDate.plusYears(2);
+
         // Setup observable:
         final Observable<List<EventsPresentationModel>> observable =
-                eventRepository.search(0, 59.89736562413801, 10.646479578394581, distance + "km")
+                eventRepository.searchNearby(0, lat, lon, distance + "km", fromDate, toDate)
                         .map(presentationModelTransformation);
-                //eventRepository.getAll(0).map(presentationModelTransformation);
 
         // setup and start subscription:
         subscribe(observable, pullToRefresh);
@@ -71,9 +76,11 @@ public class EventsPresenter extends BaseRxLcePresenter<EventsView, List<EventsP
         unsubscribe();
         // Load filter values (from shared preferences)
         loadFilterValues();
+        DateTime fromDate = DateTime.now();
+        DateTime toDate = fromDate.plusYears(2);
         // Setup observable:
         final Observable<List<EventsPresentationModel>> observable =
-                eventRepository.search(nextPage, lat, lon, distance + "km")
+                eventRepository.searchNearby(nextPage, lat, lon, distance + "km", fromDate, toDate)
                         .map(presentationModelTransformation);
         // Show loading in view:
         if (isViewAttached()) {

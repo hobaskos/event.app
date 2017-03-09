@@ -1,7 +1,5 @@
 package io.hobaskos.event.eventapp.data.repository;
 
-import android.util.Log;
-
 import org.joda.time.DateTime;
 
 import java.util.List;
@@ -54,14 +52,9 @@ public class EventRepository implements BaseRepository<Event, Long> {
         return eventServiceAuthenticated.deleteEvent(id);
     }
 
-    public Observable<List<Event>> search(int page, double lat, double lon, String distance) {
-        //return eventServiceAnonymously.search(page, PAGE_SIZE, lat, lon, distance);
-
-        DateTime fromDate = DateTime.now();
-        DateTime toDate = fromDate.plusYears(2);
-
-        Log.i("EventReposiory", "fromDate: " + fromDate + ", toDate: " + toDate);
-
+    public Observable<List<Event>> searchNearby(int page, double lat, double lon, String distance,
+                                                DateTime fromDate, DateTime toDate) {
+        //return eventServiceAnonymously.searchNearby(page, PAGE_SIZE, lat, lon, distance);
         return eventServiceAuthenticated
                 .search(page, PAGE_SIZE, lat, lon, distance, fromDate, toDate, "fromDate,asc");
     }

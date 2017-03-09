@@ -1,5 +1,6 @@
 package io.hobaskos.event.eventapp.ui.event.list;
 
+import org.joda.time.DateTime;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -107,7 +108,8 @@ public class EventsPresenterTest {
     @Test
     public void testLoadEventsSuccess() {
 
-        when(eventRepository.search(anyInt(), anyDouble(), anyDouble(), anyString())).thenReturn(Observable.create((subscriber) -> {
+        when(eventRepository.searchNearby(anyInt(), anyDouble(), anyDouble(), anyString(),
+                any(DateTime.class), any(DateTime.class))).thenReturn(Observable.create((subscriber) -> {
             subscriber.onNext(eventList);
             subscriber.onCompleted();
         }));
@@ -127,7 +129,8 @@ public class EventsPresenterTest {
 
     @Test
     public void testLoadEventsError() {
-        when(eventRepository.search(anyInt(), anyDouble(), anyDouble(), anyString())).thenReturn(Observable.create((subscriber) -> {
+        when(eventRepository.searchNearby(anyInt(), anyDouble(), anyDouble(), anyString(),
+                any(DateTime.class), any(DateTime.class))).thenReturn(Observable.create((subscriber) -> {
             subscriber.onError(new Exception());
         }));
 
@@ -147,7 +150,8 @@ public class EventsPresenterTest {
     @Test
     public void testLoadMoreEventsSuccess() {
         int page = 1;
-        when(eventRepository.search(anyInt(), anyDouble(), anyDouble(), anyString())).thenReturn(Observable.create((subscriber) -> {
+        when(eventRepository.searchNearby(anyInt(), anyDouble(), anyDouble(), anyString(),
+                any(DateTime.class), any(DateTime.class))).thenReturn(Observable.create((subscriber) -> {
             subscriber.onNext(eventList);
             subscriber.onCompleted();
         }));
@@ -166,7 +170,8 @@ public class EventsPresenterTest {
     @Test
     public void testLoadMoreEventsError() {
         int page = 1;
-        when(eventRepository.search(anyInt(), anyDouble(), anyDouble(), anyString())).thenReturn(Observable.create((subscriber) -> {
+        when(eventRepository.searchNearby(anyInt(), anyDouble(), anyDouble(), anyString(),
+                any(DateTime.class), any(DateTime.class))).thenReturn(Observable.create((subscriber) -> {
             subscriber.onError(new Exception());
         }));
 
