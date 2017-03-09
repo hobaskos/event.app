@@ -45,7 +45,7 @@ public class FilterEventsPresenter extends MvpBasePresenter<FilterEventsView> {
     public void loadLocation() {
         String name = persistentStorage.get(FILTER_EVENTS_LOCATION_NAME_KEY);
         double lat = persistentStorage.getDouble(FILTER_EVENTS_LOCATION_LAT_KEY, 0);
-        double lon = persistentStorage.getDouble(FILTER_EVENTS_LOCATION_LAT_KEY, 0);
+        double lon = persistentStorage.getDouble(FILTER_EVENTS_LOCATION_LON_KEY, 0);
         getView().setLocation(name, lat, lon);
     }
 

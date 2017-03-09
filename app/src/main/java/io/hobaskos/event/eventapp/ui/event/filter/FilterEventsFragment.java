@@ -126,9 +126,11 @@ public class FilterEventsFragment extends BaseFragment
 
         button.setOnClickListener(v -> {
             presenter.storeDistance(seekBarProgress);
+            Log.i("jJJJJ", "lat, lon: " + lat + ", " + lon);
+
             presenter.storeLocation(location, lat, lon);
 
-            if(!(spinner.getSelectedItem() == null)) {
+            if(spinner.getSelectedItem() != null) {
                 EventCategory category = (EventCategory) spinner.getSelectedItem();
                 presenter.storeCategoryId(category.getId());
             }

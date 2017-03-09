@@ -59,7 +59,7 @@ public interface EventService
                                        @Query("distance") String distance,
                                        @Query("fromDate") DateTime fromDate,
                                        @Query("toDate") DateTime toDate,
-                                       @Query("categories") List<String> categories,
+                                       @Query("categories") String categories,
                                        @Query("sort") String sort);
     }
 }
