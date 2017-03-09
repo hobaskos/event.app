@@ -28,15 +28,18 @@ public class EventsPresenter extends BaseRxLcePresenter<EventsView, List<EventsP
 
     private Func1<List<Event>, List<EventsPresentationModel>> presentationModelTransformation;
 
-    PersistentStorage persistentStorage;
+    private PersistentStorage persistentStorage;
 
     private int distance;
     private double lat;
     private double lon;
+    private long categoryId;
 
     @Inject
-    public EventsPresenter(EventRepository eventRepository, PersistentStorage persistentStorage) {
+    public EventsPresenter(EventRepository eventRepository,
+                           PersistentStorage persistentStorage) {
         this.eventRepository = eventRepository;
+
         presentationModelTransformation = events -> {
             List<EventsPresentationModel> pmEvents = new ArrayList<>();
             for (Event event : events) {
@@ -113,6 +116,7 @@ public class EventsPresenter extends BaseRxLcePresenter<EventsView, List<EventsP
         distance = persistentStorage.getInt(FilterEventsPresenter.FILTER_EVENTS_DISTANCE_KEY, 10);
         lat = persistentStorage.getDouble(FilterEventsPresenter.FILTER_EVENTS_LOCATION_LAT_KEY, 0);
         lon = persistentStorage.getDouble(FilterEventsPresenter.FILTER_EVENTS_LOCATION_LON_KEY, 0);
+        categoryId = persistentStorage.getLong(FilterEventsPresenter.FILTER_EVENTS_CATEGORY_KEY, 0);
     }
 
 
