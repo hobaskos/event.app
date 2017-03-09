@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.Spinner;
@@ -21,11 +22,14 @@ import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
+import io.hobaskos.event.eventapp.data.model.EventCategory;
 import io.hobaskos.event.eventapp.ui.base.view.fragment.BaseFragment;
 
 /**
@@ -39,8 +43,7 @@ public class FilterEventsFragment extends BaseFragment implements FilterEventsVi
     @BindView(R.id.seekBar) SeekBar seekBar;
     @BindView(R.id.seekBarText) TextView seekBarText;
     @BindView(R.id.categorySpinner) Spinner spinner;
-    @BindView(R.id.applyFiltersButton)
-    Button button;
+    @BindView(R.id.applyFiltersButton) Button button;
 
     private int seekBarProgress;
     private SupportPlaceAutocompleteFragment placeAutocompleteFragment;
@@ -50,6 +53,8 @@ public class FilterEventsFragment extends BaseFragment implements FilterEventsVi
     String location;
     double lat;
     double lon;
+
+    List<EventCategory> categories;
 
     @Inject
     public FilterEventsPresenter presenter;
@@ -113,8 +118,12 @@ public class FilterEventsFragment extends BaseFragment implements FilterEventsVi
 
         seekBar = (SeekBar) getView().findViewById(R.id.seekBar);
         seekBarText = (TextView) getView().findViewById(R.id.seekBarText);
+        spinner = (Spinner) getView().findViewById(R.id.categorySpinner);
         button = (Button) getView().findViewById(R.id.applyFiltersButton);
 
+        presenter.loadCategories();
+        ArrayAdapter<EventCategory> spinnerAdapter = new ArrayAdapter<EventCategory>(this, );
+        //spinner.
 
         button.setOnClickListener(v -> {
             presenter.storeDistance(seekBarProgress);
@@ -165,6 +174,12 @@ public class FilterEventsFragment extends BaseFragment implements FilterEventsVi
         this.lat = lat;
         this.lon = lon;
     }
+
+    @Override
+    public void loadCategories(List<EventCategory> categories) {
+        categories.addAll(categories);
+    }
+
 
     @Override
     public void setCategory() {
