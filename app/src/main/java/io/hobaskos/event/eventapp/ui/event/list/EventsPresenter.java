@@ -67,7 +67,7 @@ public class EventsPresenter extends BaseRxLcePresenter<EventsView, List<EventsP
 
         // Setup observable:
         final Observable<List<EventsPresentationModel>> observable =
-                eventRepository.searchNearby(0, lat, lon, distance + "km", fromDate, toDate)
+                eventRepository.searchNearby(0, lat, lon, distance + "km", fromDate, toDate, categoryId + "")
                         .map(presentationModelTransformation);
 
         // setup and start subscription:
@@ -83,7 +83,7 @@ public class EventsPresenter extends BaseRxLcePresenter<EventsView, List<EventsP
         DateTime toDate = fromDate.plusYears(2);
         // Setup observable:
         final Observable<List<EventsPresentationModel>> observable =
-                eventRepository.searchNearby(nextPage, lat, lon, distance + "km", fromDate, toDate)
+                eventRepository.searchNearby(nextPage, lat, lon, distance + "km", fromDate, toDate, categoryId + "")
                         .map(presentationModelTransformation);
         // Show loading in view:
         if (isViewAttached()) {
@@ -125,6 +125,4 @@ public class EventsPresenter extends BaseRxLcePresenter<EventsView, List<EventsP
         lon = persistentStorage.getDouble(FilterEventsPresenter.FILTER_EVENTS_LOCATION_LON_KEY, 0);
         categoryId = persistentStorage.getLong(FilterEventsPresenter.FILTER_EVENTS_CATEGORY_KEY, 0);
     }
-
-
 }
