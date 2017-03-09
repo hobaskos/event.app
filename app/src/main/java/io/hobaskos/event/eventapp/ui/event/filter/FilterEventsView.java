@@ -14,6 +14,7 @@ public interface FilterEventsView extends MvpView {
 
     void setDistance(int defaultValue);
     void setLocation(String name, double lat, double lon);
-    void loadCategories(List<EventCategory> categories);
+    void setCategories(List<EventCategory> categories);
     void setCategory(); //TODO: Create enum of event categories
+    void showError(Throwable e);
 }

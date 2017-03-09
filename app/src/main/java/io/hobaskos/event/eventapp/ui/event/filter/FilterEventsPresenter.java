@@ -5,8 +5,9 @@ import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
 import javax.inject.Inject;
 
 import io.hobaskos.event.eventapp.data.repository.EventCategoryRepository;
-import io.hobaskos.event.eventapp.data.repository.EventRepository;
 import io.hobaskos.event.eventapp.data.storage.PersistentStorage;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by andre on 2/20/2017.
@@ -16,7 +17,6 @@ public class FilterEventsPresenter extends MvpBasePresenter<FilterEventsView> {
 
     private PersistentStorage persistentStorage;
 
-    private EventRepository eventRepository;
     private EventCategoryRepository eventCategoryRepository;
 
     public static final String FILTER_EVENTS_DISTANCE_KEY = "filter_events_distance_key";
@@ -26,10 +26,8 @@ public class FilterEventsPresenter extends MvpBasePresenter<FilterEventsView> {
 
     @Inject
     public FilterEventsPresenter(PersistentStorage persistentStorage,
-                                 EventRepository eventRepository,
                                  EventCategoryRepository eventCategoryRepository) {
         this.persistentStorage = persistentStorage;
-        this.eventRepository = eventRepository;
         this.eventCategoryRepository = eventCategoryRepository;
     }
 
@@ -55,8 +53,13 @@ public class FilterEventsPresenter extends MvpBasePresenter<FilterEventsView> {
     }
 
     public void loadCategories() {
-        //eventCategoryRepository.getAll();
-        getView().loadCategories(null);
+        eventCategoryRepository.getAll(0)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        list -> getView().setCategories(list),
+                        throwable -> getView().showError(throwable)
+                );
     }
 
 }

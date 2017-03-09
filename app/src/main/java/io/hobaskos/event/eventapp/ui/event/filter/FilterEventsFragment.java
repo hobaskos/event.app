@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -37,7 +38,8 @@ import io.hobaskos.event.eventapp.ui.base.view.fragment.BaseFragment;
  * Created by andre on 2/20/2017.
  */
 
-public class FilterEventsFragment extends BaseFragment implements FilterEventsView, GoogleApiClient.OnConnectionFailedListener {
+public class FilterEventsFragment extends BaseFragment
+        implements FilterEventsView, GoogleApiClient.OnConnectionFailedListener {
     public final static String TAG = FilterEventsFragment.class.getName();
 
     @BindView(R.id.toolbar) Toolbar toolbar;
@@ -83,8 +85,6 @@ public class FilterEventsFragment extends BaseFragment implements FilterEventsVi
 
         placeAutocompleteFragment = (SupportPlaceAutocompleteFragment)
                 getChildFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
-
-
 
         placeAutocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
@@ -175,12 +175,12 @@ public class FilterEventsFragment extends BaseFragment implements FilterEventsVi
     }
 
     @Override
-    public void loadCategories(List<EventCategory> categories) {
-        categories = new ArrayList<>();
-        categories.addAll(categories);
+    public void setCategories(List<EventCategory> categories) {
+        this.categories = new ArrayList<>();
+        this.categories.addAll(categories);
 
         ArrayAdapter<EventCategory> spinnerAdapter = new ArrayAdapter<EventCategory>(getContext(),
-                android.R.layout.simple_spinner_item, categories);
+                android.R.layout.simple_spinner_item, this.categories);
         spinner.setAdapter(spinnerAdapter);
     }
 
@@ -188,6 +188,12 @@ public class FilterEventsFragment extends BaseFragment implements FilterEventsVi
     @Override
     public void setCategory() {
 
+    }
+
+    @Override
+    public void showError(Throwable e) {
+        Log.i(TAG, e.getMessage());
+        Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
     @Override

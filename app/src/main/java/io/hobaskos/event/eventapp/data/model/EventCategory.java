@@ -69,4 +69,8 @@ public class EventCategory implements Parcelable {
             return new EventCategory[size];
         }
     };
+
+    public String toString() {
+        return title;
+    }
 }
