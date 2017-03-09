@@ -42,12 +42,38 @@ public class ProfileEditPresenter extends MvpBasePresenter<ProfileEditView> {
                     public void onNext(User user) {
                         if (isViewAttached()) {
                             getView().setProfileData(user);
-                            getView().updateProfileData(user);
+                            //getView().updateProfileData(user);
                         }
                     }
+
+                });
+    }
+/*
+    public void updateProfile(User user) {
+        accountManager.setAccount()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<User>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(User user) {
+                        if (isViewAttached()) {
+                            getView().setProfileData(user);
+                        }
+                    }
+
                 });
     }
 
-
+*/
 }//End of class
 

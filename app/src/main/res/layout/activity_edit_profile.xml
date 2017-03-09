@@ -53,23 +53,25 @@
 
             <ImageView
                 android:id="@+id/change_img_icon"
-                android:src="@drawable/ic_create_black_24dp"
+                android:src="@drawable/ic_camera_alt_black_24dp"
+                android:fillColor="#ffffff"
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
                 android:layout_marginTop="90dp"
-                android:layout_marginLeft="90dp"
+                android:layout_marginLeft="140dp"
                 />
 
 
             <TextView
                 android:id="@+id/change_img"
-                android:clickable="true"
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
                 android:layout_alignTop="@+id/change_img_icon"
                 android:layout_toEndOf="@id/change_img_icon"
+                android:clickable="true"
                 android:gravity="center_vertical"
-                android:text="Endre Bilde"
+                android:onClick="launchCamera"
+                android:text="Ta et Bilde"
                 android:textColor="#FFF"
                 android:textSize="15dp" />
 
@@ -80,22 +82,47 @@
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
                 android:layout_marginTop="90dp"
-                android:layout_marginLeft="210dp"
+                android:layout_marginLeft="240dp"
                 />
 
 
             <TextView
                 android:id="@+id/delete_img"
-                android:clickable="true"
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
-                android:textSize="15dp"
-                android:gravity="center_vertical"
-                android:textColor="#FFF"
-                android:text="Slett Bilde"
-                android:layout_toEndOf="@+id/delete_img_icon"
                 android:layout_alignTop="@+id/delete_img_icon"
+                android:layout_toEndOf="@+id/delete_img_icon"
+                android:clickable="true"
+                android:gravity="center_vertical"
+                android:onClick="deleteIMG"
+                android:text="Slett Bilde"
+                android:textColor="#FFF"
+                android:textSize="15dp" />
+
+            <ImageView
+                android:id="@+id/upload_img_icon"
+                android:src="@drawable/ic_create_black_24dp"
+                android:fillColor="#ffffff"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_marginTop="90dp"
+                android:layout_marginLeft="40dp"
                 />
+
+
+            <TextView
+                android:id="@+id/upload_img"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_alignTop="@+id/upload_img_icon"
+                android:layout_toEndOf="@id/upload_img_icon"
+                android:clickable="true"
+                android:gravity="center_vertical"
+                android:onClick="launchLibrary"
+                android:text="Velg Bilde"
+                android:textColor="#FFF"
+                android:textSize="15dp" />
+
 
             <TextView
                 android:id="@+id/label_firstname"
@@ -148,6 +175,8 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="18dp"
                 android:text="Ferdig" />
+
+
 
         </RelativeLayout>
 

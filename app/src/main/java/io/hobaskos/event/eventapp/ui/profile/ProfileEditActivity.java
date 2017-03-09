@@ -1,7 +1,17 @@
 package io.hobaskos.event.eventapp.ui.profile;
 
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v4.graphics.BitmapCompat;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -20,6 +30,8 @@ import io.hobaskos.event.eventapp.data.model.User;
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 import retrofit2.http.PUT;
 
+import static android.R.attr.bitmap;
+
 /**
  * Created by Magnus on 08.03.2017.
  */
@@ -27,6 +39,9 @@ import retrofit2.http.PUT;
 public class ProfileEditActivity extends MvpActivity<ProfileEditView, ProfileEditPresenter> implements ProfileEditView {
 
     private static final String TAG = "ProfileEditActivity";
+
+    private static final int REQUEST_IMAGE_CAPTURE = 0;
+    private static final int REQUEST_IMAGE_LIBRARY = 1;
 
 
     private TextView firstname;
@@ -52,9 +67,86 @@ public class ProfileEditActivity extends MvpActivity<ProfileEditView, ProfileEdi
         userProfilePhoto = (ImageView) findViewById(R.id.user_profile_photo);
         btnDone = (Button) findViewById(R.id.btn_done);
 
+        if (!hasCamera())
+            changeIMG.setEnabled(false);
+
+        btnDone.setOnClickListener((View v) -> {
+            Toast.makeText(this, "Ferdig knappen virker", Toast.LENGTH_LONG).show();
+            updateProfileData();
+        });
 
         presenter.refreshProfileData();
 
+    }
+    //Check if the device has a camera at all, front or backfaceing
+    private boolean hasCamera() {
+        return getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY);
+    }
+
+    public void launchCamera(View view) {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        //Take a picture and pass result along to onActiviyResult
+        startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
+    }
+
+    public void launchLibrary(View view) {
+        Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intent , REQUEST_IMAGE_LIBRARY);
+    }
+
+
+
+
+    //If you want to return the taken image
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        String imgDecodableString;
+        RoundedBitmapDrawable roundDrawable;
+
+        try {
+
+            if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+                //Get the photo
+                Bundle extras = data.getExtras();
+                Bitmap photo = (Bitmap) extras.get("data");
+                userProfilePhoto.setImageBitmap(photo);
+
+                roundDrawable = RoundedBitmapDrawableFactory.create(getResources(), photo);
+                roundDrawable.setCircular(true);
+
+                userProfilePhoto.setImageDrawable(roundDrawable);
+            }
+            // When an Image is picked
+            if (requestCode == REQUEST_IMAGE_LIBRARY && resultCode == RESULT_OK
+                    && null != data) {
+                // Get the Image from data
+
+                Uri selectedImage = data.getData();
+                String[] filePathColumn = {MediaStore.Images.Media.DATA};
+
+                // Get the cursor
+                Cursor cursor = getContentResolver().query(selectedImage,
+                        filePathColumn, null, null, null);
+                // Move to first row
+                cursor.moveToFirst();
+
+                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                imgDecodableString = cursor.getString(columnIndex);
+                cursor.close();
+                // Set the Image in ImageView after decoding the String
+                roundDrawable = RoundedBitmapDrawableFactory.create(getResources(), imgDecodableString);
+                roundDrawable.setCircular(true);
+
+                userProfilePhoto.setImageDrawable(roundDrawable);
+            }
+        } catch (Exception e) {
+            Toast.makeText(this, "Ups, dette gikk ikke bra! :(", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void deleteIMG(View view) {
+        userProfilePhoto.setImageResource(android.R.color.transparent);
     }
 
     @NonNull
@@ -78,12 +170,12 @@ public class ProfileEditActivity extends MvpActivity<ProfileEditView, ProfileEdi
         }
     }
     @Override
-    public void updateProfileData(User user) {
-        btnDone.setOnClickListener((View v) -> {
-            Toast.makeText(this, "Knappen virker", Toast.LENGTH_LONG).show();
-            user.setFirstName("Endret");
-            user.setLastName("HURRA!");
-        });
+    public void updateProfileData() {
+        User user = new User();
+        user.setFirstName(firstname.getText().toString());
+        user.setLastName(lastname.getText().toString());
+
+       // presenter.updateProfile(user);
     }
 
 }// End of class ProfileEditActivity
