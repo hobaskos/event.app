@@ -22,6 +22,7 @@ import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -54,7 +55,7 @@ public class FilterEventsFragment extends BaseFragment implements FilterEventsVi
     double lat;
     double lon;
 
-    List<EventCategory> categories;
+    ArrayList<EventCategory> categories;
 
     @Inject
     public FilterEventsPresenter presenter;
@@ -122,8 +123,6 @@ public class FilterEventsFragment extends BaseFragment implements FilterEventsVi
         button = (Button) getView().findViewById(R.id.applyFiltersButton);
 
         presenter.loadCategories();
-        ArrayAdapter<EventCategory> spinnerAdapter = new ArrayAdapter<EventCategory>(this, );
-        //spinner.
 
         button.setOnClickListener(v -> {
             presenter.storeDistance(seekBarProgress);
@@ -177,7 +176,12 @@ public class FilterEventsFragment extends BaseFragment implements FilterEventsVi
 
     @Override
     public void loadCategories(List<EventCategory> categories) {
+        categories = new ArrayList<>();
         categories.addAll(categories);
+
+        ArrayAdapter<EventCategory> spinnerAdapter = new ArrayAdapter<EventCategory>(getContext(),
+                android.R.layout.simple_spinner_item, categories);
+        spinner.setAdapter(spinnerAdapter);
     }
 
 

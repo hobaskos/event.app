@@ -4,6 +4,7 @@ import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
 
 import javax.inject.Inject;
 
+import io.hobaskos.event.eventapp.data.repository.EventCategoryRepository;
 import io.hobaskos.event.eventapp.data.repository.EventRepository;
 import io.hobaskos.event.eventapp.data.storage.PersistentStorage;
 
@@ -16,6 +17,7 @@ public class FilterEventsPresenter extends MvpBasePresenter<FilterEventsView> {
     private PersistentStorage persistentStorage;
 
     private EventRepository eventRepository;
+    private EventCategoryRepository eventCategoryRepository;
 
     public static final String FILTER_EVENTS_DISTANCE_KEY = "filter_events_distance_key";
     public static final String FILTER_EVENTS_LOCATION_NAME_KEY = "filter_events_location_name_key";
@@ -23,9 +25,12 @@ public class FilterEventsPresenter extends MvpBasePresenter<FilterEventsView> {
     public static final String FILTER_EVENTS_LOCATION_LON_KEY = "filter_events_location_lon_key";
 
     @Inject
-    public FilterEventsPresenter(PersistentStorage persistentStorage, EventRepository eventRepository) {
+    public FilterEventsPresenter(PersistentStorage persistentStorage,
+                                 EventRepository eventRepository,
+                                 EventCategoryRepository eventCategoryRepository) {
         this.persistentStorage = persistentStorage;
         this.eventRepository = eventRepository;
+        this.eventCategoryRepository = eventCategoryRepository;
     }
 
     public void storeDistance(int distance) {
@@ -50,7 +55,7 @@ public class FilterEventsPresenter extends MvpBasePresenter<FilterEventsView> {
     }
 
     public void loadCategories() {
-        //eventRepository.getAll(0)
+        //eventCategoryRepository.getAll();
         getView().loadCategories(null);
     }
 
