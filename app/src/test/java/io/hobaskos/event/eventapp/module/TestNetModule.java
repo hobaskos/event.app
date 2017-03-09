@@ -55,7 +55,7 @@ public class TestNetModule extends NetModule {
 
         EventService.Authenticated eventService = mock(EventService.Authenticated.class);
 
-        // TODO: remove(?) in later version, Temp for authenticated search
+        // TODO: remove(?) in later version, Temp for authenticated searchNearby
         when(eventService.search(anyInt(), anyInt(), anyDouble(), anyDouble(), anyString(),
                 any(DateTime.class), any(DateTime.class), anyString()))
                 .thenReturn(Observable.just(eventList));

@@ -29,8 +29,6 @@ public class EventsViewState extends CastedArrayListLceViewState<List<EventsPres
     // Constructors;
     public EventsViewState() {};
 
-
-
     protected EventsViewState(Parcel source) {
         super(source);
     }
@@ -41,7 +39,6 @@ public class EventsViewState extends CastedArrayListLceViewState<List<EventsPres
 
 
     @Override public void apply(EventsView view, boolean retained) {
-        //Log.i(TAG, "apply()");
         super.apply(view, retained);
 
         if (currentViewState == STATE_SHOW_CONTENT) {

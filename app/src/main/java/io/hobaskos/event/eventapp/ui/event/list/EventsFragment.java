@@ -53,10 +53,10 @@ public class EventsFragment extends
     private List<EventsPresentationModel> eventsList = new ArrayList<>();
     private EventsAdapter adapter;
 
+    // State
     boolean canLoadMore = true;
     boolean isLoadingMore = false;
     int page = 0;
-    public static final String PAGE_KEY = "PAGE";
 
     @Inject
     public EventsPresenter eventsPresenter;
@@ -91,7 +91,7 @@ public class EventsFragment extends
         toolbar.setOnMenuItemClickListener(menuItem -> {
             switch(menuItem.getItemId()){
                 case R.id.action_search:
-                    // TODO: Create search fragment/activity
+                    // TODO: Create searchNearby fragment/activity
                     return true;
                 case R.id.action_filter:
                     FilterEventsFragment fragment = new FilterEventsFragment();
