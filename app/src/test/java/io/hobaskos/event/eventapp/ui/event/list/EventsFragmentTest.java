@@ -7,6 +7,7 @@ import com.facebook.FacebookActivity;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
@@ -71,6 +72,7 @@ public class EventsFragmentTest {
     }
 
     @Test
+    @Ignore
     @UiThreadTest
     public void testRecyclerView() {
         mainActivity = Robolectric.buildActivity(MainActivity.class)
