@@ -17,7 +17,6 @@ import com.facebook.FacebookException;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.hannesdorfmann.mosby.mvp.MvpActivity;
-import com.hannesdorfmann.mosby.mvp.MvpView;
 
 import javax.inject.Inject;
 
@@ -27,7 +26,6 @@ import io.hobaskos.event.eventapp.data.model.LoginVM;
 import io.hobaskos.event.eventapp.data.model.SocialType;
 import io.hobaskos.event.eventapp.data.model.SocialUserVM;
 import io.hobaskos.event.eventapp.data.model.response.Response;
-import io.hobaskos.event.eventapp.ui.base.view.activity.BaseActivity;
 import io.hobaskos.event.eventapp.ui.main.MainActivity;
 
 /**

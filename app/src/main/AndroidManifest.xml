@@ -73,7 +73,9 @@
 
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
+            android:label="@string/title_activity_maps">
         </activity>
+
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -93,6 +95,22 @@
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
+        <!--
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="@string/google_api_key" />
+        -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_api_key"/>
+
+
+
+        <!-- Facebook App Id meta data -->
+        <meta-data android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id"/>
+
+        <!-- https://github.com/robolectric/robolectric/issues/2579 -->
         <meta-data
             android:name="com.facebook.sdk.AutoLogAppEventsEnabled"
             android:value="false" />

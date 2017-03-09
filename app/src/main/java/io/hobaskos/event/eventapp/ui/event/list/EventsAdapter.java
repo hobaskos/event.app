@@ -1,6 +1,5 @@
 package io.hobaskos.event.eventapp.ui.event.list;
 
-import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,16 +54,10 @@ public class EventsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         if (showLoadMore != enabled) {
             if (showLoadMore) {
                 showLoadMore = false;
-                Handler handler = new Handler();
-                final Runnable r = () -> notifyItemRemoved(items.size());
-                //notifyItemRemoved(items.size()); // Remove last position
-                handler.post(r);
+                notifyDataSetChanged();
             } else {
                 showLoadMore = true;
-                Handler handler = new Handler();
-                final Runnable r = () -> notifyItemInserted(items.size());
-                handler.post(r);
-                //notifyItemInserted(items.size());
+                notifyDataSetChanged();
             }
         }
     }

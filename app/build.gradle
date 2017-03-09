@@ -53,6 +53,7 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:25.1.0'
     compile 'com.android.support:support-v4:25.1.0'
     compile 'com.android.support:design:25.1.0'
+    compile 'com.android.support:gridlayout-v7:25.1.0'
 
     // Mosby:
     compile "com.hannesdorfmann.mosby:mvp:${mosby_version}"
@@ -118,11 +119,7 @@ dependencies {
     //Google Maps
     compile 'joda-time:joda-time:2.9.7'
     compile 'com.fatboyindustrial.gson-jodatime-serialisers:gson-jodatime-serialisers:1.5.0'
-    compile 'com.android.support:appcompat-v7:25.1.0'
-    compile 'com.android.support:recyclerview-v7:25.1.0'
-    compile 'com.android.support:support-v4:25.1.0'
-    compile 'com.android.support:design:25.1.0'
-    compile 'com.android.support:gridlayout-v7:25.1.0'
+
     compile 'com.google.android.gms:play-services:10.0.1'
     compile 'com.google.maps.android:android-maps-utils:0.4'
 
