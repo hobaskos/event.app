@@ -18,7 +18,6 @@ public class Location implements Parcelable {
     private String name;
     private String description;
     private GeoPoint geoPoint;
-    private int vector;
     private LocalDateTime fromDate;
     private LocalDateTime toDate;
     private int eventId;
@@ -53,14 +52,6 @@ public class Location implements Parcelable {
 
     public void setGeoPoint(GeoPoint geoPoint) {
         this.geoPoint = geoPoint;
-    }
-
-    public int getVector() {
-        return vector;
-    }
-
-    public void setVector(int vector) {
-        this.vector = vector;
     }
 
     public LocalDateTime getFromDate() {
@@ -99,7 +90,6 @@ public class Location implements Parcelable {
         dest.writeString(this.name);
         dest.writeString(this.description);
         dest.writeParcelable(this.geoPoint, flags);
-        dest.writeInt(this.vector);
         dest.writeSerializable(this.fromDate);
         dest.writeSerializable(this.toDate);
         dest.writeInt(this.eventId);
@@ -113,7 +103,6 @@ public class Location implements Parcelable {
         this.name = in.readString();
         this.description = in.readString();
         this.geoPoint = in.readParcelable(GeoPoint.class.getClassLoader());
-        this.vector = in.readInt();
         this.fromDate = (LocalDateTime) in.readSerializable();
         this.toDate = (LocalDateTime) in.readSerializable();
         this.eventId = in.readInt();
