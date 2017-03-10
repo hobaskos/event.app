@@ -9,6 +9,8 @@ import org.joda.time.LocalDateTime;
 
 import java.util.List;
 
+import io.hobaskos.event.eventapp.data.model.enumeration.EventAttendingType;
+
 /**
  * Created by andre on 1/25/2017.
  */
@@ -40,6 +42,12 @@ public class Event implements Parcelable {
 
     @SerializedName("eventCategory")
     private EventCategory category;
+
+    @SerializedName("attendanceCount")
+    private int attendanceCount;
+
+    @SerializedName("myAttendance")
+    private EventAttendingType myAttendance;
 
     public Long getId() {
         return id;
@@ -109,6 +117,22 @@ public class Event implements Parcelable {
         return category;
     }
 
+    public int getAttendanceCount() {
+        return attendanceCount;
+    }
+
+    public void setAttendanceCount(int attendanceCount) {
+        this.attendanceCount = attendanceCount;
+    }
+
+    public EventAttendingType getMyAttendance() {
+        return myAttendance;
+    }
+
+    public void setMyAttendance(EventAttendingType myAttendance) {
+        this.myAttendance = myAttendance;
+    }
+
     public Event() {
     }
 
@@ -128,6 +152,8 @@ public class Event implements Parcelable {
         dest.writeLong(this.ownerId);
         dest.writeTypedList(this.locations);
         dest.writeParcelable(this.category, flags);
+        dest.writeInt(this.attendanceCount);
+        dest.writeInt(this.myAttendance == null ? -1 : this.myAttendance.ordinal());
     }
 
     protected Event(Parcel in) {
@@ -140,6 +166,9 @@ public class Event implements Parcelable {
         this.ownerId = in.readLong();
         this.locations = in.createTypedArrayList(Location.CREATOR);
         this.category = in.readParcelable(EventCategory.class.getClassLoader());
+        this.attendanceCount = in.readInt();
+        int tmpMyAttendance = in.readInt();
+        this.myAttendance = tmpMyAttendance == -1 ? null : EventAttendingType.values()[tmpMyAttendance];
     }
 
     public static final Creator<Event> CREATOR = new Creator<Event>() {
