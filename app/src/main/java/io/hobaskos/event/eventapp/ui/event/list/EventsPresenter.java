@@ -54,7 +54,10 @@ public class EventsPresenter extends BaseRxLcePresenter<EventsView, List<EventsP
         this.persistentStorage = persistentStorage;
     }
 
-    public void loadEvents(boolean pullToRefresh) {
+    public void loadEvents(boolean pullToRefresh, String searchQuery) {
+        searchQuery = searchQuery + "*";
+
+
         // in case the previous action was load more we have to reset the view
         if (isViewAttached()) {
             getView().showLoadMore(false);
@@ -67,14 +70,16 @@ public class EventsPresenter extends BaseRxLcePresenter<EventsView, List<EventsP
 
         // Setup observable:
         final Observable<List<EventsPresentationModel>> observable =
-                eventRepository.searchNearby(0, lat, lon, distance + "km", fromDate, toDate, categoryId + "")
+                eventRepository.searchNearby(0, searchQuery, lat, lon, distance + "km", fromDate, toDate, categoryId + "")
                         .map(presentationModelTransformation);
 
         // setup and start subscription:
         subscribe(observable, pullToRefresh);
     }
 
-    public void loadMoreEvents(int nextPage) {
+    public void loadMoreEvents(int nextPage, String searchQuery) {
+        searchQuery = searchQuery + "*";
+
         // Cancel any previous query
         unsubscribe();
         // Load filter values (from shared preferences)
@@ -83,7 +88,7 @@ public class EventsPresenter extends BaseRxLcePresenter<EventsView, List<EventsP
         DateTime toDate = fromDate.plusYears(2);
         // Setup observable:
         final Observable<List<EventsPresentationModel>> observable =
-                eventRepository.searchNearby(nextPage, lat, lon, distance + "km", fromDate, toDate, categoryId + "")
+                eventRepository.searchNearby(nextPage, searchQuery, lat, lon, distance + "km", fromDate, toDate, categoryId + "")
                         .map(presentationModelTransformation);
         // Show loading in view:
         if (isViewAttached()) {

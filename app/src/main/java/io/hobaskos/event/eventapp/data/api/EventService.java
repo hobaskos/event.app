@@ -31,6 +31,7 @@ public interface EventService
         @GET("api/_search/events-nearby")
         Observable<List<Event>> search(@Query("page") int page,
                                        @Query("size") int pageSize,
+                                       @Query("query") String query,
                                        @Query("lat") double lat,
                                        @Query("lon") double lon,
                                        @Query("distance") String distance,
@@ -54,6 +55,7 @@ public interface EventService
         @GET("api/_search/events-nearby")
         Observable<List<Event>> search(@Query("page") int page,
                                        @Query("size") int pageSize,
+                                       @Query("query") String query,
                                        @Query("lat") double lat,
                                        @Query("lon") double lon,
                                        @Query("distance") String distance,
