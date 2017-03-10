@@ -5,6 +5,7 @@ import org.joda.time.DateTime;
 import java.util.List;
 
 import io.hobaskos.event.eventapp.data.model.Event;
+import io.hobaskos.event.eventapp.data.model.EventAttendance;
 import retrofit2.http.Query;
 import rx.Observable;
 import retrofit2.http.Body;
@@ -59,5 +60,8 @@ public interface EventService
                                        @Query("fromDate") DateTime fromDate,
                                        @Query("toDate") DateTime toDate,
                                        @Query("sort") String sort);
+
+        @POST("api/event-user-attendings")
+        Observable<EventAttendance> saveAttendance(@Body EventAttendance attendance);
     }
 }

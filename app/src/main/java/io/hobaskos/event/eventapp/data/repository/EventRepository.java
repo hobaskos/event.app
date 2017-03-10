@@ -8,6 +8,8 @@ import javax.inject.Inject;
 
 import io.hobaskos.event.eventapp.data.api.EventService;
 import io.hobaskos.event.eventapp.data.model.Event;
+import io.hobaskos.event.eventapp.data.model.EventAttendance;
+import io.hobaskos.event.eventapp.data.model.enumeration.EventAttendingType;
 import rx.Observable;
 
 /**
@@ -21,7 +23,8 @@ public class EventRepository implements BaseRepository<Event, Long> {
     public static final int PAGE_SIZE = 20;
 
     @Inject
-    public EventRepository(EventService.Anonymously eventServiceAnonymously, EventService.Authenticated eventServiceAuthenticated) {
+    public EventRepository(EventService.Anonymously eventServiceAnonymously,
+                           EventService.Authenticated eventServiceAuthenticated) {
         this.eventServiceAnonymously = eventServiceAnonymously;
         this.eventServiceAuthenticated = eventServiceAuthenticated;
     }
@@ -57,5 +60,12 @@ public class EventRepository implements BaseRepository<Event, Long> {
         //return eventServiceAnonymously.searchNearby(page, PAGE_SIZE, lat, lon, distance);
         return eventServiceAuthenticated
                 .search(page, PAGE_SIZE, lat, lon, distance, fromDate, toDate, "fromDate,asc");
+    }
+
+    public Observable<EventAttendance> attendEvent(Long eventId) {
+        EventAttendance attendance = new EventAttendance();
+        attendance.setEventId(eventId);
+        attendance.setType(EventAttendingType.GOING);
+        return eventServiceAuthenticated.saveAttendance(attendance);
     }
 }
