@@ -11,7 +11,7 @@
             android:title="@string/search_event" />
         <item
             android:id="@+id/nav_login"
-            android:icon="@drawable/ic_person_black_24dp"
+            android:icon="@drawable/ic_fingerprint_black_24dp"
             android:title="@string/login" />
     </group>
 
@@ -29,7 +29,7 @@
             android:title="@string/my_profile" />
         <item
             android:id="@+id/nav_logout"
-            android:icon="@drawable/ic_person_black_24dp"
+            android:icon="@drawable/ic_exit_to_app_black_24dp"
             android:title="@string/logout" />
 
     </group>

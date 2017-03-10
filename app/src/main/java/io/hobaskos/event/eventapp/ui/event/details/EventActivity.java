@@ -3,6 +3,7 @@ package io.hobaskos.event.eventapp.ui.event.details;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -122,13 +123,13 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
         eventTitle.setText(String.format(event.getTitle()));
 
         // Event date
-        //date.setText(DateUtils.getRelativeTimeSpanString(event.getFromDate().toDate().getTime()));
+        date.setText(DateUtils.getRelativeTimeSpanString(event.getFromDate().toDate().getTime()));
 
         // Event Image
         Picasso.with(this).load(event.getImageUrl()).into(eventImg);
 
         // Event Time
-        //eventTime.setText(String.format(event.getFromDate().getHourOfDay()+"."+event.getFromDate().getMinuteOfHour()+ " - " + event.getToDate().getHourOfDay()+"."+event.getToDate().getMinuteOfHour()));
+        eventTime.setText(String.format(event.getFromDate().getHourOfDay()+"."+event.getFromDate().getMinuteOfHour()+ " - " + event.getToDate().getHourOfDay()+"."+event.getToDate().getMinuteOfHour()));
 
 
         // Event Place

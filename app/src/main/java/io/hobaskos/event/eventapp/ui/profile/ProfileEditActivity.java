@@ -12,6 +12,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.graphics.BitmapCompat;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -31,6 +32,8 @@ import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 import retrofit2.http.PUT;
 
 import static android.R.attr.bitmap;
+import static android.R.attr.drawable;
+import static android.R.attr.theme;
 
 /**
  * Created by Magnus on 08.03.2017.
@@ -50,6 +53,7 @@ public class ProfileEditActivity extends MvpActivity<ProfileEditView, ProfileEdi
     private TextView deleteIMG;
     private ImageView userProfilePhoto;
     private Button btnDone;
+    private User user;
 
     @Inject
     public ProfileEditPresenter presenter;
@@ -71,7 +75,6 @@ public class ProfileEditActivity extends MvpActivity<ProfileEditView, ProfileEdi
             changeIMG.setEnabled(false);
 
         btnDone.setOnClickListener((View v) -> {
-            Toast.makeText(this, "Ferdig knappen virker", Toast.LENGTH_LONG).show();
             updateProfileData();
         });
 
@@ -103,6 +106,7 @@ public class ProfileEditActivity extends MvpActivity<ProfileEditView, ProfileEdi
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         String imgDecodableString;
         RoundedBitmapDrawable roundDrawable;
+        User user = new User();
 
         try {
 
@@ -115,6 +119,7 @@ public class ProfileEditActivity extends MvpActivity<ProfileEditView, ProfileEdi
                 roundDrawable = RoundedBitmapDrawableFactory.create(getResources(), photo);
                 roundDrawable.setCircular(true);
 
+                user.setProfileImageUrl(roundDrawable.toString());
                 userProfilePhoto.setImageDrawable(roundDrawable);
             }
             // When an Image is picked
@@ -138,7 +143,10 @@ public class ProfileEditActivity extends MvpActivity<ProfileEditView, ProfileEdi
                 roundDrawable = RoundedBitmapDrawableFactory.create(getResources(), imgDecodableString);
                 roundDrawable.setCircular(true);
 
+                user.setProfileImageUrl(roundDrawable.toString());
                 userProfilePhoto.setImageDrawable(roundDrawable);
+
+
             }
         } catch (Exception e) {
             Toast.makeText(this, "Ups, dette gikk ikke bra! :(", Toast.LENGTH_LONG).show();
@@ -158,6 +166,7 @@ public class ProfileEditActivity extends MvpActivity<ProfileEditView, ProfileEdi
 
     @Override
     public void setProfileData(User user) {
+        this.user = user;
         firstname.setText(user.getFirstName());
         lastname.setText(user.getLastName());
 
@@ -171,11 +180,14 @@ public class ProfileEditActivity extends MvpActivity<ProfileEditView, ProfileEdi
     }
     @Override
     public void updateProfileData() {
-        User user = new User();
         user.setFirstName(firstname.getText().toString());
         user.setLastName(lastname.getText().toString());
 
-       // presenter.updateProfile(user);
+        presenter.updateProfile(user);
+    }
+
+    public void savedProfileData() {
+        finish();
     }
 
 }// End of class ProfileEditActivity

@@ -1,5 +1,7 @@
 package io.hobaskos.event.eventapp.ui.profile;
 
+import android.util.Log;
+
 import com.google.android.gms.games.social.Social;
 import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
 
@@ -42,38 +44,35 @@ public class ProfileEditPresenter extends MvpBasePresenter<ProfileEditView> {
                     public void onNext(User user) {
                         if (isViewAttached()) {
                             getView().setProfileData(user);
-                            //getView().updateProfileData(user);
                         }
                     }
 
                 });
     }
-/*
+
     public void updateProfile(User user) {
-        accountManager.setAccount()
+        accountManager.saveAccount(user)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<User>() {
+                .subscribe(new Subscriber<Void>() {
                     @Override
                     public void onCompleted() {
-
                     }
 
                     @Override
                     public void onError(Throwable e) {
-
                     }
 
                     @Override
-                    public void onNext(User user) {
+                    public void onNext(Void v) {
                         if (isViewAttached()) {
-                            getView().setProfileData(user);
+                            getView().savedProfileData();
+
                         }
                     }
 
                 });
     }
 
-*/
 }//End of class
 
