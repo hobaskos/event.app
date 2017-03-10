@@ -63,5 +63,9 @@ public interface EventService
 
         @POST("api/event-user-attendings")
         Observable<EventAttendance> saveAttendance(@Body EventAttendance attendance);
+
+        @GET("api/account/attending-events")
+        Observable<List<Event>> getAttendingEvents(@Query("page") int page,
+                                                   @Query("size") int pageSize);
     }
 }
