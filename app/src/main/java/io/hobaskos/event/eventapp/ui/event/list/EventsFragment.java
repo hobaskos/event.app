@@ -227,7 +227,7 @@ public class EventsFragment extends
 
     @Override
     public void setData(List<EventsPresentationModel> data) {
-        Log.i(TAG, "setData()");
+        Log.i(TAG, "setData(), size: " + data.size());
         adapter.setItems(data);
         adapter.notifyDataSetChanged();
         swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(false));
