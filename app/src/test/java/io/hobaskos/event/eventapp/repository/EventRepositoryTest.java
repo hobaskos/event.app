@@ -92,7 +92,6 @@ public class EventRepositoryTest {
                 "        }, " +
                 "        \"fromDate\": \"2017-02-21T14:06:48.783+01:00\", " +
                 "        \"toDate\": \"2017-02-21T14:06:51.416+01:00\", " +
-                "        \"vector\": 1," +
                 "        \"eventId\": 1" +
                 "      } " +
                 "    ]}";
@@ -143,7 +142,6 @@ public class EventRepositoryTest {
             assertTrue(location.getGeoPoint().getLat() == 10);
             assertTrue(location.getGeoPoint().getLon() == 10);
             assertTrue(location.getId() == 1);
-            assertTrue(location.getVector() == 1);
             assertTrue(location.getFromDate().getYear() == 2017);
             assertTrue(location.getFromDate().getMonthOfYear() == 2);
             assertTrue(location.getFromDate().getDayOfMonth() == 21);

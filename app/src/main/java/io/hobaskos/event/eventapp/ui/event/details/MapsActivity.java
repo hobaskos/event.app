@@ -114,7 +114,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (getIntent() != null){
             Log.i("MapsActivity","Det finnes lokasjoner" );
             for (io.hobaskos.event.eventapp.data.model.Location lok : locations){
-                Log.i("Lokasjon : ", lok.getVector() + " \n" + lok.getGeoPoint().getLat() + " " + lok.getGeoPoint().getLon() + "\n");
+                Log.i("Lokasjon : ", lok.getGeoPoint().getLat() + " " + lok.getGeoPoint().getLon() + "\n");
             }
         } else{
             Log.i("MapsActivity", "Det finnes ingenting");
