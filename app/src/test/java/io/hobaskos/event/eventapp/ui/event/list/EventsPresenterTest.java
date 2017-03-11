@@ -109,7 +109,7 @@ public class EventsPresenterTest {
     public void testLoadEventsSuccess() {
 
         when(eventRepository.searchNearby(anyInt(), anyDouble(), anyDouble(), anyString(),
-                any(DateTime.class), any(DateTime.class))).thenReturn(Observable.create((subscriber) -> {
+                any(DateTime.class), any(DateTime.class), anyString())).thenReturn(Observable.create((subscriber) -> {
             subscriber.onNext(eventList);
             subscriber.onCompleted();
         }));
@@ -130,7 +130,7 @@ public class EventsPresenterTest {
     @Test
     public void testLoadEventsError() {
         when(eventRepository.searchNearby(anyInt(), anyDouble(), anyDouble(), anyString(),
-                any(DateTime.class), any(DateTime.class))).thenReturn(Observable.create((subscriber) -> {
+                any(DateTime.class), any(DateTime.class), anyString())).thenReturn(Observable.create((subscriber) -> {
             subscriber.onError(new Exception());
         }));
 
@@ -151,7 +151,7 @@ public class EventsPresenterTest {
     public void testLoadMoreEventsSuccess() {
         int page = 1;
         when(eventRepository.searchNearby(anyInt(), anyDouble(), anyDouble(), anyString(),
-                any(DateTime.class), any(DateTime.class))).thenReturn(Observable.create((subscriber) -> {
+                any(DateTime.class), any(DateTime.class), anyString())).thenReturn(Observable.create((subscriber) -> {
             subscriber.onNext(eventList);
             subscriber.onCompleted();
         }));
@@ -171,7 +171,7 @@ public class EventsPresenterTest {
     public void testLoadMoreEventsError() {
         int page = 1;
         when(eventRepository.searchNearby(anyInt(), anyDouble(), anyDouble(), anyString(),
-                any(DateTime.class), any(DateTime.class))).thenReturn(Observable.create((subscriber) -> {
+                any(DateTime.class), any(DateTime.class), anyString())).thenReturn(Observable.create((subscriber) -> {
             subscriber.onError(new Exception());
         }));
 

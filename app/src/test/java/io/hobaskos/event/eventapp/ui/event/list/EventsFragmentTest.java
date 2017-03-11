@@ -58,6 +58,7 @@ public class EventsFragmentTest {
     }
 
     @Test
+    @Ignore
     @UiThreadTest
     public void basicViewTest() {
         mainActivity = Robolectric.buildActivity(MainActivity.class)
@@ -93,9 +94,9 @@ public class EventsFragmentTest {
 
         adapter = (EventsAdapter) recyclerView.getAdapter();
 
-        List<EventsPresentationModel> eventList2 = adapter.getItems();
+        List<EventsPresentationModel> eventList3 = adapter.getItems();
 
-        EventsPresentationModel event = eventList2.get(0);
+        EventsPresentationModel event = eventList3.get(0);
         Long id = event.getId();
         Long idToMatch = 1L;
         assertEquals(idToMatch, id);
