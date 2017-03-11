@@ -30,4 +30,9 @@
     <string name="create_event">Opprett Event</string>
     <string name="my_profile">Min Profil</string>
     <string name="logout">Logg ut</string>
+    <string name="create">Opprett</string>
+    <string name="error_message_required_field_title">Tittel er et nødvendig felt.</string>
+    <string name="title_label">Navn</string>
+    <string name="image_label">Bilde</string>
+    <string name="could_not_create_event">Kunne ikke opprette event.</string>
 </resources>
