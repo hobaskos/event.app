@@ -139,19 +139,9 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
             }
         }
 
-        //Sorts the List of location by Vector 0 ->> last.
-        Collections.sort(locations, new Comparator<Location>() {
-            @Override
-            public int compare(Location o1, Location o2) {
-                return Integer.valueOf(o1.getVector()).compareTo(o2.getVector());
-            }
-        });
-
-
         for (Location lok : locations) {
-            Log.i("Lokasjon : ", lok.getVector() + " \n" + lok.getGeoPoint().getLat() + " " + lok.getGeoPoint().getLon() + "\n");
+            Log.i("Lokasjon : ", lok.getGeoPoint().getLat() + " " + lok.getGeoPoint().getLon() + "\n");
         }
-
 
         // Event interested
         eventInterested.setText(String.format("30"));
