@@ -11,25 +11,57 @@
     tools:context="io.hobaskos.event.eventapp.ui.event.create.CreateEventActivity"
     android:orientation="vertical">
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/field_title"
-        />
 
     <EditText
+        android:id="@+id/create_event_field_title"
         android:layout_width="match_parent"
-        android:id="@+id/field_description"
+        android:layout_height="wrap_content"
+        android:hint="@string/title_label"/>
+
+    <EditText
+        android:id="@+id/create_event_field_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/description_label" />
+
+    <Spinner
+        android:id="@+id/create_event_spinner_event_categories"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <EditText
+    <Spinner
+        android:id="@+id/create_event_spinner_event_themes"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/field_image_url"
-        />
+        android:layout_height="wrap_content" />
 
     <Button
-        android:layout_width="wrap_content"
+        android:id="@+id/create_event_button_choose_image"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/button_create_event" />
+        android:text="@string/image_label"
+        android:textAllCaps="true" />
+
+    <Button
+        android:id="@+id/create_event_button_create"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/create"
+        android:textAllCaps="true" />
+
+
+
+
+    <RelativeLayout
+        android:id="@+id/activity_create_event_loading_panel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible"
+        android:gravity="center" >
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true" />
+    </RelativeLayout>
+
 </LinearLayout>
