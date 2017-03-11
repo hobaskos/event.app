@@ -31,4 +31,9 @@
     <string name="create_event">Create Event</string>
     <string name="my_profile">My Profile</string>
     <string name="logout">Logout</string>
+    <string name="loading">Loading</string>
+    <string name="edit">Edit</string>
+    <string name="map">Map</string>
+    <string name="info">Info</string>
+    <string name="locations">Locations</string>
 </resources>
