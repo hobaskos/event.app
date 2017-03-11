@@ -78,8 +78,4 @@ public class EventCategory implements Parcelable {
     public String toString() {
         return title;
     }
-
-    // For testing
-
-
 }
