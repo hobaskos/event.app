@@ -35,4 +35,7 @@
     <string name="title_label">Navn</string>
     <string name="image_label">Bilde</string>
     <string name="could_not_create_event">Kunne ikke opprette event.</string>
+    <string name="could_not_load_categories">Kunne ikke hente kategoriene.</string>
+    <string name="private_event_label">Privat Event</string>
+    <string name="event_category_label">Kategori</string>
 </resources>

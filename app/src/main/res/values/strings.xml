@@ -36,4 +36,7 @@
     <string name="title_label">Title</string>
     <string name="image_label">Image</string>
     <string name="could_not_create_event">Could not create event.</string>
+    <string name="could_not_load_categories">Could not load categories.</string>
+    <string name="private_event_label">Private Event</string>
+    <string name="event_category_label">Category</string>
 </resources>

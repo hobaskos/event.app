@@ -1,13 +1,12 @@
 package io.hobaskos.event.eventapp.ui.event.create;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -20,6 +19,7 @@ import android.widget.Toast;
 import com.hannesdorfmann.mosby.mvp.MvpActivity;
 
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -27,7 +27,11 @@ import javax.inject.Inject;
 import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.model.Event;
+import io.hobaskos.event.eventapp.data.model.EventCategory;
+import io.hobaskos.event.eventapp.ui.event.details.EventActivity;
 import io.hobaskos.event.eventapp.util.ImageUtil;
+
+import static io.hobaskos.event.eventapp.util.ImageUtil.PICK_IMAGE_REQUEST;
 
 /**
  * Created by hansp on 11.03.2017.
@@ -43,12 +47,10 @@ public class CreateEventActivity extends MvpActivity<CreateEventView, CreateEven
     private EditText description;
     private String image;
     private Spinner categories;
-    private Spinner themes;
+    private SwitchCompat privateEvent;
     private Button chooseImage;
     private Button create;
     private RelativeLayout loadingPanel;
-    //private List<EventCategory> categoryList;
-    //private HashMap<String, EventCategory> categoriesSpinnerMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,8 +68,7 @@ public class CreateEventActivity extends MvpActivity<CreateEventView, CreateEven
         categories = (Spinner) findViewById(R.id.create_event_spinner_event_categories);
         categories.setVisibility(View.INVISIBLE);
 
-        themes = (Spinner) findViewById(R.id.create_event_spinner_event_themes);
-        themes.setVisibility(View.INVISIBLE);
+        privateEvent = (SwitchCompat) findViewById(R.id.create_event_switch_private_event);
 
         create = (Button) findViewById(R.id.create_event_button_create);
         create.setOnClickListener(v -> onCreateButtonClicked());
@@ -76,96 +77,9 @@ public class CreateEventActivity extends MvpActivity<CreateEventView, CreateEven
 
         presenter.attachView(this);
         presenter.loadCategories();
-        presenter.loadThemes();
     }
 
-    @NonNull
-    @Override
-    public CreateEventPresenter createPresenter() {
-        App.getInst().getComponent().inject(this);
-        return presenter;
-    }
-
-    public void showLoader() {
-        loadingPanel.setVisibility(View.VISIBLE);
-    }
-
-
-    public void hideLoader() {
-        loadingPanel.setVisibility(View.GONE);
-    }
-
-    @Override
-    public void onSuccess(int id) {
-        // redirect to newly created event with id= id
-        hideLoader();
-    }
-
-    @Override
-    public void onFailure() {
-        Toast.makeText(this, R.string.could_not_create_event, Toast.LENGTH_SHORT).show();
-        hideLoader();
-    }
-
-    @Override
-    public void onCategoriesLoaded(List<String> categoryList) {
-        ArrayAdapter<String> adapter =
-                new ArrayAdapter<>(
-                        this,
-                        R.layout.support_simple_spinner_dropdown_item,
-                        categoryList);
-
-        categories.setAdapter(adapter);
-        categories.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void onThemesLoaded(List<String> themesList) {
-        ArrayAdapter<String> adapter =
-                new ArrayAdapter<>(
-                        this,
-                        R.layout.support_simple_spinner_dropdown_item,
-                        themesList
-                );
-
-        themes.setAdapter(adapter);
-        themes.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-
-            if (requestCode == 10) {
-                Uri selectedImageUri = data.getData();
-                String imagePath = getRealPathFromURI(selectedImageUri);
-
-                BitmapFactory.Options options = new BitmapFactory.Options();
-                options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-                Bitmap bitmap = BitmapFactory.decodeFile(imagePath, options);
-
-                image = ImageUtil.getEncoded64ImageStringFromBitmap(bitmap);
-            }
-        }
-    }
-
-    public String getRealPathFromURI(Uri uri) {
-        if (uri == null) {
-            return null;
-        }
-        String[] projection = {MediaStore.Images.Media.DATA};
-        Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
-        if (cursor != null) {
-            int column_index = cursor
-                    .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            cursor.moveToFirst();
-            return cursor.getString(column_index);
-        }
-        return uri.getPath();
-    }
-
-    public void onCreateButtonClicked() {
+    private void onCreateButtonClicked() {
         create.setEnabled(false);
 
         if(!validate()) {
@@ -176,12 +90,13 @@ public class CreateEventActivity extends MvpActivity<CreateEventView, CreateEven
         Event event = new Event();
         event.setTitle(title.getText().toString());
         event.setDescription(description.getText().toString());
-        event.setImageUrl(image);
-
-
+        event.setPrivateEvent(privateEvent.isChecked());
+        event.setCategory( (EventCategory) categories.getSelectedItem() );
+        if(image != null) {
+            event.setImage(image);
+        }
         presenter.post(event);
         showLoader();
-
     }
 
     private boolean validate() {
@@ -201,8 +116,79 @@ public class CreateEventActivity extends MvpActivity<CreateEventView, CreateEven
     }
 
     private void openGallery(){
-        Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(intent, 10);
+        Intent intent = new Intent();
+        // Only show images
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        // Always show the chooser
+        startActivityForResult(Intent.createChooser(intent, "Select image"), PICK_IMAGE_REQUEST);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == PICK_IMAGE_REQUEST && data != null && data.getData() != null) {
+                Uri uri = data.getData();
+
+                try {
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                    image = ImageUtil.getEncoded64ImageStringFromBitmap(bitmap);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    @NonNull
+    @Override
+    public CreateEventPresenter createPresenter() {
+        App.getInst().getComponent().inject(this);
+        return presenter;
+    }
+
+    public void showLoader() {
+        loadingPanel.setVisibility(View.VISIBLE);
+    }
+
+
+    public void hideLoader() {
+        loadingPanel.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onSuccess(long id) {
+        // redirect to newly created event with id= id
+        hideLoader();
+        Log.i("Activity", "event with id=" + id + ", created.");
+
+        Intent intent = new Intent(this, EventActivity.class);
+        intent.putExtra("eventId", id);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onFailure() {
+        Toast.makeText(this, R.string.could_not_create_event, Toast.LENGTH_SHORT).show();
+        hideLoader();
+    }
+
+    @Override
+    public void onFailureLoadingCategories() {
+        Toast.makeText(this, R.string.could_not_load_categories, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onCategoriesLoaded(List<EventCategory> categoryList) {
+        ArrayAdapter<EventCategory> adapter =
+                new ArrayAdapter<>(
+                        this,
+                        R.layout.support_simple_spinner_dropdown_item,
+                        categoryList);
+
+        categories.setAdapter(adapter);
+        categories.setVisibility(View.VISIBLE);
     }
 
 }
