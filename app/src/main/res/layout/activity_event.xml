@@ -1,246 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-<include layout="@layout/view_loading"/>
-<include layout="@layout/view_error"/>
-
-    <RelativeLayout
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/toolbar_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/contentView">
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
 
-
-        <!-- Date Value -->
-        <TextView
-            android:textSize="@dimen/activity_horizontal_margin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/date_value"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="@dimen/activity_horizontal_margin"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            />
-
-
-        <!-- Event text -->
-        <TextView
-            android:textSize="@dimen/activity_horizontal_margin"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:id="@+id/event_name"
-            android:layout_alignBaseline="@+id/date_value"
-            android:layout_alignBottom="@+id/date_value"
-            android:layout_centerHorizontal="true" />
-
-
-        <!-- Horizontal Line 2dp -->
-        <ImageView
-            android:id="@+id/line1"
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tabs"
             android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="#000000"
-            android:layout_marginTop="@dimen/activity_horizontal_margin"
-            android:layout_below="@id/event_name"
-            />
+            app:tabMinWidth="@dimen/tab_min_width"
+            app:tabIndicatorColor="@android:color/white"
+            app:tabIndicatorHeight="@dimen/tab_indicator_height"
+            android:layout_height="wrap_content"/>
 
+    </android.support.design.widget.AppBarLayout>
 
-        <!-- Event image -->
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_below="@+id/line1"
-            android:id="@+id/eventImage"
-            android:layout_marginTop="3dp"
-            />
+    <include layout="@layout/content_viewpager_event"/>
 
-        <!-- Time icon -->
-        <ImageView
-            android:id="@+id/time_icon"
-            android:src="@drawable/ic_access_time_black_24dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/eventImage"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="@dimen/activity_horizontal_margin"
-            />
+    <include layout="@layout/view_loading"/>
+    <include layout="@layout/view_error"/>
 
+    <View
+        android:layout_width="1dp"
+        android:layout_height="1dp"
+        android:id="@+id/contentView"/>
 
-        <!-- Time text -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/time_text"
-            android:layout_alignTop="@+id/time_icon"
-            android:layout_toEndOf="@+id/time_icon"
-            android:layout_alignBottom="@+id/time_icon"
-            android:gravity="center"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            />
-
-
-        <!-- Place icon -->
-        <ImageView
-            android:id="@+id/place_icon_button"
-            android:src="@drawable/ic_location_on_black_24dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/time_icon"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="@dimen/activity_horizontal_margin"
-            />
-
-
-        <!-- Place text -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/place_text"
-            android:layout_alignTop="@+id/place_icon_button"
-            android:layout_toEndOf="@+id/place_icon_button"
-            android:layout_alignBottom="@+id/place_icon_button"
-            android:gravity="center"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            />
-
-        <!-- Map icon -->
-        <ImageView
-            android:id="@+id/map_icon"
-            android:src="@drawable/ic_map_black_24dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/place_text"
-            android:layout_toEndOf="@+id/place_text"
-            android:layout_alignBottom="@+id/place_text"
-            android:gravity="center"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            />
-
-        <Button
-            android:id="@+id/mapButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/place_text"
-            android:gravity="center"
-            android:text="Map"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            />
-
-
-
-
-
-        <TableLayout
-            android:id="@+id/tablelayout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@+id/mapButton"
-            android:layout_marginTop="@dimen/activity_horizontal_margin"
-            >
-            <TableRow
-                >
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/attending_label"
-                    android:gravity="center"
-                    android:layout_marginRight="25dp"
-                    android:layout_marginLeft="25dp"
-                    />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/interested_label"
-                    android:gravity="center"
-                    android:layout_marginRight="25dp"
-                    android:layout_marginLeft="25dp"
-                    />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/friends_label"
-                    android:gravity="center"
-                    android:layout_marginRight="25dp"
-                    android:layout_marginLeft="25dp"
-                    />
-            </TableRow>
-
-            <TableRow>
-
-                <TextView
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/attending_value"
-                    android:background="@drawable/back"
-                    android:padding="3dp"
-                    android:textAlignment="textEnd"
-                    android:layout_marginRight="25dp"
-                    android:layout_marginLeft="25dp"
-                    />
-
-                <TextView
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/interested_value"
-                    android:background="@drawable/back"
-                    android:padding="3dp"
-                    android:textAlignment="textEnd"
-                    android:layout_marginRight="25dp"
-                    android:layout_marginLeft="25dp"
-                    />
-                <TextView
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/friends_value"
-                    android:background="@drawable/back"
-                    android:padding="3dp"
-                    android:textAlignment="textEnd"
-                    android:layout_marginRight="25dp"
-                    android:layout_marginLeft="25dp"
-                    />
-            </TableRow>
-
-
-        </TableLayout>
-
-        <!-- Description label -->
-        <TextView
-            android:id="@+id/description_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/description_label"
-            android:layout_below="@+id/tablelayout"
-            android:textStyle="bold"
-            android:textColor="#000"
-            android:textSize="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="@dimen/activity_horizontal_margin"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            />
-
-        <!-- Description text -->
-        <TextView
-            android:id="@+id/description_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/description_label"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            />
-
-
-        <!-- Plus button -->
-        <Button
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:background="#000000"
-            android:text="@string/button_name"
-            android:textColor="#ffffff"
-            android:textSize="30dp"
-            android:id="@+id/button"
-            android:layout_marginBottom="20dp"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true" />
-
-    </RelativeLayout>
-</RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>
