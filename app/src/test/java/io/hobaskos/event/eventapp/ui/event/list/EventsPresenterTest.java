@@ -42,9 +42,6 @@ import static org.mockito.internal.verification.VerificationModeFactory.times;
 
 public class EventsPresenterTest {
 
-    private List<EventsPresentationModel> eventsPresentationModelList;
-
-
     private List<Event> eventList;
     @Mock private EventRepository eventRepository;
     @Mock private PersistentStorage persistentStorage;
@@ -59,7 +56,6 @@ public class EventsPresenterTest {
         // Initialize class to be tested
         eventsPresenter = new EventsPresenter(eventRepository, persistentStorage);
         eventList = new ArrayList<>();
-        eventsPresentationModelList = new ArrayList<>();
 
         // Override RxJava schedulers
         RxJavaHooks.setOnIOScheduler(new Func1<Scheduler, Scheduler>() {
@@ -121,7 +117,7 @@ public class EventsPresenterTest {
         InOrder inOrder = inOrder(view);
         inOrder.verify(view, times(1)).showLoadMore(false);
         inOrder.verify(view, times(1)).showLoading(pullToRefresh);
-        inOrder.verify(view, times(1)).setData(anyListOf(EventsPresentationModel.class));
+        inOrder.verify(view, times(1)).setData(anyListOf(Event.class));
         inOrder.verify(view, times(1)).showContent();
         verify(view, never()).showError(any(Exception.class), anyBoolean());
         verifyNoMoreInteractions(view);
@@ -143,7 +139,7 @@ public class EventsPresenterTest {
         inOrder.verify(view, times(1)).showLoading(pullToRefresh);
         inOrder.verify(view, times(1)).showError(any(Exception.class), Matchers.eq(pullToRefresh));
         verify(view, never()).showContent();
-        verify(view, never()).setData(anyListOf(EventsPresentationModel.class));
+        verify(view, never()).setData(anyListOf(Event.class));
         verifyNoMoreInteractions(view);
     }
 
@@ -161,7 +157,7 @@ public class EventsPresenterTest {
 
         InOrder inOrder = inOrder(view);
         inOrder.verify(view, times(1)).showLoadMore(true);
-        inOrder.verify(view, times(1)).addMoreData(anyListOf(EventsPresentationModel.class));
+        inOrder.verify(view, times(1)).addMoreData(anyListOf(Event.class));
         inOrder.verify(view, times(1)).showLoadMore(false);
         verify(view, never()).showLoadMoreError(any(Exception.class));
         verifyNoMoreInteractions(view);
@@ -182,7 +178,7 @@ public class EventsPresenterTest {
         inOrder.verify(view, times(1)).showLoadMore(true);
         inOrder.verify(view, times(1)).showLoadMoreError(any(Exception.class));
         inOrder.verify(view, times(1)).showLoadMore(false);
-        verify(view, never()).addMoreData(anyListOf(EventsPresentationModel.class));
+        verify(view, never()).addMoreData(anyListOf(Event.class));
         verifyNoMoreInteractions(view);
     }
 }

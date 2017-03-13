@@ -49,7 +49,7 @@ public class EventsAdapterTest {
     private Fragment mockFragment;
 
     @Mock
-    private List<EventsPresentationModel> eventList;
+    private List<Event> eventList;
 
     @Before
     public void setup() throws Exception {
@@ -61,7 +61,7 @@ public class EventsAdapterTest {
 
     @Test
     public void itemCount() {
-        EventsPresentationModel event = new EventsPresentationModel(new Event());
+        Event event = new Event();
         adapter.setItems(Arrays.asList(event, event, event));
         assertThat(adapter.getItemCount()).isEqualTo(3);
     }
@@ -69,8 +69,8 @@ public class EventsAdapterTest {
 
     @Test
     public void getItemAtPosition() {
-        EventsPresentationModel firstEvent = new EventsPresentationModel(new Event());
-        EventsPresentationModel secondEvent = new EventsPresentationModel(new Event());
+        Event firstEvent = new Event();
+        Event secondEvent = new Event();
         adapter.setItems(Arrays.asList(firstEvent, secondEvent));
         assertThat(adapter.getItemAtPosition(0)).isEqualTo(firstEvent);
         assertThat(adapter.getItemAtPosition(1)).isEqualTo(secondEvent);
@@ -89,14 +89,12 @@ public class EventsAdapterTest {
         Event event1 = new Event();
         event1.setTitle("Tittel 1");
         event1.setId(1L);
-        EventsPresentationModel pmEvent1 = new EventsPresentationModel(event1);
 
         Event event2 = new Event();
         event2.setTitle("Tittel 2");
         event2.setId(2L);
-        EventsPresentationModel pmEvent2 = new EventsPresentationModel(event2);
 
-        List<EventsPresentationModel> events = Arrays.asList(pmEvent1, pmEvent2);
+        List<Event> events = Arrays.asList(event1, event2);
         EventsAdapter adapter = new EventsAdapter(events, null);
         RecyclerView rvParent = new RecyclerView(context);
         rvParent.setLayoutManager(new LinearLayoutManager(context));
