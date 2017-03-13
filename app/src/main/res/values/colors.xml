@@ -4,6 +4,34 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
+    <color name="colorRed">#AA3939</color>
+    <color name="colorRedDark">#801515</color>
+    <color name="colorRedAccent">#2D8633</color>
+
+    <color name="colorOrange">#AA6E39</color>
+    <color name="colorOrangeDark">#804715</color>
+    <color name="colorOrangeAccent">#236467</color>
+
+    <color name="colorYellow">#AAA639</color>
+    <color name="colorYellowDark">#807C15</color>
+    <color name="colorYellowAccent">#592A71</color>
+
+    <color name="colorGreen">#6C9A33</color>
+    <color name="colorGreenDark">#477413</color>
+    <color name="colorGreenAccent">#973252</color>
+
+    <color name="colorBlue">#29516D</color>
+    <color name="colorBlueDark">#123752</color>
+    <color name="colorBlueAccent">#FF4081</color>
+
+    <color name="colorIndigo">#522B72</color>
+    <color name="colorIndigoDark">#371356</color>
+    <color name="colorIndigoAccent">#AAA539</color>
+
+    <color name="colorViolet">#8C2F5E</color>
+    <color name="colorVioletDark">#69113E</color>
+    <color name="colorVioletAccent">#7A9E35</color>
+
     <color name="primary">#3F51B5</color>
     <color name="primary_dark">#303F9F</color>
     <color name="primary_light">#C5CAE9</color>
