@@ -37,10 +37,18 @@
     <string name="locations">Lokasjoner</string>
     <string name="create">Opprett</string>
     <string name="error_message_required_field_title">Tittel er et nødvendig felt.</string>
+    <string name="error_message_required_field_from_date">Start-dato er et nødvendig felt.</string>
+    <string name="error_message_required_field_from_time">Start-tid er et nødvendig felt.</string>
+    <string name="error_message_required_field_to_date">Slutt-dato er et nødvendig felt.</string>
+    <string name="error_message_required_field_to_time">Slutt-tid er et nødvendig felt.</string>
     <string name="title_label">Navn</string>
     <string name="image_label">Bilde</string>
     <string name="could_not_create_event">Kunne ikke opprette event.</string>
     <string name="could_not_load_categories">Kunne ikke hente kategoriene.</string>
     <string name="private_event_label">Privat Event</string>
     <string name="event_category_label">Kategori</string>
+    <string name="from">Fra</string>
+    <string name="to">Til</string>
+    <string name="date">Dato</string>
+    <string name="time">Tid</string>
 </resources>

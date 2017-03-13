@@ -38,10 +38,18 @@
     <string name="locations">Locations</string>
     <string name="create">Create</string>
     <string name="error_message_required_field_title">Title is a required field.</string>
+    <string name="error_message_required_field_from_date">From date is a required field.</string>
+    <string name="error_message_required_field_from_time">From time is a required field.</string>
+    <string name="error_message_required_field_to_date">To date is a required field.</string>
+    <string name="error_message_required_field_to_time">To time is a required field.</string>
     <string name="title_label">Title</string>
     <string name="image_label">Image</string>
     <string name="could_not_create_event">Could not create event.</string>
     <string name="could_not_load_categories">Could not load categories.</string>
     <string name="private_event_label">Private Event</string>
     <string name="event_category_label">Category</string>
+    <string name="from">From</string>
+    <string name="to">To</string>
+    <string name="date">Date</string>
+    <string name="time">Time</string>
 </resources>

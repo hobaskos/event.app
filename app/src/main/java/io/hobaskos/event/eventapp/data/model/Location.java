@@ -20,7 +20,7 @@ public class Location implements Parcelable {
     private GeoPoint geoPoint;
     private LocalDateTime fromDate;
     private LocalDateTime toDate;
-    private int eventId;
+    private long eventId;
 
     public long getId() {
         return id;
@@ -70,11 +70,11 @@ public class Location implements Parcelable {
         this.toDate = toDate;
     }
 
-    public int getEventId() {
+    public long getEventId() {
         return eventId;
     }
 
-    public void setEventId(int eventId) {
+    public void setEventId(long eventId) {
         this.eventId = eventId;
     }
 
@@ -92,7 +92,7 @@ public class Location implements Parcelable {
         dest.writeParcelable(this.geoPoint, flags);
         dest.writeSerializable(this.fromDate);
         dest.writeSerializable(this.toDate);
-        dest.writeInt(this.eventId);
+        dest.writeLong(this.eventId);
     }
 
     public Location() {
@@ -105,7 +105,7 @@ public class Location implements Parcelable {
         this.geoPoint = in.readParcelable(GeoPoint.class.getClassLoader());
         this.fromDate = (LocalDateTime) in.readSerializable();
         this.toDate = (LocalDateTime) in.readSerializable();
-        this.eventId = in.readInt();
+        this.eventId = in.readLong();
     }
 
     public static final Parcelable.Creator<Location> CREATOR = new Parcelable.Creator<Location>() {

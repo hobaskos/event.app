@@ -39,7 +39,7 @@ public class EventPagerAdapter extends FragmentStatePagerAdapter {
             case 0:
                 return EventInfoFragment.newInstance(event);
             case 1:
-                return LocationsFragment.newInstance((ArrayList)event.getLocations());
+                return LocationsFragment.newInstance(event);
             case 2:
                 return UsersFragment.newInstance(tmpUsers);
             default:

@@ -109,6 +109,8 @@ dependencies {
         exclude group: 'com.android.support', module: 'recyclerview-v7'
         exclude group: 'com.android.support', module: 'support-annotations'
     }
+    testCompile 'com.android.support:support-compat:25.2.0'
+    testCompile 'com.android.support:support-annotations:25.2.0'
 
     testCompile 'com.android.support:support-compat:25.2.0'
     testCompile 'com.android.support:support-annotations:25.2.0'
@@ -130,4 +132,8 @@ dependencies {
     compile 'com.facebook.android:facebook-android-sdk:[4,5)'
 
     provided 'javax.annotation:jsr250-api:1.0'
+
+    // Material DateTime Picker
+    compile 'com.wdullaer:materialdatetimepicker:3.1.3'
+
 }
