@@ -108,7 +108,7 @@ public class EventsPresenterTest {
     @Test
     public void testLoadEventsSuccess() {
 
-        when(eventRepository.searchNearby(anyInt(), anyDouble(), anyDouble(), anyString(),
+        when(eventRepository.searchNearby(anyInt(), anyString(), anyDouble(), anyDouble(), anyString(),
                 any(DateTime.class), any(DateTime.class), anyString())).thenReturn(Observable.create((subscriber) -> {
             subscriber.onNext(eventList);
             subscriber.onCompleted();
@@ -116,7 +116,7 @@ public class EventsPresenterTest {
 
         boolean pullToRefresh = true;
         eventsPresenter.attachView(view);
-        eventsPresenter.loadEvents(pullToRefresh);
+        eventsPresenter.loadEvents(pullToRefresh, "");
 
         InOrder inOrder = inOrder(view);
         inOrder.verify(view, times(1)).showLoadMore(false);
@@ -129,14 +129,14 @@ public class EventsPresenterTest {
 
     @Test
     public void testLoadEventsError() {
-        when(eventRepository.searchNearby(anyInt(), anyDouble(), anyDouble(), anyString(),
+        when(eventRepository.searchNearby(anyInt(), anyString(), anyDouble(), anyDouble(), anyString(),
                 any(DateTime.class), any(DateTime.class), anyString())).thenReturn(Observable.create((subscriber) -> {
             subscriber.onError(new Exception());
         }));
 
         boolean pullToRefresh = true;
         eventsPresenter.attachView(view);
-        eventsPresenter.loadEvents(pullToRefresh);
+        eventsPresenter.loadEvents(pullToRefresh, "");
 
         InOrder inOrder = inOrder(view);
         inOrder.verify(view, times(1)).showLoadMore(false);
@@ -150,14 +150,14 @@ public class EventsPresenterTest {
     @Test
     public void testLoadMoreEventsSuccess() {
         int page = 1;
-        when(eventRepository.searchNearby(anyInt(), anyDouble(), anyDouble(), anyString(),
+        when(eventRepository.searchNearby(anyInt(), anyString(), anyDouble(), anyDouble(), anyString(),
                 any(DateTime.class), any(DateTime.class), anyString())).thenReturn(Observable.create((subscriber) -> {
             subscriber.onNext(eventList);
             subscriber.onCompleted();
         }));
 
         eventsPresenter.attachView(view);
-        eventsPresenter.loadMoreEvents(page);
+        eventsPresenter.loadMoreEvents(page, "");
 
         InOrder inOrder = inOrder(view);
         inOrder.verify(view, times(1)).showLoadMore(true);
@@ -170,13 +170,13 @@ public class EventsPresenterTest {
     @Test
     public void testLoadMoreEventsError() {
         int page = 1;
-        when(eventRepository.searchNearby(anyInt(), anyDouble(), anyDouble(), anyString(),
+        when(eventRepository.searchNearby(anyInt(), anyString(), anyDouble(), anyDouble(), anyString(),
                 any(DateTime.class), any(DateTime.class), anyString())).thenReturn(Observable.create((subscriber) -> {
             subscriber.onError(new Exception());
         }));
 
         eventsPresenter.attachView(view);
-        eventsPresenter.loadMoreEvents(page);
+        eventsPresenter.loadMoreEvents(page, "");
 
         InOrder inOrder = inOrder(view);
         inOrder.verify(view, times(1)).showLoadMore(true);
