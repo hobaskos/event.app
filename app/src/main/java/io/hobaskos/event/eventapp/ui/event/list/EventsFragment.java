@@ -28,6 +28,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
+import io.hobaskos.event.eventapp.data.model.EventCategoryTheme;
 import io.hobaskos.event.eventapp.ui.base.view.fragment.BaseLceViewStateFragment;
 import io.hobaskos.event.eventapp.ui.event.filter.FilterEventsFragment;
 import io.hobaskos.event.eventapp.ui.event.details.EventActivity;
@@ -127,6 +128,7 @@ public class EventsFragment extends
                 event -> {
                     Intent intent = new Intent(getActivity(), EventActivity.class);
                     intent.putExtra(EventActivity.EVENT_ID, event.getId());
+                    intent.putExtra(EventActivity.EVENT_THEME, EventCategoryTheme.YELLOW); //TODO change when eventCategory is available
                     startActivity(intent);
                 });
 
