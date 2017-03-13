@@ -60,7 +60,7 @@ dependencies {
     compile "com.hannesdorfmann.mosby:viewstate:${mosby_version}"
 
     // EventBus
-    compile 'de.greenrobot:eventbus:2.4.0'
+    compile 'org.greenrobot:eventbus:3.0.0'
 
     // Butter Knife
     compile "com.jakewharton:butterknife:${butterknife_version}"

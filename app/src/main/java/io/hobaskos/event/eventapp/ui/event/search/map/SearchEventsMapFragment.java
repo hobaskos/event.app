@@ -15,11 +15,17 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.data.model.Location;
+import io.hobaskos.event.eventapp.ui.event.search.list.EventsPresenter;
+import io.hobaskos.event.eventapp.util.LocationUtil;
 
 /**
  * Created by test on 3/13/2017.
@@ -33,6 +39,15 @@ public class SearchEventsMapFragment extends Fragment implements SearchEventsMap
     private GoogleMap googleMap;
 
     private List<Event> events;
+
+    @Inject
+    public SearchEventsMapPresenter presenter;
+
+    @Override public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        App.getInst().getComponent().inject(this);
+        presenter.attachView(this);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
@@ -92,17 +107,25 @@ public class SearchEventsMapFragment extends Fragment implements SearchEventsMap
         this.googleMap = googleMap;
         if (googleMap != null) {
             googleMap.getUiSettings().setZoomControlsEnabled(true);
-            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(43.1, -87.9), 10));
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(59.9, 10.75), 10));
 
+//            if (events != null) {
+//                for (Event event : events) {
+//                    Location l = event.getLocations().get(0);
+//                    googleMap.addMarker(new MarkerOptions().position(new LatLng(43.1, -87.9)));
+//                }
+//            }
+            //presenter
             for (Event event : events) {
                 Location l = event.getLocations().get(0);
-                googleMap.addMarker(new MarkerOptions().position(new LatLng(43.1, -87.9)));
+                googleMap.addMarker(new MarkerOptions().position(LocationUtil.LocationToLatLng(l)));
             }
         }
     }
 
     @Override
     public void setEvents(List<Event> events) {
+        this.events = events;
 
     }
 }
