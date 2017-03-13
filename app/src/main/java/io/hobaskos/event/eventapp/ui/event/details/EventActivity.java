@@ -148,7 +148,7 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
                 startActivity(intent);
                 break;
         }
-        return true;
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
