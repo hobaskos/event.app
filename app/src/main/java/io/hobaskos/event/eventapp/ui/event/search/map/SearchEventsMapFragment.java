@@ -118,7 +118,10 @@ public class SearchEventsMapFragment extends Fragment implements SearchEventsMap
             //presenter
             for (Event event : events) {
                 Location l = event.getLocations().get(0);
-                googleMap.addMarker(new MarkerOptions().position(LocationUtil.LocationToLatLng(l)));
+                googleMap.addMarker(new MarkerOptions()
+                        .position(LocationUtil.LocationToLatLng(l))
+                        .title(event.getTitle())
+                        .snippet(event.getDate(getContext())));
             }
         }
     }
