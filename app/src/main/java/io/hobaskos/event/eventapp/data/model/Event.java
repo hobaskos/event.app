@@ -49,6 +49,11 @@ public class Event implements Parcelable {
     @SerializedName("myAttendance")
     private EventAttendingType myAttendance;
 
+    @SerializedName("image")
+    private String image;
+
+    private boolean privateEvent;
+
     public Long getId() {
         return id;
     }
@@ -71,6 +76,14 @@ public class Event implements Parcelable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public String getImageUrl() {
@@ -127,6 +140,22 @@ public class Event implements Parcelable {
 
     public EventAttendingType getMyAttendance() {
         return myAttendance;
+    }
+
+    public boolean isPrivateEvent() {
+        return privateEvent;
+    }
+
+    public void setPrivateEvent(boolean privateEvent) {
+        this.privateEvent = privateEvent;
+    }
+
+    public EventCategory getCategory() {
+        return category;
+    }
+
+    public void setCategory(EventCategory category) {
+        this.category = category;
     }
 
     public void setMyAttendance(EventAttendingType myAttendance) {

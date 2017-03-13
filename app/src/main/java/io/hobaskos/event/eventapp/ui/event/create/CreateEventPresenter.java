@@ -1,16 +1,20 @@
 package io.hobaskos.event.eventapp.ui.event.create;
 
-import android.os.Handler;
 import android.util.Log;
 
 import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import io.hobaskos.event.eventapp.data.model.Event;
+import io.hobaskos.event.eventapp.data.model.EventCategory;
+import io.hobaskos.event.eventapp.data.repository.EventCategoryRepository;
+import io.hobaskos.event.eventapp.data.repository.EventRepository;
+import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by hansp on 11.03.2017.
@@ -18,49 +22,68 @@ import io.hobaskos.event.eventapp.data.model.Event;
 
 public class CreateEventPresenter extends MvpBasePresenter<CreateEventView> {
 
-    @Inject
-    public CreateEventPresenter() {
+    public EventRepository eventRepository;
+    public EventCategoryRepository eventCategoryRepository;
 
+    @Inject
+    public CreateEventPresenter(EventRepository eRepository, EventCategoryRepository ecRepository) {
+        this.eventRepository = eRepository;
+        this.eventCategoryRepository = ecRepository;
     }
 
     protected void post(Event event) {
+        eventRepository.save(event)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Event>() {
+                    @Override
+                    public void onCompleted() {
 
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.i("Presenter. Error=", e.getMessage());
+                        if(isViewAttached()){
+                            getView().onFailure();
+                        }
+                    }
+
+                    @Override
+                    public void onNext(Event event) {
+                        if(isViewAttached()){
+                            getView().onSuccess(event.getId());
+                        }
+                    }
+                });
     }
 
     protected void loadCategories() {
 
-        List<String> categories = new ArrayList<>();
-        categories.add("Category");
-        categories.add("Music");
-        categories.add("Sports");
-        categories.add("Nightlife");
-        categories.add("Art");
+        eventCategoryRepository.getAll(0)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<List<EventCategory>>() {
+                    @Override
+                    public void onCompleted() {
 
-        // Just to simulate IO
-        Handler handler = new Handler();
-        handler.postDelayed(() -> {
-            if(isViewAttached()){
-                getView().onCategoriesLoaded(categories);
-            }
-        }, 2000);
+                    }
 
-    }
+                    @Override
+                    public void onError(Throwable e) {
+                        if(isViewAttached()) {
+                            // Todo: rewrite onFailure to handle every failure -> take a string
+                            getView().onFailureLoadingCategories();
+                        }
+                    }
 
-    protected void loadThemes() {
-        List<String> themes = new ArrayList<>();
-        themes.add("Theme");
-        themes.add("Blue");
-        themes.add("Purple");
-        themes.add("Yellow");
-        themes.add("Red");
-
-        // Just to simulate IO
-        Handler handler = new Handler();
-        handler.postDelayed(() -> {
-            if(isViewAttached()){
-                getView().onThemesLoaded(themes);
-            }
-        }, 2000);
+                    @Override
+                    public void onNext(List<EventCategory> eventCategoryList) {
+                        if(isViewAttached()){
+                            getView().onCategoriesLoaded(eventCategoryList);
+                        }
+                    }
+                });
     }
 
 }

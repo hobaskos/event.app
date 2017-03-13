@@ -12,6 +12,8 @@ import java.io.ByteArrayOutputStream;
 
 public class ImageUtil {
 
+    public static final int PICK_IMAGE_REQUEST = 1;
+
     public static String getEncoded64ImageStringFromBitmap(Bitmap bitmap) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 70, stream);
