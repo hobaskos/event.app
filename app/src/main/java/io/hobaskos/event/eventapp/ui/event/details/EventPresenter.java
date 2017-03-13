@@ -28,10 +28,5 @@ public class EventPresenter extends BaseRxLcePresenter<EventView, Event> {
         eventObservable = eventRepository.get(id);
         subscribe(eventObservable, false);
     }
-
-    public void addLocation(Location location) {
-
-    }
-
 }
 
