@@ -27,7 +27,9 @@ public class ApiService
 
     private final Gson serializer = new GsonBuilder().registerTypeAdapter(LocalDateTime.class,
             (JsonDeserializer<LocalDateTime>) (json, type, jsonDeserializationContext) ->
-                    DateTime.parse(json.getAsJsonPrimitive().getAsString()).toLocalDateTime()).create();
+                    DateTime.parse(json.getAsJsonPrimitive().getAsString()).toLocalDateTime())
+            .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+            .create();
 
     private ApiService(HttpUrl httpUrl) {
 

@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -22,6 +23,8 @@ import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog.OnDateSetListener;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -53,9 +56,13 @@ public class LocationActivity extends MvpActivity<LocationView, LocationPresente
     //@BindView(R.id.activity_add_location_location)private EditText location;
     private EditText description;
     private EditText fromDate;
+    private String fromDateString;
     private EditText fromTime;
+    private String fromTimeString;
     private EditText toDate;
+    private String toDateString;
     private EditText toTime;
+    private String toTimeString;
     private Button create;
 
     private SupportPlaceAutocompleteFragment placeAutocompleteFragment;
@@ -66,6 +73,16 @@ public class LocationActivity extends MvpActivity<LocationView, LocationPresente
     Long eventId;
 
     private GoogleApiClient mGoogleApiClient;
+
+    @Override
+    public void onSuccess() {
+        Toast.makeText(this, "Location added!", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onFailure() {
+        Toast.makeText(this, "Location not added!", Toast.LENGTH_LONG).show();
+    }
 
     private enum PickerState { FROM, TO }
     private PickerState pickerState;
@@ -196,10 +213,10 @@ public class LocationActivity extends MvpActivity<LocationView, LocationPresente
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
         switch (pickerState) {
             case FROM:
-                fromDate.setText(year + "-" + monthOfYear + "-" + dayOfMonth);
+                fromDate.setText(year + "-" + formatNumber(monthOfYear + 1) + "-" + formatNumber(dayOfMonth));
                 break;
             case TO:
-                toDate.setText(year + "-" + monthOfYear + "-" + dayOfMonth);
+                toDate.setText(year + "-" + formatNumber(monthOfYear + 1) + "-" + formatNumber(dayOfMonth));
                 break;
             default:
                 throw new IllegalStateException("Illegal state");
@@ -210,10 +227,10 @@ public class LocationActivity extends MvpActivity<LocationView, LocationPresente
     public void onTimeSet(TimePickerDialog view, int hourOfDay, int minute, int second) {
         switch (pickerState) {
             case FROM:
-                fromTime.setText(hourOfDay +  ":" + minute);
+                fromTime.setText(formatNumber(hourOfDay) +  ":" + formatNumber(minute) + ":" + formatNumber(second));
                 break;
             case TO:
-                toTime.setText(hourOfDay + ":" + minute);
+                toTime.setText(formatNumber(hourOfDay) +  ":" + formatNumber(minute) + ":" + formatNumber(second));
                 break;
             default:
                 throw new IllegalStateException("Illegal state");
@@ -240,6 +257,8 @@ public class LocationActivity extends MvpActivity<LocationView, LocationPresente
         String fromDateTime = fromDate.getText().toString() + " " + fromTime.getText().toString();
         location.setFromDate(parseToLocalDateTime(fromDateTime));
 
+        Log.i("LocationActivity", "fromDate=" + location.getFromDate());
+
         String toDateTime = toDate.getText().toString() + " " + toTime.getText().toString();
         location.setToDate(parseToLocalDateTime(toDateTime));
 
@@ -249,8 +268,53 @@ public class LocationActivity extends MvpActivity<LocationView, LocationPresente
         presenter.addLocation(location);
     }
 
+    private String formatNumber(int number) {
+
+        String newNumber = "";
+
+        switch (number) {
+            case 0:
+                newNumber = "00";
+                break;
+            case 1:
+                newNumber = "01";
+                break;
+            case 2:
+                newNumber = "02";
+                break;
+            case 3:
+                newNumber = "03";
+                break;
+            case 4:
+                newNumber = "04";
+                break;
+            case 5:
+                newNumber = "05";
+                break;
+            case 6:
+                newNumber = "06";
+                break;
+            case 7:
+                newNumber = "07";
+                break;
+            case 8:
+                newNumber = "08";
+                break;
+            case 9:
+                newNumber = "09";
+                break;
+            default:
+                newNumber = Integer.toString(number);
+                break;
+        }
+
+        return newNumber;
+    }
+
     private LocalDateTime parseToLocalDateTime(String s) {
-        DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm");
+        DateTimeFormatter formatter = DateTimeFormat
+                .forPattern("yyyy-MM-dd HH:mm:ss")
+                .withZone(DateTimeZone.getDefault());
         return formatter.parseLocalDateTime(s);
     }
 

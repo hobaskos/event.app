@@ -7,4 +7,6 @@ import com.hannesdorfmann.mosby.mvp.MvpView;
  */
 
 public interface LocationView extends MvpView {
+    void onSuccess();
+    void onFailure();
 }
