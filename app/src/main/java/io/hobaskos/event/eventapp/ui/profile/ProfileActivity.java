@@ -1,7 +1,11 @@
 package io.hobaskos.event.eventapp.ui.profile;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.IntegerRes;
 import android.support.annotation.NonNull;
+import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TabHost;
 import android.widget.TextView;
@@ -39,6 +43,8 @@ public class ProfileActivity extends MvpActivity<ProfileView, ProfilePresenter> 
     /**
      *
      */
+    private TextView edit;
+
     @Inject
     public ProfilePresenter presenter;
 
@@ -67,6 +73,12 @@ public class ProfileActivity extends MvpActivity<ProfileView, ProfilePresenter> 
 
         userProfileName = (TextView) findViewById(R.id.user_profile_name);
         userProfilePhoto = (ImageView) findViewById(R.id.user_profile_photo);
+        edit = (TextView) findViewById(R.id.edit);
+
+        edit.setOnClickListener((View v) -> {
+            Intent i = new Intent(this, ProfileEditActivity.class);
+            startActivity(i);
+        });
 
         presenter.refreshProfileData();
     }
@@ -99,4 +111,11 @@ public class ProfileActivity extends MvpActivity<ProfileView, ProfilePresenter> 
                     .into(userProfilePhoto);
         }
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        presenter.refreshProfileData();
+    }
+
 }

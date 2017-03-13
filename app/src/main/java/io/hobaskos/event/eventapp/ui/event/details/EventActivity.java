@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.text.format.DateUtils;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -11,6 +12,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -96,6 +99,25 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     public void setData(Event event) {
         this.event = event;
 
+        /*
+        // Event date
+        date.setText(DateUtils.getRelativeTimeSpanString(event.getFromDate().toDate().getTime()));
+
+        // Event Image
+        Picasso.with(this).load(event.getImageUrl()).into(eventImg);
+
+        // Event Time
+        eventTime.setText(String.format(event.getFromDate().getHourOfDay()+"."+event.getFromDate().getMinuteOfHour()+ " - " + event.getToDate().getHourOfDay()+"."+event.getToDate().getMinuteOfHour()));
+
+
+        // Event Place
+        if (!event.getLocations().isEmpty()) {
+            eventPlace.setText(event.getLocations().get(0).getName());
+            for (int i = 0; i < event.getLocations().size(); i++) {
+                locations.add(event.getLocations().get(i));
+            }
+        }
+        */
         setTitle(event.getTitle());
 
         viewPager.setAdapter(new EventPagerAdapter(event, this, getSupportFragmentManager()));
