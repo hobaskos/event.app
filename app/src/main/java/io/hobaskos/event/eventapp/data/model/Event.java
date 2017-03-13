@@ -1,7 +1,9 @@
 package io.hobaskos.event.eventapp.data.model;
 
+import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.format.DateUtils;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -160,6 +162,14 @@ public class Event implements Parcelable {
 
     public void setMyAttendance(EventAttendingType myAttendance) {
         this.myAttendance = myAttendance;
+    }
+
+    public String getDate(Context context) {
+        return fromDate != null ? DateUtils.formatDateTime(context, fromDate.toDate().getTime(), DateUtils.FORMAT_SHOW_DATE) : "";
+    }
+
+    public String getLocation() {
+        return locations.size() > 0 ? locations.get(0).getName() : "";
     }
 
     public Event() {

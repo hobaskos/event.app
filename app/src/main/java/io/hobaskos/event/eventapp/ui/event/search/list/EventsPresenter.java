@@ -22,13 +22,11 @@ import rx.schedulers.Schedulers;
  * Created by andre on 2/13/2017.
  */
 
-public class EventsPresenter extends BaseRxLcePresenter<EventsView, List<EventsPresentationModel>> {
+public class EventsPresenter extends BaseRxLcePresenter<EventsView, List<Event>> {
 
     protected EventRepository eventRepository;
 
-    private Subscriber<List<EventsPresentationModel>> moreEventSubscriber;
-
-    private Func1<List<Event>, List<EventsPresentationModel>> presentationModelTransformation;
+    private Subscriber<List<Event>> moreEventSubscriber;
 
     private PersistentStorage persistentStorage;
 
@@ -41,15 +39,6 @@ public class EventsPresenter extends BaseRxLcePresenter<EventsView, List<EventsP
     public EventsPresenter(EventRepository eventRepository,
                            PersistentStorage persistentStorage) {
         this.eventRepository = eventRepository;
-
-        presentationModelTransformation = events -> {
-            List<EventsPresentationModel> pmEvents = new ArrayList<>();
-            for (Event event : events) {
-                EventsPresentationModel pm = new EventsPresentationModel(event);
-                pmEvents.add(pm);
-            }
-            return pmEvents;
-        };
 
         this.persistentStorage = persistentStorage;
     }
@@ -69,9 +58,8 @@ public class EventsPresenter extends BaseRxLcePresenter<EventsView, List<EventsP
         DateTime toDate = fromDate.plusYears(2);
 
         // Setup observable:
-        final Observable<List<EventsPresentationModel>> observable =
-                eventRepository.searchNearby(0, searchQuery, lat, lon, distance + "km", fromDate, toDate, categoryId + "")
-                        .map(presentationModelTransformation);
+        final Observable<List<Event>> observable =
+                eventRepository.searchNearby(0, searchQuery, lat, lon, distance + "km", fromDate, toDate, categoryId + "");
 
         // setup and start subscription:
         subscribe(observable, pullToRefresh);
@@ -87,15 +75,14 @@ public class EventsPresenter extends BaseRxLcePresenter<EventsView, List<EventsP
         DateTime fromDate = DateTime.now();
         DateTime toDate = fromDate.plusYears(2);
         // Setup observable:
-        final Observable<List<EventsPresentationModel>> observable =
-                eventRepository.searchNearby(nextPage, searchQuery, lat, lon, distance + "km", fromDate, toDate, categoryId + "")
-                        .map(presentationModelTransformation);
+        final Observable<List<Event>> observable =
+                eventRepository.searchNearby(nextPage, searchQuery, lat, lon, distance + "km", fromDate, toDate, categoryId + "");
         // Show loading in view:
         if (isViewAttached()) {
             getView().showLoadMore(true);
         }
         // Setup subscriber:
-        moreEventSubscriber = new Subscriber<List<EventsPresentationModel>>() {
+        moreEventSubscriber = new Subscriber<List<Event>>() {
             @Override public void onCompleted() {
             }
             @Override  public void onError(Throwable e) {
@@ -104,7 +91,7 @@ public class EventsPresenter extends BaseRxLcePresenter<EventsView, List<EventsP
                     getView().showLoadMore(false);
                 }
             }
-            @Override public void onNext(List<EventsPresentationModel> events) {
+            @Override public void onNext(List<Event> events) {
                 if (isViewAttached()) {
                     getView().addMoreData(events);
                     getView().showLoadMore(false);

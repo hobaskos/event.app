@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.text.format.DateUtils;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -12,6 +13,8 @@ import android.view.MenuItem;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 
 import javax.inject.Inject;
@@ -19,6 +22,7 @@ import javax.inject.Inject;
 import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.model.Event;
+import io.hobaskos.event.eventapp.data.model.EventCategoryTheme;
 import io.hobaskos.event.eventapp.data.model.Location;
 import io.hobaskos.event.eventapp.data.model.User;
 import io.hobaskos.event.eventapp.ui.base.view.activity.BaseLceViewStateActivity;
@@ -33,6 +37,7 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
         UsersFragment.OnUserListFragmentInteractionListener {
 
     public final static String EVENT_ID = "eventId";
+    public final static String EVENT_THEME = "eventTheme";
     public final static String TAG = EventActivity.class.getName();
 
     private Long eventId;
@@ -47,14 +52,45 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_event);
 
+        // This must be before setContentView!
+        EventCategoryTheme theme = (EventCategoryTheme) getIntent().getExtras().getSerializable(EVENT_THEME);
+        if (theme != null) { setEventTheme(theme); }
+
+        setContentView(R.layout.activity_event);
         setTitle(R.string.loading);
         getSupportActionBar().setElevation(0);
+
 
         eventId = getIntent().getExtras().getLong(EVENT_ID);
         viewPager = (ViewPager) findViewById(R.id.container);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
+    }
+
+    private void setEventTheme(EventCategoryTheme theme) {
+        switch (theme) {
+            case RED:
+                setTheme(R.style.AppTheme_Red);
+                break;
+            case ORANGE:
+                setTheme(R.style.AppTheme_Orange);
+                break;
+            case YELLOW:
+                setTheme(R.style.AppTheme_Yellow);
+                break;
+            case GREEN:
+                setTheme(R.style.AppTheme_Green);
+                break;
+            case BLUE:
+                setTheme(R.style.AppTheme_Blue);
+                break;
+            case INDIGO:
+                setTheme(R.style.AppTheme_Indigo);
+                break;
+            case VIOLET:
+                setTheme(R.style.AppTheme_Violet);
+                break;
+        }
     }
 
     @NonNull
@@ -96,6 +132,25 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     public void setData(Event event) {
         this.event = event;
 
+        /*
+        // Event date
+        date.setText(DateUtils.getRelativeTimeSpanString(event.getFromDate().toDate().getTime()));
+
+        // Event Image
+        Picasso.with(this).load(event.getImageUrl()).into(eventImg);
+
+        // Event Time
+        eventTime.setText(String.format(event.getFromDate().getHourOfDay()+"."+event.getFromDate().getMinuteOfHour()+ " - " + event.getToDate().getHourOfDay()+"."+event.getToDate().getMinuteOfHour()));
+
+
+        // Event Place
+        if (!event.getLocations().isEmpty()) {
+            eventPlace.setText(event.getLocations().get(0).getName());
+            for (int i = 0; i < event.getLocations().size(); i++) {
+                locations.add(event.getLocations().get(i));
+            }
+        }
+        */
         setTitle(event.getTitle());
 
         viewPager.setAdapter(new EventPagerAdapter(event, this, getSupportFragmentManager()));
@@ -126,7 +181,7 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
                 startActivity(intent);
                 break;
         }
-        return true;
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

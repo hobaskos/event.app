@@ -1,6 +1,7 @@
 package io.hobaskos.event.eventapp.data.repository;
 
 import com.facebook.AccessToken;
+import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.VoidViewState;
 
 import java.util.List;
 
@@ -78,6 +79,10 @@ public class UserRepository {
         Observable<User> account = service.getAccount();
 
         return account;
+    }
+
+    public Observable<Void> saveAccount(User user) {
+        return service.saveAccount(user);
     }
 
     /**

@@ -66,4 +66,11 @@ public class AccountManager {
         return userRepository.getAccount();
     }
 
+    public Observable<Void> saveAccount(User user)
+    {
+        return userRepository.saveAccount(user);
+    }
+
+
+
 }

@@ -42,14 +42,14 @@ public class EventsFragmentTest {
 
     RecyclerView recyclerView;
     EventsAdapter adapter;
-    List<EventsPresentationModel> eventList2;
+    List<Event> eventList2;
 
 
     @Before
     public void setup() {
-        EventsPresentationModel pMevents = new EventsPresentationModel(new Event());
+        Event event = new Event();
         eventList2 = new ArrayList<>();
-        eventList2.addAll(Arrays.asList(pMevents, pMevents, pMevents));
+        eventList2.addAll(Arrays.asList(event, event, event));
     }
 
     @After
@@ -94,9 +94,9 @@ public class EventsFragmentTest {
 
         adapter = (EventsAdapter) recyclerView.getAdapter();
 
-        List<EventsPresentationModel> eventList3 = adapter.getItems();
+        List<Event> eventList3 = adapter.getItems();
 
-        EventsPresentationModel event = eventList3.get(0);
+        Event event = eventList3.get(0);
         Long id = event.getId();
         Long idToMatch = 1L;
         assertEquals(idToMatch, id);
