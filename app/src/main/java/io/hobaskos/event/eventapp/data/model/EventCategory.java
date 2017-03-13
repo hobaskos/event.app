@@ -50,6 +50,11 @@ public class EventCategory implements Parcelable {
     public EventCategory() {
     }
 
+    public EventCategory(String title, long id) {
+        this.title = title;
+        this.id = id;
+    }
+
     protected EventCategory(Parcel in) {
         this.id = (Long) in.readValue(Long.class.getClassLoader());
         this.title = in.readString();
@@ -69,4 +74,8 @@ public class EventCategory implements Parcelable {
             return new EventCategory[size];
         }
     };
+
+    public String toString() {
+        return title;
+    }
 }

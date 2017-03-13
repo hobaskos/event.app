@@ -1,5 +1,7 @@
 package io.hobaskos.event.eventapp.data.repository;
 
+import android.util.Log;
+
 import org.joda.time.DateTime;
 
 import java.util.List;
@@ -8,6 +10,8 @@ import javax.inject.Inject;
 
 import io.hobaskos.event.eventapp.data.api.EventService;
 import io.hobaskos.event.eventapp.data.model.Event;
+import io.hobaskos.event.eventapp.data.model.EventAttendance;
+import io.hobaskos.event.eventapp.data.model.enumeration.EventAttendingType;
 import rx.Observable;
 
 /**
@@ -21,7 +25,8 @@ public class EventRepository implements BaseRepository<Event, Long> {
     public static final int PAGE_SIZE = 20;
 
     @Inject
-    public EventRepository(EventService.Anonymously eventServiceAnonymously, EventService.Authenticated eventServiceAuthenticated) {
+    public EventRepository(EventService.Anonymously eventServiceAnonymously,
+                           EventService.Authenticated eventServiceAuthenticated) {
         this.eventServiceAnonymously = eventServiceAnonymously;
         this.eventServiceAuthenticated = eventServiceAuthenticated;
     }
@@ -52,10 +57,28 @@ public class EventRepository implements BaseRepository<Event, Long> {
         return eventServiceAuthenticated.deleteEvent(id);
     }
 
-    public Observable<List<Event>> searchNearby(int page, double lat, double lon, String distance,
-                                                DateTime fromDate, DateTime toDate) {
-        //return eventServiceAnonymously.searchNearby(page, PAGE_SIZE, lat, lon, distance);
-        return eventServiceAuthenticated
-                .search(page, PAGE_SIZE, lat, lon, distance, fromDate, toDate, "fromDate,asc");
+    public Observable<List<Event>> searchNearby(int page, String query, double lat, double lon, String distance,
+                                                DateTime fromDate, DateTime toDate, String categories) {
+        Log.i("ZZZXXX", "page " + page);
+        Log.i("ZZZXXX", "query " + query);
+        Log.i("ZZZXXX", "lat " + lat);
+        Log.i("ZZZXXX", "lon " + lon);
+        Log.i("ZZZXXX", "distance " + distance);
+        Log.i("ZZZXXX", "fromDate " + fromDate);
+        Log.i("ZZZXXX", "toDate " + toDate);
+        Log.i("ZZZXXX", "categories " + categories);
+        return eventServiceAnonymously
+                .search(page, PAGE_SIZE, query, lat, lon, distance, fromDate, toDate, categories, "fromDate,asc");
+    }
+
+    public Observable<EventAttendance> attendEvent(Long eventId) {
+        EventAttendance attendance = new EventAttendance();
+        attendance.setEventId(eventId);
+        attendance.setType(EventAttendingType.GOING);
+        return eventServiceAuthenticated.saveAttendance(attendance);
+    }
+
+    public Observable<List<Event>> getAttendingEvents(int page) {
+        return eventServiceAuthenticated.getAttendingEvents(page, PAGE_SIZE);
     }
 }

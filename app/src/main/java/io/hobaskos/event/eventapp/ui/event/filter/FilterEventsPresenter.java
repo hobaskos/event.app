@@ -4,7 +4,10 @@ import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
 
 import javax.inject.Inject;
 
+import io.hobaskos.event.eventapp.data.repository.EventCategoryRepository;
 import io.hobaskos.event.eventapp.data.storage.PersistentStorage;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by andre on 2/20/2017.
@@ -14,14 +17,19 @@ public class FilterEventsPresenter extends MvpBasePresenter<FilterEventsView> {
 
     private PersistentStorage persistentStorage;
 
+    private EventCategoryRepository eventCategoryRepository;
+
     public static final String FILTER_EVENTS_DISTANCE_KEY = "filter_events_distance_key";
     public static final String FILTER_EVENTS_LOCATION_NAME_KEY = "filter_events_location_name_key";
     public static final String FILTER_EVENTS_LOCATION_LAT_KEY = "filter_events_location_lat_key";
     public static final String FILTER_EVENTS_LOCATION_LON_KEY = "filter_events_location_lon_key";
+    public static final String FILTER_EVENTS_CATEGORY_KEY = "filter_events_category_key";
 
     @Inject
-    public FilterEventsPresenter(PersistentStorage persistentStorage) {
+    public FilterEventsPresenter(PersistentStorage persistentStorage,
+                                 EventCategoryRepository eventCategoryRepository) {
         this.persistentStorage = persistentStorage;
+        this.eventCategoryRepository = eventCategoryRepository;
     }
 
     public void storeDistance(int distance) {
@@ -37,12 +45,30 @@ public class FilterEventsPresenter extends MvpBasePresenter<FilterEventsView> {
     public void loadLocation() {
         String name = persistentStorage.get(FILTER_EVENTS_LOCATION_NAME_KEY);
         double lat = persistentStorage.getDouble(FILTER_EVENTS_LOCATION_LAT_KEY, 0);
-        double lon = persistentStorage.getDouble(FILTER_EVENTS_LOCATION_LAT_KEY, 0);
+        double lon = persistentStorage.getDouble(FILTER_EVENTS_LOCATION_LON_KEY, 0);
         getView().setLocation(name, lat, lon);
+    }
+
+    public void storeCategoryId(long categoryId) {
+        persistentStorage.putLong(FILTER_EVENTS_CATEGORY_KEY, categoryId);
+    }
+
+    public void loadCategoryId() {
+        getView().setCategory(persistentStorage.getLong(FILTER_EVENTS_CATEGORY_KEY, 0));
     }
 
     public void loadDistance() {
         getView().setDistance(persistentStorage.getInt(FILTER_EVENTS_DISTANCE_KEY, 10));
+    }
+
+    public void loadCategories() {
+        eventCategoryRepository.getAll(0)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        list -> getView().setCategories(list),
+                        throwable -> getView().showError(throwable)
+                );
     }
 
 }

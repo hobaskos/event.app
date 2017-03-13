@@ -3,6 +3,8 @@ package io.hobaskos.event.eventapp.data.repository;
 import com.facebook.AccessToken;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.VoidViewState;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import io.hobaskos.event.eventapp.data.api.UserService;
@@ -83,4 +85,12 @@ public class UserRepository {
         return service.saveAccount(user);
     }
 
+    /**
+     * Get attending users for event
+     * @param eventId
+     * @return list of users
+     */
+    public Observable<List<User>> getAttendingForEvent(Long eventId) {
+        return service.getAttendingForEvent(eventId);
+    }
 }

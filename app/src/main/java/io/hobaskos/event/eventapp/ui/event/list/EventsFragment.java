@@ -1,16 +1,20 @@
 package io.hobaskos.event.eventapp.ui.event.list;
 
+import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -27,6 +31,7 @@ import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.ui.base.view.fragment.BaseLceViewStateFragment;
 import io.hobaskos.event.eventapp.ui.event.filter.FilterEventsFragment;
 import io.hobaskos.event.eventapp.ui.event.details.EventActivity;
+import io.hobaskos.event.eventapp.ui.main.MainActivity;
 
 /**
  * Created by andre on 2/13/2017.
@@ -57,6 +62,8 @@ public class EventsFragment extends
     boolean canLoadMore = true;
     boolean isLoadingMore = false;
     int page = 0;
+
+    private String searchQuery;
 
     @Inject
     public EventsPresenter eventsPresenter;
@@ -131,7 +138,7 @@ public class EventsFragment extends
                 int lastVisibleItemPosition = linearLayoutManager.findLastVisibleItemPosition();
 
                 if (canLoadMore && !isLoadingMore && lastVisibleItemPosition == totalItemCount - 1) {
-                    presenter.loadMoreEvents(++page);
+                    presenter.loadMoreEvents(++page, searchQuery);
                     Log.i(TAG, "page: " + page );
                 }
             }
@@ -146,6 +153,32 @@ public class EventsFragment extends
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         Log.i(TAG, "onCreateOptionsMenu()");
         inflater.inflate(R.menu.events_toolbar, menu);
+
+        MenuItem item = menu.findItem(R.id.action_search);
+        SearchView searchView = new SearchView(((MainActivity) getContext()).getSupportActionBar().getThemedContext());
+        MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW | MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
+        MenuItemCompat.setActionView(item, searchView);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                presenter.loadEvents(false, searchQuery);
+                return true;
+            }
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                searchQuery = newText;
+                presenter.loadEvents(false, newText);
+                return true;
+            }
+        });
+        searchView.setOnClickListener(new View.OnClickListener() {
+                                          @Override
+                                          public void onClick(View v) {
+
+                                          }
+                                      }
+        );
+
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -177,7 +210,7 @@ public class EventsFragment extends
 
     @Override public void onNewViewStateInstance() {
         Log.i(TAG, "onNewViewStateInstance()");
-        presenter.loadEvents(false);
+        presenter.loadEvents(false, searchQuery);
     }
 
     @Override
@@ -227,7 +260,7 @@ public class EventsFragment extends
 
     @Override
     public void setData(List<EventsPresentationModel> data) {
-        Log.i(TAG, "setData()");
+        Log.i(TAG, "setData(), size: " + data.size());
         adapter.setItems(data);
         adapter.notifyDataSetChanged();
         swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(false));
@@ -239,7 +272,7 @@ public class EventsFragment extends
         if (pullToRefresh) {
             page = 0;
         }
-        presenter.loadEvents(pullToRefresh);
+        presenter.loadEvents(pullToRefresh, searchQuery);
         canLoadMore = true;
     }
 

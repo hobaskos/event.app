@@ -5,6 +5,7 @@ import org.joda.time.DateTime;
 import java.util.List;
 
 import io.hobaskos.event.eventapp.data.model.Event;
+import io.hobaskos.event.eventapp.data.model.EventAttendance;
 import retrofit2.http.Query;
 import rx.Observable;
 import retrofit2.http.Body;
@@ -31,11 +32,13 @@ public interface EventService
         @GET("api/_search/events-nearby")
         Observable<List<Event>> search(@Query("page") int page,
                                        @Query("size") int pageSize,
+                                       @Query("query") String query,
                                        @Query("lat") double lat,
                                        @Query("lon") double lon,
                                        @Query("distance") String distance,
                                        @Query("fromDate") DateTime fromDate,
                                        @Query("toDate") DateTime toDate,
+                                       @Query("categories") String categories,
                                        @Query("sort") String sort);
 
     }
@@ -53,11 +56,20 @@ public interface EventService
         @GET("api/_search/events-nearby")
         Observable<List<Event>> search(@Query("page") int page,
                                        @Query("size") int pageSize,
+                                       @Query("query") String query,
                                        @Query("lat") double lat,
                                        @Query("lon") double lon,
                                        @Query("distance") String distance,
                                        @Query("fromDate") DateTime fromDate,
                                        @Query("toDate") DateTime toDate,
+                                       @Query("categories") String categories,
                                        @Query("sort") String sort);
+
+        @POST("api/event-user-attendings")
+        Observable<EventAttendance> saveAttendance(@Body EventAttendance attendance);
+
+        @GET("api/account/attending-events")
+        Observable<List<Event>> getAttendingEvents(@Query("page") int page,
+                                                   @Query("size") int pageSize);
     }
 }
