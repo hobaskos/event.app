@@ -30,6 +30,7 @@ import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.ui.base.view.fragment.BaseLceViewStateFragment;
 import io.hobaskos.event.eventapp.ui.event.filter.FilterEventsFragment;
 import io.hobaskos.event.eventapp.ui.event.details.EventActivity;
+import io.hobaskos.event.eventapp.ui.event.search.map.SearchEventsMapFragment;
 import io.hobaskos.event.eventapp.ui.main.MainActivity;
 
 /**
@@ -97,12 +98,13 @@ public class EventsFragment extends
         toolbar.setOnMenuItemClickListener(menuItem -> {
             switch(menuItem.getItemId()){
                 case R.id.action_search:
-                    // TODO: Create searchNearby fragment/activity
                     return true;
                 case R.id.action_filter:
-                    FilterEventsFragment fragment = new FilterEventsFragment();
+                    //FilterEventsFragment fragment = new FilterEventsFragment();
+                    SearchEventsMapFragment fragment = new SearchEventsMapFragment();
 
                     FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+
                     //ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                     //ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right);
                     //android.app.FragmentTransaction ft = getActivity().getFragmentManager().beginTransaction();
