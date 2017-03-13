@@ -3,6 +3,7 @@ package io.hobaskos.event.eventapp.ui.event.details;
 import javax.inject.Inject;
 
 import io.hobaskos.event.eventapp.data.model.Event;
+import io.hobaskos.event.eventapp.data.model.Location;
 import io.hobaskos.event.eventapp.data.repository.EventRepository;
 import io.hobaskos.event.eventapp.ui.base.presenter.BaseRxLcePresenter;
 import rx.Observable;
@@ -26,6 +27,10 @@ public class EventPresenter extends BaseRxLcePresenter<EventView, Event> {
 
         eventObservable = eventRepository.get(id);
         subscribe(eventObservable, false);
+    }
+
+    public void addLocation(Location location) {
+
     }
 
 }

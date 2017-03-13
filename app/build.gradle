@@ -5,7 +5,7 @@ apply plugin: 'jacoco-android'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    buildToolsVersion "25.0.1"
     defaultConfig {
         applicationId "io.hobaskos.event.eventapp"
         minSdkVersion 21
@@ -129,4 +129,8 @@ dependencies {
     compile 'com.facebook.android:facebook-android-sdk:[4,5)'
 
     provided 'javax.annotation:jsr250-api:1.0'
+
+    // Material DateTime Picker
+    compile 'com.wdullaer:materialdatetimepicker:3.1.3'
+
 }
