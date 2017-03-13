@@ -26,4 +26,9 @@
         <item name="colorAccent">@color/divider</item>
     </style>
 
+    <style name="CollapsingToolbarLayoutExpandedTextStyle" parent="AppTheme">
+        <item name="android:textColor">@color/light_gray</item>
+        <item name="android:textSize">22sp</item>
+    </style>
+
 </resources>

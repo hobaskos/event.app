@@ -2,19 +2,17 @@ package io.hobaskos.event.eventapp.ui.event.details;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
-
-import com.squareup.picasso.Picasso;
+import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 
 import javax.inject.Inject;
 
@@ -22,31 +20,25 @@ import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.data.model.Location;
+import io.hobaskos.event.eventapp.data.model.User;
 import io.hobaskos.event.eventapp.ui.base.view.activity.BaseLceViewStateActivity;
 
 /**
  * Created by andre on 1/26/2017.
  */
 public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Event, EventView,
-        EventPresenter> implements EventView {
+        EventPresenter> implements
+        EventView,
+        LocationsFragment.OnListFragmentInteractionListener,
+        UsersFragment.OnUserListFragmentInteractionListener {
 
     public final static String EVENT_ID = "eventId";
     public final static String TAG = EventActivity.class.getName();
 
-
     private Long eventId;
 
-    private TextView eventTitle;
-    private TextView date;
-    private ImageView eventImg;
-    private TextView eventTime;
-    private TextView eventPlace;
-    private TextView eventDescription;
-    private TextView eventInterested;
-    private TextView eventAttending;
-    private TextView eventFriends;
-    private Button mapButton;
-    private ArrayList<Location> locations = new ArrayList<>();
+    protected ViewPager viewPager;
+    protected TabLayout tabLayout;
 
     private Event event;
 
@@ -54,30 +46,15 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        setContentView(R.layout.activity_event);
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_event);
 
-        eventTitle = (TextView) findViewById(R.id.event_name);
-        date = (TextView) findViewById(R.id.date_value);
-        eventTime = (TextView) findViewById(R.id.time_text);
-        eventPlace = (TextView) findViewById(R.id.place_text);
-        mapButton = (Button) findViewById(R.id.mapButton);
-        eventDescription = (TextView) findViewById(R.id.description_text);
-        eventImg = (ImageView) findViewById(R.id.eventImage);
-        eventInterested = (TextView) findViewById(R.id.interested_value);
-        eventAttending = (TextView) findViewById(R.id.attending_value);
-        eventFriends = (TextView) findViewById(R.id.friends_value);
+        setTitle(R.string.loading);
+        getSupportActionBar().setElevation(0);
+
         eventId = getIntent().getExtras().getLong(EVENT_ID);
-
-
-        //Event Handler
-        mapButton.setOnClickListener((View v) -> {
-            Intent i = new Intent(this, MapsActivity.class);
-            Bundle b = new Bundle();
-            b.putParcelableArrayList("loc",locations);
-            i.putExtras(b);
-            startActivity(i);
-        });
+        viewPager = (ViewPager) findViewById(R.id.container);
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
     }
 
     @NonNull
@@ -100,7 +77,7 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
 
     @Override public void onNewViewStateInstance() {
         Log.i(TAG, "onNewViewStateInstance()");
-        loadData(false); // load data from presenter
+        loadData(false);
     }
 
     @Override
@@ -110,7 +87,7 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
 
     @Override
     protected String getErrorMessage(Throwable e, boolean pullToRefresh) {
-        Log.i("event-activity", e.getMessage());
+        //Log.i("event-activity", e.getMessage());
         //Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         return e.getMessage();
     }
@@ -118,44 +95,47 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     @Override
     public void setData(Event event) {
         this.event = event;
-        // Event Title
-        eventTitle.setText(String.format(event.getTitle()));
 
-        // Event date
-        //date.setText(DateUtils.getRelativeTimeSpanString(event.getFromDate().toDate().getTime()));
+        setTitle(event.getTitle());
 
-        // Event Image
-        Picasso.with(this).load(event.getImageUrl()).into(eventImg);
-
-        // Event Time
-        //eventTime.setText(String.format(event.getFromDate().getHourOfDay()+"."+event.getFromDate().getMinuteOfHour()+ " - " + event.getToDate().getHourOfDay()+"."+event.getToDate().getMinuteOfHour()));
-
-
-        // Event Place
-        if (!event.getLocations().isEmpty()) {
-            eventPlace.setText(event.getLocations().get(0).getName());
-            for (int i = 0; i < event.getLocations().size(); i++) {
-                locations.add(event.getLocations().get(i));
-            }
-        }
-
-        for (Location lok : locations) {
-            Log.i("Lokasjon : ", lok.getGeoPoint().getLat() + " " + lok.getGeoPoint().getLon() + "\n");
-        }
-
-        // Event interested
-        eventInterested.setText(String.format("30"));
-        // Event attending
-        eventAttending.setText(String.format("20"));
-        // Event friends
-        eventFriends.setText(String.format("10"));
-
-        // Event Description
-        eventDescription.setText(String.format(event.getDescription()));
+        viewPager.setAdapter(new EventPagerAdapter(event, this, getSupportFragmentManager()));
+        tabLayout.setTabMode(TabLayout.MODE_FIXED);
+        tabLayout.setupWithViewPager(viewPager);
     }
 
     @Override
     public void loadData(boolean pullToRefresh) {
         presenter.getEvent(eventId);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.event_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.edit:
+                Toast.makeText(this, "Edit event", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.map:
+                Intent intent = new Intent(this, MapsActivity.class);
+                intent.putParcelableArrayListExtra("loc", (ArrayList<? extends Parcelable>)event.getLocations());
+                startActivity(intent);
+                break;
+        }
+        return true;
+    }
+
+    @Override
+    public void onListFragmentInteraction(Location item) {
+        Toast.makeText(this, item.getName(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onListFragmentInteraction(User item) {
+        Toast.makeText(this, item.getName(), Toast.LENGTH_SHORT).show();
     }
 }

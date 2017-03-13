@@ -30,6 +30,11 @@
     <string name="create_event">Opprett Event</string>
     <string name="my_profile">Min Profil</string>
     <string name="logout">Logg ut</string>
+    <string name="loading">Laster</string>
+    <string name="edit">Rediger</string>
+    <string name="map">Kart</string>
+    <string name="info">Info</string>
+    <string name="locations">Lokasjoner</string>
     <string name="create">Opprett</string>
     <string name="error_message_required_field_title">Tittel er et nødvendig felt.</string>
     <string name="title_label">Navn</string>
