@@ -43,4 +43,8 @@
     <string name="could_not_load_categories">Kunne ikke hente kategoriene.</string>
     <string name="private_event_label">Privat Event</string>
     <string name="event_category_label">Kategori</string>
+    <string name="from">Fra</string>
+    <string name="to">Til</string>
+    <string name="date">Dato</string>
+    <string name="time">Tid</string>
 </resources>

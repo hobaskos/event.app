@@ -16,6 +16,7 @@
         tools:listitem="@layout/fragment_location" />
 
     <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fragment_location_list_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|right"

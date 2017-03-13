@@ -1,7 +1,9 @@
 package io.hobaskos.event.eventapp.ui.event.details;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -28,6 +30,7 @@ public class LocationsFragment extends Fragment {
     private ArrayList<Location> locations = new ArrayList<>();
     private OnListFragmentInteractionListener listener;
     private DividerItemDecoration dividerItemDecoration;
+    private FloatingActionButton addLocation;
 
     public LocationsFragment() {}
 
@@ -65,6 +68,15 @@ public class LocationsFragment extends Fragment {
         dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
                 linearLayoutManager.getOrientation());
         recyclerView.addItemDecoration(dividerItemDecoration);
+
+        addLocation = (FloatingActionButton) view.findViewById(R.id.fragment_location_list_fab);
+        addLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), AddLocationActivity.class));
+
+            }
+        });
 
         return view;
     }
