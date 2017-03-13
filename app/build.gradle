@@ -49,11 +49,11 @@ dependencies {
     })
 
     // Android Support:
-    compile 'com.android.support:appcompat-v7:25.1.0'
-    compile 'com.android.support:recyclerview-v7:25.1.0'
-    compile 'com.android.support:support-v4:25.1.0'
-    compile 'com.android.support:design:25.1.0'
-    compile 'com.android.support:gridlayout-v7:25.1.0'
+    compile 'com.android.support:appcompat-v7:25.2.0'
+    compile 'com.android.support:recyclerview-v7:25.2.0'
+    compile 'com.android.support:support-v4:25.2.0'
+    compile 'com.android.support:design:25.2.0'
+    compile 'com.android.support:gridlayout-v7:25.2.0'
 
     // Mosby:
     compile "com.hannesdorfmann.mosby:mvp:${mosby_version}"
@@ -109,6 +109,9 @@ dependencies {
         exclude group: 'com.android.support', module: 'recyclerview-v7'
         exclude group: 'com.android.support', module: 'support-annotations'
     }
+
+    testCompile 'com.android.support:support-compat:25.2.0'
+    testCompile 'com.android.support:support-annotations:25.2.0'
 
     // Picasso Image Downloader
     compile 'com.squareup.picasso:picasso:2.5.0'
