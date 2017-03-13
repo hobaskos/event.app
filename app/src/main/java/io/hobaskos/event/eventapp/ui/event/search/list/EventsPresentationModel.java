@@ -1,4 +1,4 @@
-package io.hobaskos.event.eventapp.ui.event.list;
+package io.hobaskos.event.eventapp.ui.event.search.list;
 
 import android.os.Parcel;
 import android.os.Parcelable;
