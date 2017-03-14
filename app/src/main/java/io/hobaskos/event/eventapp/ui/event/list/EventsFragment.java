@@ -47,8 +47,7 @@ public class EventsFragment extends
 
     // Views
     @BindView(R.id.recyclerView)RecyclerView recyclerView;
-    @BindView(R.id.progress) ProgressBar progressBar;
-    @BindView(R.id.toolbar) Toolbar toolbar;
+    Toolbar toolbar;
     @BindView(R.id.contentView) SwipeRefreshLayout swipeRefreshLayout;
 
     TextView emptyResultView;

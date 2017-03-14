@@ -6,12 +6,10 @@ import android.os.Parcelable;
 import android.util.EventLogTags;
 
 import org.joda.time.LocalDateTime;
-import org.parceler.Parcel;
 
 /**
  * Created by osvold.hans.petter on 08.02.2017.
  */
-@Parcel
 public class Location implements Parcelable {
 
     private long id;
