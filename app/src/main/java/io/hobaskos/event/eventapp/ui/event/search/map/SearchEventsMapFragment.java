@@ -105,6 +105,15 @@ public class SearchEventsMapFragment extends Fragment implements SearchEventsMap
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
+
+    }
+
+    @Override
+    public void setEvents(List<Event> events) {
+        this.events = events;
+    }
+
+    private void populateMap() {
         if (googleMap != null) {
             googleMap.getUiSettings().setZoomControlsEnabled(true);
             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(59.9, 10.75), 10));
@@ -124,11 +133,5 @@ public class SearchEventsMapFragment extends Fragment implements SearchEventsMap
                         .snippet(event.getDate(getContext())));
             }
         }
-    }
-
-    @Override
-    public void setEvents(List<Event> events) {
-        this.events = events;
-
     }
 }

@@ -14,6 +14,7 @@ import javax.inject.Inject;
 import io.hobaskos.event.eventapp.data.eventbusevent.SetEventsEvent;
 import io.hobaskos.event.eventapp.data.eventbusevent.UpdateEventsEvent;
 import io.hobaskos.event.eventapp.data.repository.EventRepository;
+import io.hobaskos.event.eventapp.data.storage.FilterSettings;
 import io.hobaskos.event.eventapp.data.storage.PersistentStorage;
 
 
@@ -24,10 +25,13 @@ import io.hobaskos.event.eventapp.data.storage.PersistentStorage;
 
 public class SearchEventsMapPresenter extends MvpBasePresenter<SearchEventsMapView>{
 
+    public final static String TAG = SearchEventsMapPresenter.class.getName();
+
+    private FilterSettings filterSettings;
 
     @Inject
-    public SearchEventsMapPresenter() {
-
+    public SearchEventsMapPresenter(FilterSettings filterSettings) {
+        this.filterSettings = filterSettings;
     }
 
     @Override public void attachView(SearchEventsMapView view) {
@@ -48,7 +52,7 @@ public class SearchEventsMapPresenter extends MvpBasePresenter<SearchEventsMapVi
     @Subscribe(sticky = true, threadMode = ThreadMode.ASYNC)
     public void onEvent(SetEventsEvent event) {
         getView().setEvents(event.getData());
-        Log.d("SEARCHEVENTSPresenter", "    " + event.getData().size());
+        Log.d(TAG, "    " + event.getData().size());
     }
 
     public void onEvent(UpdateEventsEvent event) {
