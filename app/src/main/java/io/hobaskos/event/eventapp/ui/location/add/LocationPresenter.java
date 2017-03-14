@@ -2,6 +2,7 @@ package io.hobaskos.event.eventapp.ui.location.add;
 
 import android.util.Log;
 
+import com.google.gson.JsonPrimitive;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 
 import javax.inject.Inject;
@@ -43,6 +44,9 @@ public class LocationPresenter implements MvpPresenter<LocationView> {
         Log.i("LocationPresenter", location.toString());
         Log.i("LocationPresenter", "Event-id:" + location.getEventId());
 
+        JsonPrimitive jsonPrimitive = new JsonPrimitive(location.getFromDate().toString());
+        Log.i("LocationPresenter", "jsonPrimitive=" + jsonPrimitive);
+
         repository.save(location)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -55,6 +59,7 @@ public class LocationPresenter implements MvpPresenter<LocationView> {
             @Override
             public void onError(Throwable e) {
                 Log.i("LocationPresenter", e.getMessage());
+                e.printStackTrace();
                 if(view != null) {
                     view.onFailure();
                 }

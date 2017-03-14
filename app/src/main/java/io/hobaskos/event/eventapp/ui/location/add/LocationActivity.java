@@ -26,18 +26,18 @@ import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.ISODateTimeFormat;
 
 import java.util.Calendar;
+import java.util.TimeZone;
 
 import javax.inject.Inject;
 
 import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
+import io.hobaskos.event.eventapp.data.model.DateTimeVM;
 import io.hobaskos.event.eventapp.data.model.GeoPoint;
 import io.hobaskos.event.eventapp.data.model.Location;
-import io.hobaskos.event.eventapp.ui.event.details.EventPresenter;
 
 import static com.wdullaer.materialdatetimepicker.date.DatePickerDialog.Version.VERSION_2;
 
@@ -64,6 +64,8 @@ public class LocationActivity extends MvpActivity<LocationView, LocationPresente
     private EditText toTime;
     private String toTimeString;
     private Button create;
+    private DateTimeVM fromDateTimeVM;
+    private DateTimeVM toDateTimeVM;
 
     private SupportPlaceAutocompleteFragment placeAutocompleteFragment;
 
@@ -98,6 +100,9 @@ public class LocationActivity extends MvpActivity<LocationView, LocationPresente
         name = (EditText) findViewById(R.id.activity_add_location_name);
 
         description = (EditText) findViewById(R.id.activity_add_location_description);
+
+        fromDateTimeVM = new DateTimeVM();
+        toDateTimeVM = new DateTimeVM();
 
         fromDate = (EditText) findViewById(R.id.activity_add_location_from_date);
         fromDate.setOnClickListener(v -> {
@@ -213,9 +218,11 @@ public class LocationActivity extends MvpActivity<LocationView, LocationPresente
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
         switch (pickerState) {
             case FROM:
+                fromDateTimeVM.setDate(year, monthOfYear, dayOfMonth);
                 fromDate.setText(year + "-" + formatNumber(monthOfYear + 1) + "-" + formatNumber(dayOfMonth));
                 break;
             case TO:
+                toDateTimeVM.setDate(year, monthOfYear, dayOfMonth);
                 toDate.setText(year + "-" + formatNumber(monthOfYear + 1) + "-" + formatNumber(dayOfMonth));
                 break;
             default:
@@ -227,10 +234,12 @@ public class LocationActivity extends MvpActivity<LocationView, LocationPresente
     public void onTimeSet(TimePickerDialog view, int hourOfDay, int minute, int second) {
         switch (pickerState) {
             case FROM:
-                fromTime.setText(formatNumber(hourOfDay) +  ":" + formatNumber(minute) + ":" + formatNumber(second));
+                fromDateTimeVM.setTime(hourOfDay, minute);
+                fromTime.setText(formatNumber(hourOfDay) +  ":" + formatNumber(minute));
                 break;
             case TO:
-                toTime.setText(formatNumber(hourOfDay) +  ":" + formatNumber(minute) + ":" + formatNumber(second));
+                toDateTimeVM.setTime(hourOfDay, minute);
+                toTime.setText(formatNumber(hourOfDay) +  ":" + formatNumber(minute));
                 break;
             default:
                 throw new IllegalStateException("Illegal state");
@@ -255,12 +264,12 @@ public class LocationActivity extends MvpActivity<LocationView, LocationPresente
         }
 
         String fromDateTime = fromDate.getText().toString() + " " + fromTime.getText().toString();
-        location.setFromDate(parseToLocalDateTime(fromDateTime));
+        location.setFromDate(parseToLocalDateTime(fromDateTimeVM));
 
         Log.i("LocationActivity", "fromDate=" + location.getFromDate());
 
         String toDateTime = toDate.getText().toString() + " " + toTime.getText().toString();
-        location.setToDate(parseToLocalDateTime(toDateTime));
+        location.setToDate(parseToLocalDateTime(toDateTimeVM));
 
         GeoPoint geoPoint = new GeoPoint(lat, lon);
         location.setGeoPoint(geoPoint);
@@ -311,11 +320,12 @@ public class LocationActivity extends MvpActivity<LocationView, LocationPresente
         return newNumber;
     }
 
-    private LocalDateTime parseToLocalDateTime(String s) {
-        DateTimeFormatter formatter = DateTimeFormat
-                .forPattern("yyyy-MM-dd HH:mm:ss")
-                .withZone(DateTimeZone.getDefault());
-        return formatter.parseLocalDateTime(s);
+    private DateTime parseToLocalDateTime(DateTimeVM dateTimeVM) {
+        return new DateTime(dateTimeVM.getYear(),
+                                    dateTimeVM.getMonthOfYear(),
+                                    dateTimeVM.getDayOfMonth(),
+                                    dateTimeVM.getHour(),
+                                    dateTimeVM.getMinute(), DateTimeZone.getDefault());
     }
 
     private boolean validate() {

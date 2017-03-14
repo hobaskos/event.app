@@ -192,7 +192,7 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
 
     private void logout() {
         presenter.logout();
-        startActivity(new Intent(this, MainActivity.class));
+        startActivity(new Intent(this, LoginActivity.class));
     }
 
 

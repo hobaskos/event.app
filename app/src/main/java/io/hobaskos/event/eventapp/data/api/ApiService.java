@@ -3,10 +3,19 @@ package io.hobaskos.event.eventapp.data.api;
 import com.fatboyindustrial.gsonjodatime.Converters;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
 
 import org.joda.time.DateTime;
 import org.joda.time.LocalDateTime;
+
+import java.lang.reflect.Type;
+import java.util.Date;
 
 import io.hobaskos.event.eventapp.data.model.Event;
 import okhttp3.Cache;
@@ -20,15 +29,21 @@ import retrofit2.converter.gson.GsonConverterFactory;
 /**
  * Created by andre on 1/25/2017.
  */
+
+
 public class ApiService
 {
     private final OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
     private final Retrofit.Builder builder = new Retrofit.Builder();
 
-    private final Gson serializer = new GsonBuilder().registerTypeAdapter(LocalDateTime.class,
-            (JsonDeserializer<LocalDateTime>) (json, type, jsonDeserializationContext) ->
-                    DateTime.parse(json.getAsJsonPrimitive().getAsString()).toLocalDateTime())
-            .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+    //private final Gson serializer = new GsonBuilder().registerTypeAdapter(DateTime.class,
+    //        (JsonDeserializer<DateTime>) (json, type, jsonDeserializationContext) ->
+    //                DateTime.parse(json.getAsJsonPrimitive().getAsString()).toDateTime())
+    //        .create();
+
+    private final Gson serializer = new GsonBuilder()
+            .registerTypeAdapter(DateTime.class, new DateTimeSerializer())
+            .registerTypeAdapter(DateTime.class, new DateTimeDeserializer())
             .create();
 
     private ApiService(HttpUrl httpUrl) {

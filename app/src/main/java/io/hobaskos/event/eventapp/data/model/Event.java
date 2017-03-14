@@ -7,6 +7,7 @@ import android.text.format.DateUtils;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.joda.time.DateTime;
 import org.joda.time.LocalDateTime;
 
 import java.util.List;
@@ -31,10 +32,10 @@ public class Event implements Parcelable {
     private String imageUrl;
 
     @SerializedName("fromDate")
-    private LocalDateTime fromDate;
+    private DateTime fromDate;
 
     @SerializedName("toDate")
-    private LocalDateTime toDate;
+    private DateTime toDate;
 
     @SerializedName("ownerId")
     private long ownerId;
@@ -96,19 +97,19 @@ public class Event implements Parcelable {
         this.imageUrl = imageUrl;
     }
 
-    public LocalDateTime getFromDate() {
+    public DateTime getFromDate() {
         return fromDate;
     }
 
-    public void setFromDate(LocalDateTime fromDate) {
+    public void setFromDate(DateTime fromDate) {
         this.fromDate = fromDate;
     }
 
-    public LocalDateTime getToDate() {
+    public DateTime getToDate() {
         return toDate;
     }
 
-    public void setToDate(LocalDateTime toDate) {
+    public void setToDate(DateTime toDate) {
         this.toDate = toDate;
     }
 
@@ -200,8 +201,8 @@ public class Event implements Parcelable {
         this.title = in.readString();
         this.description = in.readString();
         this.imageUrl = in.readString();
-        this.fromDate = (LocalDateTime) in.readSerializable();
-        this.toDate = (LocalDateTime) in.readSerializable();
+        this.fromDate = (DateTime) in.readSerializable();
+        this.toDate = (DateTime) in.readSerializable();
         this.ownerId = in.readLong();
         this.locations = in.createTypedArrayList(Location.CREATOR);
         this.category = in.readParcelable(EventCategory.class.getClassLoader());
