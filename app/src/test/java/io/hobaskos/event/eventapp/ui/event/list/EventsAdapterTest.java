@@ -53,7 +53,7 @@ public class EventsAdapterTest {
 
     @Before
     public void setup() throws Exception {
-        adapter = new EventsAdapter(null, null);
+        adapter = new EventsAdapter(null, null, null);
         MockitoAnnotations.initMocks(this);
         context = RuntimeEnvironment.application;
         //stub(mockFragment.getString(anyInt())).toReturn("Candy");
@@ -95,7 +95,7 @@ public class EventsAdapterTest {
         event2.setId(2L);
 
         List<Event> events = Arrays.asList(event1, event2);
-        EventsAdapter adapter = new EventsAdapter(events, null);
+        EventsAdapter adapter = new EventsAdapter(events, null, null);
         RecyclerView rvParent = new RecyclerView(context);
         rvParent.setLayoutManager(new LinearLayoutManager(context));
 

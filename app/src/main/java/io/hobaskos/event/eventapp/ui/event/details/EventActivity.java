@@ -45,6 +45,8 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     protected ViewPager viewPager;
     protected TabLayout tabLayout;
 
+    private boolean isOwner = false;
+
     private Event event;
 
     @Inject public EventPresenter eventPresenter;
@@ -131,26 +133,8 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     @Override
     public void setData(Event event) {
         this.event = event;
+        eventPresenter.getOwnerStatus(event);
 
-        /*
-        // Event date
-        date.setText(DateUtils.getRelativeTimeSpanString(event.getFromDate().toDate().getTime()));
-
-        // Event Image
-        Picasso.with(this).load(event.getImageUrl()).into(eventImg);
-
-        // Event Time
-        eventTime.setText(String.format(event.getFromDate().getHourOfDay()+"."+event.getFromDate().getMinuteOfHour()+ " - " + event.getToDate().getHourOfDay()+"."+event.getToDate().getMinuteOfHour()));
-
-
-        // Event Place
-        if (!event.getLocations().isEmpty()) {
-            eventPlace.setText(event.getLocations().get(0).getName());
-            for (int i = 0; i < event.getLocations().size(); i++) {
-                locations.add(event.getLocations().get(i));
-            }
-        }
-        */
         setTitle(event.getTitle());
 
         viewPager.setAdapter(new EventPagerAdapter(event, this, getSupportFragmentManager()));
@@ -192,5 +176,11 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     @Override
     public void onListFragmentInteraction(User item) {
         Toast.makeText(this, item.getName(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void setOwner(boolean owner) {
+        isOwner = owner;
+        Toast.makeText(this, owner ? "Owner" : "Not owner", Toast.LENGTH_SHORT).show();
     }
 }
