@@ -45,13 +45,12 @@ public class EventsPresenter extends BaseRxLcePresenter<EventsView, List<Event>>
     @Override
     public void attachView(EventsView view) {
         super.attachView(view);
-        EventBus.getDefault().register(this);
+
     }
 
     @Override
     public void detachView(boolean retainInstance) {
         super.detachView(retainInstance);
-        EventBus.getDefault().unregister(this);
     }
 
     @Inject
@@ -141,11 +140,5 @@ public class EventsPresenter extends BaseRxLcePresenter<EventsView, List<Event>>
         lat = persistentStorage.getDouble(FilterEventsPresenter.FILTER_EVENTS_LOCATION_LAT_KEY, 0);
         lon = persistentStorage.getDouble(FilterEventsPresenter.FILTER_EVENTS_LOCATION_LON_KEY, 0);
         categoryId = persistentStorage.getLong(FilterEventsPresenter.FILTER_EVENTS_CATEGORY_KEY, 0);
-    }
-
-    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
-    public void onEvent(FiltersUpdatedEvent event) {
-        Log.d(TAG, "onEvent");
-        loadEvents(false, "");
     }
 }

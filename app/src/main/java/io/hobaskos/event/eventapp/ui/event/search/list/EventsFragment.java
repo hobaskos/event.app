@@ -94,6 +94,20 @@ public class EventsFragment extends
 //        }
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void onEvent(FiltersUpdatedEvent event) {
+        Log.d(TAG, "onEvent()");
+        page = 0;
+        presenter.loadEvents(false, searchQuery);
     }
 
 

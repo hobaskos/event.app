@@ -103,7 +103,7 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_api_key"/>
-        
+
 
         <!-- https://github.com/robolectric/robolectric/issues/2579 -->
         <meta-data
