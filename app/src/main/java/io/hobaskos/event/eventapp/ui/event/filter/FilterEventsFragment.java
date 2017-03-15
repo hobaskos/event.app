@@ -23,6 +23,8 @@ import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +33,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
+import io.hobaskos.event.eventapp.data.eventbus.FiltersUpdatedEvent;
 import io.hobaskos.event.eventapp.data.model.EventCategory;
 import io.hobaskos.event.eventapp.ui.base.view.fragment.BaseFragment;
 
@@ -105,10 +108,7 @@ public class FilterEventsFragment extends BaseFragment
         });
 
 
-        toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
 
-        setHasOptionsMenu(true);
-        toolbar.setTitle("Filter events");
         /*
         toolbar.setNavigationIcon(android.R.drawable.arrow_down_float);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -134,6 +134,8 @@ public class FilterEventsFragment extends BaseFragment
                 EventCategory category = (EventCategory) spinner.getSelectedItem();
                 presenter.storeCategoryId(category.getId());
             }
+            Toast.makeText(getContext(), getString(R.string.filters_applied), Toast.LENGTH_SHORT).show();
+            EventBus.getDefault().postSticky(new FiltersUpdatedEvent(""));
         });
 
 

@@ -20,6 +20,12 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,9 +35,12 @@ import butterknife.BindView;
 import icepick.State;
 import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
+import io.hobaskos.event.eventapp.data.eventbus.FiltersUpdatedEvent;
+import io.hobaskos.event.eventapp.data.eventbus.SetEventsEvent;
 import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.data.model.EventCategoryTheme;
 import io.hobaskos.event.eventapp.ui.base.view.fragment.BaseLceViewStateFragment;
+import io.hobaskos.event.eventapp.ui.event.filter.FilterEventsActivity;
 import io.hobaskos.event.eventapp.ui.event.filter.FilterEventsFragment;
 import io.hobaskos.event.eventapp.ui.event.details.EventActivity;
 import io.hobaskos.event.eventapp.ui.event.search.map.SearchEventsMapActivity;
@@ -85,8 +94,23 @@ public class EventsFragment extends
 //        }
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-
+        EventBus.getDefault().register(this);
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void onEvent(FiltersUpdatedEvent event) {
+        Log.d(TAG, "onEvent()");
+        page = 0;
+        presenter.loadEvents(false, searchQuery);
+    }
+
+
 
     @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         Log.i(TAG, "onViewCreated()");
@@ -114,19 +138,21 @@ public class EventsFragment extends
                 case R.id.action_search:
                     return true;
                 case R.id.action_filter:
-                    FilterEventsFragment fragment = new FilterEventsFragment();
-                    //SearchEventsMapFragment fragment = new SearchEventsMapFragment();
-
-                    FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-
-                    //ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                    //ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right);
-                    //android.app.FragmentTransaction ft = getActivity().getFragmentManager().beginTransaction();
-                    //ft.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out, android.R.animator.fade_in, android.R.animator.fade_out);
-
-                    ft.replace(R.id.main_pane, fragment);
-                    ft.addToBackStack(null);
-                    ft.commit();
+//                    FilterEventsFragment fragment = new FilterEventsFragment();
+//                    //SearchEventsMapFragment fragment = new SearchEventsMapFragment();
+//
+//                    FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+//
+//                    //ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+//                    //ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right);
+//                    //android.app.FragmentTransaction ft = getActivity().getFragmentManager().beginTransaction();
+//                    //ft.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out, android.R.animator.fade_in, android.R.animator.fade_out);
+//
+//                    ft.replace(R.id.main_pane, fragment);
+//                    ft.addToBackStack(null);
+//                    ft.commit();
+                    Intent intent = new Intent(getActivity(), FilterEventsActivity.class);
+                    startActivity(intent);
                     return true;
             }
             return false;

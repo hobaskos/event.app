@@ -19,6 +19,10 @@ public class EventPagerAdapter extends FragmentStatePagerAdapter {
 
     public final static String TAG = EventPagerAdapter.class.getName();
 
+    private EventInfoFragment eventInfoFragment;
+    private LocationsFragment locationsFragment;
+    private UsersFragment usersFragment;
+
     private Context context;
     private Event event;
     private ArrayList<User> tmpUsers = new ArrayList<>();
@@ -31,17 +35,21 @@ public class EventPagerAdapter extends FragmentStatePagerAdapter {
         tmpUsers.add(new User("Frank", "Olsen"));
         tmpUsers.add(new User("Kenneth", "Nilsen"));
         tmpUsers.add(new User("Lennart", "Paulsen"));
+
+        eventInfoFragment = EventInfoFragment.newInstance(event);
+        locationsFragment = LocationsFragment.newInstance(event);
+        usersFragment = UsersFragment.newInstance(tmpUsers);
     }
 
     @Override
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return EventInfoFragment.newInstance(event);
+                return eventInfoFragment;
             case 1:
-                return LocationsFragment.newInstance(event);
+                return locationsFragment;
             case 2:
-                return UsersFragment.newInstance(tmpUsers);
+                return usersFragment;
             default:
                 return new Fragment();
         }

@@ -11,9 +11,11 @@ import io.hobaskos.event.eventapp.data.api.ApiService;
 import io.hobaskos.event.eventapp.data.api.EventCategoryService;
 import io.hobaskos.event.eventapp.data.api.EventService;
 import io.hobaskos.event.eventapp.data.api.JWTTokenInterceptor;
+import io.hobaskos.event.eventapp.data.api.LocationService;
 import io.hobaskos.event.eventapp.data.api.UserService;
 import io.hobaskos.event.eventapp.data.repository.EventCategoryRepository;
 import io.hobaskos.event.eventapp.data.repository.EventRepository;
+import io.hobaskos.event.eventapp.data.repository.LocationRepository;
 import io.hobaskos.event.eventapp.data.repository.UserRepository;
 import io.hobaskos.event.eventapp.data.storage.JwtStorageProxy;
 import io.hobaskos.event.eventapp.data.storage.PersistentStorage;
@@ -48,14 +50,14 @@ public class NetModule {
 
     @Singleton
     @Provides
-    public EventService.Authenticated providesEventServiceAuthenticated(Cache cache, JWTTokenInterceptor intercepter) {
-        return ApiService.build(httpUrl).createService(EventService.Authenticated.class, cache, intercepter);
+    public EventService.Authenticated providesEventServiceAuthenticated(Cache cache, JWTTokenInterceptor interceptor) {
+        return ApiService.build(httpUrl).createService(EventService.Authenticated.class, cache, interceptor);
     }
 
     @Singleton
     @Provides
-    public UserService providesUserJWTService(Cache cache, JWTTokenInterceptor intercepter) {
-        return ApiService.build(httpUrl).createService(UserService.class, cache, intercepter);
+    public UserService providesUserJWTService(Cache cache, JWTTokenInterceptor interceptor) {
+        return ApiService.build(httpUrl).createService(UserService.class, cache, interceptor);
     }
 
     @Singleton
@@ -87,4 +89,15 @@ public class NetModule {
     public EventCategoryRepository providesEventCategoryRepository(EventCategoryService eventCategoryService) {
         return new EventCategoryRepository(eventCategoryService);
     }
+
+    @Singleton
+    @Provides
+    public LocationService providesLocationService(Cache cache, JWTTokenInterceptor interceptor) {
+        return ApiService.build(httpUrl).createService(LocationService.class, cache, interceptor);
+    }
+
+    @Singleton
+    @Provides
+    public LocationRepository providesLocationRepository(LocationService service){ return new LocationRepository(service); }
+
 }

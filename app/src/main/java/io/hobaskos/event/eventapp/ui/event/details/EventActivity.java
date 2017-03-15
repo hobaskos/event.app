@@ -26,6 +26,8 @@ import io.hobaskos.event.eventapp.data.model.EventCategoryTheme;
 import io.hobaskos.event.eventapp.data.model.Location;
 import io.hobaskos.event.eventapp.data.model.User;
 import io.hobaskos.event.eventapp.ui.base.view.activity.BaseLceViewStateActivity;
+import io.hobaskos.event.eventapp.ui.location.add.LocationActivity;
+import rx.Observer;
 
 /**
  * Created by andre on 1/26/2017.
@@ -41,6 +43,7 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     public final static String TAG = EventActivity.class.getName();
 
     private Long eventId;
+    private EventPagerAdapter eventPagerAdapter;
 
     protected ViewPager viewPager;
     protected TabLayout tabLayout;
@@ -146,8 +149,8 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
         eventPresenter.getOwnerStatus(event);
 
         setTitle(event.getTitle());
-
-        viewPager.setAdapter(new EventPagerAdapter(event, this, getSupportFragmentManager()));
+        Log.i("EventACtivity", "setData");
+        viewPager.setAdapter(eventPagerAdapter = new EventPagerAdapter(event, this, getSupportFragmentManager()));
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
         tabLayout.setupWithViewPager(viewPager);
     }
@@ -184,6 +187,10 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     @Override
     public void onListFragmentInteraction(Location item) {
         Toast.makeText(this, item.getName(), Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, LocationActivity.class);
+        intent.putExtra(LocationActivity.EVENT_STATE, 1);
+        intent.putExtra(LocationActivity.LOCATION, item);
+        startActivity(intent);
     }
 
     @Override
@@ -195,5 +202,25 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     public void setOwner(boolean owner) {
         isOwner = owner;
         Toast.makeText(this, owner ? "Owner" : "Not owner", Toast.LENGTH_SHORT).show();
+    }
+
+    protected void onResume() {
+        super.onResume();
+
+        if(eventPagerAdapter != null) {
+            presenter.getEvent(eventId, new Observer<Event>() {
+                @Override
+                public void onCompleted() {}
+
+                @Override
+                public void onError(Throwable e) {}
+
+                @Override
+                public void onNext(Event event) {
+                    LocationsFragment locationsFragment = (LocationsFragment) eventPagerAdapter.getItem(1);
+                    locationsFragment.refresh( event.getLocations());
+                }
+            });
+        }
     }
 }

@@ -5,6 +5,7 @@
     <string name="navigation_drawer_close">Lukk navigasjonsskuffen</string>
 
     <string name="error_event_not_found">Dette arrangementet eksisterer ikke lenger</string>
+    <string name="filters_applied">Oppdaterer søkefiltere</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->
@@ -55,4 +56,5 @@
     <string name="date">Dato</string>
     <string name="time">Tid</string>
     <string name="events">Arrangementer</string>
+    <string name="filter_events">Søkefiltere</string>
 </resources>
