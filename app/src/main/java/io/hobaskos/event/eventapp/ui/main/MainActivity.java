@@ -6,8 +6,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -19,6 +21,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -33,25 +36,34 @@ import javax.inject.Inject;
 
 import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
+import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.data.model.User;
 import io.hobaskos.event.eventapp.ui.base.view.activity.BaseViewStateActivity;
 import io.hobaskos.event.eventapp.ui.event.create.CreateEventActivity;
+import io.hobaskos.event.eventapp.ui.event.details.EventActivity;
 import io.hobaskos.event.eventapp.ui.login.LoginActivity;
 import io.hobaskos.event.eventapp.ui.profile.ProfileActivity;
 
 import io.hobaskos.event.eventapp.ui.event.search.list.EventsFragment;
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
+import rx.Observer;
 
 
 
 public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
-        implements NavigationView.OnNavigationItemSelectedListener, MainView {
+        implements
+        NavigationView.OnNavigationItemSelectedListener,
+        MainView,
+        JoinPrivateEventFragment.OnInviteCodeSubmitInteractionListener {
 
     // Views:
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
     //private ViewPager viewPager;
+
+
+    private final static String JOIN_EVENT_KEY = "joinEventFragment";
 
     @Inject
     public MainPresenter presenter;
@@ -169,6 +181,9 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
             case R.id.nav_create_event:
                 startActivity(new Intent(this, CreateEventActivity.class));
                 break;
+            case R.id.nav_join_private_event:
+                joinPrivateEvent();
+                break;
             case R.id.nav_profile:
                 startActivity(new Intent(this, ProfileActivity.class));
                 break;
@@ -195,6 +210,13 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
     private void logout() {
         presenter.logout();
         startActivity(new Intent(this, LoginActivity.class));
+    }
+
+    private void joinPrivateEvent() {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        Fragment prev = getSupportFragmentManager().findFragmentByTag(JOIN_EVENT_KEY);
+        if (prev != null) { ft.remove(prev); }
+        JoinPrivateEventFragment.newInstance().show(ft, JOIN_EVENT_KEY);
     }
 
 
@@ -268,5 +290,26 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
 //        ImageView imHeaderImage = (ImageView) header.findViewById(R.id.nav_header_profile_picture);
 //        imHeaderImage.setVisibility(View.GONE);
         tvNavHeaderUsername.setText("");
+    }
+
+    @Override
+    public void onInviteCodeSubmitInteractionListener(String inviteCode) {
+        presenter.getEventFromInviteCode(inviteCode, new Observer<Event>() {
+            @Override
+            public void onCompleted() {}
+
+            @Override
+            public void onError(Throwable e) {
+                Toast.makeText(MainActivity.this, getString(R.string.invalid_invite_code), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNext(Event event) {
+                Intent intent = new Intent(MainActivity.this, EventActivity.class);
+                intent.putExtra(EventActivity.EVENT_ID, event.getId());
+                intent.putExtra(EventActivity.EVENT_THEME, event.getCategory().getTheme());
+                startActivity(intent);
+            }
+        });
     }
 }

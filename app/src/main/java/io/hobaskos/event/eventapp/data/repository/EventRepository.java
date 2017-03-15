@@ -85,5 +85,8 @@ public class EventRepository implements BaseRepository<Event, Long> {
 
     public Observable<List<User>> getAddendingUsers(Long eventId, int page) {
         return eventServiceAnonymously.getAttendingForEvent(eventId, page, PAGE_SIZE);
+
+    public Observable<Event> getEventByInviteCode(String inviteCode) {
+        return eventServiceAuthenticated.getEventByInviteCode(inviteCode);
     }
 }

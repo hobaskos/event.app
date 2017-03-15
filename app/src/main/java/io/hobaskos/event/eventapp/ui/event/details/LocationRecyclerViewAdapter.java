@@ -40,6 +40,8 @@ public class LocationRecyclerViewAdapter extends
         holder.view.setOnClickListener((view) -> {
             if (null != listener) { listener.onListFragmentInteraction(holder.location); }
         });
+
+
     }
 
     @Override

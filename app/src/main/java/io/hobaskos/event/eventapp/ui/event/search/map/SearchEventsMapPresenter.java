@@ -1,7 +1,5 @@
 package io.hobaskos.event.eventapp.ui.event.search.map;
 
-import android.util.Log;
-
 import com.google.android.gms.maps.model.LatLng;
 import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
 
@@ -12,12 +10,9 @@ import org.greenrobot.eventbus.ThreadMode;
 import javax.inject.Inject;
 
 
-import io.hobaskos.event.eventapp.data.eventbusevent.SetEventsEvent;
-import io.hobaskos.event.eventapp.data.eventbusevent.UpdateEventsEvent;
-import io.hobaskos.event.eventapp.data.repository.EventRepository;
+import io.hobaskos.event.eventapp.data.eventbus.SetEventsEvent;
+import io.hobaskos.event.eventapp.data.eventbus.UpdateEventsEvent;
 import io.hobaskos.event.eventapp.data.storage.FilterSettings;
-import io.hobaskos.event.eventapp.data.storage.PersistentStorage;
-
 
 
 /**

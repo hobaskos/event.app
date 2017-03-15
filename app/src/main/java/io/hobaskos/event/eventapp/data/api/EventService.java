@@ -76,5 +76,8 @@ public interface EventService
         @GET("api/account/attending-events")
         Observable<List<Event>> getAttendingEvents(@Query("page") int page,
                                                    @Query("size") int pageSize);
+
+        @GET("api/event-by-invite/{code}")
+        Observable<Event> getEventByInviteCode(@Path("code") String code);
     }
 }

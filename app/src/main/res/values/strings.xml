@@ -5,6 +5,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="error_event_not_found">This event no longer exists</string>
+    <string name="filters_applied">Filters applied</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -54,5 +55,13 @@
     <string name="to">To</string>
     <string name="date">Date</string>
     <string name="time">Time</string>
+    <string name="close">Close</string>
+    <string name="submit">Submit</string>
+    <string name="join_private_event">Join private event</string>
+    <string name="enter_invitation_code">Enter invitation code</string>
+    <string name="join_private">Gå til privat event</string>
+    <string name="invite_code_length_error">The invite code must be at least 4 characters</string>
+    <string name="invalid_invite_code">Could not find event with that invite code</string>
     <string name="events">Events</string>
+    <string name="filter_events">Search filters</string>
 </resources>
