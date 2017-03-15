@@ -1,6 +1,7 @@
 package io.hobaskos.event.eventapp.ui.location.add;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -38,6 +39,7 @@ import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.model.DateTimeVM;
 import io.hobaskos.event.eventapp.data.model.GeoPoint;
 import io.hobaskos.event.eventapp.data.model.Location;
+import io.hobaskos.event.eventapp.ui.event.details.EventActivity;
 
 import static com.wdullaer.materialdatetimepicker.date.DatePickerDialog.Version.VERSION_2;
 
@@ -53,16 +55,11 @@ public class LocationActivity extends MvpActivity<LocationView, LocationPresente
     public final static String EVENT_ID = "eventId";
 
     private EditText name;
-    //@BindView(R.id.activity_add_location_location)private EditText location;
     private EditText description;
     private EditText fromDate;
-    private String fromDateString;
     private EditText fromTime;
-    private String fromTimeString;
     private EditText toDate;
-    private String toDateString;
     private EditText toTime;
-    private String toTimeString;
     private Button create;
     private DateTimeVM fromDateTimeVM;
     private DateTimeVM toDateTimeVM;
@@ -78,6 +75,7 @@ public class LocationActivity extends MvpActivity<LocationView, LocationPresente
 
     @Override
     public void onSuccess() {
+        finish();
         Toast.makeText(this, "Location added!", Toast.LENGTH_LONG).show();
     }
 
@@ -218,11 +216,11 @@ public class LocationActivity extends MvpActivity<LocationView, LocationPresente
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
         switch (pickerState) {
             case FROM:
-                fromDateTimeVM.setDate(year, monthOfYear, dayOfMonth);
+                fromDateTimeVM.setDate(year, (monthOfYear + 1), dayOfMonth);
                 fromDate.setText(year + "-" + formatNumber(monthOfYear + 1) + "-" + formatNumber(dayOfMonth));
                 break;
             case TO:
-                toDateTimeVM.setDate(year, monthOfYear, dayOfMonth);
+                toDateTimeVM.setDate(year, (monthOfYear + 1), dayOfMonth);
                 toDate.setText(year + "-" + formatNumber(monthOfYear + 1) + "-" + formatNumber(dayOfMonth));
                 break;
             default:

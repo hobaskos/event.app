@@ -8,9 +8,11 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.model.Event;
@@ -18,6 +20,7 @@ import io.hobaskos.event.eventapp.data.model.Location;
 import io.hobaskos.event.eventapp.ui.location.add.LocationActivity;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A fragment representing a list of Items.
@@ -34,6 +37,7 @@ public class LocationsFragment extends Fragment {
     private OnListFragmentInteractionListener listener;
     private DividerItemDecoration dividerItemDecoration;
     private FloatingActionButton addLocation;
+    private LocationRecyclerViewAdapter locationRecyclerViewAdapter;
     private Long eventId;
 
     public LocationsFragment() {}
@@ -63,26 +67,23 @@ public class LocationsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_location_list, container, false);
 
-
         // Set the adapter
         Context context = view.getContext();
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.list);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(new LocationRecyclerViewAdapter(locations, listener));
+        locationRecyclerViewAdapter = new LocationRecyclerViewAdapter(locations, listener);
+        recyclerView.setAdapter(locationRecyclerViewAdapter);
 
         dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
                 linearLayoutManager.getOrientation());
         recyclerView.addItemDecoration(dividerItemDecoration);
 
         addLocation = (FloatingActionButton) view.findViewById(R.id.fragment_location_list_fab);
-        addLocation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), LocationActivity.class);
-                intent.putExtra("eventId", eventId);
-                startActivity(intent);
-            }
+        addLocation.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), LocationActivity.class);
+            intent.putExtra("eventId", eventId);
+            startActivity(intent);
         });
 
         return view;
@@ -108,4 +109,12 @@ public class LocationsFragment extends Fragment {
     public interface OnListFragmentInteractionListener {
         void onListFragmentInteraction(Location item);
     }
+
+    public void refresh(List<Location> locations) {
+        this.locations.clear();
+        this.locations.addAll(locations);
+        locationRecyclerViewAdapter.notifyDataSetChanged();
+    }
+
+
 }

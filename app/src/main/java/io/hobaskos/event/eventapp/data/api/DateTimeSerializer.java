@@ -1,5 +1,7 @@
 package io.hobaskos.event.eventapp.data.api;
 
+import android.util.Log;
+
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
@@ -14,6 +16,8 @@ import java.lang.reflect.Type;
 public class DateTimeSerializer implements JsonSerializer {
     @Override
     public JsonElement serialize(Object src, Type typeOfSrc, JsonSerializationContext context) {
+        Log.i("DateTimeSerializer", src.toString());
         return new JsonPrimitive(src.toString());
+
     }
 }

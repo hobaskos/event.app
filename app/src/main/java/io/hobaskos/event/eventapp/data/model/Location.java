@@ -3,10 +3,7 @@ package io.hobaskos.event.eventapp.data.model;
 
 import android.os.Parcelable;
 
-import android.util.EventLogTags;
-
 import org.joda.time.DateTime;
-import org.joda.time.LocalDateTime;
 import org.parceler.Parcel;
 
 /**
@@ -15,13 +12,13 @@ import org.parceler.Parcel;
 @Parcel
 public class Location implements Parcelable {
 
-    private long id;
+    private Long id;
     private String name;
     private String description;
     private GeoPoint geoPoint;
     private DateTime fromDate;
     private DateTime toDate;
-    private long eventId;
+    private Long eventId;
 
     public long getId() {
         return id;

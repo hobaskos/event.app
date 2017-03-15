@@ -35,12 +35,7 @@ public class ApiService
 {
     private final OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
     private final Retrofit.Builder builder = new Retrofit.Builder();
-
-    //private final Gson serializer = new GsonBuilder().registerTypeAdapter(DateTime.class,
-    //        (JsonDeserializer<DateTime>) (json, type, jsonDeserializationContext) ->
-    //                DateTime.parse(json.getAsJsonPrimitive().getAsString()).toDateTime())
-    //        .create();
-
+    
     private final Gson serializer = new GsonBuilder()
             .registerTypeAdapter(DateTime.class, new DateTimeSerializer())
             .registerTypeAdapter(DateTime.class, new DateTimeDeserializer())

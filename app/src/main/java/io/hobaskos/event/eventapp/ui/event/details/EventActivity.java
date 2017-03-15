@@ -26,6 +26,7 @@ import io.hobaskos.event.eventapp.data.model.EventCategoryTheme;
 import io.hobaskos.event.eventapp.data.model.Location;
 import io.hobaskos.event.eventapp.data.model.User;
 import io.hobaskos.event.eventapp.ui.base.view.activity.BaseLceViewStateActivity;
+import rx.Observer;
 
 /**
  * Created by andre on 1/26/2017.
@@ -41,6 +42,7 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     public final static String TAG = EventActivity.class.getName();
 
     private Long eventId;
+    private EventPagerAdapter eventPagerAdapter;
 
     protected ViewPager viewPager;
     protected TabLayout tabLayout;
@@ -152,8 +154,8 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
         }
         */
         setTitle(event.getTitle());
-
-        viewPager.setAdapter(new EventPagerAdapter(event, this, getSupportFragmentManager()));
+        Log.i("EventACtivity", "setData");
+        viewPager.setAdapter(eventPagerAdapter = new EventPagerAdapter(event, this, getSupportFragmentManager()));
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
         tabLayout.setupWithViewPager(viewPager);
     }
@@ -193,4 +195,33 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     public void onListFragmentInteraction(User item) {
         Toast.makeText(this, item.getName(), Toast.LENGTH_SHORT).show();
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if(eventPagerAdapter != null) {
+            presenter.getEvent(eventId, new Observer<Event>() {
+                @Override
+                public void onCompleted() {
+
+                }
+
+                @Override
+                public void onError(Throwable e) {
+
+                }
+
+                @Override
+                public void onNext(Event event) {
+                    LocationsFragment locationsFragment = (LocationsFragment) eventPagerAdapter.getItem(1);
+                    locationsFragment.refresh( event.getLocations());
+                }
+            });
+
+        }
+
+    }
+
+
 }
