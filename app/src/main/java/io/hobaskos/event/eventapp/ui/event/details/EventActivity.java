@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
-import android.text.format.DateUtils;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -12,8 +11,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
-
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -26,6 +23,7 @@ import io.hobaskos.event.eventapp.data.model.EventCategoryTheme;
 import io.hobaskos.event.eventapp.data.model.Location;
 import io.hobaskos.event.eventapp.data.model.User;
 import io.hobaskos.event.eventapp.ui.base.view.activity.BaseLceViewStateActivity;
+import io.hobaskos.event.eventapp.ui.event.details.attending.AttendeesFragment;
 
 /**
  * Created by andre on 1/26/2017.
@@ -34,7 +32,7 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
         EventPresenter> implements
         EventView,
         LocationsFragment.OnListFragmentInteractionListener,
-        UsersFragment.OnUserListFragmentInteractionListener {
+        AttendeesFragment.OnUserListFragmentInteractionListener {
 
     public final static String EVENT_ID = "eventId";
     public final static String EVENT_THEME = "eventTheme";

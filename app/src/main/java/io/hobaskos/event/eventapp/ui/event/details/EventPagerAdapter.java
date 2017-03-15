@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.data.model.User;
+import io.hobaskos.event.eventapp.ui.event.details.attending.AttendeesFragment;
 
 /**
  * Created by alex on 3/10/17.
@@ -21,16 +22,11 @@ public class EventPagerAdapter extends FragmentStatePagerAdapter {
 
     private Context context;
     private Event event;
-    private ArrayList<User> tmpUsers = new ArrayList<>();
 
     public EventPagerAdapter(Event event, Context context, FragmentManager fm) {
         super(fm);
         this.event = event;
         this.context = context;
-
-        tmpUsers.add(new User("Frank", "Olsen"));
-        tmpUsers.add(new User("Kenneth", "Nilsen"));
-        tmpUsers.add(new User("Lennart", "Paulsen"));
     }
 
     @Override
@@ -41,7 +37,7 @@ public class EventPagerAdapter extends FragmentStatePagerAdapter {
             case 1:
                 return LocationsFragment.newInstance(event);
             case 2:
-                return UsersFragment.newInstance(tmpUsers);
+                return AttendeesFragment.newInstance(event.getId());
             default:
                 return new Fragment();
         }
