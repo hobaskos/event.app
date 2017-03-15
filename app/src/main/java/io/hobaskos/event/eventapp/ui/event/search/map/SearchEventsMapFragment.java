@@ -1,5 +1,6 @@
 package io.hobaskos.event.eventapp.ui.event.search.map;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -25,7 +26,9 @@ import javax.inject.Inject;
 import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.model.Event;
+import io.hobaskos.event.eventapp.data.model.EventCategoryTheme;
 import io.hobaskos.event.eventapp.data.model.Location;
+import io.hobaskos.event.eventapp.ui.event.details.EventActivity;
 import io.hobaskos.event.eventapp.util.LocationUtil;
 
 /**
@@ -54,7 +57,7 @@ public class SearchEventsMapFragment extends Fragment implements SearchEventsMap
         presenter.attachView(this);
 
         markers = new ArrayList<>();
-    }
+    } // end of onCreate()
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
@@ -63,7 +66,7 @@ public class SearchEventsMapFragment extends Fragment implements SearchEventsMap
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
         return view;
-    }
+    } // end of onCreateView()
 
     @Override
     public void onResume() {
@@ -71,7 +74,7 @@ public class SearchEventsMapFragment extends Fragment implements SearchEventsMap
         if (mapView != null) {
             mapView.onResume();
         }
-    }
+    } // end of onResume
 
     @Override
     public void onPause() {
@@ -79,7 +82,7 @@ public class SearchEventsMapFragment extends Fragment implements SearchEventsMap
             mapView.onPause();
         }
         super.onPause();
-    }
+    } // end of onPause()
 
     @Override
     public void onDestroy() {
@@ -91,7 +94,7 @@ public class SearchEventsMapFragment extends Fragment implements SearchEventsMap
             }
         }
         super.onDestroy();
-    }
+    } // end of onDestroy()
 
     @Override
     public void onLowMemory() {
@@ -142,8 +145,23 @@ public class SearchEventsMapFragment extends Fragment implements SearchEventsMap
                         .snippet(event.getDate(getContext())));
 
                 // Put markers in markers list:
+                marker.setTag(event);
                 markers.add(marker);
+
+                googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+
+                    @Override
+                    public void onInfoWindowClick(Marker arg0) {
+                        final Event event = (Event) arg0.getTag();
+                        Intent intent = new Intent(getActivity(), EventActivity.class);
+                        intent.putExtra(EventActivity.EVENT_ID, event.getId());
+                        intent.putExtra(EventActivity.EVENT_THEME, EventCategoryTheme.YELLOW); //TODO change when eventCategory is available
+                        startActivity(intent);
+                    }
+                });
             }
+
+
 
             // Create LatLng bounds from markers:
             LatLngBounds.Builder latLngBoundsBuilder = new LatLngBounds.Builder();

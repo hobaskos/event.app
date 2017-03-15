@@ -60,6 +60,7 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
         setContentView(R.layout.activity_event);
         setTitle(R.string.loading);
         getSupportActionBar().setElevation(0);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
         eventId = getIntent().getExtras().getLong(EVENT_ID);
@@ -172,6 +173,9 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
             case R.id.edit:
                 Toast.makeText(this, "Edit event", Toast.LENGTH_SHORT).show();
                 break;

@@ -26,6 +26,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import icepick.State;
 import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.model.Event;
@@ -59,13 +60,19 @@ public class EventsFragment extends
     private DividerItemDecoration dividerItemDecoration;
 
     // Model
-    private List<Event> eventsList = new ArrayList<>();
+    List<Event> eventsList = new ArrayList<>();
     private EventsAdapter adapter;
 
     // State
-    boolean canLoadMore = true;
-    boolean isLoadingMore = false;
-    int page = 0;
+    @State boolean canLoadMore = true;
+    @State boolean isLoadingMore = false;
+    @State int page = 0;
+
+//    @Override
+//    public void onSaveInstanceState(Bundle outState) {
+//        outState.putParcelable("ViewState", getViewState());
+//        super.onSaveInstanceState(outState);
+//    }
 
     private String searchQuery;
 
@@ -73,8 +80,12 @@ public class EventsFragment extends
     public EventsPresenter eventsPresenter;
 
     @Override public void onCreate(Bundle savedInstanceState) {
+//        if (savedInstanceState != null) {
+//            viewState = savedInstanceState.getParcelable("ViewState");
+//        }
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+
     }
 
     @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -86,7 +97,6 @@ public class EventsFragment extends
         }
         */
         Log.i(TAG, "page: " + page );
-        //Icepick.restoreInstanceState(this, savedInstanceState);
 
         emptyResultView = (TextView) view.findViewById(R.id.emptyView);
 
@@ -206,6 +216,7 @@ public class EventsFragment extends
     @Override
     public EventsViewState createViewState() {
         Log.i(TAG, "createViewState()");
+        EventsViewState viewState = new EventsViewState();
         return new EventsViewState();
     }
 
