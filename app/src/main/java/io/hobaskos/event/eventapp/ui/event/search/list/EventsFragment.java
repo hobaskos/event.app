@@ -40,6 +40,7 @@ import io.hobaskos.event.eventapp.data.eventbus.SetEventsEvent;
 import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.data.model.EventCategoryTheme;
 import io.hobaskos.event.eventapp.ui.base.view.fragment.BaseLceViewStateFragment;
+import io.hobaskos.event.eventapp.ui.event.filter.FilterEventsActivity;
 import io.hobaskos.event.eventapp.ui.event.filter.FilterEventsFragment;
 import io.hobaskos.event.eventapp.ui.event.details.EventActivity;
 import io.hobaskos.event.eventapp.ui.event.search.map.SearchEventsMapActivity;
@@ -123,19 +124,21 @@ public class EventsFragment extends
                 case R.id.action_search:
                     return true;
                 case R.id.action_filter:
-                    FilterEventsFragment fragment = new FilterEventsFragment();
-                    //SearchEventsMapFragment fragment = new SearchEventsMapFragment();
-
-                    FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-
-                    //ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                    //ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right);
-                    //android.app.FragmentTransaction ft = getActivity().getFragmentManager().beginTransaction();
-                    //ft.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out, android.R.animator.fade_in, android.R.animator.fade_out);
-
-                    ft.replace(R.id.main_pane, fragment);
-                    ft.addToBackStack(null);
-                    ft.commit();
+//                    FilterEventsFragment fragment = new FilterEventsFragment();
+//                    //SearchEventsMapFragment fragment = new SearchEventsMapFragment();
+//
+//                    FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+//
+//                    //ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+//                    //ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right);
+//                    //android.app.FragmentTransaction ft = getActivity().getFragmentManager().beginTransaction();
+//                    //ft.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out, android.R.animator.fade_in, android.R.animator.fade_out);
+//
+//                    ft.replace(R.id.main_pane, fragment);
+//                    ft.addToBackStack(null);
+//                    ft.commit();
+                    Intent intent = new Intent(getActivity(), FilterEventsActivity.class);
+                    startActivity(intent);
                     return true;
             }
             return false;

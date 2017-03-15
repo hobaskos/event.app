@@ -108,10 +108,7 @@ public class FilterEventsFragment extends BaseFragment
         });
 
 
-        toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
 
-        setHasOptionsMenu(true);
-        toolbar.setTitle("Filter events");
         /*
         toolbar.setNavigationIcon(android.R.drawable.arrow_down_float);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
