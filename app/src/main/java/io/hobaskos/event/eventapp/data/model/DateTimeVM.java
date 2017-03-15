@@ -8,25 +8,25 @@ import org.joda.time.DateTimeZone;
  */
 
 public class DateTimeVM {
-    private String year;
-    private String monthOfYear;
-    private String dayOfMonth;
-    private String hour;
-    private String minute;
+    private int year;
+    private int monthOfYear;
+    private int dayOfMonth;
+    private int hour;
+    private int minute;
 
     public void setDate(int year, int monthOfYear, int dayOfMonth) {
-        this.year = formatNumber(year);
-        this.monthOfYear = formatNumber(monthOfYear);
-        this.dayOfMonth = formatNumber(dayOfMonth);
+        this.year = year;
+        this.monthOfYear = monthOfYear;
+        this.dayOfMonth = dayOfMonth;
     }
 
     public void setTime(int hour, int minute) {
-        this.hour = formatNumber(hour);
-        this.minute = formatNumber(minute);
+        this.hour = hour;
+        this.minute = minute;
     }
 
     public String getDate() {
-        return dayOfMonth + "/" + monthOfYear + "-" + year;
+        return String.format("%02d", dayOfMonth) + "/" + String.format("%02d", monthOfYear) + "-" + year;
     }
 
     public String getTime() {
@@ -34,53 +34,13 @@ public class DateTimeVM {
     }
 
     public DateTime getDateTime() {
-        return new DateTime(Integer.parseInt(year),
-                Integer.parseInt(monthOfYear),
-                Integer.parseInt(dayOfMonth),
-                Integer.parseInt(hour),
-                Integer.parseInt(minute), DateTimeZone.getDefault());
+        return new DateTime(year,
+                            monthOfYear,
+                            dayOfMonth,
+                            hour,
+                            minute,
+                            DateTimeZone.getDefault());
     }
 
-    private String formatNumber(int number) {
 
-        String newNumber;
-
-        switch (number) {
-            case 0:
-                newNumber = "00";
-                break;
-            case 1:
-                newNumber = "01";
-                break;
-            case 2:
-                newNumber = "02";
-                break;
-            case 3:
-                newNumber = "03";
-                break;
-            case 4:
-                newNumber = "04";
-                break;
-            case 5:
-                newNumber = "05";
-                break;
-            case 6:
-                newNumber = "06";
-                break;
-            case 7:
-                newNumber = "07";
-                break;
-            case 8:
-                newNumber = "08";
-                break;
-            case 9:
-                newNumber = "09";
-                break;
-            default:
-                newNumber = Integer.toString(number);
-                break;
-        }
-
-        return newNumber;
-    }
 }
