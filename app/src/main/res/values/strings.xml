@@ -52,4 +52,11 @@
     <string name="to">To</string>
     <string name="date">Date</string>
     <string name="time">Time</string>
+    <string name="left">venstre</string>
+
+    <string-array name="tabName">
+        <item>Attending</item>
+        <item>Mine</item>
+    </string-array>
+
 </resources>
