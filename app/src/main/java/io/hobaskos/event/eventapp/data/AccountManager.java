@@ -3,7 +3,6 @@ package io.hobaskos.event.eventapp.data;
 import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
 
-import org.parceler.Repository;
 
 import io.hobaskos.event.eventapp.data.model.User;
 import io.hobaskos.event.eventapp.data.repository.UserRepository;
