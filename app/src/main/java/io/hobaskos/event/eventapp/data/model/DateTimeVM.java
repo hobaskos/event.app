@@ -14,6 +14,17 @@ public class DateTimeVM {
     private int hour;
     private int minute;
 
+    public DateTimeVM() {
+    }
+
+    public DateTimeVM(DateTime dateTime) {
+        this.year = dateTime.getYear();
+        this.monthOfYear = dateTime.monthOfYear().get();
+        this.dayOfMonth = dateTime.getDayOfMonth();
+        this.hour = dateTime.getHourOfDay();
+        this.minute = dateTime.getMinuteOfHour();
+    }
+
     public void setDate(int year, int monthOfYear, int dayOfMonth) {
         this.year = year;
         this.monthOfYear = monthOfYear;
@@ -30,7 +41,7 @@ public class DateTimeVM {
     }
 
     public String getTime() {
-        return hour + ":" + minute;
+        return String.format("%02d", hour) + ":" + String.format("%02d", minute);
     }
 
     public DateTime getDateTime() {

@@ -53,6 +53,8 @@ public class LocationActivity extends MvpActivity<LocationView, LocationPresente
                     TimePickerDialog.OnTimeSetListener, OnDateSetListener, LocationView {
 
     public final static String EVENT_ID = "eventId";
+    public final static String EVENT_STATE = "eventState";
+    public final static String LOCATION = "location";
 
     private EditText name;
     private EditText description;
@@ -61,31 +63,25 @@ public class LocationActivity extends MvpActivity<LocationView, LocationPresente
     private EditText toDate;
     private EditText toTime;
     private Button create;
+    private Button edit;
     private DateTimeVM fromDateTimeVM;
     private DateTimeVM toDateTimeVM;
+    private Location location;
 
     private SupportPlaceAutocompleteFragment placeAutocompleteFragment;
 
-    String location;
+    String googlePlace;
     double lat;
     double lon;
     Long eventId;
 
     private GoogleApiClient mGoogleApiClient;
 
-    @Override
-    public void onSuccess() {
-        finish();
-        Toast.makeText(this, "Location added!", Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void onFailure() {
-        Toast.makeText(this, "Location not added!", Toast.LENGTH_LONG).show();
-    }
-
     private enum PickerState { FROM, TO }
+    public enum State { CREATE, EDIT }
+
     private PickerState pickerState;
+    private State state;
 
     @Inject
     public LocationPresenter presenter;
@@ -132,6 +128,13 @@ public class LocationActivity extends MvpActivity<LocationView, LocationPresente
             onCreateButtonClicked();
         });
 
+        edit = (Button) findViewById(R.id.activity_add_location_edit);
+        edit.setVisibility(View.GONE);
+        edit.setOnClickListener(v -> {
+            edit.setEnabled(false);
+            onEditButtonClicked();
+        });
+
         mGoogleApiClient = new GoogleApiClient
                 .Builder(this)
                 .addApi(Places.GEO_DATA_API)
@@ -145,7 +148,7 @@ public class LocationActivity extends MvpActivity<LocationView, LocationPresente
         placeAutocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
-                location = place.getName().toString();
+                googlePlace = place.getName().toString();
                 lat = place.getLatLng().latitude;
                 lon = place.getLatLng().longitude;
             }
@@ -157,8 +160,46 @@ public class LocationActivity extends MvpActivity<LocationView, LocationPresente
         });
 
         eventId = getIntent().getExtras().getLong(EVENT_ID);
+        setState(getIntent().getIntExtra(EVENT_STATE, 0));
+
+        if(state.equals(State.EDIT)) {
+            location = getIntent().getParcelableExtra(LOCATION);
+            name.setText(location.getName());
+            description.setText(location.getDescription());
+            // Todo: refactor to location.getAddress/google-search-query/something
+            placeAutocompleteFragment.setText(location.getName());
+            fromDateTimeVM = new DateTimeVM(location.getFromDate());
+            toDateTimeVM = new DateTimeVM(location.getToDate());
+            fromDate.setText(fromDateTimeVM.getDate());
+            fromTime.setText(fromDateTimeVM.getTime());
+            toDate.setText(toDateTimeVM.getDate());
+            toTime.setText(toDateTimeVM.getTime());
+            create.setVisibility(View.GONE);
+            edit.setVisibility(View.VISIBLE);
+        }
 
         presenter.attachView(this);
+    }
+
+
+
+    private void setState(int i) {
+        if(i == 0) {
+            state = State.CREATE;
+            return;
+        }
+
+        state = State.EDIT;
+    }
+
+    @Override
+    public void onSuccess() {
+        finish();
+    }
+
+    @Override
+    public void onFailure() {
+        Toast.makeText(this, "Location not added!", Toast.LENGTH_LONG).show();
     }
 
     @NonNull
@@ -252,7 +293,7 @@ public class LocationActivity extends MvpActivity<LocationView, LocationPresente
         location.setEventId(eventId);
         location.setName(name.getText().toString());
         if(!description.getText().toString().isEmpty()) {
-            location.setDescription(name.getText().toString());
+            location.setDescription(description.getText().toString());
         }
         location.setFromDate(fromDateTimeVM.getDateTime());
         location.setToDate(toDateTimeVM.getDateTime());
@@ -260,6 +301,29 @@ public class LocationActivity extends MvpActivity<LocationView, LocationPresente
         location.setGeoPoint(geoPoint);
 
         presenter.addLocation(location);
+    }
+
+    private void onEditButtonClicked() {
+        if(!validate()) {
+            edit.setEnabled(true);
+            return;
+        }
+
+        Location location = new Location();
+        location.setId(this.location.getId());
+        location.setEventId(this.location.getEventId());
+        location.setName(name.getText().toString());
+        if(!description.getText().toString().isEmpty()) {
+            location.setDescription(description.getText().toString());
+        }
+        location.setFromDate(fromDateTimeVM.getDateTime());
+        location.setToDate(toDateTimeVM.getDateTime());
+        GeoPoint geoPoint = new GeoPoint(lat, lon);
+        location.setGeoPoint(geoPoint);
+
+        presenter.updateLocation(location);
+
+
     }
 
     private boolean validate() {

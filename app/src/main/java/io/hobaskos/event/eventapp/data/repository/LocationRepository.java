@@ -22,4 +22,6 @@ public class LocationRepository {
     public Observable<Location> save(Location location) {
         return service.save(location);
     }
+
+    public Observable<Location> put(Location location) { return service.put(location); }
 }

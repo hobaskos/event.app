@@ -72,6 +72,32 @@ public class LocationPresenter implements MvpPresenter<LocationView> {
                 }
             }
         });
+    }
 
+    public void updateLocation(Location location) {
+
+        repository.put(location)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Location>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                if(view != null) {
+                    view.onFailure();
+                }
+            }
+
+            @Override
+            public void onNext(Location location) {
+                if(view != null) {
+                    view.onSuccess();
+                }
+            }
+        });
     }
 }
