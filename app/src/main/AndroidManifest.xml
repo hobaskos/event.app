@@ -105,11 +105,6 @@
             android:value="@string/google_api_key"/>
 
 
-
-        <!-- Facebook App Id meta data -->
-        <meta-data android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id"/>
-
         <!-- https://github.com/robolectric/robolectric/issues/2579 -->
         <meta-data
             android:name="com.facebook.sdk.AutoLogAppEventsEnabled"
