@@ -104,8 +104,8 @@ public class EventsFragment extends
                 case R.id.action_search:
                     return true;
                 case R.id.action_filter:
-                    //FilterEventsFragment fragment = new FilterEventsFragment();
-                    SearchEventsMapFragment fragment = new SearchEventsMapFragment();
+                    FilterEventsFragment fragment = new FilterEventsFragment();
+                    //SearchEventsMapFragment fragment = new SearchEventsMapFragment();
 
                     FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
 
