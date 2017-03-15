@@ -13,10 +13,13 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.android.MarkerManager;
+import com.google.maps.android.clustering.ClusterManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +50,8 @@ public class SearchEventsMapFragment extends Fragment implements SearchEventsMap
     private List<Event> events;
 
     private List<Marker> markers;
+
+    private Marker prevMarker; // reference to last selected marker
 
     @Inject
     public SearchEventsMapPresenter presenter;
@@ -136,31 +141,64 @@ public class SearchEventsMapFragment extends Fragment implements SearchEventsMap
             // Clear map before redrawing:
             googleMap.clear();
 
+            MarkerManager markerManager = new MarkerManager(googleMap);
+            MarkerManager.Collection mainMarkerCollection = markerManager.newCollection("main_markers");
+
+            MarkerManager.Collection subMarkerCollection = markerManager.newCollection("sub_markers");
+
             // Get locations and add them as markers on the map:
             for (Event event : events) {
                 Location l = event.getLocations().get(0);
-                Marker marker = googleMap.addMarker(new MarkerOptions()
+                MarkerOptions markerOptions = new MarkerOptions()
                         .position(LocationUtil.LocationToLatLng(l))
                         .title(event.getTitle())
-                        .snippet(event.getDate(getContext())));
+                        .snippet(event.getDate(getContext()))
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+
+                Marker marker = googleMap.addMarker(markerOptions);
 
                 // Put markers in markers list:
                 marker.setTag(event);
+                mainMarkerCollection.addMarker(markerOptions);
                 markers.add(marker);
-
-                googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
-
-                    @Override
-                    public void onInfoWindowClick(Marker arg0) {
-                        final Event event = (Event) arg0.getTag();
-                        Intent intent = new Intent(getActivity(), EventActivity.class);
-                        intent.putExtra(EventActivity.EVENT_ID, event.getId());
-                        intent.putExtra(EventActivity.EVENT_THEME, EventCategoryTheme.YELLOW); //TODO change when eventCategory is available
-                        startActivity(intent);
-                    }
-                });
             }
 
+            googleMap.setOnMapClickListener(latLng -> {
+                // Clear previous submarker collection
+                subMarkerCollection.clear();
+                googleMap.setOnMarkerClickListener(arg0 -> {
+                    if (prevMarker != null) {
+                        //Set prevMarker back to default color
+                        prevMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+                    }
+
+                    arg0.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+
+                    final Event event1 = (Event) arg0.getTag();
+
+
+                    for (Location location : event1.getLocations()) {
+                        MarkerOptions markerOptions1 = new MarkerOptions()
+                                .position(LocationUtil.LocationToLatLng(location))
+                                .title(location.getName())
+                                .snippet("")
+                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
+                        subMarkerCollection.addMarker(markerOptions1);
+                        googleMap.addMarker(markerOptions1);
+                    }
+                    prevMarker = arg0; // update reference to previous marker
+                    return true;
+                });
+            });
+
+
+            googleMap.setOnInfoWindowClickListener(arg0 -> {
+                final Event event12 = (Event) arg0.getTag();
+                Intent intent = new Intent(getActivity(), EventActivity.class);
+                intent.putExtra(EventActivity.EVENT_ID, event12.getId());
+                intent.putExtra(EventActivity.EVENT_THEME, event12.getCategory().getTheme());
+                startActivity(intent);
+            });
 
 
             // Create LatLng bounds from markers:
