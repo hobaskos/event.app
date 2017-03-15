@@ -63,6 +63,7 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
 
 
         eventId = getIntent().getExtras().getLong(EVENT_ID);
+        eventId = 1231231L;
         viewPager = (ViewPager) findViewById(R.id.container);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
     }
@@ -124,7 +125,10 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     @Override
     protected String getErrorMessage(Throwable e, boolean pullToRefresh) {
         //Log.i("event-activity", e.getMessage());
-        //Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        //if (e.getMessage().contains("404")) { // 404 Not Found
+        Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        onBackPressed();
+
         return e.getMessage();
     }
 
