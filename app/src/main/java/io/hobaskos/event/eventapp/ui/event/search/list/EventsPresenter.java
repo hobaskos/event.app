@@ -1,5 +1,8 @@
-package io.hobaskos.event.eventapp.ui.event.list;
+package io.hobaskos.event.eventapp.ui.event.search.list;
 
+import android.util.Log;
+
+import org.greenrobot.eventbus.EventBus;
 import org.joda.time.DateTime;
 
 import java.util.ArrayList;
@@ -7,6 +10,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.hobaskos.event.eventapp.data.eventbusevent.SetEventsEvent;
 import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.data.repository.EventRepository;
 import io.hobaskos.event.eventapp.data.storage.PersistentStorage;
@@ -109,6 +113,12 @@ public class EventsPresenter extends BaseRxLcePresenter<EventsView, List<Event>>
         if (moreEventSubscriber != null && !moreEventSubscriber.isUnsubscribed()) {
             moreEventSubscriber.unsubscribe();
         }
+    }
+
+    @Override protected void onNext(List<Event> events) {
+        super.onNext(events);
+        EventBus.getDefault().postSticky(new SetEventsEvent(events));
+        Log.d("aaaaaaaaaaaa", "HEEEI");
     }
 
     private void loadFilterValues() {
