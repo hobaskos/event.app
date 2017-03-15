@@ -3,6 +3,7 @@ package io.hobaskos.event.eventapp.ui.event.search.list;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -32,6 +33,7 @@ import io.hobaskos.event.eventapp.data.model.EventCategoryTheme;
 import io.hobaskos.event.eventapp.ui.base.view.fragment.BaseLceViewStateFragment;
 import io.hobaskos.event.eventapp.ui.event.filter.FilterEventsFragment;
 import io.hobaskos.event.eventapp.ui.event.details.EventActivity;
+import io.hobaskos.event.eventapp.ui.event.search.map.SearchEventsMapActivity;
 import io.hobaskos.event.eventapp.ui.event.search.map.SearchEventsMapFragment;
 import io.hobaskos.event.eventapp.ui.main.MainActivity;
 
@@ -49,6 +51,7 @@ public class EventsFragment extends
     @BindView(R.id.recyclerView)RecyclerView recyclerView;
     Toolbar toolbar;
     @BindView(R.id.contentView) SwipeRefreshLayout swipeRefreshLayout;
+    @BindView(R.id.fragment_events_fab) FloatingActionButton openMapFab;
 
     TextView emptyResultView;
 
@@ -150,6 +153,14 @@ public class EventsFragment extends
         dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
                 linearLayoutManager.getOrientation());
         recyclerView.addItemDecoration(dividerItemDecoration);
+
+        openMapFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), SearchEventsMapActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

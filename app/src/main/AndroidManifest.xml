@@ -80,6 +80,9 @@
         </activity>
         <activity android:name=".ui.location.add.LocationActivity"/>
 
+        <activity android:name=".ui.event.search.map.SearchEventsMapActivity"
+            />
+
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
