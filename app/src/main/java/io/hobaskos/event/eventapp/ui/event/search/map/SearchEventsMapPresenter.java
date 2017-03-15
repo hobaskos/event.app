@@ -2,6 +2,7 @@ package io.hobaskos.event.eventapp.ui.event.search.map;
 
 import android.util.Log;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
 
 import org.greenrobot.eventbus.EventBus;
@@ -49,10 +50,14 @@ public class SearchEventsMapPresenter extends MvpBasePresenter<SearchEventsMapVi
 
     }
 
-    @Subscribe(sticky = true, threadMode = ThreadMode.ASYNC)
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onEvent(SetEventsEvent event) {
         getView().setEvents(event.getData());
-        Log.d(TAG, "    " + event.getData().size());
+
+        double lat = filterSettings.getPlaceLat();
+        double lon = filterSettings.getPlaceLon();
+
+        getView().setCameraLocation(new LatLng(lat, lon));
     }
 
     public void onEvent(UpdateEventsEvent event) {

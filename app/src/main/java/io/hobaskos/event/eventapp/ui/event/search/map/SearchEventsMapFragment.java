@@ -7,12 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
@@ -24,7 +26,6 @@ import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.data.model.Location;
-import io.hobaskos.event.eventapp.ui.event.search.list.EventsPresenter;
 import io.hobaskos.event.eventapp.util.LocationUtil;
 
 /**
@@ -38,7 +39,11 @@ public class SearchEventsMapFragment extends Fragment implements SearchEventsMap
     private MapView mapView;
     private GoogleMap googleMap;
 
+    private LatLng cameraLocation;
+
     private List<Event> events;
+
+    private List<Marker> markers;
 
     @Inject
     public SearchEventsMapPresenter presenter;
@@ -47,6 +52,8 @@ public class SearchEventsMapFragment extends Fragment implements SearchEventsMap
         super.onCreate(savedInstanceState);
         App.getInst().getComponent().inject(this);
         presenter.attachView(this);
+
+        markers = new ArrayList<>();
     }
 
     @Override
@@ -105,33 +112,58 @@ public class SearchEventsMapFragment extends Fragment implements SearchEventsMap
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
-
+        setupMap();
     }
 
     @Override
     public void setEvents(List<Event> events) {
         this.events = events;
+
     }
 
-    private void populateMap() {
-        if (googleMap != null) {
-            googleMap.getUiSettings().setZoomControlsEnabled(true);
-            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(59.9, 10.75), 10));
+    @Override
+    public void setCameraLocation(LatLng latLng) {
+        cameraLocation = latLng;
+    }
 
-//            if (events != null) {
-//                for (Event event : events) {
-//                    Location l = event.getLocations().get(0);
-//                    googleMap.addMarker(new MarkerOptions().position(new LatLng(43.1, -87.9)));
-//                }
-//            }
-            //presenter
+    private void setupMap() {
+        if (googleMap != null) {
+            googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+
+            // Clear map before redrawing:
+            googleMap.clear();
+
+            // Get locations and add them as markers on the map:
             for (Event event : events) {
                 Location l = event.getLocations().get(0);
-                googleMap.addMarker(new MarkerOptions()
+                Marker marker = googleMap.addMarker(new MarkerOptions()
                         .position(LocationUtil.LocationToLatLng(l))
                         .title(event.getTitle())
                         .snippet(event.getDate(getContext())));
+
+                // Put markers in markers list:
+                markers.add(marker);
             }
+
+            // Create LatLng bounds from markers:
+            LatLngBounds.Builder latLngBoundsBuilder = new LatLngBounds.Builder();
+            for (Marker marker : markers) {
+                latLngBoundsBuilder.include(marker.getPosition());
+            }
+            LatLngBounds bounds = latLngBoundsBuilder.build();
+
+            // Initialize padding for the map boundary:
+            int width = getResources().getDisplayMetrics().widthPixels;
+            int height = getResources().getDisplayMetrics().heightPixels;
+            int padding = (int) (width * 0.20); // offset from edges of the map 20% of screen
+            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding);
+
+            googleMap.moveCamera(cameraUpdate);
+
+            googleMap.getUiSettings().setZoomControlsEnabled(true);
+            //googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cameraLocation, 10));
+
+
         }
     }
 }

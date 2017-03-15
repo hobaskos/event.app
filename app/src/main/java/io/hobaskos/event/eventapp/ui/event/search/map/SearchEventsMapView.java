@@ -1,5 +1,6 @@
 package io.hobaskos.event.eventapp.ui.event.search.map;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.hannesdorfmann.mosby.mvp.MvpView;
 
 import java.util.List;
@@ -12,4 +13,5 @@ import io.hobaskos.event.eventapp.data.model.Event;
 
 public interface SearchEventsMapView extends MvpView {
     void setEvents(List<Event> events);
+    void setCameraLocation(LatLng latLng);
 }
