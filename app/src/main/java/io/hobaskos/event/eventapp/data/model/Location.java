@@ -1,15 +1,13 @@
 package io.hobaskos.event.eventapp.data.model;
 
-
 import android.os.Parcelable;
-
 import org.joda.time.DateTime;
 import org.parceler.Parcel;
+import android.util.EventLogTags;
 
 /**
  * Created by osvold.hans.petter on 08.02.2017.
  */
-@Parcel
 public class Location implements Parcelable {
 
     private Long id;

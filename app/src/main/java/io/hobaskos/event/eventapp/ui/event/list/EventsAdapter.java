@@ -1,5 +1,7 @@
 package io.hobaskos.event.eventapp.ui.event.list;
 
+import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +13,7 @@ import java.util.List;
 import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.model.Event;
+import io.hobaskos.event.eventapp.data.model.EventCategoryTheme;
 import rx.functions.Action1;
 
 /**
@@ -24,17 +27,17 @@ public class EventsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private final int VIEW_TYPE_ITEM = 0;
     private final int VIEW_TYPE_LOADING = 1;
 
-
     private List<Event> items;
+    private Context context;
     private final Action1<Event> onItemClick;
     //private final Action1<Integer> onListBottom;
 
     private boolean showLoadMore = false;
 
-    public EventsAdapter(List<Event> items, Action1<Event> onItemClick) {
+    public EventsAdapter(List<Event> items, Context context, Action1<Event> onItemClick) {
         this.items = items;
+        this.context = context;
         this.onItemClick = onItemClick;
-        //this.onListBottom = onListBottom;
     }
 
     public List<Event> getItems() {
@@ -93,7 +96,6 @@ public class EventsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 view.setLayoutParams(new RecyclerView.
                         LayoutParams(RecyclerView.LayoutParams.
                         MATCH_PARENT, RecyclerView.LayoutParams.WRAP_CONTENT));
-                EventViewHolder holder = new EventViewHolder(view);
                 return new EventViewHolder(view);
             case 1: // viewType = 1 (show load more item)
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_loadmore, null);
@@ -116,7 +118,8 @@ public class EventsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 eventHolder.click(event, onItemClick);
                 eventHolder.eventTitle.setText(event.getTitle());
                 eventHolder.eventLocation.setText(event.getLocation());
-                eventHolder.eventDate.setText(event.getDate(App.getInst()));
+                eventHolder.eventDate.setText(event.getDate(context));
+                setCategoryColorView(eventHolder.categoryColor, eventHolder.categorySubColor, event.getCategory().getTheme());
                 break;
             case 1:
                 //LoadMoreViewHolder holder1 = (LoadMoreViewHolder) holder;
@@ -124,16 +127,53 @@ public class EventsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
     }
 
+    private void setCategoryColorView(View mainView, View subView, EventCategoryTheme theme) {
+        if (mainView == null || subView == null) return;
+        switch (theme) {
+            case RED:
+                mainView.setBackgroundColor(ContextCompat.getColor(context, R.color.colorRed));
+                subView.setBackgroundColor(ContextCompat.getColor(context, R.color.colorRedDark));
+                break;
+            case ORANGE:
+                mainView.setBackgroundColor(ContextCompat.getColor(context, R.color.colorOrange));
+                subView.setBackgroundColor(ContextCompat.getColor(context, R.color.colorOrangeDark));
+                break;
+            case YELLOW:
+                mainView.setBackgroundColor(ContextCompat.getColor(context, R.color.colorYellow));
+                subView.setBackgroundColor(ContextCompat.getColor(context, R.color.colorYellowDark));
+                break;
+            case GREEN:
+                mainView.setBackgroundColor(ContextCompat.getColor(context, R.color.colorGreen));
+                subView.setBackgroundColor(ContextCompat.getColor(context, R.color.colorGreenDark));
+                break;
+            case BLUE:
+                mainView.setBackgroundColor(ContextCompat.getColor(context, R.color.colorBlue));
+                subView.setBackgroundColor(ContextCompat.getColor(context, R.color.colorBlueDark));
+                break;
+            case INDIGO:
+                mainView.setBackgroundColor(ContextCompat.getColor(context, R.color.colorIndigo));
+                subView.setBackgroundColor(ContextCompat.getColor(context, R.color.colorIndigoDark));
+                break;
+            case VIOLET:
+                mainView.setBackgroundColor(ContextCompat.getColor(context, R.color.colorViolet));
+                subView.setBackgroundColor(ContextCompat.getColor(context, R.color.colorVioletDark));
+                break;
+        }
+    }
+
 
     public class EventViewHolder extends RecyclerView.ViewHolder {
         public TextView eventTitle, eventLocation, eventDate;
-        //ImageView background;
+        public View categoryColor;
+        public View categorySubColor;
 
         public EventViewHolder(View itemView) {
             super(itemView);
             eventTitle = (TextView) itemView.findViewById(R.id.event_title);
             eventLocation = (TextView) itemView.findViewById(R.id.event_location);
             eventDate = (TextView) itemView.findViewById(R.id.event_time);
+            categoryColor = itemView.findViewById(R.id.category_theme_color);
+            categorySubColor = itemView.findViewById(R.id.category_theme_color_sub);
 
             //eventId = (TextView) itemView.findViewById(R.id.event_id);
             //background = (ImageView) itemView.findViewById(R.id.image);
