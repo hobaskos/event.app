@@ -26,6 +26,7 @@ import io.hobaskos.event.eventapp.data.model.EventCategoryTheme;
 import io.hobaskos.event.eventapp.data.model.Location;
 import io.hobaskos.event.eventapp.data.model.User;
 import io.hobaskos.event.eventapp.ui.base.view.activity.BaseLceViewStateActivity;
+import io.hobaskos.event.eventapp.ui.location.add.LocationActivity;
 import rx.Observer;
 
 /**
@@ -202,6 +203,10 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     @Override
     public void onListFragmentInteraction(Location item) {
         Toast.makeText(this, item.getName(), Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, LocationActivity.class);
+        intent.putExtra(LocationActivity.EVENT_STATE, 1);
+        intent.putExtra(LocationActivity.LOCATION, item);
+        startActivity(intent);
     }
 
     @Override
