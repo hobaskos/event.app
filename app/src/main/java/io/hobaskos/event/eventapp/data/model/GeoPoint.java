@@ -2,13 +2,11 @@ package io.hobaskos.event.eventapp.data.model;
 
 import android.os.Parcelable;
 
-import org.parceler.Parcel;
 
 /**
  * Created by osvold.hans.petter on 08.02.2017.
  */
 
-@Parcel
 public class GeoPoint implements Parcelable {
 
     private double lat;

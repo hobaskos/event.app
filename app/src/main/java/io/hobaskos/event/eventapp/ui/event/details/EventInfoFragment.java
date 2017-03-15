@@ -59,8 +59,11 @@ public class EventInfoFragment extends Fragment {
                 .load("https://mave.me/img/projects/full_placeholder.png")
                 .into(eventImage);
 
-        eventTime.setText(DateUtils.formatDateTime(getContext(),
-                event.getFromDate().toDate().getTime(), DateUtils.FORMAT_SHOW_DATE));
+        if(event.getFromDate() != null) {
+            eventTime.setText(DateUtils.formatDateTime(getContext(),
+                    event.getFromDate().toDate().getTime(), DateUtils.FORMAT_SHOW_DATE));
+        }
+
         eventDescription.setText(event.getDescription());
 
         return view;

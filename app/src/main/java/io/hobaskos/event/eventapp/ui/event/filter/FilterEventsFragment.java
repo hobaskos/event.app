@@ -42,7 +42,7 @@ public class FilterEventsFragment extends BaseFragment
         implements FilterEventsView, GoogleApiClient.OnConnectionFailedListener {
     public final static String TAG = FilterEventsFragment.class.getName();
 
-    @BindView(R.id.toolbar) Toolbar toolbar;
+    Toolbar toolbar;
     @BindView(R.id.seekBar) SeekBar seekBar;
     @BindView(R.id.seekBarText) TextView seekBarText;
     @BindView(R.id.categorySpinner) Spinner spinner;
