@@ -1,4 +1,4 @@
-package io.hobaskos.event.eventapp.ui.event.list;
+package io.hobaskos.event.eventapp.ui.event.search.list;
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;

@@ -62,6 +62,9 @@ dependencies {
     compile "com.hannesdorfmann.mosby:mvp:${mosby_version}"
     compile "com.hannesdorfmann.mosby:viewstate:${mosby_version}"
 
+    // EventBus
+    compile 'org.greenrobot:eventbus:3.0.0'
+
     // Butter Knife
     compile "com.jakewharton:butterknife:${butterknife_version}"
     annotationProcessor "com.jakewharton:butterknife-compiler:${butterknife_version}"
