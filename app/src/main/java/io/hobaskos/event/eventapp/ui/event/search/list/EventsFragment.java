@@ -138,11 +138,11 @@ public class EventsFragment extends
         // Configure recyclerview:
         linearLayoutManager = new NpaLinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
-        adapter = new EventsAdapter(eventsList,
+        adapter = new EventsAdapter(eventsList, getContext(),
                 event -> {
                     Intent intent = new Intent(getActivity(), EventActivity.class);
                     intent.putExtra(EventActivity.EVENT_ID, event.getId());
-                    intent.putExtra(EventActivity.EVENT_THEME, EventCategoryTheme.YELLOW); //TODO change when eventCategory is available
+                    intent.putExtra(EventActivity.EVENT_THEME, event.getCategory().getTheme());
                     startActivity(intent);
                 });
 
