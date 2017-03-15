@@ -16,7 +16,7 @@ public class FilterEventsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filter_events);
 
-        setTitle(R.string.events);
+        setTitle(R.string.filter_events);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         if (savedInstanceState == null) {

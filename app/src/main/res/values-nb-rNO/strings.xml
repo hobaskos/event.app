@@ -56,4 +56,5 @@
     <string name="date">Dato</string>
     <string name="time">Tid</string>
     <string name="events">Arrangementer</string>
+    <string name="filter_events">Søkefiltere</string>
 </resources>
