@@ -152,14 +152,11 @@ public class LocationActivity extends MvpActivity<LocationView, LocationPresente
 
             @Override
             public void onError(Status status) {
-                // TODO: Handle the error.
                 Log.i("LocationActivity", "An error occurred: " + status);
             }
         });
 
         eventId = getIntent().getExtras().getLong(EVENT_ID);
-
-        // Todo: handle add location calls without event id?
 
         presenter.attachView(this);
     }
@@ -217,11 +214,11 @@ public class LocationActivity extends MvpActivity<LocationView, LocationPresente
         switch (pickerState) {
             case FROM:
                 fromDateTimeVM.setDate(year, (monthOfYear + 1), dayOfMonth);
-                fromDate.setText(year + "-" + formatNumber(monthOfYear + 1) + "-" + formatNumber(dayOfMonth));
+                fromDate.setText(fromDateTimeVM.getDate());
                 break;
             case TO:
                 toDateTimeVM.setDate(year, (monthOfYear + 1), dayOfMonth);
-                toDate.setText(year + "-" + formatNumber(monthOfYear + 1) + "-" + formatNumber(dayOfMonth));
+                toDate.setText(toDateTimeVM.getDate());
                 break;
             default:
                 throw new IllegalStateException("Illegal state");
@@ -233,11 +230,11 @@ public class LocationActivity extends MvpActivity<LocationView, LocationPresente
         switch (pickerState) {
             case FROM:
                 fromDateTimeVM.setTime(hourOfDay, minute);
-                fromTime.setText(formatNumber(hourOfDay) +  ":" + formatNumber(minute));
+                fromTime.setText(fromDateTimeVM.getTime());
                 break;
             case TO:
                 toDateTimeVM.setTime(hourOfDay, minute);
-                toTime.setText(formatNumber(hourOfDay) +  ":" + formatNumber(minute));
+                toTime.setText(toDateTimeVM.getTime());
                 break;
             default:
                 throw new IllegalStateException("Illegal state");
@@ -252,78 +249,17 @@ public class LocationActivity extends MvpActivity<LocationView, LocationPresente
         }
 
         Location location = new Location();
-
         location.setEventId(eventId);
-
         location.setName(name.getText().toString());
-
         if(!description.getText().toString().isEmpty()) {
             location.setDescription(name.getText().toString());
         }
-
-        String fromDateTime = fromDate.getText().toString() + " " + fromTime.getText().toString();
-        location.setFromDate(parseToLocalDateTime(fromDateTimeVM));
-
-        Log.i("LocationActivity", "fromDate=" + location.getFromDate());
-
-        String toDateTime = toDate.getText().toString() + " " + toTime.getText().toString();
-        location.setToDate(parseToLocalDateTime(toDateTimeVM));
-
+        location.setFromDate(fromDateTimeVM.getDateTime());
+        location.setToDate(toDateTimeVM.getDateTime());
         GeoPoint geoPoint = new GeoPoint(lat, lon);
         location.setGeoPoint(geoPoint);
 
         presenter.addLocation(location);
-    }
-
-    private String formatNumber(int number) {
-
-        String newNumber = "";
-
-        switch (number) {
-            case 0:
-                newNumber = "00";
-                break;
-            case 1:
-                newNumber = "01";
-                break;
-            case 2:
-                newNumber = "02";
-                break;
-            case 3:
-                newNumber = "03";
-                break;
-            case 4:
-                newNumber = "04";
-                break;
-            case 5:
-                newNumber = "05";
-                break;
-            case 6:
-                newNumber = "06";
-                break;
-            case 7:
-                newNumber = "07";
-                break;
-            case 8:
-                newNumber = "08";
-                break;
-            case 9:
-                newNumber = "09";
-                break;
-            default:
-                newNumber = Integer.toString(number);
-                break;
-        }
-
-        return newNumber;
-    }
-
-    private DateTime parseToLocalDateTime(DateTimeVM dateTimeVM) {
-        return new DateTime(dateTimeVM.getYear(),
-                                    dateTimeVM.getMonthOfYear(),
-                                    dateTimeVM.getDayOfMonth(),
-                                    dateTimeVM.getHour(),
-                                    dateTimeVM.getMinute(), DateTimeZone.getDefault());
     }
 
     private boolean validate() {

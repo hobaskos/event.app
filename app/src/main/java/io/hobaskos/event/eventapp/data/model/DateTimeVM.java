@@ -1,64 +1,86 @@
 package io.hobaskos.event.eventapp.data.model;
 
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+
 /**
  * Created by hansp on 14.03.2017.
  */
 
 public class DateTimeVM {
-    private int year;
-    private int monthOfYear;
-    private int dayOfMonth;
-    private int hour;
-    private int minute;
+    private String year;
+    private String monthOfYear;
+    private String dayOfMonth;
+    private String hour;
+    private String minute;
 
     public void setDate(int year, int monthOfYear, int dayOfMonth) {
-        this.year = year;
-        this.monthOfYear = monthOfYear;
-        this.dayOfMonth = dayOfMonth;
+        this.year = formatNumber(year);
+        this.monthOfYear = formatNumber(monthOfYear);
+        this.dayOfMonth = formatNumber(dayOfMonth);
     }
 
     public void setTime(int hour, int minute) {
-        this.hour = hour;
-        this.minute = minute;
+        this.hour = formatNumber(hour);
+        this.minute = formatNumber(minute);
     }
 
-    public int getYear() {
-        return year;
+    public String getDate() {
+        return dayOfMonth + "/" + monthOfYear + "-" + year;
     }
 
-    public void setYear(int year) {
-        this.year = year;
+    public String getTime() {
+        return hour + ":" + minute;
     }
 
-    public int getMonthOfYear() {
-        return monthOfYear;
+    public DateTime getDateTime() {
+        return new DateTime(Integer.parseInt(year),
+                Integer.parseInt(monthOfYear),
+                Integer.parseInt(dayOfMonth),
+                Integer.parseInt(hour),
+                Integer.parseInt(minute), DateTimeZone.getDefault());
     }
 
-    public void setMonthOfYear(int monthOfYear) {
-        this.monthOfYear = monthOfYear;
-    }
+    private String formatNumber(int number) {
 
-    public int getDayOfMonth() {
-        return dayOfMonth;
-    }
+        String newNumber;
 
-    public void setDayOfMonth(int dayOfMonth) {
-        this.dayOfMonth = dayOfMonth;
-    }
+        switch (number) {
+            case 0:
+                newNumber = "00";
+                break;
+            case 1:
+                newNumber = "01";
+                break;
+            case 2:
+                newNumber = "02";
+                break;
+            case 3:
+                newNumber = "03";
+                break;
+            case 4:
+                newNumber = "04";
+                break;
+            case 5:
+                newNumber = "05";
+                break;
+            case 6:
+                newNumber = "06";
+                break;
+            case 7:
+                newNumber = "07";
+                break;
+            case 8:
+                newNumber = "08";
+                break;
+            case 9:
+                newNumber = "09";
+                break;
+            default:
+                newNumber = Integer.toString(number);
+                break;
+        }
 
-    public int getHour() {
-        return hour;
-    }
-
-    public void setHour(int hour) {
-        this.hour = hour;
-    }
-
-    public int getMinute() {
-        return minute;
-    }
-
-    public void setMinute(int minute) {
-        this.minute = minute;
+        return newNumber;
     }
 }
