@@ -134,6 +134,7 @@ public class FilterEventsFragment extends BaseFragment
                 EventCategory category = (EventCategory) spinner.getSelectedItem();
                 presenter.storeCategoryId(category.getId());
             }
+            Toast.makeText(getContext(), getString(R.string.filters_applied), Toast.LENGTH_SHORT).show();
         });
 
 
