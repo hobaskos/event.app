@@ -106,8 +106,10 @@ public class EventsFragment extends
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onEvent(FiltersUpdatedEvent event) {
         Log.d(TAG, "onEvent()");
-        page = 0;
-        presenter.loadEvents(false, searchQuery);
+        if (presenter != null) {
+            page = 0;
+            presenter.loadEvents(false, searchQuery);
+        }
     }
 
 
