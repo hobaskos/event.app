@@ -3,14 +3,16 @@ package io.hobaskos.event.eventapp.ui.event.search.list;
 import android.util.Log;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.joda.time.DateTime;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
-import io.hobaskos.event.eventapp.data.eventbusevent.SetEventsEvent;
+import io.hobaskos.event.eventapp.data.eventbus.FiltersUpdatedEvent;
+import io.hobaskos.event.eventapp.data.eventbus.SetEventsEvent;
 import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.data.repository.EventRepository;
 import io.hobaskos.event.eventapp.data.storage.PersistentStorage;
@@ -19,7 +21,6 @@ import io.hobaskos.event.eventapp.ui.event.filter.FilterEventsPresenter;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -27,6 +28,8 @@ import rx.schedulers.Schedulers;
  */
 
 public class EventsPresenter extends BaseRxLcePresenter<EventsView, List<Event>> {
+
+    public final static String TAG = EventsPresenter.class.getName();
 
     protected EventRepository eventRepository;
 
@@ -38,6 +41,18 @@ public class EventsPresenter extends BaseRxLcePresenter<EventsView, List<Event>>
     private double lat;
     private double lon;
     private long categoryId;
+
+    @Override
+    public void attachView(EventsView view) {
+        super.attachView(view);
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void detachView(boolean retainInstance) {
+        super.detachView(retainInstance);
+        EventBus.getDefault().unregister(this);
+    }
 
     @Inject
     public EventsPresenter(EventRepository eventRepository,
@@ -126,5 +141,11 @@ public class EventsPresenter extends BaseRxLcePresenter<EventsView, List<Event>>
         lat = persistentStorage.getDouble(FilterEventsPresenter.FILTER_EVENTS_LOCATION_LAT_KEY, 0);
         lon = persistentStorage.getDouble(FilterEventsPresenter.FILTER_EVENTS_LOCATION_LON_KEY, 0);
         categoryId = persistentStorage.getLong(FilterEventsPresenter.FILTER_EVENTS_CATEGORY_KEY, 0);
+    }
+
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void onEvent(FiltersUpdatedEvent event) {
+        Log.d(TAG, "onEvent");
+        loadEvents(false, "");
     }
 }
