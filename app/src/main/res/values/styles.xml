@@ -79,4 +79,7 @@
         <item name="android:textSize">22sp</item>
     </style>
 
+    <style name="JoinEventDialog" parent="android:Theme.DeviceDefault.Dialog">
+        <item name="colorAccent">@color/colorPrimaryDark</item>
+    </style>
 </resources>
