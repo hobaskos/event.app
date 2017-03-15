@@ -38,8 +38,10 @@ import io.hobaskos.event.eventapp.ui.base.view.activity.BaseViewStateActivity;
 import io.hobaskos.event.eventapp.ui.event.create.CreateEventActivity;
 import io.hobaskos.event.eventapp.ui.login.LoginActivity;
 import io.hobaskos.event.eventapp.ui.profile.ProfileActivity;
-import io.hobaskos.event.eventapp.ui.event.list.EventsFragment;
+
+import io.hobaskos.event.eventapp.ui.event.search.list.EventsFragment;
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
+
 
 
 public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
@@ -192,7 +194,7 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
 
     private void logout() {
         presenter.logout();
-        startActivity(new Intent(this, MainActivity.class));
+        startActivity(new Intent(this, LoginActivity.class));
     }
 
 

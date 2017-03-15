@@ -4,6 +4,9 @@
     <string name="navigation_drawer_open">Åpne navigasjonsskuffen</string>
     <string name="navigation_drawer_close">Lukk navigasjonsskuffen</string>
 
+    <string name="error_event_not_found">Dette arrangementet eksisterer ikke lenger</string>
+
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hallo blank fragment</string>
     <string name="description_label">Beskrivelse</string>
@@ -51,4 +54,5 @@
     <string name="to">Til</string>
     <string name="date">Dato</string>
     <string name="time">Tid</string>
+    <string name="events">Arrangementer</string>
 </resources>

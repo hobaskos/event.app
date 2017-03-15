@@ -4,6 +4,8 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
+    <string name="error_event_not_found">This event no longer exists</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="description_label">Description</string>
@@ -52,4 +54,5 @@
     <string name="to">To</string>
     <string name="date">Date</string>
     <string name="time">Time</string>
+    <string name="events">Events</string>
 </resources>
