@@ -4,6 +4,7 @@ import javax.inject.Singleton;
 
 import dagger.Component;
 import io.hobaskos.event.eventapp.ui.event.create.CreateEventActivity;
+import io.hobaskos.event.eventapp.ui.event.create.CreateEventFragment;
 import io.hobaskos.event.eventapp.ui.event.create.CreateEventPresenter;
 import io.hobaskos.event.eventapp.ui.event.search.list.EventsFragment2;
 import io.hobaskos.event.eventapp.ui.location.add.LocationActivity;
@@ -31,6 +32,7 @@ public interface DiComponent {
     void inject(EventsFragment2 eventsFragment);
     void inject(SearchEventsMapFragment eventsMapFragment);
     void inject(CreateEventActivity createEventActivity);
+    void inject(CreateEventFragment createEventFragment);
     void inject(CreateEventPresenter createEventPresenter);
     void inject(MainActivity mainActivity);
     void inject(io.hobaskos.event.eventapp.ui.main.MainActivity mainActivity);
