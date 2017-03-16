@@ -72,7 +72,7 @@ public class EventRepositoryTest {
                 "\"imageUrl\": \"image-url1\", " +
                 "\"fromDate\": \"2017-02-21T14:06:48.783+01:00\", " +
                 "\"toDate\": \"2017-02-21T14:06:51.416+01:00\", " +
-                "\"ownerId\": 1," +
+                "\"ownerLogin\": \"admin\"," +
                 "\"eventCategory\": {" +
                     "\"id\": 1," +
                     "\"title\": \"Swank\"," +
@@ -110,7 +110,7 @@ public class EventRepositoryTest {
         assertTrue(event.getTitle().equals("event1"));
         assertTrue(event.getDescription().equals("desc1"));
         assertTrue(event.getImageUrl().equals("image-url1"));
-        assertTrue(event.getOwnerId() == 1);
+        assertTrue(event.getOwnerLogin().equals("admin"));
         assertTrue(event.getEventCategory().getTitle().equals("Swank"));
         assertTrue(event.getEventCategory().getTheme().equals(EventCategoryTheme.INDIGO));
         assertTrue(event.getEventCategory().getIconUrl().contains("files"));
@@ -138,7 +138,6 @@ public class EventRepositoryTest {
         {
             assertTrue(location.getDescription().equals("dop"));
             assertTrue(location.getName().equals("Blob"));
-            assertTrue(location.getEventId() == event.id);
             assertTrue(location.getGeoPoint().getLat() == 10);
             assertTrue(location.getGeoPoint().getLon() == 10);
             assertTrue(location.getId() == 1);

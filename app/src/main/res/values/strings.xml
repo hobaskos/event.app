@@ -1,8 +1,16 @@
 <resources>
     <string name="app_name">Eventure</string>
 
+    <!-- Screen titles -->
+    <string name="events">Events</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="filter_events">Search filters</string>
+
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="error_event_not_found">This event no longer exists</string>
+    <string name="filters_applied">Filters applied</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -21,7 +29,7 @@
     <string name="login_success">You has been successfully logged in.</string>
     <string name="login_failure">Could not log in. Please try again!</string>
     <string name="login_username_empty">Username is a required field.</string>
-    <string name="login_password_error">Password is 4 – 10 characters.</string>
+    <string name="login_password_error">Password is a required field.</string>
     <string name="login_skip">Use without account</string>
     <string name="authenticating">Authenticating…</string>
     <string name="attending">Attending</string>
@@ -53,10 +61,29 @@
     <string name="date">Date</string>
     <string name="time">Time</string>
     <string name="left">venstre</string>
-
     <string-array name="tabName">
         <item>Attending</item>
         <item>Mine</item>
     </string-array>
+    <string name="close">Close</string>
+    <string name="submit">Submit</string>
+    <string name="join_private_event">Join private event</string>
+    <string name="enter_invitation_code">Enter invitation code</string>
+    <string name="join_private">Join private event</string>
+    <string name="invite_code_length_error">The invite code must be at least 4 characters</string>
+    <string name="invalid_invite_code">Could not find event with that invite code</string>
+
+
+    <string name="delete">Delete</string>
+    <string name="delete_location">DANGER: Do you want to delete this location?</string>
+
+
+
+    <string name="attend_event">Attend event</string>
+    <string name="event_going">Going:</string>
+    <string name="attending_event">Attending event</string>
+    <string name="attend_event_desc">Do you want to attend this event?</string>
+    <string name="could_not_attend_event">Could not attend event, maybe you are already attending?</string>
+    <string name="attending_event_count">Attendance count:</string>
 
 </resources>

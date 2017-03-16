@@ -7,8 +7,10 @@ import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import io.hobaskos.event.eventapp.data.AccountManager;
 import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.data.repository.EventRepository;
+import io.hobaskos.event.eventapp.data.repository.LocationRepository;
 import rx.Observable;
 import rx.Scheduler;
 import rx.android.plugins.RxAndroidPlugins;
@@ -32,8 +34,12 @@ import static org.mockito.internal.verification.VerificationModeFactory.times;
 
 public class EventPresenterTest {
     @Mock private EventRepository eventRepository;
+    @Mock private LocationRepository locationRepository;
     @Mock private EventView view;
     private EventPresenter eventPresenter;
+
+    @Mock
+    private AccountManager accountManager;
 
     boolean pullToRefresh = false;
 
@@ -42,7 +48,7 @@ public class EventPresenterTest {
         // Inject mocks with the @Mock annotation.
         MockitoAnnotations.initMocks(this);
         // Initialize class to be tested
-        eventPresenter = new EventPresenter(eventRepository);
+        eventPresenter = new EventPresenter(eventRepository, locationRepository, accountManager);
         // Override RxJava schedulers
         RxJavaHooks.setOnIOScheduler(new Func1<Scheduler, Scheduler>() {
             @Override

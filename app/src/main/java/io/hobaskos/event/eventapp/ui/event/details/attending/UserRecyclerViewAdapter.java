@@ -1,4 +1,4 @@
-package io.hobaskos.event.eventapp.ui.event.details;
+package io.hobaskos.event.eventapp.ui.event.details.attending;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,16 +8,15 @@ import android.widget.TextView;
 
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.model.User;
-import io.hobaskos.event.eventapp.ui.event.details.UsersFragment.OnUserListFragmentInteractionListener;
 
 import java.util.List;
 
 public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerViewAdapter.UserViewHolder> {
 
     private final List<User> users;
-    private final OnUserListFragmentInteractionListener listener;
+    private final AttendeesFragment.OnUserListFragmentInteractionListener listener;
 
-    public UserRecyclerViewAdapter(List<User> users, OnUserListFragmentInteractionListener listener) {
+    public UserRecyclerViewAdapter(List<User> users, AttendeesFragment.OnUserListFragmentInteractionListener listener) {
         this.users = users;
         this.listener = listener;
     }

@@ -1,4 +1,4 @@
-package io.hobaskos.event.eventapp.ui.event.list;
+package io.hobaskos.event.eventapp.ui.event.search.list;
 
 import android.support.v7.widget.RecyclerView;
 import android.test.UiThreadTest;
@@ -22,7 +22,7 @@ import io.hobaskos.event.eventapp.BuildConfig;
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.TestApp;
 import io.hobaskos.event.eventapp.data.model.Event;
-import io.hobaskos.event.eventapp.ui.main.MainActivity;
+import io.hobaskos.event.eventapp.ui.main.old.MainActivity;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -37,7 +37,7 @@ public class EventsFragmentTest {
 
 
     private MainActivity mainActivity;
-    private EventsFragment fragment;
+    private EventsFragment_Old fragment;
     private FacebookActivity facebookActivity;
 
     RecyclerView recyclerView;
@@ -66,7 +66,7 @@ public class EventsFragmentTest {
                 .start()
                 .get();
 
-        fragment = new EventsFragment();
+        fragment = new EventsFragment_Old();
         mainActivity.getSupportFragmentManager().beginTransaction().replace(R.id.main_pane, fragment).commit();
 
         assertNotNull(fragment);
@@ -81,7 +81,7 @@ public class EventsFragmentTest {
                 .start()
                 .get();
 
-        fragment = new EventsFragment();
+        fragment = new EventsFragment_Old();
         mainActivity.getSupportFragmentManager().beginTransaction().replace(R.id.main_pane, fragment).commit();
         assertNotNull(fragment);
 

@@ -1,24 +1,20 @@
 package io.hobaskos.event.eventapp.data.model;
 
-
 import android.os.Parcelable;
-
-import android.util.EventLogTags;
-
-import org.joda.time.LocalDateTime;
+import org.joda.time.DateTime;
 
 /**
  * Created by osvold.hans.petter on 08.02.2017.
  */
 public class Location implements Parcelable {
 
-    private long id;
+    private Long id;
     private String name;
     private String description;
     private GeoPoint geoPoint;
-    private LocalDateTime fromDate;
-    private LocalDateTime toDate;
-    private long eventId;
+    private DateTime fromDate;
+    private DateTime toDate;
+    private Long eventId;
 
     public long getId() {
         return id;
@@ -52,19 +48,19 @@ public class Location implements Parcelable {
         this.geoPoint = geoPoint;
     }
 
-    public LocalDateTime getFromDate() {
+    public DateTime getFromDate() {
         return fromDate;
     }
 
-    public void setFromDate(LocalDateTime fromDate) {
+    public void setFromDate(DateTime fromDate) {
         this.fromDate = fromDate;
     }
 
-    public LocalDateTime getToDate() {
+    public DateTime getToDate() {
         return toDate;
     }
 
-    public void setToDate(LocalDateTime toDate) {
+    public void setToDate(DateTime toDate) {
         this.toDate = toDate;
     }
 
@@ -101,8 +97,8 @@ public class Location implements Parcelable {
         this.name = in.readString();
         this.description = in.readString();
         this.geoPoint = in.readParcelable(GeoPoint.class.getClassLoader());
-        this.fromDate = (LocalDateTime) in.readSerializable();
-        this.toDate = (LocalDateTime) in.readSerializable();
+        this.fromDate = (DateTime) in.readSerializable();
+        this.toDate = (DateTime) in.readSerializable();
         this.eventId = in.readLong();
     }
 
@@ -123,4 +119,36 @@ public class Location implements Parcelable {
         return getName();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Location location = (Location) o;
+
+        if (id != null ? !id.equals(location.id) : location.id != null) return false;
+        if (name != null ? !name.equals(location.name) : location.name != null) return false;
+        if (description != null ? !description.equals(location.description) : location.description != null)
+            return false;
+        if (geoPoint != null ? !geoPoint.equals(location.geoPoint) : location.geoPoint != null)
+            return false;
+        if (fromDate != null ? !fromDate.equals(location.fromDate) : location.fromDate != null)
+            return false;
+        if (toDate != null ? !toDate.equals(location.toDate) : location.toDate != null)
+            return false;
+        return eventId != null ? eventId.equals(location.eventId) : location.eventId == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (geoPoint != null ? geoPoint.hashCode() : 0);
+        result = 31 * result + (fromDate != null ? fromDate.hashCode() : 0);
+        result = 31 * result + (toDate != null ? toDate.hashCode() : 0);
+        result = 31 * result + (eventId != null ? eventId.hashCode() : 0);
+        return result;
+    }
 }

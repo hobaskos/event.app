@@ -2,11 +2,13 @@ package io.hobaskos.event.eventapp.data;
 
 import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
+import com.google.gson.Gson;
 
 
 import io.hobaskos.event.eventapp.data.model.User;
 import io.hobaskos.event.eventapp.data.repository.UserRepository;
 import io.hobaskos.event.eventapp.data.storage.JwtStorageProxy;
+import io.hobaskos.event.eventapp.data.storage.PersistentStorage;
 import rx.Observable;
 
 /**
@@ -70,6 +72,7 @@ public class AccountManager {
         return userRepository.saveAccount(user);
     }
 
-
-
+    public User getLocalAccount() {
+        return userRepository.getLocalAccount();
+    }
 }

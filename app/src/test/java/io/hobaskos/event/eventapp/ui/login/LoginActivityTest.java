@@ -46,6 +46,9 @@ public class LoginActivityTest {
     @Mock
     private UserService service;
 
+    @Mock
+    private PersistentStorage persistentStorage;
+
     private JwtStorageProxy storageProxy;
 
     @Mock
@@ -61,7 +64,7 @@ public class LoginActivityTest {
         PersistentStorage persistentStorage = mock(PersistentStorage.class);
 
         storageProxy = new JwtStorageProxy(persistentStorage);
-        repository = new UserRepository(service, storageProxy);
+        repository = new UserRepository(service, storageProxy, persistentStorage);
 
         // Override RxJava schedulers
         RxJavaHooks.setOnIOScheduler(new Func1<Scheduler, Scheduler>() {

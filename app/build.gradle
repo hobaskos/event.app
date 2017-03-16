@@ -57,10 +57,12 @@ dependencies {
     compile 'com.android.support:customtabs:25.2.0'
     compile 'com.android.support:mediarouter-v7:25.2.0'
 
-
     // Mosby:
     compile "com.hannesdorfmann.mosby:mvp:${mosby_version}"
     compile "com.hannesdorfmann.mosby:viewstate:${mosby_version}"
+
+    // EventBus
+    compile 'org.greenrobot:eventbus:3.0.0'
 
     // Butter Knife
     compile "com.jakewharton:butterknife:${butterknife_version}"
@@ -70,10 +72,6 @@ dependencies {
     // IcePick
     compile 'frankiesardo:icepick:3.2.0'
     provided 'frankiesardo:icepick-processor:3.2.0'
-
-    // Parceler
-    //compile 'org.parceler:parceler-api:1.1.6'
-    //annotationProcessor 'org.parceler:parceler:1.1.6'
 
     // Retrofit
     compile "com.squareup.retrofit2:retrofit:${retrofit_version}"
@@ -86,8 +84,34 @@ dependencies {
     compile "com.google.code.gson:gson:${gson_version}"
 
     // jodatime
+    compile 'joda-time:joda-time:2.9.7'
 
     // gson-jodatime-serialisers
+    compile 'com.fatboyindustrial.gson-jodatime-serialisers:gson-jodatime-serialisers:1.5.0'
+
+    // Picasso Image Downloader
+    compile 'com.squareup.picasso:picasso:2.5.0'
+    compile 'jp.wasabeef:picasso-transformations:2.1.0'
+    compile 'jp.co.cyberagent.android.gpuimage:gpuimage-library:1.4.1'
+    compile 'com.github.jrvansuita:PickImage:2.1.1'
+
+    //Google Maps
+    compile 'com.google.maps.android:android-maps-utils:0.4'
+
+    // Play services
+//    compile 'com.google.android.gms:play-services:10.2.0'
+    compile 'com.google.android.gms:play-services-maps:10.2.0'
+    compile 'com.google.android.gms:play-services-places:10.2.0'
+    compile 'com.google.android.gms:play-services-nearby:10.2.0'
+    compile 'com.google.android.gms:play-services-location:10.2.0'
+    compile 'com.google.firebase:firebase-appindexing:10.2.0'
+    compile 'com.google.android.gms:play-services-games:10.2.0'
+
+    // Facebook
+    compile 'com.facebook.android:facebook-android-sdk:[4,5)'
+
+    // Material DateTime Picker
+    compile 'com.wdullaer:materialdatetimepicker:3.1.3'
 
     // Rxjava
     compile "io.reactivex:rxandroid:${rxandroid_version}"
@@ -96,6 +120,7 @@ dependencies {
     // Dagger2
     compile "com.google.dagger:dagger:${dagger_version}"
     annotationProcessor "com.google.dagger:dagger-compiler:${dagger_version}"
+    provided 'javax.annotation:jsr250-api:1.0'
 
     //--- TESTING ---//
     // hack for the robolectric api > 22 problem
@@ -113,28 +138,9 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     }
     testCompile 'com.android.support:support-compat:25.2.0'
-    testCompile 'com.android.support:support-annotations:25.2.0'
+//    testCompile 'com.android.support:support-annotations:25.2.0'
 
 
-    // Picasso Image Downloader
-    compile 'com.squareup.picasso:picasso:2.5.0'
-    compile 'jp.wasabeef:picasso-transformations:2.1.0'
-    compile 'jp.co.cyberagent.android.gpuimage:gpuimage-library:1.4.1'
-    compile 'com.github.jrvansuita:PickImage:+'
 
-    //Google Maps
-    compile 'joda-time:joda-time:2.9.7'
-    compile 'com.fatboyindustrial.gson-jodatime-serialisers:gson-jodatime-serialisers:1.5.0'
-
-    compile 'com.google.android.gms:play-services:10.2.0'
-    compile 'com.google.maps.android:android-maps-utils:0.4'
-
-    // Facebook
-    compile 'com.facebook.android:facebook-android-sdk:[4,5)'
-
-    provided 'javax.annotation:jsr250-api:1.0'
-
-    // Material DateTime Picker
-    compile 'com.wdullaer:materialdatetimepicker:3.1.3'
 
 }
