@@ -24,4 +24,6 @@ public class LocationRepository {
     }
 
     public Observable<Location> put(Location location) { return service.put(location); }
+
+    public Observable<Void> remove(Location location) { return service.remove(location.getId());}
 }

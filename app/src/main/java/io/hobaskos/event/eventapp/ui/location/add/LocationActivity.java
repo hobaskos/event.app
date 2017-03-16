@@ -99,27 +99,35 @@ public class LocationActivity extends MvpActivity<LocationView, LocationPresente
         toDateTimeVM = new DateTimeVM();
 
         fromDate = (EditText) findViewById(R.id.activity_add_location_from_date);
-        fromDate.setOnClickListener(v -> {
-            showDatePickerDialog();
-            pickerState = PickerState.FROM;
+        fromDate.setOnFocusChangeListener((v, hasFocus) -> {
+            if(hasFocus) {
+                showDatePickerDialog();
+                pickerState = PickerState.FROM;
+            }
         });
 
         fromTime = (EditText) findViewById(R.id.activity_add_location_from_time);
-        fromTime.setOnClickListener(v -> {
-            showTimePickerDialog();
-            pickerState = PickerState.FROM;
+        fromTime.setOnFocusChangeListener((v, hasFocus) -> {
+            if(hasFocus) {
+                showTimePickerDialog();
+                pickerState = PickerState.FROM;
+            }
         });
 
         toDate = (EditText) findViewById(R.id.activity_add_location_to_date);
-        toDate.setOnClickListener(v -> {
-            showDatePickerDialog();
-            pickerState = PickerState.TO;
+        toDate.setOnFocusChangeListener((v, hasFocus) -> {
+            if(hasFocus) {
+                showDatePickerDialog();
+                pickerState = PickerState.TO;
+            }
         });
 
         toTime = (EditText) findViewById(R.id.activity_add_location_to_time);
-        toTime.setOnClickListener(v -> {
-            showTimePickerDialog();
-            pickerState = PickerState.TO;
+        toTime.setOnFocusChangeListener((v, hasFocus) -> {
+            if(hasFocus) {
+                showTimePickerDialog();
+                pickerState = PickerState.TO;
+            }
         });
 
         create = (Button) findViewById(R.id.activity_add_location_submit);

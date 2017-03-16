@@ -119,4 +119,36 @@ public class Location implements Parcelable {
         return getName();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Location location = (Location) o;
+
+        if (id != null ? !id.equals(location.id) : location.id != null) return false;
+        if (name != null ? !name.equals(location.name) : location.name != null) return false;
+        if (description != null ? !description.equals(location.description) : location.description != null)
+            return false;
+        if (geoPoint != null ? !geoPoint.equals(location.geoPoint) : location.geoPoint != null)
+            return false;
+        if (fromDate != null ? !fromDate.equals(location.fromDate) : location.fromDate != null)
+            return false;
+        if (toDate != null ? !toDate.equals(location.toDate) : location.toDate != null)
+            return false;
+        return eventId != null ? eventId.equals(location.eventId) : location.eventId == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (geoPoint != null ? geoPoint.hashCode() : 0);
+        result = 31 * result + (fromDate != null ? fromDate.hashCode() : 0);
+        result = 31 * result + (toDate != null ? toDate.hashCode() : 0);
+        result = 31 * result + (eventId != null ? eventId.hashCode() : 0);
+        return result;
+    }
 }

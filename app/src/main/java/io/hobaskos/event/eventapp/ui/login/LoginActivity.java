@@ -40,8 +40,6 @@ public class LoginActivity extends MvpActivity<LoginView, LoginPresenter> implem
     private EditText etLogin;
     private EditText etPassword;
     private Button btnLogin;
-    private LoginButton btnFacebook;
-    private TextView linkSkip;
 
     private CallbackManager callbackManager;
 
@@ -54,22 +52,12 @@ public class LoginActivity extends MvpActivity<LoginView, LoginPresenter> implem
         etPassword = (EditText) findViewById(R.id.field_password);
 
         btnLogin = (Button) findViewById(R.id.btn_login_username);
-        btnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                login();
-            }
-        });
+        btnLogin.setOnClickListener(v -> login());
 
         initFacebookLogin();
 
-        linkSkip = (TextView) findViewById(R.id.link_skip_login);
-        linkSkip.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getBaseContext(), MainActivity.class));
-            }
-        });
+        TextView linkSkip = (TextView) findViewById(R.id.link_skip_login);
+        linkSkip.setOnClickListener(v -> startActivity(new Intent(getBaseContext(), MainActivity.class)));
     }
 
     @NonNull
@@ -82,7 +70,7 @@ public class LoginActivity extends MvpActivity<LoginView, LoginPresenter> implem
     private void initFacebookLogin() {
         callbackManager = CallbackManager.Factory.create();
 
-        btnFacebook = (LoginButton) findViewById(R.id.btn_login_facebook);
+        LoginButton btnFacebook = (LoginButton) findViewById(R.id.btn_login_facebook);
         btnFacebook.setReadPermissions("email");
         btnFacebook.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
@@ -125,13 +113,10 @@ public class LoginActivity extends MvpActivity<LoginView, LoginPresenter> implem
 
         LoginVM loginVM = new LoginVM(etLogin.getText().toString(), etPassword.getText().toString());
 
-        new android.os.Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                presenter.login(loginVM);
-                progressDialog.dismiss();
-            }
-        }, 3000);
+        new android.os.Handler().postDelayed(() -> {
+            presenter.login(loginVM);
+            progressDialog.dismiss();
+        }, 2000);
 
     }
 
@@ -148,7 +133,7 @@ public class LoginActivity extends MvpActivity<LoginView, LoginPresenter> implem
             etLogin.setError(null);
         }
 
-        if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
+        if (password.isEmpty()) {
             etPassword.setError(getText(R.string.login_password_error));
             valid = false;
         } else {

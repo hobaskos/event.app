@@ -4,6 +4,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import io.hobaskos.event.eventapp.R;
@@ -36,12 +38,8 @@ public class LocationRecyclerViewAdapter extends
         holder.location = location;
         holder.title.setText(location.getName());
         holder.date.setText(location.getFromDate().toString());
-
-        holder.view.setOnClickListener((view) -> {
-            if (null != listener) { listener.onListFragmentInteraction(holder.location); }
-        });
-
-
+        // Todo: Should only be visible if Event is owned by current user
+        holder.delete.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -50,16 +48,29 @@ public class LocationRecyclerViewAdapter extends
     }
 
     public class LocationViewHolder extends RecyclerView.ViewHolder {
-        public final View view;
+        public final LinearLayout locationInfoView;
         public final TextView title;
         public final TextView date;
+        public final ImageView delete;
         public Location location;
 
         public LocationViewHolder(View view) {
             super(view);
-            this.view = view;
+            locationInfoView = (LinearLayout) view.findViewById(R.id.location_info);
             title = (TextView) view.findViewById(R.id.title);
             date = (TextView) view.findViewById(R.id.date);
+            delete = (ImageView) view.findViewById(R.id.delete);
+
+            locationInfoView.setOnClickListener(v -> {
+                if (null != listener) { listener.onListFragmentEditInteraction(location); }
+            });
+
+            delete.setOnClickListener(v -> {
+                if(null != listener) { listener.onListFragmentDeleteInteraction(location); }
+            });
+
         }
+
+
     }
 }
