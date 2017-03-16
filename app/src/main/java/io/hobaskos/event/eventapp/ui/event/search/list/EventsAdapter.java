@@ -115,10 +115,13 @@ public class EventsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 EventViewHolder eventHolder = (EventViewHolder) holder;
                 Event event = items.get(position);
 
+                if (event.getMyAttendance() == null) eventHolder.myAttendance.setVisibility(View.GONE);
+
                 eventHolder.click(event, onItemClick);
                 eventHolder.eventTitle.setText(event.getTitle());
                 eventHolder.eventLocation.setText(event.getLocation());
                 eventHolder.eventDate.setText(event.getDate(context));
+                eventHolder.attendanceCount.setText(String.valueOf(event.getAttendanceCount()));
                 setCategoryColorView(eventHolder.categoryColor, eventHolder.categorySubColor, event.getCategory().getTheme());
                 break;
             case 1:
@@ -163,7 +166,7 @@ public class EventsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
 
     public class EventViewHolder extends RecyclerView.ViewHolder {
-        public TextView eventTitle, eventLocation, eventDate;
+        public TextView eventTitle, eventLocation, eventDate, attendanceCount, myAttendance;
         public View categoryColor;
         public View categorySubColor;
 
@@ -171,6 +174,8 @@ public class EventsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             super(itemView);
             eventTitle = (TextView) itemView.findViewById(R.id.event_title);
             eventLocation = (TextView) itemView.findViewById(R.id.event_location);
+            attendanceCount = (TextView) itemView.findViewById(R.id.attendance_count);
+            myAttendance = (TextView) itemView.findViewById(R.id.my_attendance);
             eventDate = (TextView) itemView.findViewById(R.id.event_time);
             categoryColor = itemView.findViewById(R.id.category_theme_color);
             categorySubColor = itemView.findViewById(R.id.category_theme_color_sub);
@@ -182,8 +187,6 @@ public class EventsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         public void click(final Event event, Action1<Event> listener) {
             itemView.setOnClickListener((i) -> listener.call(event));
         }
-
-
     }
 
     public class LoadMoreViewHolder extends RecyclerView.ViewHolder {

@@ -5,12 +5,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.util.Log;
 
-import java.util.ArrayList;
 
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.model.Event;
-import io.hobaskos.event.eventapp.data.model.User;
+import io.hobaskos.event.eventapp.ui.event.details.attending.AttendeesFragment;
 
 /**
  * Created by alex on 3/10/17.
@@ -22,24 +22,21 @@ public class EventPagerAdapter extends FragmentPagerAdapter {
 
     private EventInfoFragment eventInfoFragment;
     private LocationsFragment locationsFragment;
-    private UsersFragment usersFragment;
+    private AttendeesFragment attendeesFragment;
 
     private Context context;
     private Event event;
-    private ArrayList<User> tmpUsers = new ArrayList<>();
 
     public EventPagerAdapter(Event event, Context context, FragmentManager fm) {
         super(fm);
         this.event = event;
         this.context = context;
 
-        tmpUsers.add(new User("Frank", "Olsen"));
-        tmpUsers.add(new User("Kenneth", "Nilsen"));
-        tmpUsers.add(new User("Lennart", "Paulsen"));
+        Log.d(TAG, "EventPagerAdapter: " + event.getId() + ", myAttendance: " + event.getMyAttendance());
 
         eventInfoFragment = EventInfoFragment.newInstance(event);
         locationsFragment = LocationsFragment.newInstance(event);
-        usersFragment = UsersFragment.newInstance(tmpUsers);
+        attendeesFragment = AttendeesFragment.newInstance(event.getId(), event.getMyAttendance() != null);
     }
 
     @Override
@@ -50,7 +47,7 @@ public class EventPagerAdapter extends FragmentPagerAdapter {
             case 1:
                 return locationsFragment;
             case 2:
-                return usersFragment;
+                return attendeesFragment;
             default:
                 return new Fragment();
         }

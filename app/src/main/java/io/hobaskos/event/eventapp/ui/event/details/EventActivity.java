@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
-import android.text.format.DateUtils;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -12,8 +11,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
-
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -29,6 +26,8 @@ import io.hobaskos.event.eventapp.ui.base.view.activity.BaseLceViewStateActivity
 import io.hobaskos.event.eventapp.ui.dialog.DeleteDialogFragment;
 import io.hobaskos.event.eventapp.ui.dialog.DeleteDialogListener;
 import io.hobaskos.event.eventapp.ui.event.create.CreateEventActivity;
+import io.hobaskos.event.eventapp.ui.event.details.attending.AttendeesFragment;
+
 import io.hobaskos.event.eventapp.ui.location.add.LocationActivity;
 import rx.Observer;
 
@@ -39,7 +38,7 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
         EventPresenter> implements
         EventView,
         LocationsFragment.OnListFragmentInteractionListener,
-        UsersFragment.OnUserListFragmentInteractionListener,
+        AttendeesFragment.OnUserListFragmentInteractionListener,
         DeleteDialogListener<Location> {
 
     public static final String ACTIVITY_STATE = "activity_state";
@@ -52,6 +51,7 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     private EventPagerAdapter eventPagerAdapter;
     protected ViewPager viewPager;
     protected TabLayout tabLayout;
+    private boolean isOwner = false;
     private Event event;
 
     @Inject public EventPresenter eventPresenter;
@@ -146,26 +146,8 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     @Override
     public void setData(Event event) {
         this.event = event;
+        eventPresenter.getOwnerStatus(event);
 
-        /*
-        // Event date
-        date.setText(DateUtils.getRelativeTimeSpanString(event.getFromDate().toDate().getTime()));
-
-        // Event Image
-        Picasso.with(this).load(event.getImageUrl()).into(eventImg);
-
-        // Event Time
-        eventTime.setText(String.format(event.getFromDate().getHourOfDay()+"."+event.getFromDate().getMinuteOfHour()+ " - " + event.getToDate().getHourOfDay()+"."+event.getToDate().getMinuteOfHour()));
-
-
-        // Event Place
-        if (!event.getLocations().isEmpty()) {
-            eventPlace.setText(event.getLocations().get(0).getName());
-            for (int i = 0; i < event.getLocations().size(); i++) {
-                locations.add(event.getLocations().get(i));
-            }
-        }
-        */
         setTitle(event.getTitle());
         Log.i("EventACtivity", "setData");
         viewPager.setAdapter(eventPagerAdapter = new EventPagerAdapter(event, this, getSupportFragmentManager()));
@@ -229,20 +211,21 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     }
 
     @Override
+    public void setOwner(boolean owner) {
+        isOwner = owner;
+        Toast.makeText(this, owner ? "Owner" : "Not owner", Toast.LENGTH_SHORT).show();
+    }
+
     protected void onResume() {
         super.onResume();
 
         if(eventPagerAdapter != null) {
             presenter.getEvent(eventId, new Observer<Event>() {
                 @Override
-                public void onCompleted() {
-
-                }
+                public void onCompleted() {}
 
                 @Override
-                public void onError(Throwable e) {
-
-                }
+                public void onError(Throwable e) {}
 
                 @Override
                 public void onNext(Event event) {
@@ -250,12 +233,9 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
                     locationsFragment.refresh( (ArrayList<Location>) event.getLocations());
                 }
             });
-
         }
-
     }
-
-
+          
     @Override
     public void onDeleteButtonClicked(Location location) {
         presenter.remove(location, new Observer<Void>() {

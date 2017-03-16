@@ -33,13 +33,37 @@
                 android:src="@drawable/ic_query_builder_black_24dp"
                 android:scaleType="centerCrop" />
 
-                <TextView
-                    android:id="@+id/date"
-                    android:layout_marginStart="@dimen/text_margin"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:textAppearance="@style/TextAppearance.AppCompat" />
+            <TextView
+                android:id="@+id/date"
+                android:layout_marginStart="@dimen/text_margin"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textAppearance="@style/TextAppearance.AppCompat" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/text_margin"
+                android:textColor="@color/colorRed"
+                android:id="@+id/my_attendance"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingEnd="@dimen/text_margin"
+                android:text="@string/attending_event_count"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/attendance_count"
+                />
         </LinearLayout>
 
         <TextView

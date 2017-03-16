@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Eventure</string>
+
+    <!-- Screen titles -->
+    <string name="events">Arrangementer</string>
+    <string name="edit_profile">Forandre profilinstillinger</string>
+    <string name="filter_events">Søkefiltere</string>
+
     <string name="navigation_drawer_open">Åpne navigasjonsskuffen</string>
     <string name="navigation_drawer_close">Lukk navigasjonsskuffen</string>
 
@@ -55,7 +61,29 @@
     <string name="to">Til</string>
     <string name="date">Dato</string>
     <string name="time">Tid</string>
-    <string name="events">Arrangementer</string>
+    <string-array name="tabName">
+        <item>Påmeldt</item>
+        <item>Mine</item>
+    </string-array>
+    <string name="close">Lukk</string>
+    <string name="submit">Send</string>
+    <string name="join_private_event">Gå til privat event</string>
+    <string name="enter_invitation_code">Oppgi invitasjonskode</string>
+    <string name="join_private">Gå til privat event</string>
+    <string name="invite_code_length_error">Invitasjonskoden må være over 4 karakterer</string>
+    <string name="invalid_invite_code">Fant ingen eventer med den invitasjonskoden</string>
+
+
     <string name="delete">Slett</string>
     <string name="delete_location">FARLIG: Vil du slette denne lokasjonen?</string>
+
+
+
+    <string name="attend_event">Attend event</string>
+    <string name="event_going">Going:</string>
+    <string name="attending_event">Attending event</string>
+    <string name="attend_event_desc">Do you want to attend this event?</string>
+    <string name="could_not_attend_event">Could not attend event, maybe you are already attending?</string>
+    <string name="attending_event_count">Attendance count:</string>
+
 </resources>

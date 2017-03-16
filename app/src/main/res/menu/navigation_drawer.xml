@@ -23,6 +23,12 @@
             android:id="@+id/nav_create_event"
             android:icon="@drawable/ic_event_black_24dp"
             android:title="@string/create_event" />
+
+        <item
+            android:id="@+id/nav_join_private_event"
+            android:icon="@drawable/ic_event_black_24dp"
+            android:title="@string/join_private" />
+
         <item
             android:id="@+id/nav_profile"
             android:icon="@drawable/ic_person_black_24dp"

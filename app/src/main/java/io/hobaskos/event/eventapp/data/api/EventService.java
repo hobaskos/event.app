@@ -6,6 +6,7 @@ import java.util.List;
 
 import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.data.model.EventAttendance;
+import io.hobaskos.event.eventapp.data.model.User;
 import retrofit2.http.Query;
 import rx.Observable;
 import retrofit2.http.Body;
@@ -41,6 +42,10 @@ public interface EventService
                                        @Query("categories") String categories,
                                        @Query("sort") String sort);
 
+        @GET("api/events/{id}/attending")
+        Observable<List<User>> getAttendingForEvent(@Path("id") Long eventId,
+                                                    @Query("page") int page,
+                                                    @Query("size") int pageSize);
     }
 
     interface Authenticated {
@@ -71,5 +76,8 @@ public interface EventService
         @GET("api/account/attending-events")
         Observable<List<Event>> getAttendingEvents(@Query("page") int page,
                                                    @Query("size") int pageSize);
+
+        @GET("api/event-by-invite/{code}")
+        Observable<Event> getEventByInviteCode(@Path("code") String code);
     }
 }
