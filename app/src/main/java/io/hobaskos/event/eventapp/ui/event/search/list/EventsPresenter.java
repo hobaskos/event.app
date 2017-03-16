@@ -1,12 +1,18 @@
-package io.hobaskos.event.eventapp.ui.event.list;
+package io.hobaskos.event.eventapp.ui.event.search.list;
 
+import android.util.Log;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.joda.time.DateTime;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
+import io.hobaskos.event.eventapp.data.eventbus.FiltersUpdatedEvent;
+import io.hobaskos.event.eventapp.data.eventbus.SetEventsEvent;
 import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.data.repository.EventRepository;
 import io.hobaskos.event.eventapp.data.storage.PersistentStorage;
@@ -15,7 +21,6 @@ import io.hobaskos.event.eventapp.ui.event.filter.FilterEventsPresenter;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -23,6 +28,8 @@ import rx.schedulers.Schedulers;
  */
 
 public class EventsPresenter extends BaseRxLcePresenter<EventsView, List<Event>> {
+
+    public final static String TAG = EventsPresenter.class.getName();
 
     protected EventRepository eventRepository;
 
@@ -34,6 +41,17 @@ public class EventsPresenter extends BaseRxLcePresenter<EventsView, List<Event>>
     private double lat;
     private double lon;
     private long categoryId;
+
+    @Override
+    public void attachView(EventsView view) {
+        super.attachView(view);
+
+    }
+
+    @Override
+    public void detachView(boolean retainInstance) {
+        super.detachView(retainInstance);
+    }
 
     @Inject
     public EventsPresenter(EventRepository eventRepository,
@@ -109,6 +127,12 @@ public class EventsPresenter extends BaseRxLcePresenter<EventsView, List<Event>>
         if (moreEventSubscriber != null && !moreEventSubscriber.isUnsubscribed()) {
             moreEventSubscriber.unsubscribe();
         }
+    }
+
+    @Override protected void onNext(List<Event> events) {
+        super.onNext(events);
+        EventBus.getDefault().postSticky(new SetEventsEvent(events));
+        Log.d(TAG, "onNext()");
     }
 
     private void loadFilterValues() {

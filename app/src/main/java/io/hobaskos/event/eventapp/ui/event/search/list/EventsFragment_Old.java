@@ -1,10 +1,9 @@
-package io.hobaskos.event.eventapp.ui.event.list;
+package io.hobaskos.event.eventapp.ui.event.search.list;
 
-import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentTransaction;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
@@ -16,9 +15,12 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,29 +28,32 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import icepick.State;
 import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
+import io.hobaskos.event.eventapp.data.eventbus.FiltersUpdatedEvent;
 import io.hobaskos.event.eventapp.data.model.Event;
-import io.hobaskos.event.eventapp.data.model.EventCategoryTheme;
 import io.hobaskos.event.eventapp.ui.base.view.fragment.BaseLceViewStateFragment;
-import io.hobaskos.event.eventapp.ui.event.filter.FilterEventsFragment;
+import io.hobaskos.event.eventapp.ui.event.filter.FilterEventsActivity;
 import io.hobaskos.event.eventapp.ui.event.details.EventActivity;
-import io.hobaskos.event.eventapp.ui.main.MainActivity;
+import io.hobaskos.event.eventapp.ui.event.search.map.SearchEventsMapActivity;
+import io.hobaskos.event.eventapp.ui.main.old.MainActivity;
 
 /**
  * Created by andre on 2/13/2017.
  */
 
-public class EventsFragment extends
+public class EventsFragment_Old extends
         BaseLceViewStateFragment<SwipeRefreshLayout, List<Event>, EventsView, EventsPresenter>
         implements EventsView {
 
-    public final static String TAG = EventsFragment.class.getName();
+    public final static String TAG = EventsFragment_Old.class.getName();
 
     // Views
     @BindView(R.id.recyclerView)RecyclerView recyclerView;
     Toolbar toolbar;
     @BindView(R.id.contentView) SwipeRefreshLayout swipeRefreshLayout;
+    @BindView(R.id.fragment_events_fab) FloatingActionButton openMapFab;
 
     TextView emptyResultView;
 
@@ -56,13 +61,19 @@ public class EventsFragment extends
     private DividerItemDecoration dividerItemDecoration;
 
     // Model
-    private List<Event> eventsList = new ArrayList<>();
+    List<Event> eventsList = new ArrayList<>();
     private EventsAdapter adapter;
 
     // State
-    boolean canLoadMore = true;
-    boolean isLoadingMore = false;
-    int page = 0;
+    @State boolean canLoadMore = true;
+    @State boolean isLoadingMore = false;
+    @State int page = 0;
+
+//    @Override
+//    public void onSaveInstanceState(Bundle outState) {
+//        outState.putParcelable("ViewState", getViewState());
+//        super.onSaveInstanceState(outState);
+//    }
 
     private String searchQuery;
 
@@ -70,9 +81,30 @@ public class EventsFragment extends
     public EventsPresenter eventsPresenter;
 
     @Override public void onCreate(Bundle savedInstanceState) {
+//        if (savedInstanceState != null) {
+//            viewState = savedInstanceState.getParcelable("ViewState");
+//        }
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+        EventBus.getDefault().register(this);
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void onEvent(FiltersUpdatedEvent event) {
+        Log.d(TAG, "onEvent()");
+        if (presenter != null) {
+            page = 0;
+            presenter.loadEvents(false, searchQuery);
+        }
+    }
+
+
 
     @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         Log.i(TAG, "onViewCreated()");
@@ -83,7 +115,6 @@ public class EventsFragment extends
         }
         */
         Log.i(TAG, "page: " + page );
-        //Icepick.restoreInstanceState(this, savedInstanceState);
 
         emptyResultView = (TextView) view.findViewById(R.id.emptyView);
 
@@ -99,20 +130,23 @@ public class EventsFragment extends
         toolbar.setOnMenuItemClickListener(menuItem -> {
             switch(menuItem.getItemId()){
                 case R.id.action_search:
-                    // TODO: Create searchNearby fragment/activity
                     return true;
                 case R.id.action_filter:
-                    FilterEventsFragment fragment = new FilterEventsFragment();
-
-                    FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-                    //ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                    //ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right);
-                    //android.app.FragmentTransaction ft = getActivity().getFragmentManager().beginTransaction();
-                    //ft.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out, android.R.animator.fade_in, android.R.animator.fade_out);
-
-                    ft.replace(R.id.main_pane, fragment);
-                    ft.addToBackStack(null);
-                    ft.commit();
+//                    FilterEventsFragment fragment = new FilterEventsFragment();
+//                    //SearchEventsMapFragment fragment = new SearchEventsMapFragment();
+//
+//                    FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+//
+//                    //ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+//                    //ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right);
+//                    //android.app.FragmentTransaction ft = getActivity().getFragmentManager().beginTransaction();
+//                    //ft.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out, android.R.animator.fade_in, android.R.animator.fade_out);
+//
+//                    ft.replace(R.id.main_pane, fragment);
+//                    ft.addToBackStack(null);
+//                    ft.commit();
+                    Intent intent = new Intent(getActivity(), FilterEventsActivity.class);
+                    startActivity(intent);
                     return true;
             }
             return false;
@@ -149,11 +183,19 @@ public class EventsFragment extends
         dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
                 linearLayoutManager.getOrientation());
         recyclerView.addItemDecoration(dividerItemDecoration);
+
+        openMapFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), SearchEventsMapActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        Log.i(TAG, "onCreateOptionsMenu()");
+        Log.i(TAG, "onLoginState()");
         inflater.inflate(R.menu.events_toolbar, menu);
 
         MenuItem item = menu.findItem(R.id.action_search);
@@ -194,6 +236,7 @@ public class EventsFragment extends
     @Override
     public EventsViewState createViewState() {
         Log.i(TAG, "createViewState()");
+        EventsViewState viewState = new EventsViewState();
         return new EventsViewState();
     }
 

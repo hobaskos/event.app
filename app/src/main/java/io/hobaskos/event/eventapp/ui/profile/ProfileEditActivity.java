@@ -4,15 +4,14 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.v4.graphics.BitmapCompat;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -29,11 +28,6 @@ import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.model.User;
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
-import retrofit2.http.PUT;
-
-import static android.R.attr.bitmap;
-import static android.R.attr.drawable;
-import static android.R.attr.theme;
 
 /**
  * Created by Magnus on 08.03.2017.
@@ -62,6 +56,9 @@ public class ProfileEditActivity extends MvpActivity<ProfileEditView, ProfileEdi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
+
+        setTitle(R.string.edit_profile);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
         firstname = (TextView) findViewById(R.id.firstnameInput);
@@ -97,7 +94,16 @@ public class ProfileEditActivity extends MvpActivity<ProfileEditView, ProfileEdi
         startActivityForResult(intent , REQUEST_IMAGE_LIBRARY);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
 
+        return super.onOptionsItemSelected(item);
+    } // end of onOptionsItemSelected()
 
 
     //If you want to return the taken image

@@ -61,6 +61,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             locations = extra.getParcelableArrayList("loc");
         } else {
             Toast.makeText(this, "Kan ikke hente lokasjoner", Toast.LENGTH_LONG).show();
+            //TODO: Opening map will now crash the app. Handle this, by e.g. disabling opening the map with an informative toast
         }
 
         /* NOT IN USE ATM.
@@ -80,6 +81,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putParcelableArrayList("loc", locations);
+        super.onSaveInstanceState(outState);
+    }
 
     /**
      * Manipulates the map once available.

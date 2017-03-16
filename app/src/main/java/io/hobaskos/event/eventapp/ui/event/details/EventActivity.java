@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
-import android.text.format.DateUtils;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -12,8 +11,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
-
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -26,6 +23,11 @@ import io.hobaskos.event.eventapp.data.model.EventCategoryTheme;
 import io.hobaskos.event.eventapp.data.model.Location;
 import io.hobaskos.event.eventapp.data.model.User;
 import io.hobaskos.event.eventapp.ui.base.view.activity.BaseLceViewStateActivity;
+import io.hobaskos.event.eventapp.ui.dialog.DeleteDialogFragment;
+import io.hobaskos.event.eventapp.ui.dialog.DeleteDialogListener;
+import io.hobaskos.event.eventapp.ui.event.details.attending.AttendeesFragment;
+import io.hobaskos.event.eventapp.ui.location.add.LocationActivity;
+import rx.Observer;
 
 /**
  * Created by andre on 1/26/2017.
@@ -34,17 +36,18 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
         EventPresenter> implements
         EventView,
         LocationsFragment.OnListFragmentInteractionListener,
-        UsersFragment.OnUserListFragmentInteractionListener {
+        AttendeesFragment.OnUserListFragmentInteractionListener,
+        DeleteDialogListener<Location> {
 
     public final static String EVENT_ID = "eventId";
     public final static String EVENT_THEME = "eventTheme";
     public final static String TAG = EventActivity.class.getName();
 
     private Long eventId;
-
+    private EventPagerAdapter eventPagerAdapter;
     protected ViewPager viewPager;
     protected TabLayout tabLayout;
-
+    private boolean isOwner = false;
     private Event event;
 
     @Inject public EventPresenter eventPresenter;
@@ -60,7 +63,7 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
         setContentView(R.layout.activity_event);
         setTitle(R.string.loading);
         getSupportActionBar().setElevation(0);
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         eventId = getIntent().getExtras().getLong(EVENT_ID);
         viewPager = (ViewPager) findViewById(R.id.container);
@@ -124,36 +127,26 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     @Override
     protected String getErrorMessage(Throwable e, boolean pullToRefresh) {
         //Log.i("event-activity", e.getMessage());
-        //Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        if (e.getMessage().contains("404")) { // 404 Not Found
+            Toast.makeText(this, getString(R.string.error_event_not_found), Toast.LENGTH_SHORT).show();
+            onBackPressed();
+            return getString(R.string.error_event_not_found);
+        }
+        Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        onBackPressed();
+
+
         return e.getMessage();
     }
 
     @Override
     public void setData(Event event) {
         this.event = event;
+        eventPresenter.getOwnerStatus(event);
 
-        /*
-        // Event date
-        date.setText(DateUtils.getRelativeTimeSpanString(event.getFromDate().toDate().getTime()));
-
-        // Event Image
-        Picasso.with(this).load(event.getImageUrl()).into(eventImg);
-
-        // Event Time
-        eventTime.setText(String.format(event.getFromDate().getHourOfDay()+"."+event.getFromDate().getMinuteOfHour()+ " - " + event.getToDate().getHourOfDay()+"."+event.getToDate().getMinuteOfHour()));
-
-
-        // Event Place
-        if (!event.getLocations().isEmpty()) {
-            eventPlace.setText(event.getLocations().get(0).getName());
-            for (int i = 0; i < event.getLocations().size(); i++) {
-                locations.add(event.getLocations().get(i));
-            }
-        }
-        */
         setTitle(event.getTitle());
-
-        viewPager.setAdapter(new EventPagerAdapter(event, this, getSupportFragmentManager()));
+        Log.i("EventACtivity", "setData");
+        viewPager.setAdapter(eventPagerAdapter = new EventPagerAdapter(event, this, getSupportFragmentManager()));
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
         tabLayout.setupWithViewPager(viewPager);
     }
@@ -172,6 +165,9 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
             case R.id.edit:
                 Toast.makeText(this, "Edit event", Toast.LENGTH_SHORT).show();
                 break;
@@ -185,12 +181,93 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     }
 
     @Override
-    public void onListFragmentInteraction(Location item) {
+    public void onListFragmentEditInteraction(Location item) {
         Toast.makeText(this, item.getName(), Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, LocationActivity.class);
+        intent.putExtra(LocationActivity.EVENT_STATE, 1);
+        intent.putExtra(LocationActivity.LOCATION, item);
+        startActivity(intent);
     }
+
+    @Override
+    public void onListFragmentDeleteInteraction(Location item) {
+        Toast.makeText(this, item.getName(), Toast.LENGTH_SHORT).show();
+        DeleteDialogFragment<Location> deleteDialog = new DeleteDialogFragment<>();
+        deleteDialog.setItem(item);
+        deleteDialog.show(getFragmentManager(), "EventActivity");
+    }
+
 
     @Override
     public void onListFragmentInteraction(User item) {
         Toast.makeText(this, item.getName(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void setOwner(boolean owner) {
+        isOwner = owner;
+        Toast.makeText(this, owner ? "Owner" : "Not owner", Toast.LENGTH_SHORT).show();
+    }
+
+    protected void onResume() {
+        super.onResume();
+
+        if(eventPagerAdapter != null) {
+            presenter.getEvent(eventId, new Observer<Event>() {
+                @Override
+                public void onCompleted() {}
+
+                @Override
+                public void onError(Throwable e) {}
+
+                @Override
+                public void onNext(Event event) {
+                    LocationsFragment locationsFragment = (LocationsFragment) eventPagerAdapter.getItem(1);
+                    locationsFragment.refresh( (ArrayList<Location>) event.getLocations());
+                }
+            });
+        }
+    }
+          
+    @Override
+    public void onDeleteButtonClicked(Location location) {
+        presenter.remove(location, new Observer<Void>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(Void aVoid) {
+                presenter.getEvent(eventId, new Observer<Event>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(Event event) {
+                        Toast.makeText(EventActivity.this, "Location is removed", Toast.LENGTH_SHORT).show();
+                        LocationsFragment locationsFragment = (LocationsFragment) eventPagerAdapter.getItem(1);
+                        locationsFragment.refresh( (ArrayList<Location>) event.getLocations());
+                    }
+                });
+            }
+        });
+    }
+
+    @Override
+    public void onCancelButtonClicked() {
+
     }
 }
