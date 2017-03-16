@@ -41,10 +41,11 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true" />
 
+        <!-- TODO: Use colors referenced in res\values\colors.xml and styles.xml -->
         <RelativeLayout
             android:id="@+id/profile_layout"
             android:layout_width="match_parent"
-            android:layout_height="390dp"
+            android:layout_height="wrap_content"
             android:background="#4054B2"
             android:elevation="4dp"
             android:paddingBottom="24dp"
