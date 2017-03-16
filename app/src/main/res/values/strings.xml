@@ -60,6 +60,11 @@
     <string name="to">To</string>
     <string name="date">Date</string>
     <string name="time">Time</string>
+    <string name="left">venstre</string>
+    <string-array name="tabName">
+        <item>Attending</item>
+        <item>Mine</item>
+    </string-array>
     <string name="close">Close</string>
     <string name="submit">Submit</string>
     <string name="join_private_event">Join private event</string>

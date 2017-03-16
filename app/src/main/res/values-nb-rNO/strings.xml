@@ -61,6 +61,10 @@
     <string name="to">Til</string>
     <string name="date">Dato</string>
     <string name="time">Tid</string>
+    <string-array name="tabName">
+        <item>Påmeldt</item>
+        <item>Mine</item>
+    </string-array>
     <string name="close">Lukk</string>
     <string name="submit">Send</string>
     <string name="join_private_event">Gå til privat event</string>
