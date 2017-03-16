@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.format.DateUtils;
+import android.util.Log;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -13,6 +14,7 @@ import org.joda.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
+import io.hobaskos.event.eventapp.config.Constants;
 import io.hobaskos.event.eventapp.data.model.enumeration.EventAttendingType;
 
 /**
@@ -186,59 +188,12 @@ public class Event implements Parcelable {
     }
 
 
-    @Override
-    public int describeContents() {
-        return 0;
+
+    public String getAbsoluteImageUrl() {
+        String s = "https://" + Constants.API_HOST + "/api" + imageUrl;
+        Log.i("Event", s);
+        return s;
     }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeValue(this.id);
-        dest.writeString(this.title);
-        dest.writeString(this.description);
-        dest.writeString(this.imageUrl);
-        dest.writeSerializable(this.fromDate);
-        dest.writeSerializable(this.toDate);
-        dest.writeString(this.ownerLogin);
-        dest.writeTypedList(this.locations);
-        dest.writeParcelable(this.category, flags);
-        dest.writeInt(this.attendanceCount);
-        dest.writeInt(this.myAttendance == null ? -1 : this.myAttendance.ordinal());
-        dest.writeString(this.image);
-        dest.writeByte(this.privateEvent ? (byte) 1 : (byte) 0);
-    }
-
-    public Event() {
-    }
-
-    protected Event(Parcel in) {
-        this.id = (Long) in.readValue(Long.class.getClassLoader());
-        this.title = in.readString();
-        this.description = in.readString();
-        this.imageUrl = in.readString();
-        this.ownerLogin = in.readString();
-        this.fromDate = (DateTime) in.readSerializable();
-        this.toDate = (DateTime) in.readSerializable();
-        this.locations = in.createTypedArrayList(Location.CREATOR);
-        this.category = in.readParcelable(EventCategory.class.getClassLoader());
-        this.attendanceCount = in.readInt();
-        int tmpMyAttendance = in.readInt();
-        this.myAttendance = tmpMyAttendance == -1 ? null : EventAttendingType.values()[tmpMyAttendance];
-        this.image = in.readString();
-        this.privateEvent = in.readByte() != 0;
-    }
-
-    public static final Creator<Event> CREATOR = new Creator<Event>() {
-        @Override
-        public Event createFromParcel(Parcel source) {
-            return new Event(source);
-        }
-
-        @Override
-        public Event[] newArray(int size) {
-            return new Event[size];
-        }
-    };
 
     @Override
     public String toString() {
@@ -258,4 +213,60 @@ public class Event implements Parcelable {
                 ", privateEvent=" + privateEvent +
                 '}';
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(this.id);
+        dest.writeString(this.title);
+        dest.writeString(this.description);
+        dest.writeString(this.imageUrl);
+        dest.writeSerializable(this.fromDate);
+        dest.writeSerializable(this.toDate);
+        dest.writeString(this.ownerLogin);
+        dest.writeTypedList(this.locations);
+        dest.writeParcelable(this.category, flags);
+        dest.writeInt(this.attendanceCount);
+        dest.writeInt(this.myAttendance == null ? -1 : this.myAttendance.ordinal());
+        dest.writeString(this.image);
+        dest.writeString(this.imageContentType);
+        dest.writeByte(this.privateEvent ? (byte) 1 : (byte) 0);
+    }
+
+    public Event() {
+    }
+
+    protected Event(Parcel in) {
+        this.id = (Long) in.readValue(Long.class.getClassLoader());
+        this.title = in.readString();
+        this.description = in.readString();
+        this.imageUrl = in.readString();
+        this.fromDate = (DateTime) in.readSerializable();
+        this.toDate = (DateTime) in.readSerializable();
+        this.ownerLogin = in.readString();
+        this.locations = in.createTypedArrayList(Location.CREATOR);
+        this.category = in.readParcelable(EventCategory.class.getClassLoader());
+        this.attendanceCount = in.readInt();
+        int tmpMyAttendance = in.readInt();
+        this.myAttendance = tmpMyAttendance == -1 ? null : EventAttendingType.values()[tmpMyAttendance];
+        this.image = in.readString();
+        this.imageContentType = in.readString();
+        this.privateEvent = in.readByte() != 0;
+    }
+
+    public static final Creator<Event> CREATOR = new Creator<Event>() {
+        @Override
+        public Event createFromParcel(Parcel source) {
+            return new Event(source);
+        }
+
+        @Override
+        public Event[] newArray(int size) {
+            return new Event[size];
+        }
+    };
 }

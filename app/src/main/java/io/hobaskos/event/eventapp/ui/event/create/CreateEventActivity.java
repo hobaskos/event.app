@@ -148,7 +148,7 @@ public class CreateEventActivity extends MvpActivity<CreateEventView, CreateEven
         event.setCategory( (EventCategory) categories.getSelectedItem() );
         if(image != null) {
             event.setImage( image );
-            event.setContentType(imageMimeType);
+            event.setContentType("image/jpg");
         }
         presenter.post(event);
         showLoader();
@@ -166,7 +166,7 @@ public class CreateEventActivity extends MvpActivity<CreateEventView, CreateEven
 
         if(image != null) {
             event.setImage( image );
-            event.setContentType(imageMimeType);
+            event.setContentType("image/jpg");
         }
 
         presenter.update(event);
@@ -257,6 +257,7 @@ public class CreateEventActivity extends MvpActivity<CreateEventView, CreateEven
         Intent intent = new Intent(this, EventActivity.class);
         intent.putExtra("eventId", id);
         startActivity(intent);
+        finish();
     }
 
     @Override
