@@ -63,6 +63,7 @@
     <string name="invite_code_length_error">Invitasjonskoden må være over 4 karakterer</string>
     <string name="invalid_invite_code">Fant ingen eventer med den invitasjonskoden</string>
     <string name="events">Arrangementer</string>
+    <string name="edit_profile">Forandre profilinstillinger</string>
     <string name="filter_events">Søkefiltere</string>
 
     <string name="attend_event">Attend event</string>
