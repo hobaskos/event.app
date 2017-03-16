@@ -11,6 +11,7 @@ import javax.inject.Inject;
 import io.hobaskos.event.eventapp.data.api.EventService;
 import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.data.model.EventAttendance;
+import io.hobaskos.event.eventapp.data.model.User;
 import io.hobaskos.event.eventapp.data.model.enumeration.EventAttendingType;
 import rx.Observable;
 
@@ -80,5 +81,13 @@ public class EventRepository implements BaseRepository<Event, Long> {
 
     public Observable<List<Event>> getAttendingEvents(int page) {
         return eventServiceAuthenticated.getAttendingEvents(page, PAGE_SIZE);
+    }
+
+    public Observable<List<User>> getAddendingUsers(Long eventId, int page) {
+        return eventServiceAnonymously.getAttendingForEvent(eventId, page, PAGE_SIZE);
+    }
+
+    public Observable<Event> getEventByInviteCode(String inviteCode) {
+        return eventServiceAuthenticated.getEventByInviteCode(inviteCode);
     }
 }

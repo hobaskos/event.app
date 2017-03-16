@@ -7,9 +7,13 @@ package io.hobaskos.event.eventapp.ui.main;
         import javax.inject.Inject;
 
         import io.hobaskos.event.eventapp.data.AccountManager;
+        import io.hobaskos.event.eventapp.data.model.Event;
         import io.hobaskos.event.eventapp.data.model.User;
+        import io.hobaskos.event.eventapp.data.repository.EventRepository;
+        import rx.Observer;
         import rx.Subscriber;
         import rx.android.schedulers.AndroidSchedulers;
+        import rx.functions.Action1;
         import rx.schedulers.Schedulers;
 
 /**
@@ -19,11 +23,12 @@ package io.hobaskos.event.eventapp.ui.main;
 public class MainPresenter extends MvpBasePresenter<MainView> {
 
     private AccountManager accountManager;
+    private EventRepository eventRepository;
 
     @Inject
-    public MainPresenter(AccountManager accountManager)
-    {
+    public MainPresenter(AccountManager accountManager, EventRepository eventRepository) {
         this.accountManager = accountManager;
+        this.eventRepository = eventRepository;
     }
 
     public void fetchAccountInfo()
@@ -81,6 +86,10 @@ public class MainPresenter extends MvpBasePresenter<MainView> {
         }
     }
 
-
-
+    public void getEventFromInviteCode(String inviteCode, Observer<Event> callback) {
+        eventRepository.getEventByInviteCode(inviteCode)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(callback);
+    }
 }

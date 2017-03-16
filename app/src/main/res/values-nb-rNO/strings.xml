@@ -55,7 +55,15 @@
     <string name="to">Til</string>
     <string name="date">Dato</string>
     <string name="time">Tid</string>
+    <string name="close">Lukk</string>
+    <string name="submit">Send</string>
+    <string name="join_private_event">Gå til privat event</string>
+    <string name="enter_invitation_code">Oppgi invitasjonskode</string>
+    <string name="join_private">Gå til privat event</string>
+    <string name="invite_code_length_error">Invitasjonskoden må være over 4 karakterer</string>
+    <string name="invalid_invite_code">Fant ingen eventer med den invitasjonskoden</string>
     <string name="events">Arrangementer</string>
     <string name="delete">Slett</string>
     <string name="delete_location">FARLIG: Vil du slette denne lokasjonen?</string>
+    <string name="filter_events">Søkefiltere</string>
 </resources>

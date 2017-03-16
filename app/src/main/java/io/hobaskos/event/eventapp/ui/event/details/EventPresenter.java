@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.hobaskos.event.eventapp.data.AccountManager;
 import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.data.model.Location;
 import io.hobaskos.event.eventapp.data.repository.EventRepository;
@@ -21,13 +22,15 @@ public class EventPresenter extends BaseRxLcePresenter<EventView, Event> {
 
     private EventView view;
 
+    private AccountManager accountManager;
     private EventRepository eventRepository;
     private LocationRepository locationRepository;
     private Observable<Event> eventObservable = Observable.empty();
 
     @Inject
-    public EventPresenter(EventRepository eventRepository, LocationRepository locationRepository) {
+    public EventPresenter(EventRepository eventRepository, AccountManager accountManager, LocationRepository locationRepository) {
         this.eventRepository = eventRepository;
+        this.accountManager = accountManager;
         this.locationRepository = locationRepository;
     }
 
@@ -37,8 +40,11 @@ public class EventPresenter extends BaseRxLcePresenter<EventView, Event> {
         subscribe(eventObservable, false);
     }
 
+    public void getOwnerStatus(Event event) {
+        getView().setOwner(event.getOwnerLogin().equals(accountManager.getLocalAccount().getLogin()));
+    }
+  
     public void getEvent(Long id, Observer<Event> eventObserver) {
-
         eventRepository.get(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -51,6 +57,5 @@ public class EventPresenter extends BaseRxLcePresenter<EventView, Event> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer);
     }
-
 }
 
