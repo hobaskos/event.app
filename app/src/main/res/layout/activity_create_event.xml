@@ -75,7 +75,12 @@
         android:text="@string/create"
         android:textAllCaps="true" />
 
-
+    <Button
+        android:id="@+id/create_event_button_edit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/edit"
+        android:textAllCaps="true" />
 
 
     <RelativeLayout

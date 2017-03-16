@@ -57,7 +57,7 @@
 
         <activity android:name=".ui.profile.ProfileActivity" />
         <activity android:name=".ui.profile.edit.ProfileEditActivity" />
-        <activity android:name=".ui.event.create.CreateEventActivity" />
+        <activity android:name=".ui.event.create.CreateEventActivity" android:parentActivityName=".ui.main.MainActivity" />
         <activity android:name=".ui.event.details.EventActivity"
             />
         <activity
@@ -84,7 +84,7 @@
             </intent-filter>
             android:label="@string/title_activity_maps">
         </activity>
-        <activity android:name=".ui.location.add.LocationActivity"/>
+        <activity android:name=".ui.location.add.LocationActivity" android:parentActivityName=".ui.main.MainActivity"/>
 
         <activity android:name=".ui.event.search.map.SearchEventsMapActivity" />
         <activity android:name=".ui.event.filter.FilterEventsActivity" />
