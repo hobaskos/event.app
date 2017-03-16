@@ -1,4 +1,4 @@
-package io.hobaskos.event.eventapp.ui.event.details;
+package io.hobaskos.event.eventapp.ui.event.details.info;
 
 import android.content.Context;
 import android.os.Bundle;
