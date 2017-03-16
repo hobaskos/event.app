@@ -7,6 +7,7 @@ import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import io.hobaskos.event.eventapp.data.AccountManager;
 import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.data.repository.EventRepository;
 import rx.Observable;
@@ -35,6 +36,9 @@ public class EventPresenterTest {
     @Mock private EventView view;
     private EventPresenter eventPresenter;
 
+    @Mock
+    private AccountManager accountManager;
+
     boolean pullToRefresh = false;
 
     @Before
@@ -42,7 +46,7 @@ public class EventPresenterTest {
         // Inject mocks with the @Mock annotation.
         MockitoAnnotations.initMocks(this);
         // Initialize class to be tested
-        eventPresenter = new EventPresenter(eventRepository);
+        eventPresenter = new EventPresenter(eventRepository, accountManager);
         // Override RxJava schedulers
         RxJavaHooks.setOnIOScheduler(new Func1<Scheduler, Scheduler>() {
             @Override
