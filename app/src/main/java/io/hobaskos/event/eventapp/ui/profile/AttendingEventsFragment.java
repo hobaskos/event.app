@@ -22,7 +22,7 @@ import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.ui.event.details.EventActivity;
-import io.hobaskos.event.eventapp.ui.event.list.EventsAdapter;
+import io.hobaskos.event.eventapp.ui.event.search.list.EventsAdapter;
 
 /**
  * Created by Magnus on 13.03.2017.

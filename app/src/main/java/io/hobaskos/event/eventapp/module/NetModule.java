@@ -15,7 +15,7 @@ import io.hobaskos.event.eventapp.data.api.JWTTokenInterceptor;
 import io.hobaskos.event.eventapp.data.api.LocationService;
 import io.hobaskos.event.eventapp.data.api.UserService;
 import io.hobaskos.event.eventapp.data.repository.EventCategoryRepository;
-import io.hobaskos.event.eventapp.data.repository.EventRepository
+import io.hobaskos.event.eventapp.data.repository.EventRepository;
 import io.hobaskos.event.eventapp.data.repository.AccountRepository;
 import io.hobaskos.event.eventapp.data.repository.LocationRepository;
 import io.hobaskos.event.eventapp.data.repository.UserRepository;
@@ -97,6 +97,7 @@ public class NetModule {
     @Provides
     public AccountService providesAccountService(Cache cache) {
         return ApiService.build(httpUrl).createService(AccountService.class, cache);
+    }
 
     @Singleton
     @Provides
@@ -109,6 +110,7 @@ public class NetModule {
     public AccountRepository providesAccountRepository(AccountService accountService) {
         return new AccountRepository(accountService);
     }
+
     public LocationRepository providesLocationRepository(LocationService service){ return new LocationRepository(service); }
 
 }
