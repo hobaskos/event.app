@@ -1,4 +1,4 @@
-package io.hobaskos.event.eventapp.ui.event.details;
+package io.hobaskos.event.eventapp.ui.event.details.map;
 
 import android.content.pm.PackageManager;
 import android.graphics.Color;

@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -43,6 +44,9 @@ public class CreateEventActivity extends MvpActivity<CreateEventView, CreateEven
     @Inject
     public CreateEventPresenter presenter;
 
+    public static final String ACTIVITY_STATE = "activity_state";
+    public static final String EVENT = "event";
+
     private EditText title;
     private EditText description;
     private String image;
@@ -50,7 +54,13 @@ public class CreateEventActivity extends MvpActivity<CreateEventView, CreateEven
     private SwitchCompat privateEvent;
     private Button chooseImage;
     private Button create;
+    private Button edit;
     private RelativeLayout loadingPanel;
+    private String imageMimeType;
+    private Event event;
+
+    public enum ActivityState { CREATE, EDIT }
+    private ActivityState activityState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,17 +81,61 @@ public class CreateEventActivity extends MvpActivity<CreateEventView, CreateEven
         privateEvent = (SwitchCompat) findViewById(R.id.create_event_switch_private_event);
 
         create = (Button) findViewById(R.id.create_event_button_create);
-        create.setOnClickListener(v -> onCreateButtonClicked());
+        create.setOnClickListener(v -> {
+            create.setEnabled(false);
+            onCreateButtonClicked();
+        });
+
+        edit = (Button) findViewById(R.id.create_event_button_edit);
+        edit.setVisibility(View.GONE);
+        edit.setOnClickListener(v -> {
+            edit.setEnabled(false);
+            onEditButtonClicked();
+        });
+
 
         loadingPanel = (RelativeLayout) findViewById(R.id.activity_create_event_loading_panel);
 
         presenter.attachView(this);
         presenter.loadCategories();
+
+        setState(getIntent().getIntExtra(ACTIVITY_STATE, 0));
+
+        if(activityState.equals(ActivityState.EDIT)) {
+            event = getIntent().getParcelableExtra(EVENT);
+            title.setText(event.getTitle());
+            description.setText(event.getDescription());
+            categories.setSelection(getIndex(event.getEventCategory()));
+            create.setVisibility(View.GONE);
+            edit.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private int getIndex(EventCategory eventCategory) {
+
+        int index = 0;
+
+        for(int i = 0; i < categories.getCount(); i++ ) {
+
+            if(categories.getItemAtPosition(i).toString().equals(eventCategory)) {
+                index = i;
+                break;
+            }
+        }
+
+        return index;
+    }
+
+    private void setState(int i) {
+        if(i == 0) {
+            activityState = ActivityState.CREATE;
+            return;
+        }
+
+        activityState = ActivityState.EDIT;
     }
 
     private void onCreateButtonClicked() {
-        create.setEnabled(false);
-
         if(!validate()) {
             create.setEnabled(true);
             return;
@@ -93,9 +147,29 @@ public class CreateEventActivity extends MvpActivity<CreateEventView, CreateEven
         event.setPrivateEvent(privateEvent.isChecked());
         event.setCategory( (EventCategory) categories.getSelectedItem() );
         if(image != null) {
-            event.setImage(image);
+            event.setImage( image );
+            event.setContentType("image/jpg");
         }
         presenter.post(event);
+        showLoader();
+    }
+
+    private void onEditButtonClicked() {
+        if(!validate()) {
+            edit.setEnabled(true);
+            return;
+        }
+
+        event.setTitle(title.getText().toString());
+        event.setDescription(description.getText().toString());
+        event.setCategory( (EventCategory) categories.getSelectedItem());
+
+        if(image != null) {
+            event.setImage( image );
+            event.setContentType("image/jpg");
+        }
+
+        presenter.update(event);
         showLoader();
     }
 
@@ -131,6 +205,8 @@ public class CreateEventActivity extends MvpActivity<CreateEventView, CreateEven
             if (requestCode == PICK_IMAGE_REQUEST && data != null && data.getData() != null) {
                 Uri uri = data.getData();
 
+                imageMimeType = getMimeType(uri.getPath());
+
                 try {
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
                     image = ImageUtil.getEncoded64ImageStringFromBitmap(bitmap);
@@ -139,6 +215,21 @@ public class CreateEventActivity extends MvpActivity<CreateEventView, CreateEven
                 }
             }
         }
+    }
+
+    private String getMimeType(String path) {
+
+        String type = null;
+
+        path = path.toLowerCase();
+
+        String extension = MimeTypeMap.getFileExtensionFromUrl(path);
+
+        if(extension != null) {
+            type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
+        }
+
+        return type;
     }
 
     @NonNull
@@ -166,6 +257,7 @@ public class CreateEventActivity extends MvpActivity<CreateEventView, CreateEven
         Intent intent = new Intent(this, EventActivity.class);
         intent.putExtra("eventId", id);
         startActivity(intent);
+        finish();
     }
 
     @Override

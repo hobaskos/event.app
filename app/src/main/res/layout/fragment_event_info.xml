@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="io.hobaskos.event.eventapp.ui.event.details.EventInfoFragment">
+    tools:context="io.hobaskos.event.eventapp.ui.event.details.info.EventInfoFragment">
 
     <ImageView
         android:id="@+id/image"
