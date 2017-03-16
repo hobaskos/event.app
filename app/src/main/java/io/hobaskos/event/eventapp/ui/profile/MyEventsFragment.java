@@ -34,6 +34,7 @@ public class MyEventsFragment extends Fragment{
         return fragment;
     }
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,10 +44,11 @@ public class MyEventsFragment extends Fragment{
         }
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_event_info, container, false);
-
+/*
         eventImage = (ImageView) view.findViewById(R.id.image);
         eventTime = (TextView) view.findViewById(R.id.date);
         eventDescription = (TextView)  view.findViewById(R.id.description);
@@ -58,7 +60,7 @@ public class MyEventsFragment extends Fragment{
         eventTime.setText(DateUtils.formatDateTime(getContext(),
                 event.getFromDate().toDate().getTime(), DateUtils.FORMAT_SHOW_DATE));
         eventDescription.setText(event.getDescription());
-
+*/
         return view;
     }
 
