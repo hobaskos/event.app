@@ -28,6 +28,7 @@ import io.hobaskos.event.eventapp.data.model.User;
 import io.hobaskos.event.eventapp.ui.base.view.activity.BaseLceViewStateActivity;
 import io.hobaskos.event.eventapp.ui.dialog.DeleteDialogFragment;
 import io.hobaskos.event.eventapp.ui.dialog.DeleteDialogListener;
+import io.hobaskos.event.eventapp.ui.event.create.CreateEventActivity;
 import io.hobaskos.event.eventapp.ui.location.add.LocationActivity;
 import rx.Observer;
 
@@ -41,6 +42,8 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
         UsersFragment.OnUserListFragmentInteractionListener,
         DeleteDialogListener<Location> {
 
+    public static final String ACTIVITY_STATE = "activity_state";
+    public static final String EVENT = "event";
     public final static String EVENT_ID = "eventId";
     public final static String EVENT_THEME = "eventTheme";
     public final static String TAG = EventActivity.class.getName();
@@ -188,7 +191,10 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
                 onBackPressed();
                 return true;
             case R.id.edit:
-                Toast.makeText(this, "Edit event", Toast.LENGTH_SHORT).show();
+                Intent editIntent = new Intent(this, CreateEventActivity.class);
+                editIntent.putExtra(ACTIVITY_STATE, 1);
+                editIntent.putExtra(EVENT, event);
+                startActivity(editIntent);
                 break;
             case R.id.map:
                 Intent intent = new Intent(this, MapsActivity.class);

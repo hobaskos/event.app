@@ -13,6 +13,7 @@ import io.hobaskos.event.eventapp.data.model.EventCategory;
 import io.hobaskos.event.eventapp.data.repository.EventCategoryRepository;
 import io.hobaskos.event.eventapp.data.repository.EventRepository;
 import rx.Observer;
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -32,6 +33,8 @@ public class CreateEventPresenter extends MvpBasePresenter<CreateEventView> {
     }
 
     protected void post(Event event) {
+
+        Log.i("CreateEventPresenter", event.toString());
         eventRepository.save(event)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -84,6 +87,37 @@ public class CreateEventPresenter extends MvpBasePresenter<CreateEventView> {
                         }
                     }
                 });
+    }
+
+    protected void update(Event event) {
+
+        Log.i("CreateEventPresenter", event.toString());
+        eventRepository.update(event)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Subscriber<Event>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.i("CreateEventPresenter", e.getMessage());
+                e.printStackTrace();
+                if(isViewAttached()) {
+                    getView().onFailure();
+                }
+            }
+
+            @Override
+            public void onNext(Event event) {
+                if(isViewAttached()) {
+                    getView().onSuccess(event.getId());
+                }
+            }
+        });
+
     }
 
 }

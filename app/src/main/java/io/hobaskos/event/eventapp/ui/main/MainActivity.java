@@ -168,6 +168,7 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
                 fragment = new EventsFragment();
                 break;
             case R.id.nav_create_event:
+                fragment = new EventsFragment();
                 startActivity(new Intent(this, CreateEventActivity.class));
                 break;
             case R.id.nav_profile:

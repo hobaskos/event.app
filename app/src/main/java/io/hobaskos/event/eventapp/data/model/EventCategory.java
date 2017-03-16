@@ -78,4 +78,28 @@ public class EventCategory implements Parcelable {
     public String toString() {
         return title;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        EventCategory category = (EventCategory) o;
+
+        if (id != null ? !id.equals(category.id) : category.id != null) return false;
+        if (title != null ? !title.equals(category.title) : category.title != null) return false;
+        if (iconUrl != null ? !iconUrl.equals(category.iconUrl) : category.iconUrl != null)
+            return false;
+        return theme == category.theme;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (title != null ? title.hashCode() : 0);
+        result = 31 * result + (iconUrl != null ? iconUrl.hashCode() : 0);
+        result = 31 * result + (theme != null ? theme.hashCode() : 0);
+        return result;
+    }
 }

@@ -10,6 +10,7 @@ import com.google.gson.annotations.SerializedName;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDateTime;
 
+import java.util.Arrays;
 import java.util.List;
 
 import io.hobaskos.event.eventapp.data.model.enumeration.EventAttendingType;
@@ -37,8 +38,8 @@ public class Event implements Parcelable {
     @SerializedName("toDate")
     private DateTime toDate;
 
-    @SerializedName("ownerId")
-    private long ownerId;
+    @SerializedName("ownerLogin")
+    private String ownerLogin;
 
     @SerializedName("locations")
     private List<Location> locations;
@@ -54,6 +55,9 @@ public class Event implements Parcelable {
 
     @SerializedName("image")
     private String image;
+
+    @SerializedName("imageContentType")
+    private String imageContentType;
 
     private boolean privateEvent;
 
@@ -97,6 +101,14 @@ public class Event implements Parcelable {
         this.imageUrl = imageUrl;
     }
 
+    public String getImageContentType() {
+        return imageContentType;
+    }
+
+    public void setContentType(String contentType) {
+        this.imageContentType = contentType;
+    }
+
     public DateTime getFromDate() {
         return fromDate;
     }
@@ -113,12 +125,12 @@ public class Event implements Parcelable {
         this.toDate = toDate;
     }
 
-    public long getOwnerId() {
-        return ownerId;
+    public String getOwnerLogin() {
+        return ownerLogin;
     }
 
-    public void setOwnerId(long ownerId) {
-        this.ownerId = ownerId;
+    public void setOwnerLogin(String ownerLogin) {
+        this.ownerLogin = ownerLogin;
     }
 
     public List<Location> getLocations() {
@@ -189,7 +201,7 @@ public class Event implements Parcelable {
         dest.writeString(this.imageUrl);
         dest.writeSerializable(this.fromDate);
         dest.writeSerializable(this.toDate);
-        dest.writeLong(this.ownerId);
+        dest.writeString(this.ownerLogin);
         dest.writeTypedList(this.locations);
         dest.writeParcelable(this.category, flags);
         dest.writeInt(this.attendanceCount);
@@ -203,7 +215,7 @@ public class Event implements Parcelable {
         this.imageUrl = in.readString();
         this.fromDate = (DateTime) in.readSerializable();
         this.toDate = (DateTime) in.readSerializable();
-        this.ownerId = in.readLong();
+        this.ownerLogin = in.readString();
         this.locations = in.createTypedArrayList(Location.CREATOR);
         this.category = in.readParcelable(EventCategory.class.getClassLoader());
         this.attendanceCount = in.readInt();
@@ -222,4 +234,23 @@ public class Event implements Parcelable {
             return new Event[size];
         }
     };
+
+    @Override
+    public String toString() {
+        return "Event{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", fromDate=" + fromDate +
+                ", toDate=" + toDate +
+                ", ownerLogin=" + ownerLogin +
+                ", locations=" + locations +
+                ", category=" + category +
+                ", attendanceCount=" + attendanceCount +
+                ", myAttendance=" + myAttendance +
+                ", imageContentType='" + imageContentType + '\'' +
+                ", privateEvent=" + privateEvent +
+                '}';
+    }
 }
