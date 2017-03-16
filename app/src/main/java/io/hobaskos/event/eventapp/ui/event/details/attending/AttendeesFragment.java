@@ -1,26 +1,33 @@
 package io.hobaskos.event.eventapp.ui.event.details.attending;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.LceViewState;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import icepick.State;
 import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
+import io.hobaskos.event.eventapp.data.model.EventAttendance;
 import io.hobaskos.event.eventapp.data.model.User;
 import io.hobaskos.event.eventapp.ui.base.view.fragment.BaseLceViewStateFragment;
+import rx.Observer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,11 +43,13 @@ public class AttendeesFragment
 
     public static final String TAG = AttendeesFragment.class.getName();
     public static final String EVENT_ID = "eventId";
+    public static final String EVENT_ATTENDING = "eventAttending";
 
     private OnUserListFragmentInteractionListener listener;
     private DividerItemDecoration dividerItemDecoration;
 
     private List<User> users = new ArrayList<>();
+
 
     @BindView(R.id.contentView)
     protected SwipeRefreshLayout swipeRefreshLayout;
@@ -55,6 +64,8 @@ public class AttendeesFragment
     @State
     protected Long eventId;
     @State
+    protected boolean attendingEvent;
+    @State
     protected boolean canLoadMore = true;
     @State
     protected boolean isLoadingMore = false;
@@ -66,10 +77,11 @@ public class AttendeesFragment
 
     public AttendeesFragment() {}
 
-    public static AttendeesFragment newInstance(Long eventId) {
+    public static AttendeesFragment newInstance(Long eventId, boolean attending) {
         AttendeesFragment fragment = new AttendeesFragment();
         Bundle args = new Bundle();
         args.putLong(EVENT_ID, eventId);
+        args.putBoolean(EVENT_ATTENDING, attending);
         fragment.setArguments(args);
         return fragment;
     }
@@ -80,6 +92,7 @@ public class AttendeesFragment
 
         if (getArguments() != null) {
             eventId = getArguments().getLong(EVENT_ID);
+            attendingEvent = getArguments().getBoolean(EVENT_ATTENDING);
         }
 
         setRetainInstance(true);
@@ -91,6 +104,10 @@ public class AttendeesFragment
         View view = inflater.inflate(R.layout.fragment_user_list, container, false);
 
         ButterKnife.bind(this, view);
+
+        if (attendingEvent) {
+            attendFab.hide();
+        }
 
         swipeRefreshLayout.setOnRefreshListener(() -> loadData(true));
 
@@ -119,6 +136,33 @@ public class AttendeesFragment
         return view;
     }
 
+
+    @OnClick(R.id.fragment_attendees_attend)
+    public void attendEvent() {
+        new AlertDialog.Builder(getContext())
+                .setTitle(R.string.attend_event)
+                .setMessage(R.string.attend_event_desc)
+                .setPositiveButton(R.string.attend_event, (dialog, which) -> {
+                    presenter.attendEvent(new Observer<EventAttendance>() {
+                        @Override public void onCompleted() {}
+
+                        @Override public void onError(Throwable e) {
+                            Log.d(TAG, "onError: " + e.getMessage());
+                            Toast.makeText(getContext(), R.string.could_not_attend_event, Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onNext(EventAttendance attendance) {
+                            dialog.dismiss();
+                            loadData(true);
+                            attendFab.hide();
+                        }
+                    });
+                })
+                .setNegativeButton(R.string.close, (dialog, which) -> dialog.dismiss())
+                .create()
+                .show();
+    }
 
     @Override
     public void onAttach(Context context) {

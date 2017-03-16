@@ -6,7 +6,9 @@ import javax.inject.Inject;
 
 import io.hobaskos.event.eventapp.data.AccountManager;
 import io.hobaskos.event.eventapp.data.model.Event;
+import io.hobaskos.event.eventapp.data.model.Location;
 import io.hobaskos.event.eventapp.data.repository.EventRepository;
+import io.hobaskos.event.eventapp.data.repository.LocationRepository;
 import io.hobaskos.event.eventapp.ui.base.presenter.BaseRxLcePresenter;
 import rx.Observable;
 import rx.Observer;
@@ -20,14 +22,16 @@ public class EventPresenter extends BaseRxLcePresenter<EventView, Event> {
 
     private EventView view;
 
-    private final EventRepository eventRepository;
-    private final AccountManager accountManager;
+    private AccountManager accountManager;
+    private EventRepository eventRepository;
+    private LocationRepository locationRepository;
     private Observable<Event> eventObservable = Observable.empty();
 
     @Inject
-    public EventPresenter(EventRepository eventRepository, AccountManager accountManager) {
+    public EventPresenter(EventRepository eventRepository, AccountManager accountManager, LocationRepository locationRepository) {
         this.eventRepository = eventRepository;
         this.accountManager = accountManager;
+        this.locationRepository = locationRepository;
     }
 
     public void getEvent(Long id) {
@@ -45,6 +49,13 @@ public class EventPresenter extends BaseRxLcePresenter<EventView, Event> {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(eventObserver);
+    }
+
+    public void remove(Location location, Observer<Void> observer) {
+        locationRepository.remove(location)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(observer);
     }
 }
 

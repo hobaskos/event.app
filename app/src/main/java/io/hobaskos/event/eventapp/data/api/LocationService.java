@@ -2,8 +2,10 @@ package io.hobaskos.event.eventapp.data.api;
 
 import io.hobaskos.event.eventapp.data.model.Location;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Path;
 import rx.Observable;
 
 /**
@@ -17,4 +19,7 @@ public interface LocationService {
 
     @PUT("api/locations")
     Observable<Location> put(@Body Location location);
+
+    @DELETE("api/locations/{id}")
+    Observable<Void> remove(@Path("id") Long id);
 }

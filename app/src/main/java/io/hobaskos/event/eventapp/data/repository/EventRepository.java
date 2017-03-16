@@ -73,10 +73,7 @@ public class EventRepository implements BaseRepository<Event, Long> {
     }
 
     public Observable<EventAttendance> attendEvent(Long eventId) {
-        EventAttendance attendance = new EventAttendance();
-        attendance.setEventId(eventId);
-        attendance.setType(EventAttendingType.GOING);
-        return eventServiceAuthenticated.saveAttendance(attendance);
+        return eventServiceAuthenticated.saveAttendance(new EventAttendance(eventId, EventAttendingType.GOING));
     }
 
     public Observable<List<Event>> getAttendingEvents(int page) {

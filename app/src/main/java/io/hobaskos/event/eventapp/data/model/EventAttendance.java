@@ -1,5 +1,6 @@
 package io.hobaskos.event.eventapp.data.model;
 
+import org.joda.time.DateTime;
 import org.joda.time.LocalDateTime;
 
 import io.hobaskos.event.eventapp.data.model.enumeration.EventAttendingType;
@@ -11,13 +12,18 @@ public class EventAttendance {
 
     private Long id;
 
-    private LocalDateTime createdDate;
+    private DateTime createdDate;
 
     private EventAttendingType type;
 
     private Long eventId;
 
     private String userLogin;
+
+    public EventAttendance(Long eventId, EventAttendingType type) {
+        this.eventId = eventId;
+        this.type = type;
+    }
 
     public Long getId() {
         return id;
@@ -27,11 +33,11 @@ public class EventAttendance {
         this.id = id;
     }
 
-    public LocalDateTime getCreatedDate() {
+    public DateTime getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(LocalDateTime createdDate) {
+    public void setCreatedDate(DateTime createdDate) {
         this.createdDate = createdDate;
     }
 

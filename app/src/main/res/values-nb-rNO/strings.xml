@@ -30,7 +30,7 @@
     <string name="login_success">Du er nå logget inn.</string>
     <string name="login_failure">Problemer med innlogging</string>
     <string name="login_username_empty">Vennligst fyll inn brukernavn.</string>
-    <string name="login_password_error">Vennligst fyll inn passord. 4 – 10 tegn.</string>
+    <string name="login_password_error">Vennligst fyll inn passord.</string>
     <string name="login_skip">Gå videre uten konto</string>
     <string name="authenticating">Logger inn…</string>
     <string name="attending">Påmeldt</string>
@@ -68,4 +68,18 @@
     <string name="join_private">Gå til privat event</string>
     <string name="invite_code_length_error">Invitasjonskoden må være over 4 karakterer</string>
     <string name="invalid_invite_code">Fant ingen eventer med den invitasjonskoden</string>
+
+
+    <string name="delete">Slett</string>
+    <string name="delete_location">FARLIG: Vil du slette denne lokasjonen?</string>
+
+
+
+    <string name="attend_event">Attend event</string>
+    <string name="event_going">Going:</string>
+    <string name="attending_event">Attending event</string>
+    <string name="attend_event_desc">Do you want to attend this event?</string>
+    <string name="could_not_attend_event">Could not attend event, maybe you are already attending?</string>
+    <string name="attending_event_count">Attendance count:</string>
+
 </resources>
