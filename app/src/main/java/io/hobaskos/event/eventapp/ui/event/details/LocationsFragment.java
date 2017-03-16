@@ -107,10 +107,11 @@ public class LocationsFragment extends Fragment {
     }
 
     public interface OnListFragmentInteractionListener {
-        void onListFragmentInteraction(Location item);
+        void onListFragmentEditInteraction(Location item);
+        void onListFragmentDeleteInteraction(Location item);
     }
 
-    public void refresh(List<Location> locations) {
+    public void refresh(ArrayList<Location> locations) {
         this.locations.clear();
         this.locations.addAll(locations);
         locationRecyclerViewAdapter.notifyDataSetChanged();

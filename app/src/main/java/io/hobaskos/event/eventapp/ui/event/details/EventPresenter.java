@@ -5,7 +5,9 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.hobaskos.event.eventapp.data.model.Event;
+import io.hobaskos.event.eventapp.data.model.Location;
 import io.hobaskos.event.eventapp.data.repository.EventRepository;
+import io.hobaskos.event.eventapp.data.repository.LocationRepository;
 import io.hobaskos.event.eventapp.ui.base.presenter.BaseRxLcePresenter;
 import rx.Observable;
 import rx.Observer;
@@ -20,11 +22,13 @@ public class EventPresenter extends BaseRxLcePresenter<EventView, Event> {
     private EventView view;
 
     private EventRepository eventRepository;
+    private LocationRepository locationRepository;
     private Observable<Event> eventObservable = Observable.empty();
 
     @Inject
-    public EventPresenter(EventRepository eventRepository) {
+    public EventPresenter(EventRepository eventRepository, LocationRepository locationRepository) {
         this.eventRepository = eventRepository;
+        this.locationRepository = locationRepository;
     }
 
     public void getEvent(Long id) {
@@ -39,6 +43,13 @@ public class EventPresenter extends BaseRxLcePresenter<EventView, Event> {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(eventObserver);
+    }
+
+    public void remove(Location location, Observer<Void> observer) {
+        locationRepository.remove(location)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(observer);
     }
 
 }

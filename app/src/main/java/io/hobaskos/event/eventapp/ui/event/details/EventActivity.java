@@ -26,6 +26,8 @@ import io.hobaskos.event.eventapp.data.model.EventCategoryTheme;
 import io.hobaskos.event.eventapp.data.model.Location;
 import io.hobaskos.event.eventapp.data.model.User;
 import io.hobaskos.event.eventapp.ui.base.view.activity.BaseLceViewStateActivity;
+import io.hobaskos.event.eventapp.ui.dialog.DeleteDialogFragment;
+import io.hobaskos.event.eventapp.ui.dialog.DeleteDialogListener;
 import io.hobaskos.event.eventapp.ui.location.add.LocationActivity;
 import rx.Observer;
 
@@ -36,7 +38,8 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
         EventPresenter> implements
         EventView,
         LocationsFragment.OnListFragmentInteractionListener,
-        UsersFragment.OnUserListFragmentInteractionListener {
+        UsersFragment.OnUserListFragmentInteractionListener,
+        DeleteDialogListener<Location> {
 
     public final static String EVENT_ID = "eventId";
     public final static String EVENT_THEME = "eventTheme";
@@ -44,10 +47,8 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
 
     private Long eventId;
     private EventPagerAdapter eventPagerAdapter;
-
     protected ViewPager viewPager;
     protected TabLayout tabLayout;
-
     private Event event;
 
     @Inject public EventPresenter eventPresenter;
@@ -65,9 +66,7 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
         getSupportActionBar().setElevation(0);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-
         eventId = getIntent().getExtras().getLong(EVENT_ID);
-        // eventId = 1231231L; // TODO: Can be removed. Used to test invalid event id
         viewPager = (ViewPager) findViewById(R.id.container);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
     }
@@ -201,13 +200,22 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     }
 
     @Override
-    public void onListFragmentInteraction(Location item) {
+    public void onListFragmentEditInteraction(Location item) {
         Toast.makeText(this, item.getName(), Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, LocationActivity.class);
         intent.putExtra(LocationActivity.EVENT_STATE, 1);
         intent.putExtra(LocationActivity.LOCATION, item);
         startActivity(intent);
     }
+
+    @Override
+    public void onListFragmentDeleteInteraction(Location item) {
+        Toast.makeText(this, item.getName(), Toast.LENGTH_SHORT).show();
+        DeleteDialogFragment<Location> deleteDialog = new DeleteDialogFragment<>();
+        deleteDialog.setItem(item);
+        deleteDialog.show(getFragmentManager(), "EventActivity");
+    }
+
 
     @Override
     public void onListFragmentInteraction(User item) {
@@ -233,7 +241,7 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
                 @Override
                 public void onNext(Event event) {
                     LocationsFragment locationsFragment = (LocationsFragment) eventPagerAdapter.getItem(1);
-                    locationsFragment.refresh( event.getLocations());
+                    locationsFragment.refresh( (ArrayList<Location>) event.getLocations());
                 }
             });
 
@@ -242,4 +250,45 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     }
 
 
+    @Override
+    public void onDeleteButtonClicked(Location location) {
+        presenter.remove(location, new Observer<Void>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(Void aVoid) {
+                presenter.getEvent(eventId, new Observer<Event>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(Event event) {
+                        Toast.makeText(EventActivity.this, "Location is removed", Toast.LENGTH_SHORT).show();
+                        LocationsFragment locationsFragment = (LocationsFragment) eventPagerAdapter.getItem(1);
+                        locationsFragment.refresh( (ArrayList<Location>) event.getLocations());
+                    }
+                });
+            }
+        });
+    }
+
+    @Override
+    public void onCancelButtonClicked() {
+
+    }
 }

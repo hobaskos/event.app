@@ -3,6 +3,7 @@ package io.hobaskos.event.eventapp.ui.event.details;
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ import io.hobaskos.event.eventapp.data.model.User;
  * Created by alex on 3/10/17.
  */
 
-public class EventPagerAdapter extends FragmentStatePagerAdapter {
+public class EventPagerAdapter extends FragmentPagerAdapter {
 
     public final static String TAG = EventPagerAdapter.class.getName();
 
