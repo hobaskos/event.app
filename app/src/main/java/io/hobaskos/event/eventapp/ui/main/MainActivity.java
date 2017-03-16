@@ -166,6 +166,8 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
                 logout();
                 break;
         }
+        // Set navdrawer item to checked
+        item.setChecked(true);
 
         // Open new fragment
         if (fragment != null) { // Temporary fix while having empty items(links to no fragment)
