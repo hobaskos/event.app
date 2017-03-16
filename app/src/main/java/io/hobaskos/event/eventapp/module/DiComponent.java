@@ -16,10 +16,10 @@ import io.hobaskos.event.eventapp.ui.event.search.map.SearchEventsMapFragment;
 import io.hobaskos.event.eventapp.ui.login.LoginActivity;
 import io.hobaskos.event.eventapp.ui.login.LoginPresenter;
 import io.hobaskos.event.eventapp.ui.main.MainActivity;
-import io.hobaskos.event.eventapp.ui.profile.AttendingEventsFragment;
 import io.hobaskos.event.eventapp.ui.profile.ProfileActivity;
-import io.hobaskos.event.eventapp.ui.profile.ProfileEditActivity;
 import io.hobaskos.event.eventapp.ui.profile.ProfileFragment;
+import io.hobaskos.event.eventapp.ui.profile.edit.ProfileEditActivity;
+import io.hobaskos.event.eventapp.ui.profile.events.attending.AttendingEventsFragment;
 
 
 /**

@@ -60,14 +60,6 @@ public class EventRepository implements BaseRepository<Event, Long> {
 
     public Observable<List<Event>> searchNearby(int page, String query, double lat, double lon, String distance,
                                                 DateTime fromDate, DateTime toDate, String categories) {
-        Log.i("ZZZXXX", "page " + page);
-        Log.i("ZZZXXX", "query " + query);
-        Log.i("ZZZXXX", "lat " + lat);
-        Log.i("ZZZXXX", "lon " + lon);
-        Log.i("ZZZXXX", "distance " + distance);
-        Log.i("ZZZXXX", "fromDate " + fromDate);
-        Log.i("ZZZXXX", "toDate " + toDate);
-        Log.i("ZZZXXX", "categories " + categories);
         return eventServiceAnonymously
                 .search(page, PAGE_SIZE, query, lat, lon, distance, fromDate, toDate, categories, "fromDate,asc");
     }
@@ -78,6 +70,10 @@ public class EventRepository implements BaseRepository<Event, Long> {
 
     public Observable<List<Event>> getAttendingEvents(int page) {
         return eventServiceAuthenticated.getAttendingEvents(page, PAGE_SIZE);
+    }
+
+    public Observable<List<Event>> getMyEvents(int page) {
+        return eventServiceAuthenticated.getMyEvents(page, PAGE_SIZE, "fromDate,asc");
     }
 
     public Observable<List<User>> getAddendingUsers(Long eventId, int page) {

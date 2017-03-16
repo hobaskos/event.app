@@ -1,4 +1,4 @@
-package io.hobaskos.event.eventapp.ui.profile;
+package io.hobaskos.event.eventapp.ui.profile.edit;
 
 import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
 
