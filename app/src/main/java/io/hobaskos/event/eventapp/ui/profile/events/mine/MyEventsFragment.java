@@ -1,35 +1,31 @@
-package io.hobaskos.event.eventapp.ui.profile;
+package io.hobaskos.event.eventapp.ui.profile.events.mine;
 
-import android.app.Fragment;
+
 import android.content.Context;
 import android.os.Bundle;
-import android.text.format.DateUtils;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import com.squareup.picasso.Picasso;
 
 import io.hobaskos.event.eventapp.R;
-import io.hobaskos.event.eventapp.data.model.Event;
+import io.hobaskos.event.eventapp.data.model.User;
 
 /**
  * Created by Magnus on 13.03.2017.
  */
 
-public class MyEventsFragment extends Fragment{
+public class MyEventsFragment extends Fragment {
 
-    private static final String ARG_EVENT = "event";
-    private Event event;
+    private static final String ARG_USER = "user";
+    private User user;
 
     public MyEventsFragment() {}
 
-    public static MyEventsFragment newInstance(Event event) {
+    public static MyEventsFragment newInstance(User user) {
         MyEventsFragment fragment = new MyEventsFragment();
         Bundle args = new Bundle();
-        args.putParcelable(ARG_EVENT, event);
+        args.putParcelable(ARG_USER, user);
         fragment.setArguments(args);
         return fragment;
     }
@@ -40,7 +36,7 @@ public class MyEventsFragment extends Fragment{
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            event = getArguments().getParcelable(ARG_EVENT);
+            user = getArguments().getParcelable(ARG_USER);
         }
     }
 

@@ -14,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.TabHost;
 import android.widget.TextView;
 
-import com.hannesdorfmann.mosby.mvp.MvpActivity;
 import com.hannesdorfmann.mosby.mvp.MvpFragment;
 import com.squareup.picasso.Picasso;
 
@@ -26,9 +25,8 @@ import butterknife.Unbinder;
 import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.model.User;
+import io.hobaskos.event.eventapp.ui.profile.edit.ProfileEditActivity;
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
-
-import static io.hobaskos.event.eventapp.R.string.create;
 
 /**
  * Created by andre on 3/16/2017.
@@ -100,6 +98,10 @@ public class ProfileFragment extends MvpFragment<ProfileView, ProfilePresenter> 
         presenter.attachView(this);
 
         presenter.refreshProfileData();
+    }
+
+    private void setupViewPager() {
+
     }
 
     @Override
