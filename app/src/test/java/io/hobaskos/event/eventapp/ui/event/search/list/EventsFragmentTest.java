@@ -37,7 +37,7 @@ public class EventsFragmentTest {
 
 
     private MainActivity mainActivity;
-    private EventsFragment fragment;
+    private EventsFragment_Old fragment;
     private FacebookActivity facebookActivity;
 
     RecyclerView recyclerView;
@@ -66,7 +66,7 @@ public class EventsFragmentTest {
                 .start()
                 .get();
 
-        fragment = new EventsFragment();
+        fragment = new EventsFragment_Old();
         mainActivity.getSupportFragmentManager().beginTransaction().replace(R.id.main_pane, fragment).commit();
 
         assertNotNull(fragment);
@@ -81,7 +81,7 @@ public class EventsFragmentTest {
                 .start()
                 .get();
 
-        fragment = new EventsFragment();
+        fragment = new EventsFragment_Old();
         mainActivity.getSupportFragmentManager().beginTransaction().replace(R.id.main_pane, fragment).commit();
         assertNotNull(fragment);
 

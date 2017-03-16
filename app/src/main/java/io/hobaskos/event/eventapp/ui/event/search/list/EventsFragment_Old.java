@@ -4,11 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -46,11 +43,11 @@ import io.hobaskos.event.eventapp.ui.main.old.MainActivity;
  * Created by andre on 2/13/2017.
  */
 
-public class EventsFragment2 extends
+public class EventsFragment_Old extends
         BaseLceViewStateFragment<SwipeRefreshLayout, List<Event>, EventsView, EventsPresenter>
         implements EventsView {
 
-    public final static String TAG = EventsFragment.class.getName();
+    public final static String TAG = EventsFragment_Old.class.getName();
 
     // Views
     @BindView(R.id.recyclerView)RecyclerView recyclerView;
@@ -71,8 +68,6 @@ public class EventsFragment2 extends
     @State boolean canLoadMore = true;
     @State boolean isLoadingMore = false;
     @State int page = 0;
-
-    private DrawerLayout drawerLayout;
 
 //    @Override
 //    public void onSaveInstanceState(Bundle outState) {
@@ -114,51 +109,42 @@ public class EventsFragment2 extends
     @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         Log.i(TAG, "onViewCreated()");
         super.onViewCreated(view, savedInstanceState);
+        /*
+        if (savedInstanceState != null) {
+            page = savedInstanceState.getInt(PAGE_KEY, 0);
+        }
+        */
         Log.i(TAG, "page: " + page );
-
-
 
         emptyResultView = (TextView) view.findViewById(R.id.emptyView);
 
-
+        // Configure toolbar:
+        toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
         recyclerView = (RecyclerView) getView().findViewById(R.id.recyclerView);
         //progressBar = (ProgressBar) getView().findViewById(R.id.progress);
         swipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.contentView);
 
-        // Configure toolbar:
-        toolbar = (Toolbar) getView().findViewById(R.id.toolbar);
+
         setHasOptionsMenu(true);
         toolbar.setTitle("Events");
-
-        // Setup Navigation Drawer
-        drawerLayout = (DrawerLayout) getActivity().findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                getActivity(), drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
-            @Override
-            public void onDrawerClosed(View drawerView) {
-                // Code here will be triggered once the drawer closes as we dont want anything to happen so we leave this blank
-                super.onDrawerClosed(drawerView);
-            }
-
-            @Override
-            public void onDrawerOpened(View drawerView) {
-                // Code here will be triggered once the drawer open as we dont want anything to happen so we leave this blank
-                super.onDrawerOpened(drawerView);
-            }
-        };
-        drawerLayout.setDrawerListener(toggle);
-        toggle.syncState();
-
         toolbar.setOnMenuItemClickListener(menuItem -> {
             switch(menuItem.getItemId()){
-                case R.id.home:
-                    if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-                        drawerLayout.closeDrawer(GravityCompat.START);
-                        return true;
-                    }
                 case R.id.action_search:
                     return true;
                 case R.id.action_filter:
+//                    FilterEventsFragment fragment = new FilterEventsFragment();
+//                    //SearchEventsMapFragment fragment = new SearchEventsMapFragment();
+//
+//                    FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+//
+//                    //ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+//                    //ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right);
+//                    //android.app.FragmentTransaction ft = getActivity().getFragmentManager().beginTransaction();
+//                    //ft.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out, android.R.animator.fade_in, android.R.animator.fade_out);
+//
+//                    ft.replace(R.id.main_pane, fragment);
+//                    ft.addToBackStack(null);
+//                    ft.commit();
                     Intent intent = new Intent(getActivity(), FilterEventsActivity.class);
                     startActivity(intent);
                     return true;
@@ -244,7 +230,7 @@ public class EventsFragment2 extends
     // Return layout resource used by this fragment
     @Override
     protected int getLayoutRes() {
-        return R.layout.fragment_search_events_list;
+        return R.layout.fragment_events;
     }
 
     @Override

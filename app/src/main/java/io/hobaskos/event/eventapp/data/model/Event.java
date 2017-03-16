@@ -20,10 +20,10 @@ import io.hobaskos.event.eventapp.data.model.enumeration.EventAttendingType;
 public class Event implements Parcelable {
 
     @SerializedName("id")
-    public Long id;
+    private Long id;
 
     @SerializedName("title")
-    public String title;
+    private String title;
 
     @SerializedName("description")
     private String description;
@@ -37,8 +37,8 @@ public class Event implements Parcelable {
     @SerializedName("toDate")
     private DateTime toDate;
 
-    @SerializedName("ownerId")
-    private long ownerId;
+    @SerializedName("ownerLogin")
+    private String ownerLogin;
 
     @SerializedName("locations")
     private List<Location> locations;
@@ -113,12 +113,12 @@ public class Event implements Parcelable {
         this.toDate = toDate;
     }
 
-    public long getOwnerId() {
-        return ownerId;
+    public String getOwnerLogin() {
+        return ownerLogin;
     }
 
-    public void setOwnerId(long ownerId) {
-        this.ownerId = ownerId;
+    public void setOwnerLogin(String ownerLogin) {
+        this.ownerLogin = ownerLogin;
     }
 
     public List<Location> getLocations() {
@@ -173,8 +173,6 @@ public class Event implements Parcelable {
         return locations.size() > 0 ? locations.get(0).getName() : "";
     }
 
-    public Event() {
-    }
 
     @Override
     public int describeContents() {
@@ -189,11 +187,16 @@ public class Event implements Parcelable {
         dest.writeString(this.imageUrl);
         dest.writeSerializable(this.fromDate);
         dest.writeSerializable(this.toDate);
-        dest.writeLong(this.ownerId);
+        dest.writeString(this.ownerLogin);
         dest.writeTypedList(this.locations);
         dest.writeParcelable(this.category, flags);
         dest.writeInt(this.attendanceCount);
         dest.writeInt(this.myAttendance == null ? -1 : this.myAttendance.ordinal());
+        dest.writeString(this.image);
+        dest.writeByte(this.privateEvent ? (byte) 1 : (byte) 0);
+    }
+
+    public Event() {
     }
 
     protected Event(Parcel in) {
@@ -201,14 +204,16 @@ public class Event implements Parcelable {
         this.title = in.readString();
         this.description = in.readString();
         this.imageUrl = in.readString();
+        this.ownerLogin = in.readString();
         this.fromDate = (DateTime) in.readSerializable();
         this.toDate = (DateTime) in.readSerializable();
-        this.ownerId = in.readLong();
         this.locations = in.createTypedArrayList(Location.CREATOR);
         this.category = in.readParcelable(EventCategory.class.getClassLoader());
         this.attendanceCount = in.readInt();
         int tmpMyAttendance = in.readInt();
         this.myAttendance = tmpMyAttendance == -1 ? null : EventAttendingType.values()[tmpMyAttendance];
+        this.image = in.readString();
+        this.privateEvent = in.readByte() != 0;
     }
 
     public static final Creator<Event> CREATOR = new Creator<Event>() {

@@ -41,7 +41,7 @@ import io.hobaskos.event.eventapp.ui.login.LoginActivity;
 import io.hobaskos.event.eventapp.ui.main.JoinPrivateEventFragment;
 import io.hobaskos.event.eventapp.ui.profile.ProfileActivity;
 
-import io.hobaskos.event.eventapp.ui.event.search.list.EventsFragment;
+import io.hobaskos.event.eventapp.ui.event.search.list.EventsFragment_Old;
 import rx.Observer;
 
 
@@ -110,7 +110,7 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
         // Temp solution, Initial fragment:
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.main_pane, new EventsFragment())
+                .replace(R.id.main_pane, new EventsFragment_Old())
                 .commit();
 
     }
@@ -172,7 +172,7 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
 
         switch (item.getItemId()) {
             case R.id.nav_events:
-                fragment = new EventsFragment();
+                fragment = new EventsFragment_Old();
                 break;
             case R.id.nav_create_event:
                 startActivity(new Intent(this, CreateEventActivity.class));

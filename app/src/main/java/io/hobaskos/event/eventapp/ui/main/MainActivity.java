@@ -11,9 +11,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -33,13 +31,10 @@ import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.ui.base.view.activity.BaseViewStateActivity;
-import io.hobaskos.event.eventapp.ui.event.create.CreateEventActivity;
 import io.hobaskos.event.eventapp.ui.event.create.CreateEventFragment;
 import io.hobaskos.event.eventapp.ui.event.details.EventActivity;
 import io.hobaskos.event.eventapp.ui.event.search.list.EventsFragment;
-import io.hobaskos.event.eventapp.ui.event.search.list.EventsFragment2;
 import io.hobaskos.event.eventapp.ui.login.LoginActivity;
-import io.hobaskos.event.eventapp.ui.profile.ProfileActivity;
 import io.hobaskos.event.eventapp.ui.profile.ProfileFragment;
 import rx.Observer;
 
@@ -104,7 +99,7 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
         // Temp solution, Initial fragment:
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.main_pane, new EventsFragment2())
+                .replace(R.id.main_pane, new EventsFragment())
                 .commit();
 
     }
@@ -148,7 +143,7 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
 
         switch (item.getItemId()) {
             case R.id.nav_events:
-                fragment = new EventsFragment2();
+                fragment = new EventsFragment();
                 break;
             case R.id.nav_create_event:
                 fragment = new CreateEventFragment();

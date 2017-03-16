@@ -136,6 +136,8 @@ public class FilterEventsFragment extends BaseFragment
             }
             Toast.makeText(getContext(), getString(R.string.filters_applied), Toast.LENGTH_SHORT).show();
             EventBus.getDefault().postSticky(new FiltersUpdatedEvent(""));
+            // Return to event list
+            getActivity().finish();
         });
 
 
