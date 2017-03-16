@@ -1,4 +1,4 @@
-package io.hobaskos.event.eventapp.ui.main;
+package io.hobaskos.event.eventapp.ui.main.old;
 
 import android.app.Dialog;
 import android.content.Intent;
@@ -12,12 +12,14 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -35,15 +37,14 @@ import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.ui.base.view.activity.BaseViewStateActivity;
 import io.hobaskos.event.eventapp.ui.event.create.CreateEventActivity;
 import io.hobaskos.event.eventapp.ui.event.details.EventActivity;
-import io.hobaskos.event.eventapp.ui.event.search.list.EventsFragment;
-import io.hobaskos.event.eventapp.ui.event.search.list.EventsFragment2;
 import io.hobaskos.event.eventapp.ui.login.LoginActivity;
+import io.hobaskos.event.eventapp.ui.main.JoinPrivateEventFragment;
 import io.hobaskos.event.eventapp.ui.profile.ProfileActivity;
+
+import io.hobaskos.event.eventapp.ui.event.search.list.EventsFragment;
 import rx.Observer;
 
-/**
- * Created by test on 3/16/2017.
- */
+
 
 public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
         implements
@@ -54,6 +55,8 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
     // Views:
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
+    private Toolbar toolbar;
+    //private ViewPager viewPager;
 
 
     private final static String JOIN_EVENT_KEY = "joinEventFragment";
@@ -74,22 +77,29 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
         setRetainInstance(true);
 
         App.getInst().getComponent().inject(this);
-        setContentView(R.layout.activity_main_navigation);
+        setContentView(R.layout.activity_main);
 
         if(!googleServicesAvailable()) {
             Log.i("MainActivity", "Google services is not working");
         }
 
         // Find views:
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
 
         hideNavigationHeader();
         presenter.attachView(this);
-        presenter.onLoginState();
+        presenter.onCreateOptionsMenu();
 
+        // Set toolbar:
+        setSupportActionBar(toolbar);
 
-
+        // Setup Navigation Drawer
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.setDrawerListener(toggle);
+        toggle.syncState();
 
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -100,7 +110,7 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
         // Temp solution, Initial fragment:
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.main_pane, new EventsFragment2())
+                .replace(R.id.main_pane, new EventsFragment())
                 .commit();
 
     }
@@ -127,8 +137,26 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
         return false;
     }
 
+    /**
+     * When Navigation Drawer button is pressed.
+     */
+    @Override
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
 
-
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        Log.i("MainActivity", "onLoginState()");
+        presenter.onCreateOptionsMenu();
+        // Inflate the menu; this adds items to the action bar if it is present.
+        //getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
 
     /**
      * Handles navigation view item clicks
@@ -144,7 +172,7 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
 
         switch (item.getItemId()) {
             case R.id.nav_events:
-                fragment = new EventsFragment2();
+                fragment = new EventsFragment();
                 break;
             case R.id.nav_create_event:
                 startActivity(new Intent(this, CreateEventActivity.class));
@@ -268,12 +296,12 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
 
             @Override
             public void onError(Throwable e) {
-                Toast.makeText(io.hobaskos.event.eventapp.ui.main.MainActivity.this, getString(R.string.invalid_invite_code), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, getString(R.string.invalid_invite_code), Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onNext(Event event) {
-                Intent intent = new Intent(io.hobaskos.event.eventapp.ui.main.MainActivity.this, EventActivity.class);
+                Intent intent = new Intent(MainActivity.this, EventActivity.class);
                 intent.putExtra(EventActivity.EVENT_ID, event.getId());
                 intent.putExtra(EventActivity.EVENT_THEME, event.getCategory().getTheme());
                 startActivity(intent);

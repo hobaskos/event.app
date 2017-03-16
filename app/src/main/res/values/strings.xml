@@ -59,7 +59,7 @@
     <string name="submit">Submit</string>
     <string name="join_private_event">Join private event</string>
     <string name="enter_invitation_code">Enter invitation code</string>
-    <string name="join_private">Gå til privat event</string>
+    <string name="join_private">Join private event</string>
     <string name="invite_code_length_error">The invite code must be at least 4 characters</string>
     <string name="invalid_invite_code">Could not find event with that invite code</string>
     <string name="events">Events</string>

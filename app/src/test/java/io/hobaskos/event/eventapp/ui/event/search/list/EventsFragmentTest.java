@@ -22,7 +22,7 @@ import io.hobaskos.event.eventapp.BuildConfig;
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.TestApp;
 import io.hobaskos.event.eventapp.data.model.Event;
-import io.hobaskos.event.eventapp.ui.main.MainActivity;
+import io.hobaskos.event.eventapp.ui.main.old.MainActivity;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

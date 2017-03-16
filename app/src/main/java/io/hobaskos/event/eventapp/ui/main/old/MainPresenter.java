@@ -1,4 +1,4 @@
-package io.hobaskos.event.eventapp.ui.main;
+package io.hobaskos.event.eventapp.ui.main.old;
 
 import android.util.Log;
 
@@ -39,29 +39,29 @@ public class MainPresenter extends MvpBasePresenter<MainView> {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<User>() {
-                    @Override
-                    public void onCompleted() {
+            @Override
+            public void onCompleted() {
 
-                    }
+            }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        // I/MainPresenter: HTTP 401 Unauthorized
-                        Log.i("MainPresenter", e.getMessage());
-                        e.printStackTrace();
-                    }
+            @Override
+            public void onError(Throwable e) {
+                // I/MainPresenter: HTTP 401 Unauthorized
+                Log.i("MainPresenter", e.getMessage());
+                e.printStackTrace();
+            }
 
-                    @Override
-                    public void onNext(User user) {
-                        Log.i("MainPresenter", "User fetched successfully.");
-                        Log.i("MainPresenter", "Name of user: " + user.getFirstName() + " " + user.getLastName());
-                        Log.i("User", user.toString());
-                        if(isViewAttached())
-                        {
-                            getView().setNavigationHeaderText(user.getFirstName() + " " + user.getLastName());
-                        }
-                    }
-                });
+            @Override
+            public void onNext(User user) {
+                Log.i("MainPresenter", "User fetched successfully.");
+                Log.i("MainPresenter", "Name of user: " + user.getFirstName() + " " + user.getLastName());
+                Log.i("User", user.toString());
+                if(isViewAttached())
+                {
+                    getView().setNavigationHeaderText(user.getFirstName() + " " + user.getLastName());
+                }
+            }
+        });
     }
 
     public void logout()
@@ -70,7 +70,7 @@ public class MainPresenter extends MvpBasePresenter<MainView> {
         getView().hideNavigationHeader();
     }
 
-    public void onLoginState()
+    public void onCreateOptionsMenu()
     {
         if(isViewAttached())
         {

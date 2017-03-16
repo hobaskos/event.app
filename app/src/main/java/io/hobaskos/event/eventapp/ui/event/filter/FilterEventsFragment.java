@@ -166,7 +166,7 @@ public class FilterEventsFragment extends BaseFragment
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        Log.i(TAG, "onCreateOptionsMenu()");
+        Log.i(TAG, "onLoginState()");
         //inflater.inflate(R.menu.events_toolbar, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }

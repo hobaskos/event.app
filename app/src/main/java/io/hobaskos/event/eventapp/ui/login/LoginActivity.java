@@ -26,7 +26,7 @@ import io.hobaskos.event.eventapp.data.model.LoginVM;
 import io.hobaskos.event.eventapp.data.model.SocialType;
 import io.hobaskos.event.eventapp.data.model.SocialUserVM;
 import io.hobaskos.event.eventapp.data.model.response.Response;
-import io.hobaskos.event.eventapp.ui.main.MainActivity;
+import io.hobaskos.event.eventapp.ui.main.old.MainActivity;
 
 /**
  * Created by hansp on 24.02.2017.
