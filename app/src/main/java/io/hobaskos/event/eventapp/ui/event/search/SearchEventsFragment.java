@@ -4,7 +4,6 @@ package io.hobaskos.event.eventapp.ui.event.search;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -19,7 +18,7 @@ import android.widget.Toast;
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.ui.base.view.fragment.BaseFragment;
 import io.hobaskos.event.eventapp.ui.event.filter.FilterEventsFragment;
-import io.hobaskos.event.eventapp.ui.event.search.list.EventsFragment;
+import io.hobaskos.event.eventapp.ui.event.search.list.EventsFragment_Old;
 
 /**
  * Created by test on 3/10/2017.
@@ -85,14 +84,14 @@ public class SearchEventsFragment extends BaseFragment {
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getFragmentManager());
-        adapter.addFragment(new EventsFragment(), "LIST");
-        adapter.addFragment(new EventsFragment(), "MAP");
+        adapter.addFragment(new EventsFragment_Old(), "LIST");
+        adapter.addFragment(new EventsFragment_Old(), "MAP");
         viewPager.setAdapter(adapter);
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        Log.i(TAG, "onCreateOptionsMenu()");
+        Log.i(TAG, "onLoginState()");
         inflater.inflate(R.menu.events_toolbar, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }

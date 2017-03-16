@@ -187,8 +187,6 @@ public class EventsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         public void click(final Event event, Action1<Event> listener) {
             itemView.setOnClickListener((i) -> listener.call(event));
         }
-
-
     }
 
     public class LoadMoreViewHolder extends RecyclerView.ViewHolder {

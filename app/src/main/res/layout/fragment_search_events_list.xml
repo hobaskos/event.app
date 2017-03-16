@@ -1,9 +1,12 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.event.search.list.EventsFragment_Old">
+    android:fitsSystemWindows="true">
+
+    <!-- App bar -->
+    <include layout="@layout/app_bar"/>
 
     <include layout="@layout/view_loading"/>
     <include layout="@layout/view_error"/>
@@ -14,6 +17,7 @@
         android:id="@+id/contentView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         >
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerView"
@@ -34,4 +38,4 @@
         android:layout_marginBottom="16dp"
         android:src="@drawable/ic_map" />
 
-</FrameLayout>
+</android.support.design.widget.CoordinatorLayout>

@@ -132,7 +132,7 @@ public class EventsPresenter extends BaseRxLcePresenter<EventsView, List<Event>>
     @Override protected void onNext(List<Event> events) {
         super.onNext(events);
         EventBus.getDefault().postSticky(new SetEventsEvent(events));
-        Log.d("aaaaaaaaaaaa", "HEEEI");
+        Log.d(TAG, "onNext()");
     }
 
     private void loadFilterValues() {

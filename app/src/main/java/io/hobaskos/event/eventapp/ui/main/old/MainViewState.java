@@ -1,4 +1,4 @@
-package io.hobaskos.event.eventapp.ui.main;
+package io.hobaskos.event.eventapp.ui.main.old;
 
 import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
 
