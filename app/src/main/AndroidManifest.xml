@@ -56,7 +56,7 @@
         </activity>
 
         <activity android:name=".ui.profile.ProfileActivity" />
-        <activity android:name=".ui.profile.ProfileEditActivity" />
+        <activity android:name=".ui.profile.edit.ProfileEditActivity" />
         <activity android:name=".ui.event.create.CreateEventActivity" />
         <activity android:name=".ui.event.details.EventActivity"
             />

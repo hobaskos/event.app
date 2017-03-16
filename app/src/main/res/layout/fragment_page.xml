@@ -9,5 +9,5 @@ android:layout_height="match_parent"
 android:layout_marginLeft="16dp"
 android:layout_marginRight="16dp"
 app:layoutManager="LinearLayoutManager"
-tools:context="io.hobaskos.event.eventapp.ui.profile.AttendingEventsFragment"
+tools:context=".ui.profile.events.attending.AttendingEventsFragment"
 tools:listitem="@layout/fragment_page" />

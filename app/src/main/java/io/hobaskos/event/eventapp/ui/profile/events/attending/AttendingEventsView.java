@@ -1,4 +1,4 @@
-package io.hobaskos.event.eventapp.ui.profile;
+package io.hobaskos.event.eventapp.ui.profile.events.attending;
 
 import com.hannesdorfmann.mosby.mvp.MvpView;
 

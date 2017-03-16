@@ -1,11 +1,8 @@
-package io.hobaskos.event.eventapp.ui.profile;
+package io.hobaskos.event.eventapp.ui.profile.events.attending;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.DividerItemDecoration;
 
 import android.support.annotation.NonNull;
 
