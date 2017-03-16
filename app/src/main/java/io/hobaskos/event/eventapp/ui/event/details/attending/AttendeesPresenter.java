@@ -1,10 +1,13 @@
 package io.hobaskos.event.eventapp.ui.event.details.attending;
 
+import android.util.Log;
+
 import java.util.List;
 
 import javax.inject.Inject;
 
 import icepick.State;
+import io.hobaskos.event.eventapp.data.model.EventAttendance;
 import io.hobaskos.event.eventapp.data.model.User;
 import io.hobaskos.event.eventapp.data.repository.EventRepository;
 import io.hobaskos.event.eventapp.ui.base.presenter.BaseRxLcePresenter;
@@ -18,6 +21,8 @@ import rx.schedulers.Schedulers;
  */
 
 public class AttendeesPresenter extends BaseRxLcePresenter<AttendeesView, List<User>> {
+
+    public static final String TAG = AttendeesPresenter.class.getName();
 
     private EventRepository eventRepository;
 
@@ -36,14 +41,18 @@ public class AttendeesPresenter extends BaseRxLcePresenter<AttendeesView, List<U
 
     public void loadAttendees(boolean pullToRefresh, Long eventId) {
 
+        Log.d(TAG, "loadAttendees: " + eventId);
+
         this.eventId = eventId;
 
         if (isViewAttached()) { getView().showLoadMore(false); }
-
+        page = 0;
         subscribe(eventRepository.getAddendingUsers(eventId, page), pullToRefresh);
     }
 
     public void loadMoreAttendees() {
+
+        Log.d(TAG, "loadMoreAttendees: " + eventId);
 
         if (isViewAttached()) { getView().showLoadMore(false); }
         unsubscribe();
@@ -75,5 +84,13 @@ public class AttendeesPresenter extends BaseRxLcePresenter<AttendeesView, List<U
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(moreAttendeesObserver);
+    }
+
+    public void attendEvent(Observer<EventAttendance> observer) {
+        Log.d(TAG, "attendEvent: " + eventId);
+        eventRepository.attendEvent(eventId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(observer);
     }
 }

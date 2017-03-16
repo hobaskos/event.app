@@ -64,4 +64,12 @@
     <string name="invalid_invite_code">Could not find event with that invite code</string>
     <string name="events">Events</string>
     <string name="filter_events">Search filters</string>
+
+
+    <string name="attend_event">Attend event</string>
+    <string name="event_going">Going:</string>
+    <string name="attending_event">Attending event</string>
+    <string name="attend_event_desc">Do you want to attend this event?</string>
+    <string name="could_not_attend_event">Could not attend event, maybe you are already attending?</string>
+    <string name="attending_event_count">Attendance count:</string>
 </resources>

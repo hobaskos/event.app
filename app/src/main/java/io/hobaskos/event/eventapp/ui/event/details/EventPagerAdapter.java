@@ -3,20 +3,19 @@ package io.hobaskos.event.eventapp.ui.event.details;
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.util.Log;
 
-import java.util.ArrayList;
 
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.model.Event;
-import io.hobaskos.event.eventapp.data.model.User;
 import io.hobaskos.event.eventapp.ui.event.details.attending.AttendeesFragment;
 
 /**
  * Created by alex on 3/10/17.
  */
 
-public class EventPagerAdapter extends FragmentStatePagerAdapter {
+public class EventPagerAdapter extends FragmentPagerAdapter {
 
     public final static String TAG = EventPagerAdapter.class.getName();
 
@@ -32,9 +31,11 @@ public class EventPagerAdapter extends FragmentStatePagerAdapter {
         this.event = event;
         this.context = context;
 
+        Log.d(TAG, "EventPagerAdapter: " + event.getId() + ", myAttendance: " + event.getMyAttendance());
+
         eventInfoFragment = EventInfoFragment.newInstance(event);
         locationsFragment = LocationsFragment.newInstance(event);
-        attendeesFragment = AttendeesFragment.newInstance(event.getId());
+        attendeesFragment = AttendeesFragment.newInstance(event.getId(), event.getMyAttendance() != null);
     }
 
     @Override

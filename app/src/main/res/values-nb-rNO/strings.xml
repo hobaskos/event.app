@@ -64,4 +64,11 @@
     <string name="invalid_invite_code">Fant ingen eventer med den invitasjonskoden</string>
     <string name="events">Arrangementer</string>
     <string name="filter_events">Søkefiltere</string>
+
+    <string name="attend_event">Attend event</string>
+    <string name="event_going">Going:</string>
+    <string name="attending_event">Attending event</string>
+    <string name="attend_event_desc">Do you want to attend this event?</string>
+    <string name="could_not_attend_event">Could not attend event, maybe you are already attending?</string>
+    <string name="attending_event_count">Attendance count:</string>
 </resources>
