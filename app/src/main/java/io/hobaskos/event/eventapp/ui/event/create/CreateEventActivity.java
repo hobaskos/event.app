@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.SwitchCompat;
-import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.ArrayAdapter;
@@ -29,6 +28,7 @@ import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.data.model.EventCategory;
+import io.hobaskos.event.eventapp.ui.ActivityState;
 import io.hobaskos.event.eventapp.ui.event.details.EventActivity;
 import io.hobaskos.event.eventapp.util.ImageUtil;
 
@@ -59,12 +59,10 @@ public class CreateEventActivity extends MvpActivity<CreateEventView, CreateEven
     private String imageMimeType;
     private Event event;
 
-    public enum ActivityState { CREATE, EDIT }
     private ActivityState activityState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.i("CreateEventActivity", "Inside Create Event on Create");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_event);
 
@@ -92,7 +90,6 @@ public class CreateEventActivity extends MvpActivity<CreateEventView, CreateEven
             edit.setEnabled(false);
             onEditButtonClicked();
         });
-
 
         loadingPanel = (RelativeLayout) findViewById(R.id.activity_create_event_loading_panel);
 
@@ -183,8 +180,7 @@ public class CreateEventActivity extends MvpActivity<CreateEventView, CreateEven
             title.setError(null);
         }
 
-        // Should Description be a required field?
-        // Any other required fields?
+        // TODO Any other required fields?
 
         return valid;
     }
@@ -250,9 +246,7 @@ public class CreateEventActivity extends MvpActivity<CreateEventView, CreateEven
 
     @Override
     public void onSuccess(long id) {
-        // redirect to newly created event with id= id
         hideLoader();
-        Log.i("Activity", "event with id=" + id + ", created.");
 
         Intent intent = new Intent(this, EventActivity.class);
         intent.putExtra("eventId", id);
@@ -262,8 +256,17 @@ public class CreateEventActivity extends MvpActivity<CreateEventView, CreateEven
 
     @Override
     public void onFailure() {
-        Toast.makeText(this, R.string.could_not_create_event, Toast.LENGTH_SHORT).show();
+
         hideLoader();
+
+        if(activityState.equals(ActivityState.CREATE)) {
+            Toast.makeText(this, R.string.could_not_create_event, Toast.LENGTH_SHORT).show();
+            create.setEnabled(true);
+            return;
+        }
+
+        Toast.makeText(this, R.string.could_not_edit_event, Toast.LENGTH_SHORT).show();
+        edit.setEnabled(true);
     }
 
     @Override

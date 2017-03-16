@@ -53,8 +53,11 @@
     <string name="error_message_required_field_to_time">Slutt-tid er et nødvendig felt.</string>
     <string name="title_label">Navn</string>
     <string name="image_label">Bilde</string>
-    <string name="could_not_create_event">Kunne ikke opprette event.</string>
-    <string name="could_not_load_categories">Kunne ikke hente kategoriene.</string>
+    <string name="could_not_create_event">Kunne ikke opprette event. Vennligst prøv på nytt.</string>
+    <string name="could_not_edit_event">Kunne ikke endre eventet. Vennligst prøv på nytt.</string>
+    <string name="could_not_load_categories">Kunne ikke hente kategoriene. </string>
+    <string name="could_not_add_location">Kunne ikke legge til lokasjonen. Vennligst prøv på nytt.</string>
+    <string name="could_not_edit_location">Kunne ikke endre lokasjonen. Vennligst prøv på nytt.</string>
     <string name="private_event_label">Privat Event</string>
     <string name="event_category_label">Kategori</string>
     <string name="from">Fra</string>
