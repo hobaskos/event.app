@@ -13,5 +13,4 @@ import io.hobaskos.event.eventapp.data.model.User;
 
 public interface ProfileView extends MvpView{
     void setProfileData(User user);
-    void setEventAttending(List<Event> eventAttending);
 }

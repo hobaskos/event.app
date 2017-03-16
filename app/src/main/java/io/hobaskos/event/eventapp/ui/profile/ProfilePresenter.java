@@ -21,12 +21,10 @@ import rx.schedulers.Schedulers;
 public class ProfilePresenter extends MvpBasePresenter<ProfileView> {
 
     private AccountManager accountManager;
-    private AccountRepository accountRepository;
 
     @Inject
-    public ProfilePresenter(AccountManager accountManager, AccountRepository accountRepository) {
+    public ProfilePresenter(AccountManager accountManager) {
         this.accountManager = accountManager;
-        this.accountRepository = accountRepository;
     }
 
     public void refreshProfileData()
@@ -54,27 +52,4 @@ public class ProfilePresenter extends MvpBasePresenter<ProfileView> {
                     }
                 });
     }
-
-    public void getEventUserAttending() {
-        accountRepository.getAttendingEvents()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<List<Event>>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(List<Event> events) {
-                        getView().setEventAttending(events);
-                    }
-                });
-    }
-
 }

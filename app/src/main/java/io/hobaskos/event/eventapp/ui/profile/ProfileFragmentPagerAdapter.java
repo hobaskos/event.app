@@ -5,11 +5,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import java.util.ArrayList;
-
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.model.Event;
-import io.hobaskos.event.eventapp.data.model.User;
 import io.hobaskos.event.eventapp.ui.event.details.EventPagerAdapter;
 
 /**
@@ -21,7 +18,6 @@ public class ProfileFragmentPagerAdapter extends FragmentStatePagerAdapter {
 
     private Context context;
     private Event event;
-    private ArrayList<User> tmpUsers = new ArrayList<>();
 
     public ProfileFragmentPagerAdapter(Event event, Context context, FragmentManager fm) {
         super(fm);
@@ -33,9 +29,7 @@ public class ProfileFragmentPagerAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return MyEventsFragment.newInstance(event);
-            case 1:
-                return AttendingEventsFragment.newInstance(event);
+                return AttendingEventsFragment.newInstance(position);
             default:
                 return new Fragment();
         }

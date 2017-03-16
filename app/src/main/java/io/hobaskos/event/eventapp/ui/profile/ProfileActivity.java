@@ -77,7 +77,6 @@ public class ProfileActivity extends MvpActivity<ProfileView, ProfilePresenter> 
         });
 
         presenter.refreshProfileData();
-        presenter.getEventUserAttending();
     }
 
     /**
@@ -109,16 +108,11 @@ public class ProfileActivity extends MvpActivity<ProfileView, ProfilePresenter> 
         }
     }
 
-    @Override
-    public void setEventAttending(List<Event> eventAttending) {
-        eventsAttending.addAll(eventAttending);
-    }
 
     @Override
     public void onResume() {
         super.onResume();
         presenter.refreshProfileData();
-        presenter.getEventUserAttending();
     }
 
 }
