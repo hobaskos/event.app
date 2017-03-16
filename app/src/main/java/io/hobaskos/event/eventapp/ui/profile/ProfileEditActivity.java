@@ -13,6 +13,7 @@ import android.support.v4.graphics.BitmapCompat;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -63,6 +64,9 @@ public class ProfileEditActivity extends MvpActivity<ProfileEditView, ProfileEdi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
 
+        setTitle(R.string.edit_profile);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
         firstname = (TextView) findViewById(R.id.firstnameInput);
         lastname = (TextView) findViewById(R.id.lastnameInput);
@@ -97,7 +101,16 @@ public class ProfileEditActivity extends MvpActivity<ProfileEditView, ProfileEdi
         startActivityForResult(intent , REQUEST_IMAGE_LIBRARY);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
 
+        return super.onOptionsItemSelected(item);
+    } // end of onOptionsItemSelected()
 
 
     //If you want to return the taken image
