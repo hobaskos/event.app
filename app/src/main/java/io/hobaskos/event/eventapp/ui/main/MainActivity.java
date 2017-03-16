@@ -40,6 +40,7 @@ import io.hobaskos.event.eventapp.ui.event.search.list.EventsFragment;
 import io.hobaskos.event.eventapp.ui.event.search.list.EventsFragment2;
 import io.hobaskos.event.eventapp.ui.login.LoginActivity;
 import io.hobaskos.event.eventapp.ui.profile.ProfileActivity;
+import io.hobaskos.event.eventapp.ui.profile.ProfileFragment;
 import rx.Observer;
 
 /**
@@ -51,6 +52,8 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
         NavigationView.OnNavigationItemSelectedListener,
         MainView,
         JoinPrivateEventFragment.OnInviteCodeSubmitInteractionListener {
+
+    public final static String TAG = MainActivity.class.getName();
 
     // Views:
     private NavigationView navigationView;
@@ -154,7 +157,7 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
                 joinPrivateEvent();
                 break;
             case R.id.nav_profile:
-                startActivity(new Intent(this, ProfileActivity.class));
+                fragment = new ProfileFragment();
                 break;
             case R.id.nav_login:
                 startActivity(new Intent(this, LoginActivity.class));

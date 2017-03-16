@@ -17,6 +17,7 @@ import io.hobaskos.event.eventapp.ui.login.LoginPresenter;
 import io.hobaskos.event.eventapp.ui.main.old.MainActivity;
 import io.hobaskos.event.eventapp.ui.profile.ProfileActivity;
 import io.hobaskos.event.eventapp.ui.profile.ProfileEditActivity;
+import io.hobaskos.event.eventapp.ui.profile.ProfileFragment;
 
 
 /**
@@ -40,5 +41,6 @@ public interface DiComponent {
     void inject(LoginPresenter loginPresenter);
     void inject(LoginActivity loginActivity);
     void inject(ProfileActivity profileActivity);
+    void inject(ProfileFragment profileFragment);
     void inject(ProfileEditActivity profileEditActivity);
 }
