@@ -61,8 +61,7 @@ public class ProfileActivity extends MvpActivity<ProfileView, ProfilePresenter> 
         setContentView(R.layout.activity_profile);
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
-        viewPager.setAdapter(new ProfileFragmentPagerAdapter(event, getSupportFragmentManager(), ProfileActivity.this));
-        //viewPager.setAdapter(new ProfileFragmentPagerAdapter(getFragmentManager(),ProfileActivity.this));
+        viewPager.setAdapter(new ProfileFragmentPagerAdapter(event, this, getSupportFragmentManager()));
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabsMenu);
         tabLayout.setupWithViewPager(viewPager);

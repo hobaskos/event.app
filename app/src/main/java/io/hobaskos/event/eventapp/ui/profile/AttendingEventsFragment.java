@@ -4,7 +4,6 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,37 +12,30 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import io.hobaskos.event.eventapp.R;
-import io.hobaskos.event.eventapp.data.api.AccountService;
 import io.hobaskos.event.eventapp.data.model.Event;
-import io.hobaskos.event.eventapp.ui.event.details.LocationRecyclerViewAdapter;
-import io.hobaskos.event.eventapp.ui.location.add.LocationActivity;
+import io.hobaskos.event.eventapp.ui.event.details.EventActivity;
+import io.hobaskos.event.eventapp.ui.event.list.EventsAdapter;
 
 /**
  * Created by Magnus on 13.03.2017.
  */
 
 public class AttendingEventsFragment extends Fragment {
+    public static final String ARG_PAGE = "ARG_PAGE";
     private static final String ARG_EVENT_LIST = "event-list";
     private static final String ARG_EVENT_ID = "eventId";
 
     private ArrayList<Event> eventAttending = new ArrayList<>();
-    private AttendingEventsFragment.OnListFragmentInteractionListener listener;
-    private DividerItemDecoration dividerItemDecoration;
-    private Long eventId;
 
-    public AttendingEventsFragment() {}
 
-    @SuppressWarnings("unused")
-    public static AttendingEventsFragment newInstance(Event event) {
-        Fragment fragment = new AttendingEventsFragment();
+
+    public static AttendingEventsFragment newInstance(ArrayList<Event> event) {
+        AttendingEventsFragment fragment = new AttendingEventsFragment();
         Bundle args = new Bundle();
-
-
-        args.putParcelableArrayList(ARG_EVENT_LIST, (ArrayList<Event>));
-        args.putParcelableArray(ARG_EVENT_LIST,(ArrayList<Event>) );
-        args.putLong(ARG_EVENT_ID, event.getId());
+        args.putParcelableArrayList(ARG_EVENT_LIST, event);
         fragment.setArguments(args);
         return fragment;
     }
@@ -54,76 +46,28 @@ public class AttendingEventsFragment extends Fragment {
 
         if (getArguments() != null) {
             eventAttending = getArguments().getParcelableArrayList(ARG_EVENT_LIST);
-            eventId = getArguments().getLong(ARG_EVENT_ID);
-        }
-    }
-
-}//End of class
-
-
-
-
-
-
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        if (getArguments() != null) {
-            locations = getArguments().getParcelableArrayList(ARG_LOCATIONS_LIST);
-            eventId = getArguments().getLong(ARG_EVENT_ID);
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_location_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_page, container, false);
 
-
-        // Set the adapter
         Context context = view.getContext();
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.list);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(new LocationRecyclerViewAdapter(locations, listener));
-
-        dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
-                linearLayoutManager.getOrientation());
-        recyclerView.addItemDecoration(dividerItemDecoration);
-
-        addLocation = (FloatingActionButton) view.findViewById(R.id.fragment_location_list_fab);
-        addLocation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), LocationActivity.class);
-                intent.putExtra("eventId", eventId);
-                startActivity(intent);
-            }
-        });
+        recyclerView.setAdapter(new EventsAdapter(eventAttending,context, event -> {
+            Intent intent = new Intent(getActivity(), EventActivity.class);
+            intent.putExtra(EventActivity.EVENT_ID, event.getId());
+            intent.putExtra(EventActivity.EVENT_THEME, event.getCategory().getTheme());
+            startActivity(intent);
+        }));
 
         return view;
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof io.hobaskos.event.eventapp.ui.event.details.LocationsFragment.OnListFragmentInteractionListener) {
-            listener = (OnListFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
-        }
-    }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        listener = null;
-    }
 
-    public interface OnListFragmentInteractionListener {
-        void onListFragmentInteraction(Event item);
-    }
-}
+}//End of class
