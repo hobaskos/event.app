@@ -4,13 +4,14 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.util.Log;
 
 
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.ui.event.details.attending.AttendeesFragment;
+import io.hobaskos.event.eventapp.ui.event.details.info.EventInfoFragment;
+import io.hobaskos.event.eventapp.ui.event.details.location.LocationsFragment;
 
 /**
  * Created by alex on 3/10/17.
