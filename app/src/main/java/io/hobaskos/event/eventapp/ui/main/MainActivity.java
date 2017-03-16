@@ -14,6 +14,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +25,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
+import com.squareup.picasso.Picasso;
 
 import javax.inject.Inject;
 
@@ -32,11 +34,11 @@ import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.ui.base.view.activity.BaseViewStateActivity;
 import io.hobaskos.event.eventapp.ui.event.create.CreateEventActivity;
-import io.hobaskos.event.eventapp.ui.event.create.CreateEventFragment;
 import io.hobaskos.event.eventapp.ui.event.details.EventActivity;
 import io.hobaskos.event.eventapp.ui.event.search.list.EventsFragment;
 import io.hobaskos.event.eventapp.ui.login.LoginActivity;
 import io.hobaskos.event.eventapp.ui.profile.ProfileFragment;
+import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 import rx.Observer;
 
 /**
@@ -239,10 +241,34 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
     }
 
     @Override
-    public void setNavigationHeaderText(String text) {
+    public void setUserName(String text) {
         View header = navigationView.getHeaderView(0);
         TextView tvNavHeaderUsername = (TextView) header.findViewById(R.id.nav_header_username);
         tvNavHeaderUsername.setText(text);
+    }
+
+    @Override
+    public void setUserPicture(String imageUrl) {
+        View header = navigationView.getHeaderView(0);
+        ImageView imageView = (ImageView) header.findViewById(R.id.imageView);
+
+        if(imageUrl == null || imageUrl.equals("")) {
+            imageView.setImageResource(R.drawable.ic_account_circle_black_24dp);
+            return;
+        }
+
+        Picasso.with(getApplicationContext())
+                .load(imageUrl)
+                .transform(new CropCircleTransformation())
+                .fit()
+                .into(imageView);
+    }
+
+    @Override
+    public void setDefaultPicture() {
+        View header = navigationView.getHeaderView(0);
+        ImageView imageView = (ImageView) header.findViewById(R.id.imageView);
+        imageView.setImageResource(R.mipmap.eventure_logo);
     }
 
     @Override
