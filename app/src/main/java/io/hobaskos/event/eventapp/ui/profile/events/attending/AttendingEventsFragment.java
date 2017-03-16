@@ -56,6 +56,7 @@ public class AttendingEventsFragment extends MvpFragment<AttendingEventsView, At
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
         if (getArguments() != null) {
             mPage = getArguments().getInt(ARG_PAGE);
         }
