@@ -86,10 +86,7 @@ public class Event implements Parcelable {
     }
 
     public void setImage(String image) {
-        this.image = image;<<<<<<< FRONTEND-105
-208
- 
-
+        this.image = image;
     }
 
     public String getImageUrl() {
@@ -207,8 +204,6 @@ public class Event implements Parcelable {
         this.title = in.readString();
         this.description = in.readString();
         this.imageUrl = in.readString();
-        this.fromDate = (LocalDateTime) in.readSerializable();
-        this.toDate = (LocalDateTime) in.readSerializable();
         this.ownerLogin = in.readString();
         this.fromDate = (DateTime) in.readSerializable();
         this.toDate = (DateTime) in.readSerializable();
