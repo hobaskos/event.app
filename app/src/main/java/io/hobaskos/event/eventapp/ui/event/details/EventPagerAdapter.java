@@ -5,12 +5,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.util.Log;
 
-import java.util.ArrayList;
 
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.model.Event;
-import io.hobaskos.event.eventapp.data.model.User;
 import io.hobaskos.event.eventapp.ui.event.details.attending.AttendeesFragment;
 
 /**
@@ -33,9 +32,11 @@ public class EventPagerAdapter extends FragmentPagerAdapter {
         this.event = event;
         this.context = context;
 
+        Log.d(TAG, "EventPagerAdapter: " + event.getId() + ", myAttendance: " + event.getMyAttendance());
+
         eventInfoFragment = EventInfoFragment.newInstance(event);
         locationsFragment = LocationsFragment.newInstance(event);
-        attendeesFragment = AttendeesFragment.newInstance(event.getId());
+        attendeesFragment = AttendeesFragment.newInstance(event.getId(), event.getMyAttendance() != null);
     }
 
     @Override
