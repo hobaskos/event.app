@@ -14,7 +14,6 @@ import com.hannesdorfmann.mosby.mvp.MvpActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
@@ -61,7 +60,7 @@ public class ProfileActivity extends MvpActivity<ProfileView, ProfilePresenter> 
         setContentView(R.layout.activity_profile);
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
-        viewPager.setAdapter(new ProfileFragmentPagerAdapter(event, this, getSupportFragmentManager()));
+        viewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager()));
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabsMenu);
         tabLayout.setupWithViewPager(viewPager);

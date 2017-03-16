@@ -3,9 +3,11 @@ package io.hobaskos.event.eventapp.ui.profile;
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.model.Event;
@@ -16,44 +18,45 @@ import io.hobaskos.event.eventapp.ui.event.details.EventPagerAdapter;
  * Created by Magnus on 15.03.2017.
  */
 
-public class ProfileFragmentPagerAdapter extends FragmentStatePagerAdapter {
+public class ViewPagerAdapter extends FragmentPagerAdapter {
     public final static String TAG = EventPagerAdapter.class.getName();
 
-    private Context context;
-    private Event event;
     private ArrayList<User> tmpUsers = new ArrayList<>();
 
-    public ProfileFragmentPagerAdapter(Event event, Context context, FragmentManager fm) {
+    private List<Fragment> fragments;
+    private List<String> titles;
+
+    public ViewPagerAdapter(FragmentManager fm) {
         super(fm);
-        this.event = event;
-        this.context = context;
+        fragments = new ArrayList<>();
+        titles = new ArrayList<>();
+    }
+
+    public ViewPagerAdapter(FragmentManager fm, List<Fragment> fragments, List<String> titles) {
+        super(fm);
+        this.fragments = fragments;
+        this.titles = titles;
     }
 
     @Override
     public Fragment getItem(int position) {
-        switch (position) {
-            case 0:
-                return MyEventsFragment.newInstance(event);
-            case 1:
-                return AttendingEventsFragment.newInstance(event);
-            default:
-                return new Fragment();
-        }
+        return this.fragments.get(position);
     }
 
     @Override
     public int getCount() {
-        return 2;
+        return fragments.size();
+    }
+
+    public void addFragment(Fragment fragment, String title) {
+        fragments.add(fragment);
+        titles.add(title);
     }
 
     @Override
     public CharSequence getPageTitle(int position) {
-        switch (position) {
-            case 0:
-                return context.getString(R.string.mine);
-            default:
-                return context.getString(R.string.attending);
-        }
+        return titles.get(position);
     }
+
 
 }
