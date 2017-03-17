@@ -83,6 +83,9 @@ public class ProfileFragment extends MvpFragment<ProfileView, ProfilePresenter> 
             startActivity(i);
         });
 
+        //Initializing viewPager
+        viewPager = (ViewPager) getView().findViewById(R.id.viewpager);
+
         viewPager.setAdapter(new ProfilePagerAdapter(getFragmentManager()));
 
         tabLayout.setTabMode(TabLayout.MODE_FIXED);

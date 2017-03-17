@@ -77,7 +77,6 @@ public class MyEventsFragment extends
 
     @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRetainInstance(true);
     }
 
 
@@ -89,7 +88,6 @@ public class MyEventsFragment extends
         emptyResultView = (TextView) view.findViewById(R.id.emptyView);
 
         recyclerView = (RecyclerView) getView().findViewById(R.id.recyclerView);
-        //progressBar = (ProgressBar) getView().findViewById(R.id.progress);
         swipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.contentView);
 
 

@@ -3,6 +3,7 @@ package io.hobaskos.event.eventapp.ui.profile;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,10 +40,13 @@ public class ProfilePagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
+                Log.i(TAG, "getItem attending");
                 return attendingEventsFragment;
             case 1:
+                Log.i(TAG, "getItem myEvents");
                 return myEventsFragment;
             case 2:
+                Log.i(TAG, "getItem archived");
                 return archivedEventsFragment;
             default:
                 return new Fragment();

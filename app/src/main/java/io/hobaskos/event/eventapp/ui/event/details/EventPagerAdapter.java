@@ -44,10 +44,13 @@ public class EventPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
+                Log.i(TAG, "getItem eventInfoFragment");
                 return eventInfoFragment;
             case 1:
+                Log.i(TAG, "getItem locationsFragment");
                 return locationsFragment;
             case 2:
+                Log.i(TAG, "getItem attendeesFragment");
                 return attendeesFragment;
             default:
                 return new Fragment();
