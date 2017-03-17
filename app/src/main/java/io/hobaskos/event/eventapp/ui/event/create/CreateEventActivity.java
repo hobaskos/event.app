@@ -56,7 +56,6 @@ public class CreateEventActivity extends MvpActivity<CreateEventView, CreateEven
     private Button create;
     private Button edit;
     private RelativeLayout loadingPanel;
-    private String imageMimeType;
     private Event event;
 
     public enum ActivityState { CREATE, EDIT }
@@ -67,6 +66,8 @@ public class CreateEventActivity extends MvpActivity<CreateEventView, CreateEven
         Log.i("CreateEventActivity", "Inside Create Event on Create");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_event);
+
+        setTitle(R.string.create_event);
 
         title = (EditText) findViewById(R.id.create_event_field_title);
 
@@ -102,6 +103,7 @@ public class CreateEventActivity extends MvpActivity<CreateEventView, CreateEven
         setState(getIntent().getIntExtra(ACTIVITY_STATE, 0));
 
         if(activityState.equals(ActivityState.EDIT)) {
+            setTitle(R.string.edit_event);
             event = getIntent().getParcelableExtra(EVENT);
             title.setText(event.getTitle());
             description.setText(event.getDescription());
@@ -205,8 +207,6 @@ public class CreateEventActivity extends MvpActivity<CreateEventView, CreateEven
             if (requestCode == PICK_IMAGE_REQUEST && data != null && data.getData() != null) {
                 Uri uri = data.getData();
 
-                imageMimeType = getMimeType(uri.getPath());
-
                 try {
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
                     image = ImageUtil.getEncoded64ImageStringFromBitmap(bitmap);
@@ -215,21 +215,6 @@ public class CreateEventActivity extends MvpActivity<CreateEventView, CreateEven
                 }
             }
         }
-    }
-
-    private String getMimeType(String path) {
-
-        String type = null;
-
-        path = path.toLowerCase();
-
-        String extension = MimeTypeMap.getFileExtensionFromUrl(path);
-
-        if(extension != null) {
-            type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
-        }
-
-        return type;
     }
 
     @NonNull

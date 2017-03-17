@@ -48,6 +48,8 @@ public class LoginActivity extends MvpActivity<LoginView, LoginPresenter> implem
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        setTitle(R.string.login);
+
         etLogin = (EditText) findViewById(R.id.field_username);
         etPassword = (EditText) findViewById(R.id.field_password);
 
@@ -75,9 +77,6 @@ public class LoginActivity extends MvpActivity<LoginView, LoginPresenter> implem
         btnFacebook.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                Log.i("Login Token", loginResult.getAccessToken().getToken());
-                Log.i("Login UserId", loginResult.getAccessToken().getUserId());
-
                 String token = loginResult.getAccessToken().getToken();
                 String userId = loginResult.getAccessToken().getUserId();
 
