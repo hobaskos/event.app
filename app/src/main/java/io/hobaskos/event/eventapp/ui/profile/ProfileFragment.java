@@ -28,7 +28,6 @@ import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.model.User;
 import io.hobaskos.event.eventapp.ui.profile.edit.ProfileEditActivity;
-import io.hobaskos.event.eventapp.ui.profile.events.mine.MyEventsAdapter;
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 
 /**

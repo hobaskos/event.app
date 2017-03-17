@@ -14,16 +14,15 @@ import java.util.List;
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.data.model.EventCategoryTheme;
-import io.hobaskos.event.eventapp.ui.event.search.list.EventsAdapter;
 import rx.functions.Action1;
 
 /**
  * Created by test on 3/16/2017.
  */
 
-public class MyEventsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class EventPagedRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    public final static String TAG = MyEventsAdapter.class.getName();
+    public final static String TAG = EventPagedRecyclerAdapter.class.getName();
 
     private final int VIEW_TYPE_ITEM = 0;
     private final int VIEW_TYPE_LOADING = 1;
@@ -35,7 +34,7 @@ public class MyEventsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     private boolean showLoadMore = false;
 
-    public MyEventsAdapter(List<Event> items, Context context, Action1<Event> onItemClick) {
+    public EventPagedRecyclerAdapter(List<Event> items, Context context, Action1<Event> onItemClick) {
         this.items = items;
         this.context = context;
         this.onItemClick = onItemClick;
@@ -97,13 +96,13 @@ public class MyEventsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 view.setLayoutParams(new RecyclerView.
                         LayoutParams(RecyclerView.LayoutParams.
                         MATCH_PARENT, RecyclerView.LayoutParams.WRAP_CONTENT));
-                return new MyEventsAdapter.EventViewHolder(view);
+                return new EventPagedRecyclerAdapter.EventViewHolder(view);
             case 1: // viewType = 1 (show load more item)
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_loadmore, null);
                 view.setLayoutParams(new RecyclerView.
                         LayoutParams(RecyclerView.LayoutParams.
                         MATCH_PARENT, RecyclerView.LayoutParams.WRAP_CONTENT));
-                return new MyEventsAdapter.LoadMoreViewHolder(view);
+                return new EventPagedRecyclerAdapter.LoadMoreViewHolder(view);
             default:
                 return null;
         }
@@ -113,7 +112,7 @@ public class MyEventsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         switch (holder.getItemViewType()) {
             case 0:
-                MyEventsAdapter.EventViewHolder eventHolder = (MyEventsAdapter.EventViewHolder) holder;
+                EventPagedRecyclerAdapter.EventViewHolder eventHolder = (EventPagedRecyclerAdapter.EventViewHolder) holder;
                 Event event = items.get(position);
 
                 if (event.getMyAttendance() == null) eventHolder.myAttendance.setVisibility(View.GONE);
@@ -173,7 +172,7 @@ public class MyEventsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         public EventViewHolder(View itemView) {
             super(itemView);
-            Log.i(TAG, "EventViewHolder()");
+            Log.i(TAG, "ItemViewHolder()");
             eventTitle = (TextView) itemView.findViewById(R.id.event_title);
             eventLocation = (TextView) itemView.findViewById(R.id.event_location);
             attendanceCount = (TextView) itemView.findViewById(R.id.attendance_count);
