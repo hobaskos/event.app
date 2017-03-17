@@ -37,6 +37,9 @@
     <string name="mine">Mine</string>
     <string name="search_event">Events</string>
     <string name="create_event">Create Event</string>
+    <string name="edit_event">Edit Event</string>
+    <string name="add_location">Add Location</string>
+    <string name="edit_location">Edit Location</string>
     <string name="my_profile">My Profile</string>
     <string name="logout">Logout</string>
     <string name="loading">Loading</string>

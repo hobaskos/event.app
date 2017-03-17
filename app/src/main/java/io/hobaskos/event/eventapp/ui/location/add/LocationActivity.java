@@ -88,6 +88,8 @@ public class LocationActivity extends MvpActivity<LocationView, LocationPresente
 
         description = (EditText) findViewById(R.id.activity_add_location_description);
 
+        setTitle(R.string.add_location);
+
         fromDateTimeVM = new DateTimeVM();
         toDateTimeVM = new DateTimeVM();
 
@@ -150,6 +152,7 @@ public class LocationActivity extends MvpActivity<LocationView, LocationPresente
         setState(getIntent().getIntExtra(EVENT_STATE, 0));
 
         if(activityState.equals(ActivityState.EDIT)) {
+            setTitle(R.string.edit_location);
             location = getIntent().getParcelableExtra(LOCATION);
             name.setText(location.getName());
             description.setText(location.getDescription());
@@ -181,8 +184,6 @@ public class LocationActivity extends MvpActivity<LocationView, LocationPresente
 
         presenter.attachView(this);
     }
-
-
 
     private void setState(int i) {
         if(i == 0) {

@@ -38,6 +38,9 @@
     <string name="mine">Mine</string>
     <string name="search_event">Eventer</string>
     <string name="create_event">Opprett Event</string>
+    <string name="edit_event">Rediger Event</string>
+    <string name="add_location">Legg til lokasjon</string>
+    <string name="edit_location">Rediger lokasjon</string>
     <string name="my_profile">Min Profil</string>
     <string name="logout">Logg ut</string>
     <string name="loading">Laster</string>

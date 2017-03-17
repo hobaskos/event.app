@@ -9,8 +9,9 @@ import io.hobaskos.event.eventapp.data.model.User;
  */
 
 public interface MainView extends MvpView {
-
-    void setNavigationHeaderText(String text);
+    void setUserName(String text);
+    void setUserPicture(String imageUrl);
+    void setDefaultPicture();
     void viewAuthenticatedNavigation();
     void viewAnonymousNavigation();
     void hideNavigationHeader();

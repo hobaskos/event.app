@@ -30,10 +30,7 @@ public class MainPresenter extends MvpBasePresenter<MainView> {
         this.eventRepository = eventRepository;
     }
 
-    public void fetchAccountInfo()
-    {
-
-        Log.i("MainPresenter", "fetchAccountInfo()");
+    public void fetchAccountInfo() {
 
         accountManager.getAccount()
                 .subscribeOn(Schedulers.io())
@@ -46,40 +43,36 @@ public class MainPresenter extends MvpBasePresenter<MainView> {
 
                     @Override
                     public void onError(Throwable e) {
-                        // I/MainPresenter: HTTP 401 Unauthorized
                         Log.i("MainPresenter", e.getMessage());
                         e.printStackTrace();
                     }
 
                     @Override
                     public void onNext(User user) {
-                        Log.i("MainPresenter", "User fetched successfully.");
                         Log.i("MainPresenter", "Name of user: " + user.getFirstName() + " " + user.getLastName());
                         Log.i("User", user.toString());
                         if(isViewAttached())
                         {
-                            getView().setNavigationHeaderText(user.getFirstName() + " " + user.getLastName());
+                            getView().setUserName(user.getFirstName() + " " + user.getLastName());
+                            getView().setUserPicture(user.getProfileImageUrl());
                         }
                     }
                 });
     }
 
-    public void logout()
-    {
+    public void logout() {
         accountManager.logout();
+        getView().setUserName("");
+        getView().setDefaultPicture();
         getView().hideNavigationHeader();
     }
 
-    public void onLoginState()
-    {
-        if(isViewAttached())
-        {
-            if(accountManager.isLoggedIn())
-            {
+    public void onLoginState() {
+        if(isViewAttached()) {
+            if(accountManager.isLoggedIn()) {
                 fetchAccountInfo();
                 getView().viewAuthenticatedNavigation();
-            }
-            else {
+            } else {
                 getView().viewAnonymousNavigation();
             }
         }
