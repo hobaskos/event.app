@@ -19,13 +19,13 @@ public class BaseRxLoadMoreLcePresenter<M> extends BaseRxLcePresenter<MvpLoadMor
 
 
     public void subscribeMore(Observable<M> observable) {
+        // Cancel any previous query
+        unsubscribe();
 
         // Show loading in view:
         if (isViewAttached()) {
             getView().showLoadMore(true);
         }
-
-        unsubscribe();
 
         // Setup subscriber:
         loadMoreSubscriber = new Subscriber<M>() {
