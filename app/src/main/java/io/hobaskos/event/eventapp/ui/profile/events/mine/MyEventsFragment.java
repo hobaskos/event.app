@@ -4,20 +4,10 @@ package io.hobaskos.event.eventapp.ui.profile.events.mine;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,16 +21,10 @@ import butterknife.BindView;
 import icepick.State;
 import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
-import io.hobaskos.event.eventapp.data.eventbus.FiltersUpdatedEvent;
 import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.ui.base.view.fragment.BaseLceViewStateFragment;
 import io.hobaskos.event.eventapp.ui.event.details.EventActivity;
-import io.hobaskos.event.eventapp.ui.event.filter.FilterEventsActivity;
-import io.hobaskos.event.eventapp.ui.event.search.list.EventsAdapter;
-import io.hobaskos.event.eventapp.ui.event.search.list.EventsPresenter;
-import io.hobaskos.event.eventapp.ui.event.search.list.EventsViewState;
 import io.hobaskos.event.eventapp.ui.event.search.list.NpaLinearLayoutManager;
-import io.hobaskos.event.eventapp.ui.event.search.map.SearchEventsMapActivity;
 
 /**
  * Created by Magnus on 13.03.2017.
@@ -63,7 +47,7 @@ public class MyEventsFragment extends
 
     // Model
     List<Event> eventsList = new ArrayList<>();
-    private MyEventsAdapter adapter;
+    private EventPagedRecyclerAdapter adapter;
 
     // State
     @State
@@ -98,7 +82,7 @@ public class MyEventsFragment extends
         // Configure recyclerview:
         linearLayoutManager = new NpaLinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
-        adapter = new MyEventsAdapter(eventsList, getContext(),
+        adapter = new EventPagedRecyclerAdapter(eventsList, getContext(),
                 event -> {
                     Intent intent = new Intent(getActivity(), EventActivity.class);
                     intent.putExtra(EventActivity.EVENT_ID, event.getId());
