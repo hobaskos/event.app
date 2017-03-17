@@ -36,6 +36,7 @@ public class LocationRecyclerViewAdapter extends
         Location location = locations.get(position);
         holder.location = location;
         holder.title.setText(location.getName());
+        holder.address.setText(location.getAddress());
         holder.date.setText(location.getFromDate().toString());
         // Todo: Should only be visible if Event is owned by current user
         holder.delete.setVisibility(View.VISIBLE);
@@ -49,6 +50,7 @@ public class LocationRecyclerViewAdapter extends
     public class LocationViewHolder extends RecyclerView.ViewHolder {
         public final LinearLayout locationInfoView;
         public final TextView title;
+        public final TextView address;
         public final TextView date;
         public final ImageView delete;
         public Location location;
@@ -57,6 +59,7 @@ public class LocationRecyclerViewAdapter extends
             super(view);
             locationInfoView = (LinearLayout) view.findViewById(R.id.location_info);
             title = (TextView) view.findViewById(R.id.title);
+            address = (TextView) view.findViewById(R.id.address);
             date = (TextView) view.findViewById(R.id.date);
             delete = (ImageView) view.findViewById(R.id.delete);
 

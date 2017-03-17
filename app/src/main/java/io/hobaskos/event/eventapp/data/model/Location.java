@@ -1,6 +1,9 @@
 package io.hobaskos.event.eventapp.data.model;
 
 import android.os.Parcelable;
+
+import com.google.gson.annotations.SerializedName;
+
 import org.joda.time.DateTime;
 
 /**
@@ -8,13 +11,24 @@ import org.joda.time.DateTime;
  */
 public class Location implements Parcelable {
 
+    @SerializedName("id")
     private Long id;
+    @SerializedName("name")
     private String name;
+    @SerializedName("description")
     private String description;
+    @SerializedName("geoPoint")
     private GeoPoint geoPoint;
+    @SerializedName("fromDate")
     private DateTime fromDate;
+    @SerializedName("toDate")
     private DateTime toDate;
+    @SerializedName("eventId")
     private Long eventId;
+    @SerializedName("address")
+    private String address;
+    @SerializedName("searchName")
+    private String searchName;
 
     public long getId() {
         return id;
@@ -72,6 +86,21 @@ public class Location implements Parcelable {
         this.eventId = eventId;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getSearchName() {
+        return searchName;
+    }
+
+    public void setSearchName(String searchName) {
+        this.searchName = searchName;
+    }
 
     @Override
     public int describeContents() {
