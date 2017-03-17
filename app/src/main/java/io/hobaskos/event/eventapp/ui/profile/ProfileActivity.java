@@ -60,10 +60,10 @@ public class ProfileActivity extends MvpActivity<ProfileView, ProfilePresenter> 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+        ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
         viewPager.setAdapter(new ProfilePagerAdapter(getSupportFragmentManager()));
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabsMenu);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabsLayout);
         tabLayout.setupWithViewPager(viewPager);
 
 

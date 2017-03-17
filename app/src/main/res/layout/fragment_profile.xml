@@ -27,10 +27,6 @@
     </android.support.design.widget.AppBarLayout>
 
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -106,21 +102,20 @@
                 android:layout_below="@id/profile_layout">
 
                 <android.support.design.widget.TabLayout
-                    android:id="@+id/tabsMenu"
+                    android:id="@+id/tabsLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:tabMode="fixed" />
 
                 <android.support.v4.view.ViewPager
-                    android:id="@+id/viewpager"
+                    android:id="@+id/viewPager"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
+                    android:layout_height="fill_parent"
                     android:background="@android:color/white"
-                    app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+                />
 
             </LinearLayout>
 
         </RelativeLayout>
-    </ScrollView>
 </android.support.design.widget.CoordinatorLayout>

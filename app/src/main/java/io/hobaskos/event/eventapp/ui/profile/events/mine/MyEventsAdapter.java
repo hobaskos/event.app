@@ -113,7 +113,7 @@ public class MyEventsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         switch (holder.getItemViewType()) {
             case 0:
-                EventsAdapter.EventViewHolder eventHolder = (EventsAdapter.EventViewHolder) holder;
+                MyEventsAdapter.EventViewHolder eventHolder = (MyEventsAdapter.EventViewHolder) holder;
                 Event event = items.get(position);
 
                 if (event.getMyAttendance() == null) eventHolder.myAttendance.setVisibility(View.GONE);
