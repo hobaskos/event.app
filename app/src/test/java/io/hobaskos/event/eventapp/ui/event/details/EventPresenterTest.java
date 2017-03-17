@@ -48,7 +48,7 @@ public class EventPresenterTest {
         // Inject mocks with the @Mock annotation.
         MockitoAnnotations.initMocks(this);
         // Initialize class to be tested
-        eventPresenter = new EventPresenter(eventRepository, locationRepository, accountManager);
+        eventPresenter = new EventPresenter(eventRepository, accountManager, locationRepository);
         // Override RxJava schedulers
         RxJavaHooks.setOnIOScheduler(new Func1<Scheduler, Scheduler>() {
             @Override

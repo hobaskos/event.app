@@ -1,4 +1,4 @@
-package io.hobaskos.event.eventapp.ui.event.details;
+package io.hobaskos.event.eventapp.ui.event.details.info;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -62,7 +62,7 @@ public class EventInfoFragment extends Fragment {
         ButterKnife.bind(this, view);
 
         Picasso.with(getContext())
-                .load(event.getImageUrl() != null ? event.getImageUrl() : EVENT_IMAGE_URL_PLACEHOLDER)
+                .load(event.getImageUrl() != null ? event.getAbsoluteImageUrl() : EVENT_IMAGE_URL_PLACEHOLDER)
                 .into(eventImage);
 
         if(event.getFromDate() != null) {

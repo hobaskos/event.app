@@ -1,18 +1,15 @@
-package io.hobaskos.event.eventapp.ui.profile;
+package io.hobaskos.event.eventapp.ui.profile.edit;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.v4.graphics.BitmapCompat;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -30,11 +27,6 @@ import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.model.User;
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
-import retrofit2.http.PUT;
-
-import static android.R.attr.bitmap;
-import static android.R.attr.drawable;
-import static android.R.attr.theme;
 
 /**
  * Created by Magnus on 08.03.2017.

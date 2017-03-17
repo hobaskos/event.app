@@ -1,4 +1,4 @@
-package io.hobaskos.event.eventapp.ui.profile;
+package io.hobaskos.event.eventapp.ui.profile.events.attending;
 
 import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
 
@@ -6,33 +6,29 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import io.hobaskos.event.eventapp.data.AccountManager;
 import io.hobaskos.event.eventapp.data.model.Event;
-import io.hobaskos.event.eventapp.data.model.User;
 import io.hobaskos.event.eventapp.data.repository.AccountRepository;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
- * Created by Magnus on 22.02.2017.
+ * Created by Magnus on 16.03.2017.
  */
 
-public class ProfilePresenter extends MvpBasePresenter<ProfileView> {
-
-    private AccountManager accountManager;
+public class AttendingEventsPresenter extends MvpBasePresenter<AttendingEventsView> {
+    private AccountRepository accountRepository;
 
     @Inject
-    public ProfilePresenter(AccountManager accountManager) {
-        this.accountManager = accountManager;
+    public AttendingEventsPresenter(AccountRepository accountRepository) {
+        this.accountRepository = accountRepository;
     }
 
-    public void refreshProfileData()
-    {
-        accountManager.getAccount()
+    public void getEventUserAttending() {
+        accountRepository.getAttendingEvents()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<User>() {
+                .subscribe(new Subscriber<List<Event>>() {
                     @Override
                     public void onCompleted() {
 
@@ -44,12 +40,10 @@ public class ProfilePresenter extends MvpBasePresenter<ProfileView> {
                     }
 
                     @Override
-                    public void onNext(User user) {
-                        if(isViewAttached())
-                        {
-                            getView().setProfileData(user);
-                        }
+                    public void onNext(List<Event> events) {
+                        getView().setEventAttending(events);
                     }
                 });
     }
+
 }

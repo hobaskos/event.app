@@ -1,8 +1,5 @@
-package io.hobaskos.event.eventapp.ui.profile;
+package io.hobaskos.event.eventapp.ui.profile.edit;
 
-import android.util.Log;
-
-import com.google.android.gms.games.social.Social;
 import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
 
 import javax.inject.Inject;

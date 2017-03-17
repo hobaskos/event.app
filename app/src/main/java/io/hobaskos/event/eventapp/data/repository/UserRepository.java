@@ -1,5 +1,7 @@
 package io.hobaskos.event.eventapp.data.repository;
 
+import android.util.Log;
+
 import com.facebook.AccessToken;
 import com.google.gson.Gson;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.VoidViewState;
@@ -77,7 +79,12 @@ public class UserRepository {
                 .observeOn(AndroidSchedulers.mainThread())
                 .map(t -> {
                     jwtStorage.put(t.getIdToken());
-                    service.getAccount().subscribe(this::setLocalAccount);
+                    service.getAccount()
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(this::setLocalAccount, throwable -> {
+                                Log.i("UserRepository", throwable.getMessage());
+                    });
                     return null;
                 });
     }

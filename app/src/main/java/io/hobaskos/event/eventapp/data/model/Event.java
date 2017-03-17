@@ -4,14 +4,17 @@ import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.format.DateUtils;
+import android.util.Log;
 
 import com.google.gson.annotations.SerializedName;
 
 import org.joda.time.DateTime;
 import org.joda.time.LocalDateTime;
 
+import java.util.Arrays;
 import java.util.List;
 
+import io.hobaskos.event.eventapp.config.Constants;
 import io.hobaskos.event.eventapp.data.model.enumeration.EventAttendingType;
 
 /**
@@ -55,6 +58,9 @@ public class Event implements Parcelable {
     @SerializedName("image")
     private String image;
 
+    @SerializedName("imageContentType")
+    private String imageContentType;
+
     private boolean privateEvent;
 
     public Long getId() {
@@ -95,6 +101,14 @@ public class Event implements Parcelable {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public String getImageContentType() {
+        return imageContentType;
+    }
+
+    public void setContentType(String contentType) {
+        this.imageContentType = contentType;
     }
 
     public DateTime getFromDate() {
@@ -174,6 +188,32 @@ public class Event implements Parcelable {
     }
 
 
+
+    public String getAbsoluteImageUrl() {
+        String s = "https://" + Constants.API_HOST + "/api" + imageUrl;
+        Log.i("Event", s);
+        return s;
+    }
+
+    @Override
+    public String toString() {
+        return "Event{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", fromDate=" + fromDate +
+                ", toDate=" + toDate +
+                ", ownerLogin=" + ownerLogin +
+                ", locations=" + locations +
+                ", category=" + category +
+                ", attendanceCount=" + attendanceCount +
+                ", myAttendance=" + myAttendance +
+                ", imageContentType='" + imageContentType + '\'' +
+                ", privateEvent=" + privateEvent +
+                '}';
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -193,6 +233,7 @@ public class Event implements Parcelable {
         dest.writeInt(this.attendanceCount);
         dest.writeInt(this.myAttendance == null ? -1 : this.myAttendance.ordinal());
         dest.writeString(this.image);
+        dest.writeString(this.imageContentType);
         dest.writeByte(this.privateEvent ? (byte) 1 : (byte) 0);
     }
 
@@ -204,15 +245,16 @@ public class Event implements Parcelable {
         this.title = in.readString();
         this.description = in.readString();
         this.imageUrl = in.readString();
-        this.ownerLogin = in.readString();
         this.fromDate = (DateTime) in.readSerializable();
         this.toDate = (DateTime) in.readSerializable();
+        this.ownerLogin = in.readString();
         this.locations = in.createTypedArrayList(Location.CREATOR);
         this.category = in.readParcelable(EventCategory.class.getClassLoader());
         this.attendanceCount = in.readInt();
         int tmpMyAttendance = in.readInt();
         this.myAttendance = tmpMyAttendance == -1 ? null : EventAttendingType.values()[tmpMyAttendance];
         this.image = in.readString();
+        this.imageContentType = in.readString();
         this.privateEvent = in.readByte() != 0;
     }
 

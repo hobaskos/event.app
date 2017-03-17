@@ -2,23 +2,27 @@ package io.hobaskos.event.eventapp.ui.profile;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.IntegerRes;
 import android.support.annotation.NonNull;
-import android.util.Log;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TabHost;
 import android.widget.TextView;
 
 
 import com.hannesdorfmann.mosby.mvp.MvpActivity;
 import com.squareup.picasso.Picasso;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
+import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.data.model.User;
+
+import io.hobaskos.event.eventapp.ui.profile.edit.ProfileEditActivity;
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 
 
@@ -44,6 +48,9 @@ public class ProfileActivity extends MvpActivity<ProfileView, ProfilePresenter> 
      *
      */
     private TextView edit;
+    private Event event;
+
+    List<Event> eventsAttending;
 
     @Inject
     public ProfilePresenter presenter;
@@ -53,23 +60,12 @@ public class ProfileActivity extends MvpActivity<ProfileView, ProfilePresenter> 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        TabHost tab = (TabHost) findViewById(R.id.tabHost);
-        tab.setup();
+        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+        viewPager.setAdapter(new ProfilePagerAdapter(getSupportFragmentManager()));
 
-        TabHost.TabSpec spec1 = tab.newTabSpec("TAB1");
-        spec1.setIndicator(getText(R.string.attending));
-        spec1.setContent(R.id.TAB1);
-        tab.addTab(spec1);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabsMenu);
+        tabLayout.setupWithViewPager(viewPager);
 
-        TabHost.TabSpec spec2 = tab.newTabSpec("TAB2");
-        spec2.setIndicator(getText(R.string.archived));
-        spec2.setContent(R.id.TAB2);
-        tab.addTab(spec2);
-
-        TabHost.TabSpec spec3 = tab.newTabSpec("TAB3");
-        spec3.setIndicator(getText(R.string.mine));
-        spec3.setContent(R.id.TAB3);
-        tab.addTab(spec3);
 
         userProfileName = (TextView) findViewById(R.id.user_profile_name);
         userProfilePhoto = (ImageView) findViewById(R.id.user_profile_photo);
@@ -112,6 +108,7 @@ public class ProfileActivity extends MvpActivity<ProfileView, ProfilePresenter> 
         }
     }
 
+
     @Override
     public void onResume() {
         super.onResume();
@@ -119,3 +116,10 @@ public class ProfileActivity extends MvpActivity<ProfileView, ProfilePresenter> 
     }
 
 }
+
+
+/*
+List<String> list2 = list1.stream().collect(Collectors.toList());
+
+List<SomeBean> newList = new ArrayList<SomeBean>(otherList);
+ */
