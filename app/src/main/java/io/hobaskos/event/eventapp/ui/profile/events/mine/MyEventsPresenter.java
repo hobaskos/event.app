@@ -31,7 +31,7 @@ import rx.schedulers.Schedulers;
 
 public class MyEventsPresenter extends BaseRxLcePresenter<MyEventsView, List<Event>> {
 
-    public final static String TAG = EventsPresenter.class.getName();
+    public final static String TAG = MyEventsPresenter.class.getName();
 
     protected EventRepository eventRepository;
 
@@ -43,9 +43,7 @@ public class MyEventsPresenter extends BaseRxLcePresenter<MyEventsView, List<Eve
         this.eventRepository = eventRepository;
     }
 
-    public void loadEvents(boolean pullToRefresh, String searchQuery) {
-        searchQuery = searchQuery + "*";
-
+    public void loadEvents(boolean pullToRefresh) {
 
         // in case the previous action was load more we have to reset the view
         if (isViewAttached()) {

@@ -1,76 +1,246 @@
 package io.hobaskos.event.eventapp.ui.profile.events.mine;
 
 
-import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
+import android.support.annotation.Nullable;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.inject.Inject;
+
+import butterknife.BindView;
+import icepick.State;
+import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
-import io.hobaskos.event.eventapp.data.model.User;
+import io.hobaskos.event.eventapp.data.eventbus.FiltersUpdatedEvent;
+import io.hobaskos.event.eventapp.data.model.Event;
+import io.hobaskos.event.eventapp.ui.base.view.fragment.BaseLceViewStateFragment;
+import io.hobaskos.event.eventapp.ui.event.details.EventActivity;
+import io.hobaskos.event.eventapp.ui.event.filter.FilterEventsActivity;
+import io.hobaskos.event.eventapp.ui.event.search.list.EventsAdapter;
+import io.hobaskos.event.eventapp.ui.event.search.list.EventsPresenter;
+import io.hobaskos.event.eventapp.ui.event.search.list.EventsViewState;
+import io.hobaskos.event.eventapp.ui.event.search.list.NpaLinearLayoutManager;
+import io.hobaskos.event.eventapp.ui.event.search.map.SearchEventsMapActivity;
 
 /**
  * Created by Magnus on 13.03.2017.
  */
 
-public class MyEventsFragment extends Fragment {
+public class MyEventsFragment extends
+        BaseLceViewStateFragment<SwipeRefreshLayout, List<Event>, MyEventsView, MyEventsPresenter>
+        implements MyEventsView {
 
-    private static final String ARG_USER = "user";
-    private User user;
+    public final static String TAG = MyEventsFragment.class.getName();
 
-    public MyEventsFragment() {}
+    // Views
+    @BindView(R.id.recyclerView)RecyclerView recyclerView;
+    @BindView(R.id.contentView) SwipeRefreshLayout swipeRefreshLayout;
 
-    public static MyEventsFragment newInstance(User user) {
-        MyEventsFragment fragment = new MyEventsFragment();
-        Bundle args = new Bundle();
-        args.putParcelable(ARG_USER, user);
-        fragment.setArguments(args);
-        return fragment;
+    TextView emptyResultView;
+
+    private NpaLinearLayoutManager linearLayoutManager;
+    private DividerItemDecoration dividerItemDecoration;
+
+    // Model
+    List<Event> eventsList = new ArrayList<>();
+    private MyEventsAdapter adapter;
+
+    // State
+    @State
+    boolean canLoadMore = true;
+    @State boolean isLoadingMore = false;
+    @State int page = 0;
+
+
+    @Inject
+    public MyEventsPresenter myEventsPresenter;
+
+    @Override public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+    }
+
+
+    @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        Log.i(TAG, "onViewCreated()");
+        super.onViewCreated(view, savedInstanceState);
+        Log.i(TAG, "page: " + page );
+
+        emptyResultView = (TextView) view.findViewById(R.id.emptyView);
+
+        recyclerView = (RecyclerView) getView().findViewById(R.id.recyclerView);
+        //progressBar = (ProgressBar) getView().findViewById(R.id.progress);
+        swipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.contentView);
+
+
+
+        // Configure Swipe refresh:
+        swipeRefreshLayout.setOnRefreshListener(() -> loadData(true));
+
+        // Configure recyclerview:
+        linearLayoutManager = new NpaLinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(linearLayoutManager);
+        adapter = new MyEventsAdapter(eventsList, getContext(),
+                event -> {
+                    Intent intent = new Intent(getActivity(), EventActivity.class);
+                    intent.putExtra(EventActivity.EVENT_ID, event.getId());
+                    intent.putExtra(EventActivity.EVENT_THEME, event.getCategory().getTheme());
+                    startActivity(intent);
+                });
+
+        recyclerView.setAdapter(adapter);
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                int visibleItemCount = linearLayoutManager.getChildCount();
+                int totalItemCount = linearLayoutManager.getItemCount();
+                int lastVisibleItemPosition = linearLayoutManager.findLastVisibleItemPosition();
+
+                if (canLoadMore && !isLoadingMore && lastVisibleItemPosition == totalItemCount - 1) {
+                    presenter.loadMoreEvents(++page);
+                    Log.i(TAG, "page: " + page );
+                }
+            }
+        });
+
+        dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
+                linearLayoutManager.getOrientation());
+        recyclerView.addItemDecoration(dividerItemDecoration);
+    }
+
+
+    // Return layout resource used by this fragment
+    @Override
+    protected int getLayoutRes() {
+        return R.layout.fragment_event_list;
+    }
+
+    @Override
+    public MyEventsViewState createViewState() {
+        Log.i(TAG, "createViewState()");
+        return new MyEventsViewState();
+    }
+
+    @Override
+    public MyEventsViewState getViewState() {
+        Log.i(TAG, "getViewState()");
+        return (MyEventsViewState) super.getViewState();
+    }
+
+    @Override
+    public MyEventsPresenter createPresenter() {
+        Log.i(TAG, "createPresenter()");
+        App.getInst().getComponent().inject(this);
+        return myEventsPresenter;
+    }
+
+    @Override public void onNewViewStateInstance() {
+        Log.i(TAG, "onNewViewStateInstance()");
+        presenter.loadEvents(false);
+    }
+
+    @Override
+    public List<Event> getData() {
+        Log.i(TAG, "getData()");
+        return adapter.getItems();
     }
 
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        if (getArguments() != null) {
-            user = getArguments().getParcelable(ARG_USER);
+    protected String getErrorMessage(Throwable e, boolean pullToRefresh) {
+        Log.i(TAG, "getErrorMessage()");
+        if (pullToRefresh) {
+            return "An error has occurred!";
+        } else {
+            //return "An error has occurred. Click here to retry";
+            return e.getMessage();
         }
     }
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_event_info, container, false);
-/*
-        eventImage = (ImageView) view.findViewById(R.id.image);
-        eventTime = (TextView) view.findViewById(R.id.date);
-        eventDescription = (TextView)  view.findViewById(R.id.description);
-
-        Picasso.with(getContext()) // just some random image for now
-                .load("https://mave.me/img/projects/full_placeholder.png")
-                .into(eventImage);
-
-        eventTime.setText(DateUtils.formatDateTime(getContext(),
-                event.getFromDate().toDate().getTime(), DateUtils.FORMAT_SHOW_DATE));
-        eventDescription.setText(event.getDescription());
-*/
-        return view;
+    public void showLoadMore(boolean showLoadMore) {
+        Log.i(TAG, "showLoadMore()");
+        adapter.setLoadMore(showLoadMore);
+        getViewState().setLoadingMore(showLoadMore);
+        isLoadingMore = showLoadMore;
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
+    public void showLoadMoreError(Throwable e) {
+        Log.i(TAG, "showLoadMoreError()");
+        Toast.makeText(getActivity(), "An error has occurred while loading older events", Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
+    public void addMoreData(List<Event> model) {
+        Log.i(TAG, "addMoreData()");
+
+        if (model.isEmpty()) {
+            canLoadMore = false;
+            Toast.makeText(getActivity(), "No more events to show", Toast.LENGTH_SHORT).show();
+        } else {
+            adapter.addItems(model);
+        }
     }
 
+    @Override
+    public void setData(List<Event> data) {
+        Log.i(TAG, "setData(), size: " + data.size());
+        Log.i(TAG, "setData(), toString: " + data.toString());
+        adapter.setItems(data);
+        adapter.notifyDataSetChanged();
+        swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(false));
+    }
 
+    @Override
+    public void loadData(boolean pullToRefresh) {
+        Log.i(TAG, "loadData()");
+        if (pullToRefresh) {
+            page = 0;
+        }
+        presenter.loadEvents(pullToRefresh);
+        canLoadMore = true;
+    }
 
+    @Override
+    public void showContent() {
+        Log.i(TAG, "showContent");
+        super.showContent();
+        if (adapter.getItems().isEmpty()) {
+            contentView.setVisibility(View.GONE);
+            emptyResultView.setVisibility(View.VISIBLE);
+        } else {
+            emptyResultView.setVisibility(View.GONE);
+        }
+    }
 
-}//End of class
+    @Override public void showError(Throwable e, boolean pullToRefresh) {
+        emptyResultView.setVisibility(View.GONE);
+        super.showError(e, pullToRefresh);
+    }
+
+    @Override public void showLoading(boolean pullToRefresh) {
+        emptyResultView.setVisibility(View.GONE);
+        super.showLoading(pullToRefresh);
+    }
+}

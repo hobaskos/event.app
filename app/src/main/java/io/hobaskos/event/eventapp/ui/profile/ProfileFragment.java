@@ -35,7 +35,7 @@ import jp.wasabeef.picasso.transformations.CropCircleTransformation;
  * Created by andre on 3/16/2017.
  */
 
-public class ProfileFragment extends MvpFragment<ProfileView, ProfilePresenter> implements ProfileView {
+public class ProfileFragment extends MvpFragment<ProfileView, ProfilePresenter> implements ProfileView, TabLayout.OnTabSelectedListener {
 
     public final static String TAG = ProfileFragment.class.getName();
 
@@ -66,7 +66,6 @@ public class ProfileFragment extends MvpFragment<ProfileView, ProfilePresenter> 
 
         unbinder = ButterKnife.bind(this, view);
 
-
         // Configure toolbar:
         setHasOptionsMenu(true);
         toolbar.setTitle(getString(R.string.my_profile));
@@ -88,6 +87,9 @@ public class ProfileFragment extends MvpFragment<ProfileView, ProfilePresenter> 
 
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
         tabLayout.setupWithViewPager(viewPager);
+
+        //Adding onTabSelectedListener to swipe views
+        tabLayout.setOnTabSelectedListener(this);
 
         presenter.attachView(this);
 
@@ -135,4 +137,18 @@ public class ProfileFragment extends MvpFragment<ProfileView, ProfilePresenter> 
         presenter.refreshProfileData();
     }
 
+    @Override
+    public void onTabSelected(TabLayout.Tab tab) {
+        viewPager.setCurrentItem(tab.getPosition());
+    }
+
+    @Override
+    public void onTabUnselected(TabLayout.Tab tab) {
+
+    }
+
+    @Override
+    public void onTabReselected(TabLayout.Tab tab) {
+
+    }
 }
