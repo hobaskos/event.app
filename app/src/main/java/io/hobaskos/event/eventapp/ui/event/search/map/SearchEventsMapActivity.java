@@ -1,18 +1,10 @@
 package io.hobaskos.event.eventapp.ui.event.search.map;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.widget.Toast;
-
-import java.util.ArrayList;
 
 import io.hobaskos.event.eventapp.R;
-import io.hobaskos.event.eventapp.ui.event.details.MapsActivity;
-import io.hobaskos.event.eventapp.ui.event.search.SearchEventsFragment;
 
 /**
  * Created by test on 3/15/2017.

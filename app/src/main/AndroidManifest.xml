@@ -65,8 +65,8 @@
             android:parentActivityName=".ui.main.MainActivity"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".ui.event.details.MapsActivity"
-            android:label="@string/title_activity_maps" />
+            android:name=".ui.event.details.map.MapsActivity"
+            android:label="@string/title_activity_maps"></activity>
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"

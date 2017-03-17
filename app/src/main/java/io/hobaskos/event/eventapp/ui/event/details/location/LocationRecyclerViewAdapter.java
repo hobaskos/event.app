@@ -1,4 +1,4 @@
-package io.hobaskos.event.eventapp.ui.event.details;
+package io.hobaskos.event.eventapp.ui.event.details.location;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.model.Location;
-import io.hobaskos.event.eventapp.ui.event.details.LocationsFragment.OnListFragmentInteractionListener;
 
 import java.util.List;
 
@@ -18,9 +17,9 @@ public class LocationRecyclerViewAdapter extends
         RecyclerView.Adapter<LocationRecyclerViewAdapter.LocationViewHolder> {
 
     private final List<Location> locations;
-    private final OnListFragmentInteractionListener listener;
+    private final LocationsFragment.OnListFragmentInteractionListener listener;
 
-    public LocationRecyclerViewAdapter(List<Location> locations, OnListFragmentInteractionListener listener) {
+    public LocationRecyclerViewAdapter(List<Location> locations, LocationsFragment.OnListFragmentInteractionListener listener) {
         this.locations = locations;
         this.listener = listener;
     }
