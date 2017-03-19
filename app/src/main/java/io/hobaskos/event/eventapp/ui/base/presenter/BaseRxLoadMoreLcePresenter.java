@@ -10,7 +10,7 @@ import rx.schedulers.Schedulers;
  * Created by test on 3/17/2017.
  */
 
-public class BaseRxLoadMoreLcePresenter<M> extends BaseRxLcePresenter<MvpLoadMoreView<M>, M> {
+public class BaseRxLoadMoreLcePresenter<V extends MvpLoadMoreView<M>, M> extends BaseRxLcePresenter<V, M> {
 
     public final static String TAG = BaseRxLoadMoreLcePresenter.class.getName();
 
