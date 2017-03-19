@@ -2,6 +2,12 @@ package io.hobaskos.event.eventapp.util;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import org.joda.time.DateTime;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import io.hobaskos.event.eventapp.data.model.GeoPoint;
 import io.hobaskos.event.eventapp.data.model.Location;
 
@@ -15,4 +21,5 @@ public final class LocationUtil {
         GeoPoint geoPoint = location.getGeoPoint();
         return new LatLng(geoPoint.getLat(), geoPoint.getLon());
     }
+
 }

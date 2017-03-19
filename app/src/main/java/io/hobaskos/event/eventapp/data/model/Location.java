@@ -102,6 +102,22 @@ public class Location implements Parcelable {
         this.searchName = searchName;
     }
 
+    /**
+     * Checks if this location is currently on going.
+     * @return true if location is ongoing, false otherwise.
+     */
+    public boolean isOnGoing() {
+
+        DateTime fromDate = this.getFromDate();
+        DateTime toDate = this.getToDate();
+
+        if (fromDate.isBeforeNow() && toDate.isBeforeNow()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     @Override
     public int describeContents() {
         return 0;
