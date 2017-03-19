@@ -16,6 +16,7 @@ import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.data.repository.EventRepository;
 import io.hobaskos.event.eventapp.data.storage.PersistentStorage;
 import io.hobaskos.event.eventapp.ui.base.presenter.BaseRxLcePresenter;
+import io.hobaskos.event.eventapp.ui.base.presenter.BaseRxLoadMoreLcePresenter;
 import io.hobaskos.event.eventapp.ui.event.filter.FilterEventsPresenter;
 import io.hobaskos.event.eventapp.ui.event.search.list.EventsPresenter;
 import io.hobaskos.event.eventapp.ui.event.search.list.EventsView;
@@ -29,7 +30,7 @@ import rx.schedulers.Schedulers;
  * Created by test on 3/16/2017.
  */
 
-public class MyEventsPresenter extends BaseRxLcePresenter<MyEventsView, List<Event>> {
+public class MyEventsPresenter extends BaseRxLoadMoreLcePresenter<MyEventsView, List<Event>> {
 
     public final static String TAG = MyEventsPresenter.class.getName();
 
@@ -69,27 +70,8 @@ public class MyEventsPresenter extends BaseRxLcePresenter<MyEventsView, List<Eve
         if (isViewAttached()) {
             getView().showLoadMore(true);
         }
-        // Setup subscriber:
-        moreEventSubscriber = new Subscriber<List<Event>>() {
-            @Override public void onCompleted() {
-            }
-            @Override  public void onError(Throwable e) {
-                if (isViewAttached()) {
-                    getView().showLoadMoreError(e);
-                    getView().showLoadMore(false);
-                }
-            }
-            @Override public void onNext(List<Event> events) {
-                if (isViewAttached()) {
-                    getView().addMoreData(events);
-                    getView().showLoadMore(false);
-                }
-            }
-        };
-        // start subscription:
-        observable.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(moreEventSubscriber);
+
+        subscribeMore(observable);
     }
 
     @Override protected void unsubscribe() {
