@@ -11,7 +11,9 @@ import com.google.gson.annotations.SerializedName;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDateTime;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import io.hobaskos.event.eventapp.config.Constants;
@@ -187,6 +189,80 @@ public class Event implements Parcelable {
         return locations.size() > 0 ? locations.get(0).getName() : "";
     }
 
+    public Location getLocationByClosestDate() {
+        // If event is onGoing
+        if (this.isOnGoing()) {
+
+            Location firstOngoingLocation = null;
+
+            for (Location location : locations) {
+                // Find the ongoing locations
+                if (location.isOnGoing()) {
+                    if (firstOngoingLocation == null) {
+                        firstOngoingLocation = location;
+                    } else {
+                        // If location started before previous ongoing Location, save it
+                        if (location.isOnGoing() && location.getFromDate().isBefore(firstOngoingLocation.getFromDate())) {
+                            firstOngoingLocation = location;
+                        }
+                    }
+                }
+            }
+            return firstOngoingLocation;
+            // If event has not yet started:
+        } else if (this.getFromDate().isAfterNow()){
+            Location closestLocationByDate = null;
+
+            for (Location location : locations) {
+                // Default to first location:
+                if (closestLocationByDate == null) {
+                    closestLocationByDate = location;
+                } else if (!location.isOnGoing()){
+                    // get earliest fromDate
+                    if (location.getFromDate().isBefore(closestLocationByDate.getFromDate())) {
+                        closestLocationByDate = location;
+                    }
+                }
+            }
+
+            return closestLocationByDate;
+            // Thirdly, if event has finished:
+        } else if (this.getToDate().isBeforeNow()){
+            Location closestLocationByDate = null;
+
+            for (Location location : locations) {
+                // Default to first location:
+                if (closestLocationByDate == null) {
+                    closestLocationByDate = location;
+                } else if (!location.isOnGoing()){
+                    // get the latest toDate
+                    if (location.getToDate().isAfter(closestLocationByDate.getToDate())) {
+                        closestLocationByDate = location;
+                    }
+                }
+            }
+            return closestLocationByDate;
+        } else {
+            // If somehow all chekcs fail (SHOULD NOT HAPPEN), default to returning null
+            return null;
+        }
+    }
+
+    /**
+     * Checks if this event is currently on going.
+     * @return true if event is ongoing, false otherwise.
+     */
+    public boolean isOnGoing() {
+
+        DateTime fromDate = this.getFromDate();
+        DateTime toDate = this.getToDate();
+
+        if (fromDate.isBeforeNow() && toDate.isBeforeNow()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 
     public String getAbsoluteImageUrl() {

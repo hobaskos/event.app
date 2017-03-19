@@ -138,7 +138,7 @@ public class SearchEventsMapFragment extends Fragment implements SearchEventsMap
 
             // Get locations and add them as markers on the map:
             for (Event event : events) {
-                Location l = event.getLocations().get(0);
+                Location l = event.getLocationByClosestDate();
                 Marker marker = googleMap.addMarker(new MarkerOptions()
                         .position(LocationUtil.LocationToLatLng(l))
                         .title(event.getTitle())
