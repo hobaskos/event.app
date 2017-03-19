@@ -45,13 +45,23 @@
 
         </LinearLayout>
 
-        <fragment
-            android:id="@+id/place_autocomplete_fragment"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:name="com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment"
-            android:layout_below="@+id/gpsLayout"
-            />
+            android:orientation="horizontal"
+            android:id="@+id/placesLayout"
+            android:layout_below="@+id/gpsLayout">
+
+            <fragment
+                android:id="@+id/place_autocomplete_fragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:name="com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment"
+                />
+
+        </LinearLayout>
+
+
 
     </RelativeLayout>
 

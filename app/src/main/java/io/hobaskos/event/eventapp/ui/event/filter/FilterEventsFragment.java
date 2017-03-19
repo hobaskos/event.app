@@ -3,6 +3,7 @@ package io.hobaskos.event.eventapp.ui.event.filter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -10,6 +11,8 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -50,6 +53,10 @@ public class FilterEventsFragment extends BaseFragment
     @BindView(R.id.seekBarText) TextView seekBarText;
     @BindView(R.id.categorySpinner) Spinner spinner;
     @BindView(R.id.applyFiltersButton) Button button;
+    @BindView(R.id.fragment_filter_events_gps_switch) SwitchCompat currentLocationSwitch;
+
+    @BindView(R.id.placesLayout)
+    LinearLayout placesLayout;
 
     private int seekBarProgress;
     private SupportPlaceAutocompleteFragment placeAutocompleteFragment;
@@ -60,6 +67,7 @@ public class FilterEventsFragment extends BaseFragment
     double lat;
     double lon;
     long selectedCategoryId;
+    boolean locationIsChecked;
 
     ArrayList<EventCategory> categories;
     ArrayAdapter<EventCategory> spinnerAdapter;
@@ -107,18 +115,6 @@ public class FilterEventsFragment extends BaseFragment
             }
         });
 
-
-
-        /*
-        toolbar.setNavigationIcon(android.R.drawable.arrow_down_float);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().onBackPressed();
-            }
-        });
-        */
-
         seekBar = (SeekBar) getView().findViewById(R.id.seekBar);
         seekBarText = (TextView) getView().findViewById(R.id.seekBarText);
         spinner = (Spinner) getView().findViewById(R.id.categorySpinner);
@@ -157,6 +153,18 @@ public class FilterEventsFragment extends BaseFragment
                 seekBarText.setText(progressText);
                 int seek_label_pos = (((seekBar.getRight() - seekBar.getLeft()) * seekBar.getProgress()) / seekBar.getMax()) + seekBar.getLeft();
                 seekBarText.setX(seek_label_pos - seekBarText.getWidth() / 2);
+            }
+        });
+
+        currentLocationSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            locationIsChecked = isChecked;
+
+            if (isChecked) {
+                placesLayout.setVisibility(View.GONE);
+                Log.i(TAG, "IS NOT CHECKED");
+            } else {
+                placesLayout.setVisibility(View.VISIBLE);
+                Log.i(TAG, "IS CHECKED");
             }
         });
 
