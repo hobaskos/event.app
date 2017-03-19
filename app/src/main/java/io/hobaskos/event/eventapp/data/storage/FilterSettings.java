@@ -21,12 +21,14 @@ public class FilterSettings {
     public static final String FILTER_EVENTS_LOCATION_LAT_KEY = "filter_events_location_lat_key";
     public static final String FILTER_EVENTS_LOCATION_LON_KEY = "filter_events_location_lon_key";
     public static final String FILTER_EVENTS_CATEGORY_KEY = "filter_events_category_key";
+    public static final String FILTER_EVENTS_CURRENT_LOCATION_KEY = "filter_events_current_location_key";
 
     public static final int DEFAULT_DISTANCE = 10;
     public static final String DEFAULT_PLACE_NAME = "";
     public static final double DEFAULT_PLACE_LAT = 0;
     public static final double DEFAULT_PLACE_LON = 0;
     public static final long DEFAULT_CATEGORY_ID = 0;
+    public static final boolean DEFAULT_CURRENT_LOCATION = false;
 
     public int getDistance() {
         return persistentStorage.getInt(FILTER_EVENTS_DISTANCE_KEY, DEFAULT_DISTANCE);
@@ -67,5 +69,13 @@ public class FilterSettings {
 
     public void putCategoryId(long categoryId) {
         persistentStorage.putLong(FILTER_EVENTS_CATEGORY_KEY, categoryId);
+    }
+
+    public boolean getCurrentLocation() {
+        return persistentStorage.getBoolean(FILTER_EVENTS_CURRENT_LOCATION_KEY, DEFAULT_CURRENT_LOCATION);
+    }
+
+    public void putCurrentLocation(boolean currentLocation) {
+        persistentStorage.putBoolean(FILTER_EVENTS_CURRENT_LOCATION_KEY, currentLocation);
     }
 }

@@ -65,6 +65,16 @@ public class PersistentStorage {
         return preferences.getLong(key, defaultValue);
     }
 
+    public boolean putBoolean(String key, boolean value) {
+        return preferences.edit()
+                .putBoolean(key, value)
+                .commit();
+    }
+
+    public boolean getBoolean(String key, boolean defaultValue) {
+        return preferences.getBoolean(key, defaultValue);
+    }
+
 
     public boolean isSet(String key)
     {
