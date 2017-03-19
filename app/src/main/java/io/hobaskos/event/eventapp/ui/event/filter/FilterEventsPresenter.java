@@ -5,6 +5,7 @@ import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
 import javax.inject.Inject;
 
 import io.hobaskos.event.eventapp.data.repository.EventCategoryRepository;
+import io.hobaskos.event.eventapp.data.storage.FilterSettings;
 import io.hobaskos.event.eventapp.data.storage.PersistentStorage;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -19,6 +20,8 @@ public class FilterEventsPresenter extends MvpBasePresenter<FilterEventsView> {
 
     private EventCategoryRepository eventCategoryRepository;
 
+    private FilterSettings filterSettings;
+
     public static final String FILTER_EVENTS_DISTANCE_KEY = "filter_events_distance_key";
     public static final String FILTER_EVENTS_LOCATION_NAME_KEY = "filter_events_location_name_key";
     public static final String FILTER_EVENTS_LOCATION_LAT_KEY = "filter_events_location_lat_key";
@@ -27,7 +30,9 @@ public class FilterEventsPresenter extends MvpBasePresenter<FilterEventsView> {
 
     @Inject
     public FilterEventsPresenter(PersistentStorage persistentStorage,
+                                 FilterSettings filterSettings,
                                  EventCategoryRepository eventCategoryRepository) {
+        this.filterSettings = filterSettings;
         this.persistentStorage = persistentStorage;
         this.eventCategoryRepository = eventCategoryRepository;
     }
@@ -40,6 +45,10 @@ public class FilterEventsPresenter extends MvpBasePresenter<FilterEventsView> {
         persistentStorage.put(FILTER_EVENTS_LOCATION_NAME_KEY, name);
         persistentStorage.putDouble(FILTER_EVENTS_LOCATION_LAT_KEY, lat);
         persistentStorage.putDouble(FILTER_EVENTS_LOCATION_LON_KEY, lon);
+    }
+
+    public void storeCurrentLocationStatus(boolean status) {
+        filterSettings.putCurrentLocation(status);
     }
 
     public void loadLocation() {
@@ -69,6 +78,10 @@ public class FilterEventsPresenter extends MvpBasePresenter<FilterEventsView> {
                         list -> getView().setCategories(list),
                         throwable -> getView().showError(throwable)
                 );
+    }
+
+    public void loadCurrentLocationStatus() {
+        getView().setCurrentLocationStatus(filterSettings.getCurrentLocation());
     }
 
 }

@@ -124,6 +124,7 @@ public class FilterEventsFragment extends BaseFragment
             presenter.storeDistance(seekBarProgress);
             Log.i("jJJJJ", "lat, lon: " + lat + ", " + lon);
 
+            presenter.storeCurrentLocationStatus(locationIsChecked);
             presenter.storeLocation(location, lat, lon);
 
             if(spinner.getSelectedItem() != null) {
@@ -172,6 +173,7 @@ public class FilterEventsFragment extends BaseFragment
         presenter.loadLocation();
         presenter.loadCategoryId();
         presenter.loadCategories();
+        presenter.loadCurrentLocationStatus();
     }
 
     @Override
@@ -182,9 +184,20 @@ public class FilterEventsFragment extends BaseFragment
     }
 
     @Override
+    public void setFilterValues(int distance, boolean currentLocStatus, String placeName, double lat, double lon, long categoryId) {
+
+    }
+
+    @Override
     public void setDistance(int defaultValue) {
         seekBarProgress = defaultValue;
         seekBar.setProgress(seekBarProgress);
+    }
+
+    @Override
+    public void setCurrentLocationStatus(boolean status) {
+        locationIsChecked = status;
+        currentLocationSwitch.setChecked(status);
     }
 
     @Override

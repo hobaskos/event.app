@@ -12,7 +12,9 @@ import io.hobaskos.event.eventapp.data.model.EventCategory;
 
 public interface FilterEventsView extends MvpView {
 
+    void setFilterValues(int distance, boolean currentLocStatus, String placeName, double lat, double lon, long categoryId);
     void setDistance(int defaultValue);
+    void setCurrentLocationStatus(boolean status);
     void setLocation(String name, double lat, double lon);
     void setCategories(List<EventCategory> categories);
     void setCategory(long id);
