@@ -24,12 +24,33 @@
             android:id="@+id/locationTextView"
             android:labelFor="@+id/locationAutoCompleteTextView"/>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/gpsLayout"
+            android:layout_below="@+id/locationTextView">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:text="Use current location" />
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/fragment_filter_events_gps_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false" />
+
+        </LinearLayout>
+
         <fragment
             android:id="@+id/place_autocomplete_fragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:name="com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment"
-            android:layout_below="@+id/locationTextView"
+            android:layout_below="@+id/gpsLayout"
             />
 
     </RelativeLayout>
