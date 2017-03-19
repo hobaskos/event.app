@@ -50,7 +50,7 @@ public class EventsFragment extends
         BaseLceViewStateFragment<SwipeRefreshLayout, List<Event>, EventsView, EventsPresenter>
         implements EventsView {
 
-    public final static String TAG = EventsFragment_Old.class.getName();
+    public final static String TAG = EventsFragment.class.getName();
 
     // Views
     @BindView(R.id.recyclerView)RecyclerView recyclerView;
