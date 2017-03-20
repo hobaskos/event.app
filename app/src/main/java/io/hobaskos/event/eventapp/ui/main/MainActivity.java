@@ -1,11 +1,13 @@
 package io.hobaskos.event.eventapp.ui.main;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v13.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -53,6 +55,15 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
 
     public final static String TAG = MainActivity.class.getName();
 
+    // Permissions:
+    private static final String[] INITIAL_PERMS={
+            Manifest.permission.ACCESS_FINE_LOCATION
+    };
+
+    // Permission Request:
+    private static final int INITIAL_REQUEST=1337;
+    private static final int LOCATION_REQUEST=INITIAL_REQUEST+3;
+
     // Views:
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
@@ -81,6 +92,9 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
         if(!googleServicesAvailable()) {
             Log.i("MainActivity", "Google services is not working");
         }
+
+        // Request permissions:
+        ActivityCompat.requestPermissions(this, INITIAL_PERMS, INITIAL_REQUEST);
 
         // Find views:
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);

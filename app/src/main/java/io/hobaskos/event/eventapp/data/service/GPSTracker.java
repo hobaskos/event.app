@@ -1,19 +1,25 @@
 package io.hobaskos.event.eventapp.data.service;
 
+import android.Manifest;
 import android.app.Service;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
+import android.support.v13.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
+import io.hobaskos.event.eventapp.ui.main.MainActivity;
 
 
 /**
@@ -21,6 +27,9 @@ import android.util.Log;
  */
 
 public class GPSTracker extends Service implements LocationListener {
+
+    public final static String TAG = GPSTracker.class.getName();
+
 
     private final Context mContext;
 
@@ -97,6 +106,9 @@ public class GPSTracker extends Service implements LocationListener {
                             if (location != null) {
                                 latitude = location.getLatitude();
                                 longitude = location.getLongitude();
+
+                                Log.i(TAG, "latitude: " + latitude);
+                                Log.i(TAG, "longitude: " + longitude);
                             }
                         }
                     }
@@ -112,6 +124,7 @@ public class GPSTracker extends Service implements LocationListener {
 
         return location;
     }
+
 
 
     /**

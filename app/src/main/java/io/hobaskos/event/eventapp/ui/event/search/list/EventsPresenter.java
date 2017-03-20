@@ -75,7 +75,7 @@ public class EventsPresenter extends BaseRxLcePresenter<EventsView, List<Event>>
         this.filterSettings = filterSettings;
         this.persistentStorage = persistentStorage;
 
-        this.gpsService = new GPSService();
+        //this.gpsService = new GPSService();
         this.gpsTracker = new GPSTracker(App.getInst().getApplicationContext());
 
 
