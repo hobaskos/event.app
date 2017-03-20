@@ -1,5 +1,6 @@
 package io.hobaskos.event.eventapp.ui.event.details;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -27,6 +28,7 @@ import io.hobaskos.event.eventapp.ui.dialog.DeleteDialogFragment;
 import io.hobaskos.event.eventapp.ui.dialog.DeleteDialogListener;
 import io.hobaskos.event.eventapp.ui.event.create.CreateEventActivity;
 import io.hobaskos.event.eventapp.ui.event.details.attending.AttendeesFragment;
+import io.hobaskos.event.eventapp.ui.event.details.info.EventInfoFragment;
 import io.hobaskos.event.eventapp.ui.event.details.location.LocationsFragment;
 import io.hobaskos.event.eventapp.ui.event.details.map.MapsActivity;
 import io.hobaskos.event.eventapp.ui.location.add.LocationActivity;
@@ -52,8 +54,9 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     private EventPagerAdapter eventPagerAdapter;
     protected ViewPager viewPager;
     protected TabLayout tabLayout;
-    private boolean isOwner = false;
+    private boolean isOwner;
     private Event event;
+    private boolean hasBeenPaused = false;
 
     @Inject public EventPresenter eventPresenter;
 
@@ -76,6 +79,7 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     }
 
     private void setEventTheme(EventCategoryTheme theme) {
+        Log.i("EventActivity", "Setting EventTheme: " + theme.name());
         switch (theme) {
             case RED:
                 setTheme(R.style.AppTheme_Red);
@@ -147,10 +151,9 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     @Override
     public void setData(Event event) {
         this.event = event;
-        eventPresenter.getOwnerStatus(event);
-
+        presenter.getOwnerStatus(event);
         setTitle(event.getTitle());
-        Log.i("EventACtivity", "setData");
+
         viewPager.setAdapter(eventPagerAdapter = new EventPagerAdapter(event, this, getSupportFragmentManager()));
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
         tabLayout.setupWithViewPager(viewPager);
@@ -217,26 +220,35 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
         Toast.makeText(this, owner ? "Owner" : "Not owner", Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        hasBeenPaused = true;
+    }
+
     protected void onResume() {
         super.onResume();
 
-        if(eventPagerAdapter != null) {
-            presenter.getEvent(eventId, new Observer<Event>() {
-                @Override
-                public void onCompleted() {}
-
-                @Override
-                public void onError(Throwable e) {}
-
-                @Override
-                public void onNext(Event event) {
-                    LocationsFragment locationsFragment = (LocationsFragment) eventPagerAdapter.getItem(1);
-                    locationsFragment.refresh( (ArrayList<Location>) event.getLocations());
-                }
-            });
+        if(hasBeenPaused) {
+            Log.i("EventActivity", "onResume(): hasBeenPaused==true");
+            refresh();
         }
     }
-          
+
+    private void refresh() {
+        Log.i("EventActivity", "Refreshing activity...");
+        //Intent intent = getIntent();
+        //finish();
+        //startActivity(intent);
+        recreate();
+    }
+
+    @Override
+    public void recreate() {
+        super.recreate();
+    }
+
     @Override
     public void onDeleteButtonClicked(Location location) {
         presenter.remove(location, new Observer<Void>() {

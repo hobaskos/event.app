@@ -193,13 +193,14 @@ public class CreateEventFragment extends MvpFragment<CreateEventView, CreateEven
     }
 
     @Override
-    public void onSuccess(long id) {
+    public void onSuccess(Event event) {
         // redirect to newly created event with id= id
         hideLoader();
-        Log.i(TAG, "event with id=" + id + ", created.");
+        Log.i(TAG, "event with id=" + event.getId() + ", created.");
 
         Intent intent = new Intent(getContext(), EventActivity.class);
-        intent.putExtra("eventId", id);
+        intent.putExtra(EventActivity.EVENT_ID, event.getId());
+        intent.putExtra(EventActivity.EVENT_THEME, event.getCategory().getTheme());
         startActivity(intent);
     }
 

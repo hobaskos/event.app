@@ -230,12 +230,17 @@ public class CreateEventActivity extends MvpActivity<CreateEventView, CreateEven
     }
 
     @Override
-    public void onSuccess(long id) {
+    public void onSuccess(Event event) {
         hideLoader();
 
-        Intent intent = new Intent(this, EventActivity.class);
-        intent.putExtra("eventId", id);
-        startActivity(intent);
+        if(activityState.equals(ActivityState.CREATE))
+        {
+            Intent intent = new Intent(this, EventActivity.class);
+            intent.putExtra(EventActivity.EVENT_ID, event.getId());
+            intent.putExtra(EventActivity.EVENT_THEME, event.getCategory().getTheme());
+            startActivity(intent);
+        }
+
         finish();
     }
 

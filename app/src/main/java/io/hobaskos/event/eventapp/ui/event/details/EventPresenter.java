@@ -1,5 +1,7 @@
 package io.hobaskos.event.eventapp.ui.event.details;
 
+import android.util.Log;
+
 import java.util.List;
 
 import javax.inject.Inject;
@@ -12,6 +14,7 @@ import io.hobaskos.event.eventapp.data.repository.LocationRepository;
 import io.hobaskos.event.eventapp.ui.base.presenter.BaseRxLcePresenter;
 import rx.Observable;
 import rx.Observer;
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -36,15 +39,45 @@ public class EventPresenter extends BaseRxLcePresenter<EventView, Event> {
 
     public void getEvent(Long id) {
 
-        eventObservable = eventRepository.get(id);
-        subscribe(eventObservable, false);
+        Log.i("EventPresenter", "Getting event with ID=" + id);
+
+        eventRepository.get(id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Event>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.i("EventPresenter", "Error getting event: " + e.getMessage());
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onNext(Event event) {
+                        Log.i("EventPresenter", "Found event with id=" + event.getId());
+                        if(isViewAttached() && getView() != null) {
+                            Log.i("EventPresenter", "View is attached.");
+                            getView().setData(event);
+                        }
+                    }
+                });
     }
 
     public void getOwnerStatus(Event event) {
-        getView().setOwner(event.getOwnerLogin().equals(accountManager.getLocalAccount().getLogin()));
+        if(isViewAttached() && getView() != null) {
+            getView().setOwner(
+                    event.getOwnerLogin().equals(accountManager.getLocalAccount().getLogin())
+            );
+        }
     }
   
     public void getEvent(Long id, Observer<Event> eventObserver) {
+        Log.i("EventPresenter", "Getting event with ID=" + id);
+
         eventRepository.get(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
