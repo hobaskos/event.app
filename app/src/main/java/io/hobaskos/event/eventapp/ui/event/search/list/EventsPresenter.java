@@ -22,6 +22,7 @@ import io.hobaskos.event.eventapp.data.eventbus.SetEventsEvent;
 import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.data.repository.EventRepository;
 import io.hobaskos.event.eventapp.data.service.GPSService;
+import io.hobaskos.event.eventapp.data.service.GPSTracker;
 import io.hobaskos.event.eventapp.data.storage.FilterSettings;
 import io.hobaskos.event.eventapp.data.storage.PersistentStorage;
 import io.hobaskos.event.eventapp.ui.base.presenter.BaseRxLcePresenter;
@@ -53,6 +54,7 @@ public class EventsPresenter extends BaseRxLcePresenter<EventsView, List<Event>>
     private long categoryId;
 
     private GPSService gpsService;
+    private GPSTracker gpsTracker;
 
     @Override
     public void attachView(EventsView view) {
@@ -74,6 +76,7 @@ public class EventsPresenter extends BaseRxLcePresenter<EventsView, List<Event>>
         this.persistentStorage = persistentStorage;
 
         this.gpsService = new GPSService();
+        this.gpsTracker = new GPSTracker(App.getInst().getApplicationContext());
 
 
     }
@@ -167,8 +170,9 @@ public class EventsPresenter extends BaseRxLcePresenter<EventsView, List<Event>>
 
         if (useCurrentLocation) {
             Log.i(TAG, " USE CURRENT LOCATION");
-            lat = gpsService.lat;
-            lon = gpsService.lon;
+            lat = gpsTracker.getLatitude();
+            lon = gpsTracker.getLongitude();
+            Log.i(TAG, "lat, lon: " + lat + ", " + lon);
 
         } else {
             Log.i(TAG, " NOT USING CURRENT LOCATION");
