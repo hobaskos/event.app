@@ -21,7 +21,6 @@ import io.hobaskos.event.eventapp.data.model.Event;
 public class EventInfoFragment extends Fragment {
 
     private static final String ARG_EVENT = "event";
-
     private static final String EVENT_IMAGE_URL_PLACEHOLDER = "https://mave.me/img/projects/full_placeholder.png";
 
     @BindView(R.id.image)

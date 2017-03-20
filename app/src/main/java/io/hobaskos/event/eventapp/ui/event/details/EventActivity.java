@@ -56,6 +56,7 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     protected TabLayout tabLayout;
     private boolean isOwner;
     private Event event;
+    private EventCategoryTheme eventCategoryTheme;
     private boolean hasBeenPaused = false;
 
     @Inject public EventPresenter eventPresenter;
@@ -66,11 +67,14 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
 
         // The Activity was started from the Event-List
         if(savedInstanceState == null) {
+            Log.i("EventActivity", "Inside onCreate with savedInstanceState == null");
             // This must be before setContentView!
             EventCategoryTheme theme = (EventCategoryTheme) getIntent().getExtras().getSerializable(EVENT_THEME);
             if (theme != null) { setEventTheme(theme); }
         } else {
             // The Activity was restarted
+            event = (Event) savedInstanceState.get(EVENT);
+            Log.i("EventActivity", "Inside onCreate with savedInstanceState != null");
             setEventTheme(event.getCategory().getTheme());
         }
 
@@ -114,19 +118,10 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        Log.i("EventActivity", "Inside onSaveInstanceState");
         if(event != null) {
+            Log.i("EventActivity", "Inside onSaveInstanceState. Event != null");
             outState.putParcelable(EVENT, event);
-        }
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-
-        try {
-            event = (Event) savedInstanceState.get(EVENT);
-        } catch (ClassCastException e) {
-            e.printStackTrace();
         }
     }
 
@@ -257,34 +252,12 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
 
         if(hasBeenPaused) {
             Log.i("EventActivity", "onResume(): hasBeenPaused==true");
-
-            presenter.getEvent(eventId, new Observer<Event>() {
-                @Override
-                public void onCompleted() {
-
-                }
-
-                @Override
-                public void onError(Throwable e) {
-
-                }
-
-                @Override
-                public void onNext(Event event) {
-                    refresh(event);
-                }
-            });
-
-
+            refresh();
         }
     }
 
-    private void refresh(Event event) {
+    private void refresh() {
         Log.i("EventActivity", "Refreshing activity...");
-        //Intent intent = getIntent();
-        //finish();
-        //startActivity(intent);
-        this.event = event;
         recreate();
     }
 
