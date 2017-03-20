@@ -99,7 +99,9 @@ dependencies {
     compile 'com.google.maps.android:android-maps-utils:0.4'
 
     // Play services
+    // https://developers.google.com/android/guides/setup
 //    compile 'com.google.android.gms:play-services:10.2.0'
+    compile 'com.google.android.gms:play-services-location:10.2.0'
     compile 'com.google.android.gms:play-services-maps:10.2.0'
     compile 'com.google.android.gms:play-services-places:10.2.0'
     compile 'com.google.android.gms:play-services-nearby:10.2.0'

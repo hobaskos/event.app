@@ -1,23 +1,31 @@
 package io.hobaskos.event.eventapp.ui.event.search.list;
 
+import android.location.Location;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
+
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 import org.joda.time.DateTime;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
-import io.hobaskos.event.eventapp.data.eventbus.FiltersUpdatedEvent;
+import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.data.eventbus.SetEventsEvent;
 import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.data.repository.EventRepository;
+import io.hobaskos.event.eventapp.data.service.GPSService;
+import io.hobaskos.event.eventapp.data.service.GPSTracker;
+import io.hobaskos.event.eventapp.data.storage.FilterSettings;
 import io.hobaskos.event.eventapp.data.storage.PersistentStorage;
 import io.hobaskos.event.eventapp.ui.base.presenter.BaseRxLcePresenter;
-import io.hobaskos.event.eventapp.ui.event.filter.FilterEventsPresenter;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -27,7 +35,7 @@ import rx.schedulers.Schedulers;
  * Created by andre on 2/13/2017.
  */
 
-public class EventsPresenter extends BaseRxLcePresenter<EventsView, List<Event>> {
+public class EventsPresenter extends BaseRxLcePresenter<EventsView, List<Event>>  {
 
     public final static String TAG = EventsPresenter.class.getName();
 
@@ -36,11 +44,17 @@ public class EventsPresenter extends BaseRxLcePresenter<EventsView, List<Event>>
     private Subscriber<List<Event>> moreEventSubscriber;
 
     private PersistentStorage persistentStorage;
+    private FilterSettings filterSettings;
+
+    private boolean useCurrentLocation;
 
     private int distance;
     private double lat;
     private double lon;
     private long categoryId;
+
+    private GPSService gpsService;
+    private GPSTracker gpsTracker;
 
     @Override
     public void attachView(EventsView view) {
@@ -55,10 +69,16 @@ public class EventsPresenter extends BaseRxLcePresenter<EventsView, List<Event>>
 
     @Inject
     public EventsPresenter(EventRepository eventRepository,
+                           FilterSettings filterSettings,
                            PersistentStorage persistentStorage) {
         this.eventRepository = eventRepository;
-
+        this.filterSettings = filterSettings;
         this.persistentStorage = persistentStorage;
+
+        //this.gpsService = new GPSService();
+        this.gpsTracker = new GPSTracker(App.getInst().getApplicationContext());
+
+
     }
 
     public void loadEvents(boolean pullToRefresh, String searchQuery) {
@@ -75,6 +95,7 @@ public class EventsPresenter extends BaseRxLcePresenter<EventsView, List<Event>>
         DateTime fromDate = DateTime.now();
         DateTime toDate = fromDate.plusYears(2);
 
+        Log.i(TAG, "Observable up");
         // Setup observable:
         final Observable<List<Event>> observable =
                 eventRepository.searchNearby(0, searchQuery, lat, lon, distance + "km", fromDate, toDate, categoryId + "");
@@ -92,9 +113,13 @@ public class EventsPresenter extends BaseRxLcePresenter<EventsView, List<Event>>
         loadFilterValues();
         DateTime fromDate = DateTime.now();
         DateTime toDate = fromDate.plusYears(2);
+
+
         // Setup observable:
         final Observable<List<Event>> observable =
                 eventRepository.searchNearby(nextPage, searchQuery, lat, lon, distance + "km", fromDate, toDate, categoryId + "");
+
+        Log.i(TAG, " Observable up");
         // Show loading in view:
         if (isViewAttached()) {
             getView().showLoadMore(true);
@@ -136,9 +161,21 @@ public class EventsPresenter extends BaseRxLcePresenter<EventsView, List<Event>>
     }
 
     private void loadFilterValues() {
-        distance = persistentStorage.getInt(FilterEventsPresenter.FILTER_EVENTS_DISTANCE_KEY, 10);
-        lat = persistentStorage.getDouble(FilterEventsPresenter.FILTER_EVENTS_LOCATION_LAT_KEY, 0);
-        lon = persistentStorage.getDouble(FilterEventsPresenter.FILTER_EVENTS_LOCATION_LON_KEY, 0);
-        categoryId = persistentStorage.getLong(FilterEventsPresenter.FILTER_EVENTS_CATEGORY_KEY, 0);
+        distance = filterSettings.getDistance();
+        lat = filterSettings.getPlaceLat();
+        lon = filterSettings.getPlaceLon();
+        categoryId = filterSettings.getCategoryId();
+
+        useCurrentLocation = filterSettings.getCurrentLocation();
+
+        if (useCurrentLocation) {
+            Log.i(TAG, " USE CURRENT LOCATION");
+            lat = gpsTracker.getLatitude();
+            lon = gpsTracker.getLongitude();
+            Log.i(TAG, "lat, lon: " + lat + ", " + lon);
+
+        } else {
+            Log.i(TAG, " NOT USING CURRENT LOCATION");
+        }
     }
 }
