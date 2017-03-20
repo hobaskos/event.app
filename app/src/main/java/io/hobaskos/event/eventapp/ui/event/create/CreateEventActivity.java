@@ -245,8 +245,7 @@ public class CreateEventActivity extends MvpActivity<CreateEventView, CreateEven
     public void onSuccess(Event event) {
         hideLoader();
 
-        if(activityState.equals(ActivityState.CREATE))
-        {
+        if(activityState.equals(ActivityState.CREATE)) {
             Intent intent = new Intent(this, EventActivity.class);
             intent.putExtra(EventActivity.EVENT_ID, event.getId());
             intent.putExtra(EventActivity.EVENT_THEME, event.getCategory().getTheme());
