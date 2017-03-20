@@ -1,6 +1,5 @@
 package io.hobaskos.event.eventapp.ui.event.details;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -28,7 +27,6 @@ import io.hobaskos.event.eventapp.ui.dialog.DeleteDialogFragment;
 import io.hobaskos.event.eventapp.ui.dialog.DeleteDialogListener;
 import io.hobaskos.event.eventapp.ui.event.create.CreateEventActivity;
 import io.hobaskos.event.eventapp.ui.event.details.attending.AttendeesFragment;
-import io.hobaskos.event.eventapp.ui.event.details.info.EventInfoFragment;
 import io.hobaskos.event.eventapp.ui.event.details.location.LocationsFragment;
 import io.hobaskos.event.eventapp.ui.event.details.map.MapsActivity;
 import io.hobaskos.event.eventapp.ui.location.add.LocationActivity;
@@ -56,10 +54,9 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     protected TabLayout tabLayout;
     private boolean isOwner;
     private Event event;
-    private EventCategoryTheme eventCategoryTheme;
     private boolean hasBeenPaused = false;
 
-    @Inject public EventPresenter eventPresenter;
+    @Inject public EventPresenter presenter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -129,7 +126,7 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     @Override
     public EventPresenter createPresenter() {
         App.getInst().getComponent().inject(this);
-        return eventPresenter;
+        return presenter;
     }
 
     @Override
