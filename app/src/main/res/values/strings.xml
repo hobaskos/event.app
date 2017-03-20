@@ -89,6 +89,11 @@
     <string name="attend_event_desc">Do you want to attend this event?</string>
     <string name="could_not_attend_event">Could not attend event, maybe you are already attending?</string>
     <string name="attending_event_count">Attendance count:</string>
+    <string name="place_is_a_required_field">Place is a required field.</string>
+    <string name="from_date">Start date</string>
+    <string name="from_time">Start time</string>
+    <string name="to_date">End date</string>
+    <string name="to_time">End time</string>
 
     <string name="category">Category: </string>
 </resources>

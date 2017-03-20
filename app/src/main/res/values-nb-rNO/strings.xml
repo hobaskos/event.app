@@ -91,6 +91,11 @@
     <string name="attend_event_desc">Do you want to attend this event?</string>
     <string name="could_not_attend_event">Could not attend event, maybe you are already attending?</string>
     <string name="attending_event_count">Attendance count:</string>
+    <string name="place_is_a_required_field">Sted er et nødvendig felt.</string>
+    <string name="from_date">Start dato</string>
+    <string name="from_time">Start tid</string>
+    <string name="to_date">Slutt dato</string>
+    <string name="to_time">Slutt tid</string>
 
     <string name="category">Kategori</string>
 </resources>

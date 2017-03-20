@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -157,6 +158,7 @@ public class LocationActivity extends MvpActivity<LocationView, LocationPresente
             name.setText(location.getName());
             description.setText(location.getDescription());
             placeAutocompleteFragment.setText(location.getSearchName());
+            Log.i("LocationActivity", "Location.getSearchName()=" + location.getSearchName());
             fromDateTimeVM = new DateTimeVM(location.getFromDate());
             toDateTimeVM = new DateTimeVM(location.getToDate());
             fromDate.setText(fromDateTimeVM.getDate());
@@ -265,10 +267,12 @@ public class LocationActivity extends MvpActivity<LocationView, LocationPresente
             case FROM:
                 fromDateTimeVM.setDate(year, (monthOfYear + 1), dayOfMonth);
                 fromDate.setText(fromDateTimeVM.getDate());
+                fromDate.setError(null);
                 break;
             case TO:
                 toDateTimeVM.setDate(year, (monthOfYear + 1), dayOfMonth);
                 toDate.setText(toDateTimeVM.getDate());
+                toDate.setError(null);
                 break;
             default:
                 throw new IllegalStateException("Illegal state");
@@ -281,10 +285,12 @@ public class LocationActivity extends MvpActivity<LocationView, LocationPresente
             case FROM:
                 fromDateTimeVM.setTime(hourOfDay, minute);
                 fromTime.setText(fromDateTimeVM.getTime());
+                fromTime.setError(null);
                 break;
             case TO:
                 toDateTimeVM.setTime(hourOfDay, minute);
                 toTime.setText(toDateTimeVM.getTime());
+                toTime.setError(null);
                 break;
             default:
                 throw new IllegalStateException("Illegal state");
@@ -352,6 +358,10 @@ public class LocationActivity extends MvpActivity<LocationView, LocationPresente
             name.setError(null);
         }
 
+        if(googlePlace == null) {
+            valid = false;
+            Toast.makeText(this, R.string.place_is_a_required_field, Toast.LENGTH_SHORT).show();
+        } 
         // Todo: handle situation where Google Places field is not set.
 
         if(fromDate.getText().toString().isEmpty()) {
@@ -383,5 +393,16 @@ public class LocationActivity extends MvpActivity<LocationView, LocationPresente
         }
 
         return valid;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
