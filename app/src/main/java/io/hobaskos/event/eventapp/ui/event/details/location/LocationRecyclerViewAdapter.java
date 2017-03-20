@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.model.Location;
 
@@ -37,7 +38,7 @@ public class LocationRecyclerViewAdapter extends
         holder.location = location;
         holder.title.setText(location.getName());
         holder.address.setText(location.getAddress());
-        holder.date.setText(location.getFromDate().toString());
+        holder.date.setText(location.getDateLine(App.getInst()));
         // Todo: Should only be visible if Event is owned by current user
         holder.delete.setVisibility(View.VISIBLE);
     }

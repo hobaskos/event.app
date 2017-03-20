@@ -1,6 +1,9 @@
 package io.hobaskos.event.eventapp.data.model;
 
+import android.content.Context;
+import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.format.DateUtils;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -102,6 +105,23 @@ public class Location implements Parcelable {
         this.searchName = searchName;
     }
 
+    public String getDateLine(Context context) {
+        if(fromDate == null || toDate == null) {
+            return "";
+        }
+
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(DateUtils.formatDateTime(context, fromDate.toDate().getTime(), DateUtils.FORMAT_SHOW_DATE))
+                    .append("  ")
+                    .append(DateUtils.formatDateTime(context, fromDate.toDate().getTime(), DateUtils.FORMAT_SHOW_TIME))
+                    .append("  ->  ")
+                    .append(DateUtils.formatDateTime(context, toDate.toDate().getTime(), DateUtils.FORMAT_SHOW_DATE))
+                    .append("  ")
+                    .append(DateUtils.formatDateTime(context, toDate.toDate().getTime(), DateUtils.FORMAT_SHOW_TIME));
+
+        return stringBuilder.toString();
+    }
+
     /**
      * Checks if this location is currently on going.
      * @return true if location is ongoing, false otherwise.
@@ -124,32 +144,36 @@ public class Location implements Parcelable {
     }
 
     @Override
-    public void writeToParcel(android.os.Parcel dest, int flags) {
-        dest.writeLong(this.id);
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(this.id);
         dest.writeString(this.name);
         dest.writeString(this.description);
         dest.writeParcelable(this.geoPoint, flags);
         dest.writeSerializable(this.fromDate);
         dest.writeSerializable(this.toDate);
-        dest.writeLong(this.eventId);
+        dest.writeValue(this.eventId);
+        dest.writeString(this.address);
+        dest.writeString(this.searchName);
     }
 
     public Location() {
     }
 
-    protected Location(android.os.Parcel in) {
-        this.id = in.readLong();
+    protected Location(Parcel in) {
+        this.id = (Long) in.readValue(Long.class.getClassLoader());
         this.name = in.readString();
         this.description = in.readString();
         this.geoPoint = in.readParcelable(GeoPoint.class.getClassLoader());
         this.fromDate = (DateTime) in.readSerializable();
         this.toDate = (DateTime) in.readSerializable();
-        this.eventId = in.readLong();
+        this.eventId = (Long) in.readValue(Long.class.getClassLoader());
+        this.address = in.readString();
+        this.searchName = in.readString();
     }
 
-    public static final Parcelable.Creator<Location> CREATOR = new Parcelable.Creator<Location>() {
+    public static final Creator<Location> CREATOR = new Creator<Location>() {
         @Override
-        public Location createFromParcel(android.os.Parcel source) {
+        public Location createFromParcel(Parcel source) {
             return new Location(source);
         }
 
@@ -158,11 +182,6 @@ public class Location implements Parcelable {
             return new Location[size];
         }
     };
-
-    @Override
-    public String toString() {
-        return getName();
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -181,7 +200,11 @@ public class Location implements Parcelable {
             return false;
         if (toDate != null ? !toDate.equals(location.toDate) : location.toDate != null)
             return false;
-        return eventId != null ? eventId.equals(location.eventId) : location.eventId == null;
+        if (eventId != null ? !eventId.equals(location.eventId) : location.eventId != null)
+            return false;
+        if (address != null ? !address.equals(location.address) : location.address != null)
+            return false;
+        return searchName != null ? searchName.equals(location.searchName) : location.searchName == null;
 
     }
 
@@ -194,6 +217,8 @@ public class Location implements Parcelable {
         result = 31 * result + (fromDate != null ? fromDate.hashCode() : 0);
         result = 31 * result + (toDate != null ? toDate.hashCode() : 0);
         result = 31 * result + (eventId != null ? eventId.hashCode() : 0);
+        result = 31 * result + (address != null ? address.hashCode() : 0);
+        result = 31 * result + (searchName != null ? searchName.hashCode() : 0);
         return result;
     }
 }
