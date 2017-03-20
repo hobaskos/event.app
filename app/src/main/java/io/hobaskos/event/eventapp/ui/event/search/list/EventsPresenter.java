@@ -8,12 +8,9 @@ import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationServices;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 import org.joda.time.DateTime;
 
 import java.util.List;
@@ -21,15 +18,13 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.hobaskos.event.eventapp.App;
-import io.hobaskos.event.eventapp.data.eventbus.FiltersUpdatedEvent;
 import io.hobaskos.event.eventapp.data.eventbus.SetEventsEvent;
 import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.data.repository.EventRepository;
-import io.hobaskos.event.eventapp.data.service.GPSTracker;
+import io.hobaskos.event.eventapp.data.service.GPSService;
 import io.hobaskos.event.eventapp.data.storage.FilterSettings;
 import io.hobaskos.event.eventapp.data.storage.PersistentStorage;
 import io.hobaskos.event.eventapp.ui.base.presenter.BaseRxLcePresenter;
-import io.hobaskos.event.eventapp.ui.event.filter.FilterEventsPresenter;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -39,9 +34,7 @@ import rx.schedulers.Schedulers;
  * Created by andre on 2/13/2017.
  */
 
-public class EventsPresenter extends BaseRxLcePresenter<EventsView, List<Event>> implements  GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener,
-        LocationListener {
+public class EventsPresenter extends BaseRxLcePresenter<EventsView, List<Event>>  {
 
     public final static String TAG = EventsPresenter.class.getName();
 
@@ -59,7 +52,7 @@ public class EventsPresenter extends BaseRxLcePresenter<EventsView, List<Event>>
     private double lon;
     private long categoryId;
 
-    private GoogleApiClient mGoogleApiClient;
+    private GPSService gpsService;
 
     @Override
     public void attachView(EventsView view) {
@@ -79,6 +72,8 @@ public class EventsPresenter extends BaseRxLcePresenter<EventsView, List<Event>>
         this.eventRepository = eventRepository;
         this.filterSettings = filterSettings;
         this.persistentStorage = persistentStorage;
+
+        this.gpsService = new GPSService();
 
 
     }
@@ -172,46 +167,11 @@ public class EventsPresenter extends BaseRxLcePresenter<EventsView, List<Event>>
 
         if (useCurrentLocation) {
             Log.i(TAG, " USE CURRENT LOCATION");
-            this.mGoogleApiClient = new GoogleApiClient.Builder(App.getInst())
-                    .addApi(LocationServices.API)
-                    .addConnectionCallbacks(this)
-                    .addOnConnectionFailedListener(this)
-                    .build();
+            lat = gpsService.lat;
+            lon = gpsService.lon;
 
         } else {
             Log.i(TAG, " NOT USING CURRENT LOCATION");
         }
-    }
-
-    @Override
-    public void onConnected(@Nullable Bundle bundle) {
-        Log.i(TAG, "Connected");
-        try {
-            Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
-                    mGoogleApiClient);
-            if (mLastLocation != null) {
-                lat = mLastLocation.getLatitude();
-                lon = mLastLocation.getLongitude();
-            }
-        }
-        catch (SecurityException e) {
-
-        }
-
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-        Log.i(TAG, "connection suspended");
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Log.i(TAG, "connection failed");
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-        Log.i(TAG, "location chnaged");
     }
 }
