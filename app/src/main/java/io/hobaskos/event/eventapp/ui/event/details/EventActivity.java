@@ -64,9 +64,15 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // This must be before setContentView!
-        EventCategoryTheme theme = (EventCategoryTheme) getIntent().getExtras().getSerializable(EVENT_THEME);
-        if (theme != null) { setEventTheme(theme); }
+        // The Activity was started from the Event-List
+        if(savedInstanceState == null) {
+            // This must be before setContentView!
+            EventCategoryTheme theme = (EventCategoryTheme) getIntent().getExtras().getSerializable(EVENT_THEME);
+            if (theme != null) { setEventTheme(theme); }
+        } else {
+            // The Activity was restarted
+            setEventTheme(event.getCategory().getTheme());
+        }
 
         setContentView(R.layout.activity_event);
         setTitle(R.string.loading);
@@ -102,6 +108,25 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
             case VIOLET:
                 setTheme(R.style.AppTheme_Violet);
                 break;
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if(event != null) {
+            outState.putParcelable(EVENT, event);
+        }
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        try {
+            event = (Event) savedInstanceState.get(EVENT);
+        } catch (ClassCastException e) {
+            e.printStackTrace();
         }
     }
 
@@ -232,15 +257,34 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
 
         if(hasBeenPaused) {
             Log.i("EventActivity", "onResume(): hasBeenPaused==true");
-            refresh();
+
+            presenter.getEvent(eventId, new Observer<Event>() {
+                @Override
+                public void onCompleted() {
+
+                }
+
+                @Override
+                public void onError(Throwable e) {
+
+                }
+
+                @Override
+                public void onNext(Event event) {
+                    refresh(event);
+                }
+            });
+
+
         }
     }
 
-    private void refresh() {
+    private void refresh(Event event) {
         Log.i("EventActivity", "Refreshing activity...");
         //Intent intent = getIntent();
         //finish();
         //startActivity(intent);
+        this.event = event;
         recreate();
     }
 
