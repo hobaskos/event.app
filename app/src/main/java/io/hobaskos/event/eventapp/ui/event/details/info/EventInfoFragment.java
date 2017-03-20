@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +21,6 @@ import io.hobaskos.event.eventapp.data.model.Event;
 public class EventInfoFragment extends Fragment {
 
     private static final String ARG_EVENT = "event";
-
     private static final String EVENT_IMAGE_URL_PLACEHOLDER = "https://mave.me/img/projects/full_placeholder.png";
 
     @BindView(R.id.image)
@@ -88,5 +88,28 @@ public class EventInfoFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
+    }
+
+    public void refresh(Event event) {
+        Log.i("EventInfoFragment", "Refreshing EventInfoFragment");
+        this.event = event;
+
+        Picasso.with(getContext())
+                .load(event.getImageUrl() != null ? event.getAbsoluteImageUrl() : EVENT_IMAGE_URL_PLACEHOLDER)
+                .into(eventImage);
+
+        if(event.getFromDate() != null) {
+            eventTime.setText(DateUtils.formatDateTime(getContext(),
+                    event.getFromDate().toDate().getTime(), DateUtils.FORMAT_SHOW_DATE));
+        }
+
+        eventDescription.setText(event.getDescription());
+
+        attendanceCount.setText(String.valueOf(event.getAttendanceCount()));
+
+        if(event.getMyAttendance() != null) {
+            myAttendance.setText(R.string.attending_event);
+        }
+
     }
 }

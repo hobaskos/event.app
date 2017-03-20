@@ -55,7 +55,7 @@ public class CreateEventPresenter extends MvpBasePresenter<CreateEventView> {
                     @Override
                     public void onNext(Event event) {
                         if(isViewAttached()){
-                            getView().onSuccess(event.getId());
+                            getView().onSuccess(event);
                         }
                     }
                 });
@@ -113,7 +113,7 @@ public class CreateEventPresenter extends MvpBasePresenter<CreateEventView> {
             @Override
             public void onNext(Event event) {
                 if(isViewAttached()) {
-                    getView().onSuccess(event.getId());
+                    getView().onSuccess(event);
                 }
             }
         });

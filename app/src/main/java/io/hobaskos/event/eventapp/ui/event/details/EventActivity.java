@@ -52,18 +52,28 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     private EventPagerAdapter eventPagerAdapter;
     protected ViewPager viewPager;
     protected TabLayout tabLayout;
-    private boolean isOwner = false;
+    private boolean isOwner;
     private Event event;
+    private boolean hasBeenPaused = false;
 
-    @Inject public EventPresenter eventPresenter;
+    @Inject public EventPresenter presenter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // This must be before setContentView!
-        EventCategoryTheme theme = (EventCategoryTheme) getIntent().getExtras().getSerializable(EVENT_THEME);
-        if (theme != null) { setEventTheme(theme); }
+        // The Activity was started from the Event-List
+        if(savedInstanceState == null) {
+            Log.i("EventActivity", "Inside onCreate with savedInstanceState == null");
+            // This must be before setContentView!
+            EventCategoryTheme theme = (EventCategoryTheme) getIntent().getExtras().getSerializable(EVENT_THEME);
+            if (theme != null) { setEventTheme(theme); }
+        } else {
+            // The Activity was restarted
+            event = (Event) savedInstanceState.get(EVENT);
+            Log.i("EventActivity", "Inside onCreate with savedInstanceState != null");
+            setEventTheme(event.getCategory().getTheme());
+        }
 
         setContentView(R.layout.activity_event);
         setTitle(R.string.loading);
@@ -76,6 +86,7 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     }
 
     private void setEventTheme(EventCategoryTheme theme) {
+        Log.i("EventActivity", "Setting EventTheme: " + theme.name());
         switch (theme) {
             case RED:
                 setTheme(R.style.AppTheme_Red);
@@ -101,11 +112,21 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
         }
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.i("EventActivity", "Inside onSaveInstanceState");
+        if(event != null) {
+            Log.i("EventActivity", "Inside onSaveInstanceState. Event != null");
+            outState.putParcelable(EVENT, event);
+        }
+    }
+
     @NonNull
     @Override
     public EventPresenter createPresenter() {
         App.getInst().getComponent().inject(this);
-        return eventPresenter;
+        return presenter;
     }
 
     @Override
@@ -147,10 +168,9 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     @Override
     public void setData(Event event) {
         this.event = event;
-        eventPresenter.getOwnerStatus(event);
-
+        presenter.getOwnerStatus(event);
         setTitle(event.getTitle());
-        Log.i("EventACtivity", "setData");
+
         viewPager.setAdapter(eventPagerAdapter = new EventPagerAdapter(event, this, getSupportFragmentManager()));
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
         tabLayout.setupWithViewPager(viewPager);
@@ -217,26 +237,32 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
         Toast.makeText(this, owner ? "Owner" : "Not owner", Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        hasBeenPaused = true;
+    }
+
     protected void onResume() {
         super.onResume();
 
-        if(eventPagerAdapter != null) {
-            presenter.getEvent(eventId, new Observer<Event>() {
-                @Override
-                public void onCompleted() {}
-
-                @Override
-                public void onError(Throwable e) {}
-
-                @Override
-                public void onNext(Event event) {
-                    LocationsFragment locationsFragment = (LocationsFragment) eventPagerAdapter.getItem(1);
-                    locationsFragment.refresh( (ArrayList<Location>) event.getLocations());
-                }
-            });
+        if(hasBeenPaused) {
+            Log.i("EventActivity", "onResume(): hasBeenPaused==true");
+            refresh();
         }
     }
-          
+
+    private void refresh() {
+        Log.i("EventActivity", "Refreshing activity...");
+        recreate();
+    }
+
+    @Override
+    public void recreate() {
+        super.recreate();
+    }
+
     @Override
     public void onDeleteButtonClicked(Location location) {
         presenter.remove(location, new Observer<Void>() {

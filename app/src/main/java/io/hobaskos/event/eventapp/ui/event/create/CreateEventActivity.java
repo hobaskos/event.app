@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.SwitchCompat;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.ArrayAdapter;
@@ -134,6 +135,17 @@ public class CreateEventActivity extends MvpActivity<CreateEventView, CreateEven
         activityState = ActivityState.EDIT;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
     private void onCreateButtonClicked() {
         if(!validate()) {
             create.setEnabled(true);
@@ -230,12 +242,16 @@ public class CreateEventActivity extends MvpActivity<CreateEventView, CreateEven
     }
 
     @Override
-    public void onSuccess(long id) {
+    public void onSuccess(Event event) {
         hideLoader();
 
-        Intent intent = new Intent(this, EventActivity.class);
-        intent.putExtra("eventId", id);
-        startActivity(intent);
+        if(activityState.equals(ActivityState.CREATE)) {
+            Intent intent = new Intent(this, EventActivity.class);
+            intent.putExtra(EventActivity.EVENT_ID, event.getId());
+            intent.putExtra(EventActivity.EVENT_THEME, event.getCategory().getTheme());
+            startActivity(intent);
+        }
+
         finish();
     }
 

@@ -4,6 +4,7 @@ import com.hannesdorfmann.mosby.mvp.MvpView;
 
 import java.util.List;
 
+import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.data.model.EventCategory;
 
 /**
@@ -11,7 +12,7 @@ import io.hobaskos.event.eventapp.data.model.EventCategory;
  */
 
 public interface CreateEventView extends MvpView {
-    void onSuccess(long id);
+    void onSuccess(Event event);
     void onFailure();
     void onCategoriesLoaded(List<EventCategory> categoryList);
     void onFailureLoadingCategories();
