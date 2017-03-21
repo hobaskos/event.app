@@ -113,16 +113,11 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
 
-        if (savedInstanceState == null) {
-
-            // Set initial item in navigation view to checked
-            navigationView.setCheckedItem(R.id.nav_events);
-            // Initial fragment:
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.main_pane, new EventsFragment())
-                    .commit();
-        }
+        // Temp solution, Initial fragment:
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.main_pane, new EventsFragment())
+                .commit();
 
     }
 

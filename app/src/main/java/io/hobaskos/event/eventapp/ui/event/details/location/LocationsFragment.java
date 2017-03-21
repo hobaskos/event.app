@@ -69,7 +69,7 @@ public class LocationsFragment extends Fragment {
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.list);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(linearLayoutManager);
-        locationRecyclerViewAdapter = new LocationRecyclerViewAdapter(locations, listener);
+        locationRecyclerViewAdapter = new LocationRecyclerViewAdapter(locations, listener, context);
         recyclerView.setAdapter(locationRecyclerViewAdapter);
 
         dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),

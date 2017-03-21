@@ -83,7 +83,7 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.location.add.LocationActivity" android:parentActivityName=".ui.main.MainActivity"/>
+        <activity android:name=".ui.location.add.LocationActivity" android:parentActivityName=".ui.event.details.EventActivity"/>
         <activity android:name=".ui.event.search.map.SearchEventsMapActivity" />
         <activity android:name=".ui.event.filter.FilterEventsActivity" />
 

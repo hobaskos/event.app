@@ -21,18 +21,6 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:paddingStart="@dimen/text_margin"
-            android:paddingEnd="@dimen/text_margin"
-            android:paddingTop="4dp"
-            android:layout_height="wrap_content">
-
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
             android:layout_margin="16dp"
             android:orientation="vertical"
             android:layout_height="wrap_content">
@@ -64,21 +52,6 @@
                     android:textColor="@color/colorRed"
                     android:id="@+id/my_attendance"
                     />
-                            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                android:text="@string/category"
-                />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingStart="4dp"
-                android:id="@+id/category"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                />
-
             </LinearLayout>
 
             <LinearLayout

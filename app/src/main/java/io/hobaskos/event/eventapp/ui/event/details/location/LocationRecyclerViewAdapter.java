@@ -1,5 +1,6 @@
 package io.hobaskos.event.eventapp.ui.event.details.location;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,10 +19,12 @@ public class LocationRecyclerViewAdapter extends
 
     private final List<Location> locations;
     private final LocationsFragment.OnListFragmentInteractionListener listener;
+    private final Context context;
 
-    public LocationRecyclerViewAdapter(List<Location> locations, LocationsFragment.OnListFragmentInteractionListener listener) {
+    public LocationRecyclerViewAdapter(List<Location> locations, LocationsFragment.OnListFragmentInteractionListener listener, Context context) {
         this.locations = locations;
         this.listener = listener;
+        this.context = context;
     }
 
     @Override
@@ -37,7 +40,7 @@ public class LocationRecyclerViewAdapter extends
         holder.location = location;
         holder.title.setText(location.getName());
         holder.address.setText(location.getAddress());
-        holder.date.setText(location.getFromDate().toString());
+        holder.date.setText(location.getDateLine(context));
         // Todo: Should only be visible if Event is owned by current user
         holder.delete.setVisibility(View.VISIBLE);
     }

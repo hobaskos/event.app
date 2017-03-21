@@ -80,15 +80,16 @@
     <string name="invalid_invite_code">Could not find event with that invite code</string>
     <string name="delete">Delete</string>
     <string name="delete_location">DANGER: Do you want to delete this location?</string>
-
-
-
     <string name="attend_event">Attend event</string>
     <string name="event_going">Going:</string>
     <string name="attending_event">Attending event</string>
     <string name="attend_event_desc">Do you want to attend this event?</string>
     <string name="could_not_attend_event">Could not attend event, maybe you are already attending?</string>
     <string name="attending_event_count">Attendance count:</string>
-
-    <string name="category">Category: </string>
+    <string name="place_is_a_required_field">Place is a required field.</string>
+    <string name="from_date">Start date</string>
+    <string name="from_time">Start time</string>
+    <string name="to_date">End date</string>
+    <string name="to_time">End time</string>
+    <string name="error_from_date_is_after_to_date">From date cannot be after to date!</string>
 </resources>

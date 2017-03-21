@@ -27,8 +27,6 @@ public class EventInfoFragment extends Fragment {
     protected ImageView eventImage;
     @BindView(R.id.date)
     protected TextView eventTime;
-    @BindView(R.id.category)
-    protected TextView category;
     @BindView(R.id.description)
     protected TextView eventDescription;
     @BindView(R.id.attendance_count)
@@ -72,7 +70,6 @@ public class EventInfoFragment extends Fragment {
                     event.getFromDate().toDate().getTime(), DateUtils.FORMAT_SHOW_DATE));
         }
 
-        category.setText(event.getCategory().getTitle());
         eventDescription.setText(event.getDescription());
         attendanceCount.setText(String.valueOf(event.getAttendanceCount()));
 

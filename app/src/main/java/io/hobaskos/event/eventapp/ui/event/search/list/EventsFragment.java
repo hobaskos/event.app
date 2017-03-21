@@ -74,12 +74,21 @@ public class EventsFragment extends
 
     private DrawerLayout drawerLayout;
 
+//    @Override
+//    public void onSaveInstanceState(Bundle outState) {
+//        outState.putParcelable("ViewState", getViewState());
+//        super.onSaveInstanceState(outState);
+//    }
+
     private String searchQuery;
 
     @Inject
     public EventsPresenter eventsPresenter;
 
     @Override public void onCreate(Bundle savedInstanceState) {
+//        if (savedInstanceState != null) {
+//            viewState = savedInstanceState.getParcelable("ViewState");
+//        }
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         EventBus.getDefault().register(this);

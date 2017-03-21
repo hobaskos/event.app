@@ -9,11 +9,8 @@
 
     <string name="navigation_drawer_open">Åpne navigasjonsskuffen</string>
     <string name="navigation_drawer_close">Lukk navigasjonsskuffen</string>
-
     <string name="error_event_not_found">Dette arrangementet eksisterer ikke lenger</string>
     <string name="filters_applied">Oppdaterer søkefiltere</string>
-
-
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hallo blank fragment</string>
     <string name="description_label">Beskrivelse</string>
@@ -78,19 +75,18 @@
     <string name="join_private">Gå til privat event</string>
     <string name="invite_code_length_error">Invitasjonskoden må være over 4 karakterer</string>
     <string name="invalid_invite_code">Fant ingen eventer med den invitasjonskoden</string>
-
-
     <string name="delete">Slett</string>
-    <string name="delete_location">FARLIG: Vil du slette denne lokasjonen?</string>
-
-
-
+    <string name="delete_location">Vil du slette denne lokasjonen?</string>
     <string name="attend_event">Attend event</string>
     <string name="event_going">Going:</string>
     <string name="attending_event">Attending event</string>
     <string name="attend_event_desc">Do you want to attend this event?</string>
     <string name="could_not_attend_event">Could not attend event, maybe you are already attending?</string>
     <string name="attending_event_count">Attendance count:</string>
-
-    <string name="category">Kategori</string>
+    <string name="place_is_a_required_field">Sted er et nødvendig felt.</string>
+    <string name="from_date">Start dato</string>
+    <string name="from_time">Start tid</string>
+    <string name="to_date">Slutt dato</string>
+    <string name="to_time">Slutt tid</string>
+    <string name="error_from_date_is_after_to_date">Fra dato kan ikke komme etter til dato!</string>
 </resources>
