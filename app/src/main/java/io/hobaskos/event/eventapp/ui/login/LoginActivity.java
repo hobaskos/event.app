@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -23,9 +22,8 @@ import javax.inject.Inject;
 import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.model.LoginVM;
-import io.hobaskos.event.eventapp.data.model.SocialType;
+import io.hobaskos.event.eventapp.data.model.enumeration.SocialType;
 import io.hobaskos.event.eventapp.data.model.SocialUserVM;
-import io.hobaskos.event.eventapp.data.model.response.Response;
 import io.hobaskos.event.eventapp.ui.main.MainActivity;
 
 /**
@@ -40,6 +38,7 @@ public class LoginActivity extends MvpActivity<LoginView, LoginPresenter> implem
     private EditText etLogin;
     private EditText etPassword;
     private Button btnLogin;
+    private ProgressDialog progressDialog;
 
     private CallbackManager callbackManager;
 
@@ -55,6 +54,10 @@ public class LoginActivity extends MvpActivity<LoginView, LoginPresenter> implem
 
         btnLogin = (Button) findViewById(R.id.btn_login_username);
         btnLogin.setOnClickListener(v -> login());
+
+        progressDialog = new ProgressDialog(LoginActivity.this, R.style.AppTheme_Dialog);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage(getText(R.string.authenticating));
 
         initFacebookLogin();
 
@@ -97,25 +100,20 @@ public class LoginActivity extends MvpActivity<LoginView, LoginPresenter> implem
     }
 
     private void login() {
-        if(!validate())
-        {
+        if(!validate()) {
             onLoginFailed();
             return;
         }
 
         btnLogin.setEnabled(false);
 
-        final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this, R.style.AppTheme_Dialog);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage(getText(R.string.authenticating));
         progressDialog.show();
 
         LoginVM loginVM = new LoginVM(etLogin.getText().toString(), etPassword.getText().toString());
 
         new android.os.Handler().postDelayed(() -> {
             presenter.login(loginVM);
-            progressDialog.dismiss();
-        }, 2000);
+        }, 1000);
 
     }
 
@@ -147,22 +145,18 @@ public class LoginActivity extends MvpActivity<LoginView, LoginPresenter> implem
         btnLogin.setEnabled(true);
     }
 
-
     @Override
-    public void showLoginForm() {
-
-    }
-
-    @Override
-    public void showError(Response response) {
-        btnLogin.setEnabled(true);
+    public void hasNotLoggedInSuccessfully() {
+        progressDialog.dismiss();
         Toast.makeText(this, R.string.login_failure, Toast.LENGTH_SHORT).show();
+        onLoginFailed();
     }
 
     @Override
-    public void showSuccess(Response response) {
+    public void hasLoggedInSuccessfully() {
+        progressDialog.dismiss();
         Toast.makeText(this, R.string.login_success, Toast.LENGTH_SHORT).show();
-        startActivity(new Intent(this, MainActivity.class));
+        finish();
     }
 
     @Override

@@ -4,16 +4,11 @@ import java.util.List;
 
 import io.hobaskos.event.eventapp.data.model.JwtToken;
 import io.hobaskos.event.eventapp.data.model.LoginVM;
-import io.hobaskos.event.eventapp.data.model.SocialType;
 import io.hobaskos.event.eventapp.data.model.SocialUserVM;
 import io.hobaskos.event.eventapp.data.model.User;
-import retrofit2.Call;
 import retrofit2.http.Body;
-import retrofit2.http.Field;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
-import retrofit2.http.PUT;
-import retrofit2.http.Part;
 import retrofit2.http.Path;
 import rx.Observable;
 
