@@ -52,7 +52,7 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     private EventPagerAdapter eventPagerAdapter;
     protected ViewPager viewPager;
     protected TabLayout tabLayout;
-    private boolean isOwner;
+    private boolean isOwner = false;
     private Event event;
     private boolean hasBeenPaused = false;
 
@@ -171,7 +171,7 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
         presenter.getOwnerStatus(event);
         setTitle(event.getTitle());
 
-        viewPager.setAdapter(eventPagerAdapter = new EventPagerAdapter(event, this, getSupportFragmentManager()));
+        viewPager.setAdapter(eventPagerAdapter = new EventPagerAdapter(event, this, getSupportFragmentManager(), isOwner));
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
         tabLayout.setupWithViewPager(viewPager);
     }

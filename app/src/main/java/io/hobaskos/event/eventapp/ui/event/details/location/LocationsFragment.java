@@ -29,6 +29,7 @@ public class LocationsFragment extends Fragment {
 
     private static final String ARG_LOCATIONS_LIST = "locations-list";
     private static final String ARG_EVENT_ID = "eventId";
+    private static final String ARG_IS_EVENT_OWNER = "isOwner";
 
     private ArrayList<Location> locations = new ArrayList<>();
     private OnListFragmentInteractionListener listener;
@@ -36,15 +37,17 @@ public class LocationsFragment extends Fragment {
     private FloatingActionButton addLocation;
     private LocationRecyclerViewAdapter locationRecyclerViewAdapter;
     private Long eventId;
+    private boolean isOwner;
 
     public LocationsFragment() {}
 
     @SuppressWarnings("unused")
-    public static LocationsFragment newInstance(Event event) {
+    public static LocationsFragment newInstance(Event event, boolean isOwner) {
         LocationsFragment fragment = new LocationsFragment();
         Bundle args = new Bundle();
         args.putParcelableArrayList(ARG_LOCATIONS_LIST, (ArrayList<Location>) event.getLocations());
         args.putLong(ARG_EVENT_ID, event.getId());
+        args.putBoolean(ARG_IS_EVENT_OWNER, isOwner);
         fragment.setArguments(args);
         return fragment;
     }
@@ -56,6 +59,7 @@ public class LocationsFragment extends Fragment {
         if (getArguments() != null) {
             locations = getArguments().getParcelableArrayList(ARG_LOCATIONS_LIST);
             eventId = getArguments().getLong(ARG_EVENT_ID);
+            isOwner = getArguments().getBoolean(ARG_IS_EVENT_OWNER);
         }
     }
 
@@ -69,7 +73,7 @@ public class LocationsFragment extends Fragment {
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.list);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(linearLayoutManager);
-        locationRecyclerViewAdapter = new LocationRecyclerViewAdapter(locations, listener, context);
+        locationRecyclerViewAdapter = new LocationRecyclerViewAdapter(locations, listener, context, isOwner);
         recyclerView.setAdapter(locationRecyclerViewAdapter);
 
         dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
@@ -77,11 +81,16 @@ public class LocationsFragment extends Fragment {
         recyclerView.addItemDecoration(dividerItemDecoration);
 
         addLocation = (FloatingActionButton) view.findViewById(R.id.fragment_location_list_fab);
-        addLocation.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), LocationActivity.class);
-            intent.putExtra("eventId", eventId);
-            startActivity(intent);
-        });
+
+        if(isOwner) {
+            addLocation.setOnClickListener(v -> {
+                Intent intent = new Intent(getActivity(), LocationActivity.class);
+                intent.putExtra("eventId", eventId);
+                startActivity(intent);
+            });
+        } else {
+            addLocation.setVisibility(View.GONE);
+        }
 
         return view;
     }
