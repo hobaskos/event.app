@@ -1,5 +1,7 @@
 package io.hobaskos.event.eventapp.data.model;
 
+import io.hobaskos.event.eventapp.data.model.enumeration.SocialType;
+
 /**
  * Created by hansp on 25.02.2017.
  */

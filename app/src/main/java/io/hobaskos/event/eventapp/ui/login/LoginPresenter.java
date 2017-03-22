@@ -8,7 +8,6 @@ import javax.inject.Inject;
 
 import io.hobaskos.event.eventapp.data.model.LoginVM;
 import io.hobaskos.event.eventapp.data.model.SocialUserVM;
-import io.hobaskos.event.eventapp.data.model.response.Response;
 import io.hobaskos.event.eventapp.data.repository.UserRepository;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -42,17 +41,15 @@ public class LoginPresenter extends MvpBasePresenter<LoginView> {
 
                     @Override
                     public void onError(Throwable e) {
-                        if(isViewAttached())
-                        {
-                            getView().showError(new Response(false, e.getMessage()));
+                        if(isViewAttached() && getView() != null) {
+                            getView().hasNotLoggedInSuccessfully();
                         }
                     }
 
                     @Override
                     public void onNext(Void aBoolean) {
-                        if(isViewAttached())
-                        {
-                            getView().showSuccess(new Response(true, ""));
+                        if(isViewAttached() && getView() != null) {
+                            getView().hasLoggedInSuccessfully();
                         }
                     }
                 });
@@ -70,17 +67,15 @@ public class LoginPresenter extends MvpBasePresenter<LoginView> {
 
                     @Override
                     public void onError(Throwable e) {
-                        if(isViewAttached())
-                        {
-                            getView().showError(new Response(false, e.getMessage()));
+                        if(isViewAttached() && getView() != null) {
+                            getView().hasNotLoggedInSuccessfully();
                         }
                     }
 
                     @Override
                     public void onNext(Void aVoid) {
-                        if(isViewAttached())
-                        {
-                            getView().showSuccess(new Response(true, ""));
+                        if(isViewAttached() && getView() != null) {
+                            getView().hasLoggedInSuccessfully();
                         }
                     }
                 });
