@@ -232,7 +232,7 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     }
 
     @Override
-    public void setOwner(boolean owner) {
+    public void setIsOwner(boolean owner) {
         isOwner = owner;
         Toast.makeText(this, owner ? "Owner" : "Not owner", Toast.LENGTH_SHORT).show();
     }
