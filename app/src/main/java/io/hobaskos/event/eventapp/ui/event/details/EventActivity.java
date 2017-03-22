@@ -55,6 +55,7 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     private boolean isOwner = false;
     private Event event;
     private boolean hasBeenPaused = false;
+    private Menu menu;
 
     @Inject public EventPresenter presenter;
 
@@ -184,6 +185,12 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.event_menu, menu);
+        this.menu = menu;
+
+        if(isOwner) {
+            menu.getItem(0).setVisible(true);
+        }
+
         return true;
     }
 
@@ -234,6 +241,11 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     @Override
     public void setIsOwner(boolean owner) {
         isOwner = owner;
+
+        if(isOwner) {
+            menu.getItem(0).setVisible(true);
+        }
+
         Toast.makeText(this, owner ? "Owner" : "Not owner", Toast.LENGTH_SHORT).show();
     }
 

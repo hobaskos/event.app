@@ -29,10 +29,15 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
 import com.squareup.picasso.Picasso;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import javax.inject.Inject;
 
 import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
+import io.hobaskos.event.eventapp.data.eventbus.UserHasLoggedInEvent;
 import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.ui.base.view.activity.BaseViewStateActivity;
 import io.hobaskos.event.eventapp.ui.event.create.CreateEventActivity;
@@ -168,7 +173,6 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
                 break;
             case R.id.nav_join_private_event:
                 joinPrivateEvent();
-
                 break;
             case R.id.nav_profile:
                 fragment = new ProfileFragment();
@@ -238,6 +242,8 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
     public void onStart() {
         super.onStart();
 
+        EventBus.getDefault().register(this);
+
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client.connect();
@@ -248,10 +254,19 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
     public void onStop() {
         super.onStop();
 
+        EventBus.getDefault().unregister(this);
+
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         AppIndex.AppIndexApi.end(client, getIndexApiAction());
         client.disconnect();
+    }
+
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void onUserHasLoggedInEvent(UserHasLoggedInEvent userHasLoggedInEvent) {
+        setUserName(userHasLoggedInEvent.getName());
+        setUserPicture(userHasLoggedInEvent.getImageUrl());
+        viewAuthenticatedNavigation();
     }
 
     @Override
