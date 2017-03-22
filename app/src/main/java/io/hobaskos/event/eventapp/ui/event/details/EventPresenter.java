@@ -69,9 +69,15 @@ public class EventPresenter extends BaseRxLcePresenter<EventView, Event> {
 
     public void getOwnerStatus(Event event) {
         if(isViewAttached() && getView() != null) {
-            getView().setOwner(
-                    event.getOwnerLogin().equals(accountManager.getLocalAccount().getLogin())
-            );
+
+            if(accountManager.isLoggedIn()) {
+                getView().setOwner(
+                        event.getOwnerLogin().equals(accountManager.getLocalAccount().getLogin())
+                );
+                return;
+            }
+
+            getView().setOwner(false);
         }
     }
   

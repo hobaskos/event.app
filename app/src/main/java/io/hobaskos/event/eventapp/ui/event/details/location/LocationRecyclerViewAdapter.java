@@ -20,11 +20,13 @@ public class LocationRecyclerViewAdapter extends
     private final List<Location> locations;
     private final LocationsFragment.OnListFragmentInteractionListener listener;
     private final Context context;
+    private final boolean isOwner;
 
-    public LocationRecyclerViewAdapter(List<Location> locations, LocationsFragment.OnListFragmentInteractionListener listener, Context context) {
+    public LocationRecyclerViewAdapter(List<Location> locations, LocationsFragment.OnListFragmentInteractionListener listener, Context context, boolean isOwner) {
         this.locations = locations;
         this.listener = listener;
         this.context = context;
+        this.isOwner = isOwner;
     }
 
     @Override
@@ -41,8 +43,11 @@ public class LocationRecyclerViewAdapter extends
         holder.title.setText(location.getName());
         holder.address.setText(location.getAddress());
         holder.date.setText(location.getDateLine(context));
-        // Todo: Should only be visible if Event is owned by current user
-        holder.delete.setVisibility(View.VISIBLE);
+        if(isOwner) {
+            holder.delete.setVisibility(View.VISIBLE);
+        } else {
+            holder.delete.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
@@ -66,16 +71,18 @@ public class LocationRecyclerViewAdapter extends
             date = (TextView) view.findViewById(R.id.date);
             delete = (ImageView) view.findViewById(R.id.delete);
 
-            locationInfoView.setOnClickListener(v -> {
-                if (null != listener) { listener.onListFragmentEditInteraction(location); }
-            });
+            if(isOwner) {
 
-            delete.setOnClickListener(v -> {
-                if(null != listener) { listener.onListFragmentDeleteInteraction(location); }
-            });
+                locationInfoView.setOnClickListener(v -> {
+                    if (null != listener) { listener.onListFragmentEditInteraction(location); }
+                });
 
+                delete.setOnClickListener(v -> {
+                    if(null != listener) { listener.onListFragmentDeleteInteraction(location); }
+                });
+
+            }
         }
-
 
     }
 }

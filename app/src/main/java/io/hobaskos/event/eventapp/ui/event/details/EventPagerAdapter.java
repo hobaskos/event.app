@@ -27,16 +27,18 @@ public class EventPagerAdapter extends FragmentPagerAdapter {
 
     private Context context;
     private Event event;
+    private boolean isOwner;
 
-    public EventPagerAdapter(Event event, Context context, FragmentManager fm) {
+    public EventPagerAdapter(Event event, Context context, FragmentManager fm, boolean isOwner) {
         super(fm);
         this.event = event;
         this.context = context;
+        this.isOwner = isOwner;
 
         Log.d(TAG, "EventPagerAdapter: " + event.getId() + ", myAttendance: " + event.getMyAttendance());
 
         eventInfoFragment = EventInfoFragment.newInstance(event);
-        locationsFragment = LocationsFragment.newInstance(event);
+        locationsFragment = LocationsFragment.newInstance(event, isOwner);
         attendeesFragment = AttendeesFragment.newInstance(event.getId(), event.getMyAttendance() != null);
     }
 
