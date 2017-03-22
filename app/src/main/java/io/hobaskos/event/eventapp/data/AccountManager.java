@@ -49,6 +49,7 @@ public class AccountManager {
      */
     public void logout()
     {
+        userRepository.removeLocalAccount();
         jwtStorageProxy.remove();
         LoginManager.getInstance().logOut();
     }

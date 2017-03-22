@@ -6,6 +6,7 @@
         android:id="@+id/edit"
         android:icon="@drawable/ic_mode_edit"
         android:title="@string/edit"
+        android:visible="false"
         app:showAsAction="ifRoom"
         />
 

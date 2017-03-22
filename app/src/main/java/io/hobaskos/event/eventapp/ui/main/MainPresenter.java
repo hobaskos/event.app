@@ -4,9 +4,13 @@ import android.util.Log;
 
 import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import javax.inject.Inject;
 
 import io.hobaskos.event.eventapp.data.AccountManager;
+import io.hobaskos.event.eventapp.data.eventbus.UserHasLoggedInEvent;
 import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.data.model.User;
 import io.hobaskos.event.eventapp.data.repository.EventRepository;
@@ -51,7 +55,7 @@ public class MainPresenter extends MvpBasePresenter<MainView> {
                     public void onNext(User user) {
                         Log.i("MainPresenter", "Name of user: " + user.getFirstName() + " " + user.getLastName());
                         Log.i("User", user.toString());
-                        if(isViewAttached())
+                        if(isViewAttached() && getView() != null)
                         {
                             getView().setUserName(user.getFirstName() + " " + user.getLastName());
                             getView().setUserPicture(user.getProfileImageUrl());
@@ -62,13 +66,15 @@ public class MainPresenter extends MvpBasePresenter<MainView> {
 
     public void logout() {
         accountManager.logout();
-        getView().setUserName("");
-        getView().setDefaultPicture();
-        getView().hideNavigationHeader();
+        if(isViewAttached() && getView() != null) {
+            getView().setUserName("");
+            getView().setDefaultPicture();
+            getView().hideNavigationHeader();
+        }
     }
 
     public void onLoginState() {
-        if(isViewAttached()) {
+        if(isViewAttached() && getView() != null) {
             if(accountManager.isLoggedIn()) {
                 fetchAccountInfo();
                 getView().viewAuthenticatedNavigation();
@@ -84,4 +90,6 @@ public class MainPresenter extends MvpBasePresenter<MainView> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(callback);
     }
+
+
 }

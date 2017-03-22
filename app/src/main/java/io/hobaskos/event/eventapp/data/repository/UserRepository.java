@@ -6,12 +6,15 @@ import com.facebook.AccessToken;
 import com.google.gson.Gson;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.VoidViewState;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.List;
 
 import javax.inject.Inject;
 
 import io.hobaskos.event.eventapp.data.AccountManager;
 import io.hobaskos.event.eventapp.data.api.UserService;
+import io.hobaskos.event.eventapp.data.eventbus.UserHasLoggedInEvent;
 import io.hobaskos.event.eventapp.data.model.JwtToken;
 import io.hobaskos.event.eventapp.data.model.LoginVM;
 import io.hobaskos.event.eventapp.data.model.SocialUserVM;
@@ -61,7 +64,10 @@ public class UserRepository {
                     jwtStorage.put(t.getIdToken());
                     service.getAccount()
                             .subscribeOn(Schedulers.io())
-                            .subscribe(this::setLocalAccount);
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(this::setLocalAccount, throwable -> {
+                                Log.i("UserRepository", throwable.getMessage());
+                            });
                     return null;
                 });
     }
@@ -109,8 +115,14 @@ public class UserRepository {
     }
 
     public void setLocalAccount(User user) {
+        Log.i("UserRepository", "User=" + user.toString());
         String serialized = new Gson().toJson(user);
         persistentStorage.put(LOCAL_ACCOUNT_KEY, serialized);
+        EventBus.getDefault().postSticky(new UserHasLoggedInEvent(user.getName(), user.getProfileImageUrl()));
+    }
+
+    public void removeLocalAccount() {
+        persistentStorage.remove(LOCAL_ACCOUNT_KEY);
     }
 
     /**
