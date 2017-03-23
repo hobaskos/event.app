@@ -188,6 +188,7 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
         this.menu = menu;
 
         if(isOwner) {
+            // Edit Event button
             menu.getItem(0).setVisible(true);
         }
 
