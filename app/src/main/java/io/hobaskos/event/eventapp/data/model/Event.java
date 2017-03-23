@@ -267,7 +267,6 @@ public class Event implements Parcelable {
 
     public String getAbsoluteImageUrl() {
         String s = "https://" + Constants.API_HOST + "/api" + imageUrl;
-        Log.i("Event", s);
         return s;
     }
 

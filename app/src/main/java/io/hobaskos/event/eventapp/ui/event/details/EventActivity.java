@@ -18,15 +18,18 @@ import javax.inject.Inject;
 
 import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
+import io.hobaskos.event.eventapp.data.model.CompetitionImage;
 import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.data.model.EventCategoryTheme;
 import io.hobaskos.event.eventapp.data.model.Location;
 import io.hobaskos.event.eventapp.data.model.User;
 import io.hobaskos.event.eventapp.ui.base.view.activity.BaseLceViewStateActivity;
+import io.hobaskos.event.eventapp.ui.event.details.competition.CompetitionFragment;
 import io.hobaskos.event.eventapp.ui.dialog.DeleteDialogFragment;
 import io.hobaskos.event.eventapp.ui.dialog.DeleteDialogListener;
 import io.hobaskos.event.eventapp.ui.event.create.CreateEventActivity;
 import io.hobaskos.event.eventapp.ui.event.details.attending.AttendeesFragment;
+import io.hobaskos.event.eventapp.ui.event.details.competition.ImageCarouselActivity;
 import io.hobaskos.event.eventapp.ui.event.details.location.LocationsFragment;
 import io.hobaskos.event.eventapp.ui.event.details.map.MapsActivity;
 import io.hobaskos.event.eventapp.ui.location.add.LocationActivity;
@@ -40,8 +43,12 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
         EventView,
         LocationsFragment.OnListFragmentInteractionListener,
         AttendeesFragment.OnUserListFragmentInteractionListener,
+        CompetitionFragment.OnListFragmentInteractionListener,
         DeleteDialogListener<Location> {
 
+    private static final String IMAGE_ONE = "http://cdn01.androidauthority.net/wp-content/uploads/2016/06/draw-300x170.png";
+    private static final String IMAGE_TWO = "http://cdn01.androidauthority.net/wp-content/uploads/2016/06/android-win-2-300x162.png";
+    private static final String IMAGE_THREE = "http://cdn01.androidauthority.net/wp-content/uploads/2016/06/android-win-1-300x214.png";
     public static final String ACTIVITY_STATE = "activity_state";
     public static final String EVENT = "event";
     public final static String EVENT_ID = "eventId";
@@ -53,9 +60,11 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     protected ViewPager viewPager;
     protected TabLayout tabLayout;
     private boolean isOwner = false;
+    private boolean isLoggedIn = true;
     private Event event;
     private boolean hasBeenPaused = false;
     private Menu menu;
+    private ArrayList<CompetitionImage> competitionImages;
 
     @Inject public EventPresenter presenter;
 
@@ -76,6 +85,7 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
             setEventTheme(event.getCategory().getTheme());
         }
 
+        competitionImages = getCompetitionImageList();
         setContentView(R.layout.activity_event);
         setTitle(R.string.loading);
         getSupportActionBar().setElevation(0);
@@ -172,7 +182,7 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
         presenter.getOwnerStatus(event);
         setTitle(event.getTitle());
 
-        viewPager.setAdapter(eventPagerAdapter = new EventPagerAdapter(event, this, getSupportFragmentManager(), isOwner));
+        viewPager.setAdapter(eventPagerAdapter = new EventPagerAdapter(event, competitionImages, isOwner, isLoggedIn, this, getSupportFragmentManager()));
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
         tabLayout.setupWithViewPager(viewPager);
     }
@@ -316,5 +326,45 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     @Override
     public void onCancelButtonClicked() {
 
+    }
+
+    private ArrayList<CompetitionImage> getCompetitionImageList() {
+
+        CompetitionImage ci1 = new CompetitionImage();
+        ci1.setId(1L);
+        ci1.setImageUrl(IMAGE_ONE);
+        ci1.setHearts(20);
+        ci1.setHasMyVote(true);
+        ci1.setOwnerLogin("Hans");
+
+        CompetitionImage ci2 = new CompetitionImage();
+        ci2.setId(2L);
+        ci2.setImageUrl(IMAGE_TWO);
+        ci2.setHearts(10);
+        ci2.setHasMyVote(true);
+        ci2.setOwnerLogin("Magnus");
+
+        CompetitionImage ci3 = new CompetitionImage();
+        ci3.setId(3L);
+        ci3.setImageUrl(IMAGE_THREE);
+        ci3.setHearts(30);
+        ci3.setHasMyVote(false);
+        ci3.setOwnerLogin("Alex");
+
+        ArrayList<CompetitionImage> competitionItems = new ArrayList<>();
+        competitionItems.add(ci1);
+        competitionItems.add(ci2);
+        competitionItems.add(ci3);
+
+        return competitionItems;
+    }
+
+    @Override
+    public void onListFragmentInteraction(Long id) {
+        Log.i(TAG, "Clicked on image number " + id);
+        Intent intent = new Intent(this, ImageCarouselActivity.class);
+        intent.putExtra(ImageCarouselActivity.ARG_STARTING_COMPETION_IMAGE, id);
+        intent.putParcelableArrayListExtra(ImageCarouselActivity.ARG_COMPETITION_IMAGES_LIST, competitionImages);
+        startActivity(intent);
     }
 }

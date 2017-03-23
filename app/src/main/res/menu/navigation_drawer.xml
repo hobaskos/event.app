@@ -25,6 +25,11 @@
             android:title="@string/create_event" />
 
         <item
+            android:id="@+id/nav_competitions"
+            android:icon="@drawable/ic_event_black_24dp"
+            android:title="@string/competitions" />
+
+        <item
             android:id="@+id/nav_join_private_event"
             android:icon="@drawable/ic_event_black_24dp"
             android:title="@string/join_private" />

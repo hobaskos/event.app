@@ -92,4 +92,7 @@
     <string name="to_date">End date</string>
     <string name="to_time">End time</string>
     <string name="error_from_date_is_after_to_date">From date cannot be after to date!</string>
+    <string name="previous">Previous</string>
+    <string name="next">Next</string>
+    <string name="competitions">Competitions</string>
 </resources>

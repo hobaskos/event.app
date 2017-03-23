@@ -3,6 +3,7 @@ package io.hobaskos.event.eventapp.module;
 import javax.inject.Singleton;
 
 import dagger.Component;
+import io.hobaskos.event.eventapp.ui.event.details.competition.ImageCarouselActivity;
 import io.hobaskos.event.eventapp.ui.event.create.CreateEventActivity;
 import io.hobaskos.event.eventapp.ui.event.create.CreateEventFragment;
 import io.hobaskos.event.eventapp.ui.event.create.CreateEventPresenter;
@@ -49,8 +50,7 @@ public interface DiComponent {
     void inject(ProfileEditActivity profileEditActivity);
     void inject(AttendingEventsFragment attendingEventsFragment);
     void inject(AttendeesFragment attendeesFragment);
-
-
+    void inject(ImageCarouselActivity imageCarouselActivity);
     void inject(MyEventsFragment myEventsFragment);
     void inject(ArchivedEventsFragment archivedEventsFragment);
 }

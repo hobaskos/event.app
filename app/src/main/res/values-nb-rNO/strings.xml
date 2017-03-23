@@ -89,4 +89,7 @@
     <string name="to_date">Slutt dato</string>
     <string name="to_time">Slutt tid</string>
     <string name="error_from_date_is_after_to_date">Fra dato kan ikke komme etter til dato!</string>
+    <string name="previous">Forrige</string>
+    <string name="next">Neste</string>
+    <string name="competitions">Konkurranser</string>
 </resources>
