@@ -44,7 +44,7 @@ public class CompetitionFragment extends BaseLceViewStateFragment<SwipeRefreshLa
     public static final String ARG_EVENT_ID = "eventId";
 
     private ArrayList<CompetitionImage> competitionImages;
-    private OnListFragmentInteractionListener listener;
+    private OnCompetitionListInteractionListener listener;
     private DividerItemDecoration dividerItemDecoration;
 
     private CompetitionRecyclerViewAdapter competitionRecyclerViewAdapter;
@@ -88,6 +88,7 @@ public class CompetitionFragment extends BaseLceViewStateFragment<SwipeRefreshLa
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+        Log.i(TAG, "onCreate");
         super.onCreate(savedInstanceState);
 
         competitionImages = new ArrayList<>();
@@ -95,6 +96,8 @@ public class CompetitionFragment extends BaseLceViewStateFragment<SwipeRefreshLa
         if(getArguments() != null) {
             eventId = getArguments().getLong(ARG_EVENT_ID);
             isLoggedIn = getArguments().getBoolean(ARG_IS_LOGGED_IN);
+            Log.i(TAG, "event id = " + eventId);
+            Log.i(TAG, "is logged in = " + isLoggedIn);
         }
 
         setRetainInstance(true);
@@ -102,12 +105,14 @@ public class CompetitionFragment extends BaseLceViewStateFragment<SwipeRefreshLa
 
     @Override
     protected int getLayoutRes() {
+        Log.i(TAG, "getLayoutRes");
         return R.layout.fragment_competition_list;
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        Log.i(TAG, "onCreateView");
         View view = inflater.inflate(R.layout.fragment_competition_list, container, false);
 
         ButterKnife.bind(this, view);
@@ -118,6 +123,8 @@ public class CompetitionFragment extends BaseLceViewStateFragment<SwipeRefreshLa
         recyclerView.setLayoutManager(linearLayoutManager);
         competitionRecyclerViewAdapter = new CompetitionRecyclerViewAdapter(competitionImages, listener, context, isLoggedIn);
         recyclerView.setAdapter(competitionRecyclerViewAdapter);
+
+        swipeRefreshLayout.setOnRefreshListener(() -> loadData(true));
 
         dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
                 linearLayoutManager.getOrientation());
@@ -134,18 +141,21 @@ public class CompetitionFragment extends BaseLceViewStateFragment<SwipeRefreshLa
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        Log.i(TAG, "onViewCreated");
         super.onViewCreated(view, savedInstanceState);
 
         if(eventId != null) {
+            Log.i(TAG, "eventId != null");
             competitionPresenter.get(eventId);
         }
     }
 
     @Override
     public void onAttach(Context context) {
+        Log.i(TAG, "onAttach");
         super.onAttach(context);
-        if(context instanceof OnListFragmentInteractionListener) {
-            listener = (OnListFragmentInteractionListener) context;
+        if(context instanceof OnCompetitionListInteractionListener) {
+            listener = (OnCompetitionListInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnListFragmentInteractionListener");
@@ -154,22 +164,26 @@ public class CompetitionFragment extends BaseLceViewStateFragment<SwipeRefreshLa
 
     @Override
     public void onDetach() {
+        Log.i(TAG, "onDetach");
         super.onDetach();
         listener = null;
     }
 
     @Override
     public LceViewState<List<CompetitionImage>, CompetitionView> createViewState() {
+        Log.i(TAG, "createViewState");
         return new CompetitionViewState();
     }
 
     @Override
     public CompetitionViewState getViewState() {
+        Log.i(TAG, "getViewState");
         return (CompetitionViewState) super.getViewState();
     }
 
     @Override
     public ArrayList<CompetitionImage> getData() {
+        Log.i(TAG, "getData");
         return competitionImages;
     }
 
@@ -179,15 +193,19 @@ public class CompetitionFragment extends BaseLceViewStateFragment<SwipeRefreshLa
 
     @Override
     public void setData(List<CompetitionImage> data) {
+        Log.i(TAG, "setData with size = " + data.size());
         this.competitionImages.clear();
-        this.competitionImages = (ArrayList<CompetitionImage>) data;
+        this.competitionImages.addAll(data);
         competitionRecyclerViewAdapter.notifyDataSetChanged();
+        swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(false));
 
     }
 
     @Override
     public void loadData(boolean pullToRefresh) {
         Log.i(TAG, "loadData pullToRefresh: " + pullToRefresh);
+        presenter.get(eventId);
+        canLoadMore = false;
     }
 
     @Override
@@ -198,23 +216,29 @@ public class CompetitionFragment extends BaseLceViewStateFragment<SwipeRefreshLa
 
     @Override
     public void showLoadMore(boolean showLoadMore) {
-
+        Log.i(TAG, "showLoadMore");
     }
 
     @Override
     public void showLoadMoreError(Throwable e) {
-
+        Log.i(TAG, "showLoadMoreError");
     }
 
     @Override
     public void addMoreData(List<CompetitionImage> model) {
+        Log.i(TAG, "addMoreData");
         this.competitionImages.addAll(model);
         competitionRecyclerViewAdapter.notifyDataSetChanged();
 
     }
 
-    public interface OnListFragmentInteractionListener {
-        void onListFragmentInteraction(Long id);
+    
+
+    @Override
+    public void onResume() {
+        Log.i(TAG, "onResume-method called");
+        super.onResume();
+        presenter.get(eventId);
     }
 
 }

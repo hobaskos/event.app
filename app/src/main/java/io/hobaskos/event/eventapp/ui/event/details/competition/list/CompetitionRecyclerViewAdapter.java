@@ -24,11 +24,11 @@ public class CompetitionRecyclerViewAdapter extends
 
     private static final String COMPETITION_IMAGE_URL_PLACEHOLDER = "https://mave.me/img/projects/full_placeholder.png";
     private final List<CompetitionImage> images;
-    private final CompetitionFragment.OnListFragmentInteractionListener listener;
+    private final OnCompetitionListInteractionListener listener;
     private final Context context;
     private final boolean isLoggedIn;
 
-    public CompetitionRecyclerViewAdapter(List<CompetitionImage> images, CompetitionFragment.OnListFragmentInteractionListener listener, Context context, boolean isLoggedIn) {
+    public CompetitionRecyclerViewAdapter(List<CompetitionImage> images, OnCompetitionListInteractionListener listener, Context context, boolean isLoggedIn) {
         this.images = images;
         this.listener = listener;
         this.context = context;
@@ -73,11 +73,11 @@ public class CompetitionRecyclerViewAdapter extends
             image.setOnClickListener(v -> {
                 if(null != listener) {
                     listener.onListFragmentInteraction(id);
+
                 }
             });
 
 
         }
     }
-
 }

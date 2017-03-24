@@ -11,9 +11,12 @@ import com.hannesdorfmann.mosby.mvp.MvpActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.model.CompetitionImage;
@@ -28,6 +31,7 @@ public class ImageCarouselActivity extends MvpActivity<ImageCarouselView, ImageC
     private static final String COMPETITION_IMAGE_URL_PLACEHOLDER = "https://mave.me/img/projects/full_placeholder.png";
     private final String TAG = "CompetitionFragment";
     public static final String ARG_STARTING_COMPETION_IMAGE = "startingImage";
+    public static final String ARG_EVENT_ID = "eventId";
     public static final String ARG_COMPETITION_IMAGES_LIST = "competitionImagesList";
 
     @Inject
@@ -35,45 +39,40 @@ public class ImageCarouselActivity extends MvpActivity<ImageCarouselView, ImageC
 
     private ArrayList<CompetitionImage> competitionImages;
     private int currentItem = 0;
-    private ImageView previous;
-    private ImageView next;
-    private ImageView image;
-    private ImageView plusOne;
-    private TextView ownerLogin;
-    private TextView numberOfVotes;
+    private Long selectedItemId;
+    private Long eventId;
+    private boolean initialSettingOfData = true;
+
+    @BindView(R.id.previous_image)
+    protected ImageView previous;
+    @BindView(R.id.next_image)
+    protected ImageView next;
+    @BindView(R.id.competition_image_view)
+    protected ImageView image;
+    @BindView(R.id.competition_plus_one)
+    protected ImageView plusOne;
+    @BindView(R.id.owner_login)
+    protected TextView ownerLogin;
+    @BindView(R.id.number_of_votes)
+    protected TextView numberOfVotes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_image_carousel);
+        ButterKnife.bind(this);
 
-        previous = (ImageView) findViewById(R.id.previous_image);
         previous.setOnClickListener(v -> onPreviousButtonPressed());
-
-        next = (ImageView) findViewById(R.id.next_image);
         next.setOnClickListener(v -> onNextButtonPressed());
-
-        image = (ImageView) findViewById(R.id.competition_image_view);
-
-        ownerLogin = (TextView) findViewById(R.id.owner_login);
-        numberOfVotes = (TextView) findViewById(R.id.number_of_votes);
-
-        plusOne = (ImageView) findViewById(R.id.competition_plus_one);
         plusOne.setOnClickListener(v -> onVoteButtonPressed());
 
-        competitionImages = getIntent().getParcelableArrayListExtra(ARG_COMPETITION_IMAGES_LIST);
-        Long selectedItem = getIntent().getLongExtra(ARG_STARTING_COMPETION_IMAGE, 0);
-        currentItem = getIndexOfSelectedCompetitionImage(selectedItem);
-
-        if(competitionImages.size() == 1) {
-            previous.setVisibility(View.GONE);
-            next.setVisibility(View.GONE);
-        }
-
-        populateView();
+        eventId = getIntent().getLongExtra(ARG_EVENT_ID, 0);
+        selectedItemId = getIntent().getLongExtra(ARG_STARTING_COMPETION_IMAGE, 0);
+        currentItem = -1;
+        competitionImages = new ArrayList<>();
 
         presenter.attachView(this);
+        presenter.get(eventId);
     }
 
     private int getIndexOfSelectedCompetitionImage(Long selectedItem) {
@@ -86,7 +85,7 @@ public class ImageCarouselActivity extends MvpActivity<ImageCarouselView, ImageC
             }
         }
 
-        return 0;
+        return -1;
     }
 
 
@@ -149,26 +148,28 @@ public class ImageCarouselActivity extends MvpActivity<ImageCarouselView, ImageC
     }
 
     private void populateView() {
-        Log.i(TAG, "Populating view for image number: " + currentItem);
-        Log.i(TAG, competitionImages.get(currentItem).toString());
+        if(currentItem >= 0) {
+            Log.i(TAG, "Populating view for image number: " + currentItem);
 
-        CompetitionImage currentImage = competitionImages.get(currentItem);
+            Log.i(TAG, competitionImages.get(currentItem).toString());
 
-        Picasso.with(this)
-                .load(currentImage.getImageUrl() != null ? currentImage.getAbsoluteImageUrl() : COMPETITION_IMAGE_URL_PLACEHOLDER)
-                .fit()
-                .centerCrop()
-                .into(image);
+            CompetitionImage currentImage = competitionImages.get(currentItem);
 
-        if(currentImage.getHasMyVote()) {
-            showDislikeLink();
-        } else {
-            showLikeLink();
+            Picasso.with(this)
+                    .load(currentImage.getImageUrl() != null ? currentImage.getAbsoluteImageUrl() : COMPETITION_IMAGE_URL_PLACEHOLDER)
+                    .fit()
+                    .centerCrop()
+                    .into(image);
+
+            if(currentImage.getHasMyVote()) {
+                showDislikeLink();
+            } else {
+                showLikeLink();
+            }
+
+            ownerLogin.setText(competitionImages.get(currentItem).getOwnerLogin());
+            numberOfVotes.setText("Number of votes: " + competitionImages.get(currentItem).getNumberOfVotes());
         }
-
-        ownerLogin.setText(competitionImages.get(currentItem).getOwnerLogin());
-        numberOfVotes.setText("Number of votes: " + competitionImages.get(currentItem).getNumberOfVotes());
-
     }
 
     @Override
@@ -181,6 +182,30 @@ public class ImageCarouselActivity extends MvpActivity<ImageCarouselView, ImageC
         Log.i(TAG, "vote was unsuccessful!");
     }
 
+    @Override
+    public void setData(List<CompetitionImage> data) {
+        this.competitionImages.clear();
+        this.competitionImages.addAll(data);
+
+        if(initialSettingOfData) {
+            currentItem = getIndexOfSelectedCompetitionImage(selectedItemId);
+
+            if(competitionImages.size() == 1) {
+                previous.setVisibility(View.GONE);
+                next.setVisibility(View.GONE);
+            }
+
+            initialSettingOfData = false;
+        }
+
+        populateView();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 }
 
 

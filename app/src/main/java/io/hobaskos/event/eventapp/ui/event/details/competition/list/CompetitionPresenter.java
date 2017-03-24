@@ -1,5 +1,7 @@
 package io.hobaskos.event.eventapp.ui.event.details.competition.list;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +36,9 @@ public class CompetitionPresenter extends BaseRxLcePresenter<CompetitionView,Lis
     }
 
     public void get(Long id) {
+        Log.i(TAG, "get(" + id + ")");
         if(isViewAttached() && getView() != null) {
+            Log.i(TAG, "view is attached");
             getView().setData(getCompetitionImageList());
         }
     }
