@@ -85,6 +85,11 @@
         <activity android:name=".ui.event.search.map.SearchEventsMapActivity" />
         <activity android:name=".ui.event.filter.FilterEventsActivity" />
 
+        <activity android:name=".ui.profile.ProfileFragmentActivity"
+            android:label="@string/my_profile"
+            android:parentActivityName=".ui.main.MainActivity"
+            />
+
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
