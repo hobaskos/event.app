@@ -28,6 +28,7 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:orientation="horizontal"
+                android:paddingBottom="4dp"
                 android:layout_height="wrap_content">
 
                 <ImageView
@@ -56,9 +57,104 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:id="@+id/private_event"
+                android:visibility="gone"
+                android:paddingBottom="4dp"
                 android:layout_height="wrap_content">
 
+                <ImageView
+                    android:id="@+id/private_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_lock_outline"
+                    android:scaleType="centerCrop" />
+
                 <TextView
+                    android:paddingStart="@dimen/text_margin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/private_event_invite_code"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/private_event_invite_code"
+                    android:paddingStart="@dimen/text_margin"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/category_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_local_offer"
+                    android:scaleType="centerCrop" />
+
+                <TextView
+                    android:paddingStart="@dimen/text_margin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingEnd="@dimen/text_margin"
+                    android:text="@string/event_category"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/category"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/organizer_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_perm_identity"
+                    android:scaleType="centerCrop" />
+
+                <TextView
+                    android:paddingStart="@dimen/text_margin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingEnd="@dimen/text_margin"
+                    android:text="@string/organizer"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/organizer"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/attendance_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_people_black_24dp"
+                    android:scaleType="centerCrop" />
+
+                <TextView
+                    android:paddingStart="@dimen/text_margin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingEnd="@dimen/text_margin"
@@ -71,7 +167,7 @@
                     />
             </LinearLayout>
 
-            <TextView
+           <TextView
                 android:id="@+id/description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

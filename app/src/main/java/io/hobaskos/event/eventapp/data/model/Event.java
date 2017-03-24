@@ -65,6 +65,8 @@ public class Event implements Parcelable {
 
     private boolean privateEvent;
 
+    private String invitationCode;
+
     public Long getId() {
         return id;
     }
@@ -167,6 +169,14 @@ public class Event implements Parcelable {
 
     public void setPrivateEvent(boolean privateEvent) {
         this.privateEvent = privateEvent;
+    }
+
+    public String getInvitationCode() {
+        return invitationCode;
+    }
+
+    public void setInvitationCode(String invitationCode) {
+        this.invitationCode = invitationCode;
     }
 
     public EventCategory getCategory() {
@@ -290,6 +300,9 @@ public class Event implements Parcelable {
                 '}';
     }
 
+    public Event() {
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -311,9 +324,7 @@ public class Event implements Parcelable {
         dest.writeString(this.image);
         dest.writeString(this.imageContentType);
         dest.writeByte(this.privateEvent ? (byte) 1 : (byte) 0);
-    }
-
-    public Event() {
+        dest.writeString(this.invitationCode);
     }
 
     protected Event(Parcel in) {
@@ -332,6 +343,7 @@ public class Event implements Parcelable {
         this.image = in.readString();
         this.imageContentType = in.readString();
         this.privateEvent = in.readByte() != 0;
+        this.invitationCode = in.readString();
     }
 
     public static final Creator<Event> CREATOR = new Creator<Event>() {

@@ -89,4 +89,8 @@
     <string name="to_date">Slutt dato</string>
     <string name="to_time">Slutt tid</string>
     <string name="error_from_date_is_after_to_date">Fra dato kan ikke komme etter til dato!</string>
+
+    <string name="private_event_invite_code">Privat event, invitasjonskode:</string>
+    <string name="organizer">Organisator:</string>
+    <string name="event_category">Kategori:</string>
 </resources>

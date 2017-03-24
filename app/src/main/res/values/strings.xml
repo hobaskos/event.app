@@ -92,4 +92,8 @@
     <string name="to_date">End date</string>
     <string name="to_time">End time</string>
     <string name="error_from_date_is_after_to_date">From date cannot be after to date!</string>
+
+    <string name="private_event_invite_code">Private event, invitation code:</string>
+    <string name="organizer">Organizer:</string>
+    <string name="event_category">Category:</string>
 </resources>
