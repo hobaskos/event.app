@@ -11,7 +11,7 @@ public class CompetitionImage implements CompetitionItem, Parcelable {
 
     private Long id;
     private String ownerLogin;
-    private int hearts;
+    private int numberOfVotes;
     private String imageUrl;
     private boolean hasMyVote;
 
@@ -31,20 +31,20 @@ public class CompetitionImage implements CompetitionItem, Parcelable {
         this.ownerLogin = ownerLogin;
     }
 
-    public int getHearts() {
-        return hearts;
+    public int getNumberOfVotes() {
+        return numberOfVotes;
     }
 
-    public void setHearts(int hearts) {
-        this.hearts = hearts;
+    public void setNumberOfVotes(int numberOfVotes) {
+        this.numberOfVotes = numberOfVotes;
     }
 
     public void setHasMyVote(boolean b) {
         hasMyVote = b;
         if(hasMyVote) {
-            hearts++;
+            numberOfVotes++;
         } else {
-            hearts--;
+            numberOfVotes--;
         }
     }
 
@@ -71,7 +71,7 @@ public class CompetitionImage implements CompetitionItem, Parcelable {
     public String toString() {
         return "CompetitionImage{" +
                 "ownerLogin='" + ownerLogin + '\'' +
-                ", hearts=" + hearts +
+                ", numberOfVotes=" + numberOfVotes +
                 '}';
     }
 
@@ -85,7 +85,7 @@ public class CompetitionImage implements CompetitionItem, Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(this.id);
         dest.writeString(this.ownerLogin);
-        dest.writeInt(this.hearts);
+        dest.writeInt(this.numberOfVotes);
         dest.writeString(this.imageUrl);
         dest.writeByte(this.hasMyVote ? (byte) 1 : (byte) 0);
     }
@@ -96,7 +96,7 @@ public class CompetitionImage implements CompetitionItem, Parcelable {
     protected CompetitionImage(Parcel in) {
         this.id = (Long) in.readValue(Long.class.getClassLoader());
         this.ownerLogin = in.readString();
-        this.hearts = in.readInt();
+        this.numberOfVotes = in.readInt();
         this.imageUrl = in.readString();
         this.hasMyVote = in.readByte() != 0;
     }

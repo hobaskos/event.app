@@ -1,4 +1,4 @@
-package io.hobaskos.event.eventapp.ui.event.details.competition;
+package io.hobaskos.event.eventapp.ui.event.details.competition.list;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -49,7 +49,7 @@ public class CompetitionRecyclerViewAdapter extends
         Picasso.with(context)
                 .load(currentImage.getImageUrl() != null ? currentImage.getAbsoluteImageUrl() : COMPETITION_IMAGE_URL_PLACEHOLDER)
                 .into(holder.image);
-        holder.numberOfVotes.setText("Number of votes: " + currentImage.getHearts());
+        holder.numberOfVotes.setText("Number of votes: " + currentImage.getNumberOfVotes());
     }
 
     @Override

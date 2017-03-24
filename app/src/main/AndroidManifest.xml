@@ -85,7 +85,7 @@
         <activity android:name=".ui.event.search.map.SearchEventsMapActivity" />
         <activity android:name=".ui.event.filter.FilterEventsActivity" />
         <activity
-            android:name=".ui.event.details.competition.ImageCarouselActivity" />
+            android:name=".ui.event.details.competition.carousel.ImageCarouselActivity" />
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.

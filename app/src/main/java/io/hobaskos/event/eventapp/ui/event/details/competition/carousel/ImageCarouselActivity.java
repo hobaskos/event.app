@@ -1,9 +1,9 @@
-package io.hobaskos.event.eventapp.ui.event.details.competition;
+package io.hobaskos.event.eventapp.ui.event.details.competition.carousel;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
-import android.widget.Button;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,8 +22,8 @@ import io.hobaskos.event.eventapp.data.model.CompetitionImage;
  * Created by hans on 23/03/2017.
  */
 
-public class ImageCarouselActivity extends MvpActivity<CompetitionView, CompetitionPresenter>
-        implements CompetitionView {
+public class ImageCarouselActivity extends MvpActivity<ImageCarouselView, ImageCarouselPresenter>
+        implements ImageCarouselView {
 
     private static final String COMPETITION_IMAGE_URL_PLACEHOLDER = "https://mave.me/img/projects/full_placeholder.png";
     private final String TAG = "CompetitionFragment";
@@ -31,12 +31,12 @@ public class ImageCarouselActivity extends MvpActivity<CompetitionView, Competit
     public static final String ARG_COMPETITION_IMAGES_LIST = "competitionImagesList";
 
     @Inject
-    public CompetitionPresenter presenter;
+    public ImageCarouselPresenter presenter;
 
     private ArrayList<CompetitionImage> competitionImages;
     private int currentItem = 0;
-    private Button previous;
-    private Button next;
+    private ImageView previous;
+    private ImageView next;
     private ImageView image;
     private ImageView plusOne;
     private TextView ownerLogin;
@@ -48,10 +48,10 @@ public class ImageCarouselActivity extends MvpActivity<CompetitionView, Competit
 
         setContentView(R.layout.activity_image_carousel);
 
-        previous = (Button) findViewById(R.id.previous_image);
+        previous = (ImageView) findViewById(R.id.previous_image);
         previous.setOnClickListener(v -> onPreviousButtonPressed());
 
-        next = (Button) findViewById(R.id.next_image);
+        next = (ImageView) findViewById(R.id.next_image);
         next.setOnClickListener(v -> onNextButtonPressed());
 
         image = (ImageView) findViewById(R.id.competition_image_view);
@@ -66,13 +66,17 @@ public class ImageCarouselActivity extends MvpActivity<CompetitionView, Competit
         Long selectedItem = getIntent().getLongExtra(ARG_STARTING_COMPETION_IMAGE, 0);
         currentItem = getIndexOfSelectedCompetitionImage(selectedItem);
 
+        if(competitionImages.size() == 1) {
+            previous.setVisibility(View.GONE);
+            next.setVisibility(View.GONE);
+        }
+
         populateView();
-        
+
         presenter.attachView(this);
     }
 
     private int getIndexOfSelectedCompetitionImage(Long selectedItem) {
-
         for(int i = 0; i < competitionImages.size(); i++) {
 
             CompetitionImage competitionImage = competitionImages.get(i);
@@ -88,7 +92,7 @@ public class ImageCarouselActivity extends MvpActivity<CompetitionView, Competit
 
     @NonNull
     @Override
-    public CompetitionPresenter createPresenter() {
+    public ImageCarouselPresenter createPresenter() {
         App.getInst().getComponent().inject(this);
         return presenter;
     }
@@ -121,26 +125,27 @@ public class ImageCarouselActivity extends MvpActivity<CompetitionView, Competit
         CompetitionImage currentImage = competitionImages.get(currentItem);
         if(currentImage.getHasMyVote()) {
             currentImage.setHasMyVote(false);
-            showLikePicture();
+            showLikeLink();
             refreshVotesView();
             return;
         }
 
+        presenter.vote(new Long(currentItem));
         currentImage.setHasMyVote(true);
-        showDislikePicture();
+        showDislikeLink();
         refreshVotesView();
     }
 
     private void refreshVotesView() {
-        numberOfVotes.setText("Number of votes: " + competitionImages.get(currentItem).getHearts());
+        numberOfVotes.setText("Number of votes: " + competitionImages.get(currentItem).getNumberOfVotes());
     }
 
-    private void showLikePicture(){
-        plusOne.setImageResource(R.mipmap.ic_up);
+    private void showLikeLink(){
+        plusOne.setImageResource(R.mipmap.ic_like);
     }
 
-    private void showDislikePicture(){
-        plusOne.setImageResource(R.mipmap.ic_down);
+    private void showDislikeLink(){
+        plusOne.setImageResource(R.mipmap.ic_dislike);
     }
 
     private void populateView() {
@@ -151,18 +156,31 @@ public class ImageCarouselActivity extends MvpActivity<CompetitionView, Competit
 
         Picasso.with(this)
                 .load(currentImage.getImageUrl() != null ? currentImage.getAbsoluteImageUrl() : COMPETITION_IMAGE_URL_PLACEHOLDER)
+                .fit()
+                .centerCrop()
                 .into(image);
 
         if(currentImage.getHasMyVote()) {
-            showDislikePicture();
+            showDislikeLink();
         } else {
-            showLikePicture();
+            showLikeLink();
         }
 
         ownerLogin.setText(competitionImages.get(currentItem).getOwnerLogin());
-        numberOfVotes.setText("Number of votes: " + competitionImages.get(currentItem).getHearts());
+        numberOfVotes.setText("Number of votes: " + competitionImages.get(currentItem).getNumberOfVotes());
 
     }
+
+    @Override
+    public void voteWasSuccessful() {
+        Log.i(TAG, "vote was successful!");
+    }
+
+    @Override
+    public void voteWasUnsuccessful() {
+        Log.i(TAG, "vote was unsuccessful!");
+    }
+
 }
 
 

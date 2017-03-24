@@ -32,6 +32,10 @@
     <color name="colorVioletDark">#69113E</color>
     <color name="colorVioletAccent">#7A9E35</color>
 
+    <color name="colorBlack">#000000</color>
+    <color name="colorBlackAccent">#BDBDBD</color>
+
+
     <color name="primary">#3F51B5</color>
     <color name="primary_dark">#303F9F</color>
     <color name="primary_light">#C5CAE9</color>

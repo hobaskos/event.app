@@ -93,5 +93,9 @@ public class EventPresenter extends BaseRxLcePresenter<EventView, Event> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer);
     }
+
+    public boolean isLoggedIn() {
+        return accountManager.isLoggedIn();
+    }
 }
 

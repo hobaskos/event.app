@@ -13,7 +13,7 @@ import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.model.CompetitionImage;
 import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.ui.event.details.attending.AttendeesFragment;
-import io.hobaskos.event.eventapp.ui.event.details.competition.CompetitionFragment;
+import io.hobaskos.event.eventapp.ui.event.details.competition.list.CompetitionFragment;
 import io.hobaskos.event.eventapp.ui.event.details.info.EventInfoFragment;
 import io.hobaskos.event.eventapp.ui.event.details.location.LocationsFragment;
 
@@ -34,22 +34,20 @@ public class EventPagerAdapter extends FragmentPagerAdapter {
     private Event event;
     private boolean isOwner;
     private boolean isLoggedIn;
-    private ArrayList<CompetitionImage> competitionImages;
 
-    public EventPagerAdapter(Event event, ArrayList<CompetitionImage> competitionImages, boolean isOwner, boolean isLoggedIn, Context context, FragmentManager fm) {
+    public EventPagerAdapter(Event event, boolean isOwner, boolean isLoggedIn, Context context, FragmentManager fm) {
         super(fm);
         this.event = event;
         this.context = context;
         this.isOwner = isOwner;
         this.isLoggedIn = isLoggedIn;
-        this.competitionImages = competitionImages;
 
         Log.d(TAG, "EventPagerAdapter: " + event.getId() + ", myAttendance: " + event.getMyAttendance());
 
         eventInfoFragment = EventInfoFragment.newInstance(event);
         locationsFragment = LocationsFragment.newInstance(event, isOwner);
         attendeesFragment = AttendeesFragment.newInstance(event.getId(), event.getMyAttendance() != null);
-        competitionFragment = CompetitionFragment.newInstance(competitionImages, isLoggedIn);
+        competitionFragment = CompetitionFragment.newInstance(event, isLoggedIn);
     }
 
     @Override
