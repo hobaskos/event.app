@@ -66,13 +66,16 @@ public class EventPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
+        return null;
+        /*
         switch (position) {
             case 0:
-                return context.getString(R.string.info);
+                //return context.getString(R.string.info);
             case 1:
-                return context.getString(R.string.locations);
+                //return context.getString(R.string.locations);
             default:
-                return context.getString(R.string.attending);
+                //return context.getString(R.string.attending);
         }
+        */
     }
 }
