@@ -8,8 +8,8 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
         android:paddingTop="16dp">
 
         <!-- LOCATION -->
@@ -57,17 +57,14 @@
                 android:id="@+id/placesLayout"
                 android:layout_below="@+id/gpsLayout">
 
+                <!-- AUTOCOMPLETE PLACES -->
                 <fragment
                     android:id="@+id/place_autocomplete_fragment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:name="com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment"
                     />
-
             </LinearLayout>
-
-
-
         </RelativeLayout>
 
         <!-- DISTANCE -->
@@ -95,17 +92,16 @@
                 android:layout_below="@+id/distanceTextView">
 
                 <TextView
+                    android:id="@+id/minimumDistanceTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:text="1KM"/>
+                    android:layout_alignParentStart="true"/>
 
                 <TextView
+                    android:id="@+id/maxDistanceTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:text="150KM"/>
-
+                    android:layout_alignParentEnd="true"/>
 
             </RelativeLayout>
 
@@ -122,7 +118,7 @@
                 style="@style/Widget.AppCompat.SeekBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:max="150"
+                android:max="29"
                 android:progress="1"
                 android:id="@+id/seekBar"
                 android:layout_below="@+id/distanceTextViews"/>

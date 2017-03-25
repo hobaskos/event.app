@@ -46,7 +46,12 @@ import io.hobaskos.event.eventapp.ui.base.view.fragment.BaseFragment;
 
 public class FilterEventsFragment extends BaseFragment
         implements FilterEventsView, GoogleApiClient.OnConnectionFailedListener {
+
     public final static String TAG = FilterEventsFragment.class.getName();
+
+    public static final int MINIMUM_DISTANCE = 1; // Decides the minimum distance for the seekbar (in km)
+    public static final int MAX_DISTANCE = 50; // Decides the maximum distance for the seekbar (in km)
+    public static final int DISTANCE_STEP = 1;
 
     Toolbar toolbar;
     @BindView(R.id.seekBar) SeekBar seekBar;
@@ -54,6 +59,9 @@ public class FilterEventsFragment extends BaseFragment
     @BindView(R.id.categorySpinner) Spinner spinner;
     @BindView(R.id.applyFiltersButton) Button button;
     @BindView(R.id.fragment_filter_events_gps_switch) SwitchCompat currentLocationSwitch;
+
+    @BindView(R.id.minimumDistanceTextView) TextView minimumDistanceTextView;
+    @BindView(R.id.maxDistanceTextView) TextView maxDistanceTextView;
 
     @BindView(R.id.placesLayout)
     LinearLayout placesLayout;
@@ -137,7 +145,9 @@ public class FilterEventsFragment extends BaseFragment
             getActivity().finish();
         });
 
-
+        seekBar.setMax( (MAX_DISTANCE - MINIMUM_DISTANCE) / DISTANCE_STEP );
+        minimumDistanceTextView.setText(MINIMUM_DISTANCE + "KM");
+        maxDistanceTextView.setText(MAX_DISTANCE + "KM");
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
@@ -149,8 +159,8 @@ public class FilterEventsFragment extends BaseFragment
             }
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress,boolean fromUser) {
-                seekBarProgress = progress;
-                String progressText = String.valueOf(progress) + " km";
+                seekBarProgress = progress + MINIMUM_DISTANCE; // Add minimum progress/start value to progress value
+                String progressText = String.valueOf(seekBarProgress) + " km";
                 seekBarText.setText(progressText);
                 int seek_label_pos = (((seekBar.getRight() - seekBar.getLeft()) * seekBar.getProgress()) / seekBar.getMax()) + seekBar.getLeft();
                 seekBarText.setX(seek_label_pos - seekBarText.getWidth() / 2);
