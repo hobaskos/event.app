@@ -112,6 +112,7 @@ public class EventDateSectionPagedRecyclerAdapter extends SectionedPagedRecycler
         totalPositions += 1;
     }
 
+    //TODO: Factor in year
     private void addItemsToDatedSections(List<Event> items) {
         Log.d(TAG, "addItemsToDatedSections");
         DateTime currDate = DateTime.now();
