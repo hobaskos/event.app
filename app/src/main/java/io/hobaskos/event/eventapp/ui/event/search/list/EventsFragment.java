@@ -75,21 +75,12 @@ public class EventsFragment extends
 
     private DrawerLayout drawerLayout;
 
-//    @Override
-//    public void onSaveInstanceState(Bundle outState) {
-//        outState.putParcelable("ViewState", getViewState());
-//        super.onSaveInstanceState(outState);
-//    }
-
     private String searchQuery;
 
     @Inject
     public EventsPresenter eventsPresenter;
 
     @Override public void onCreate(Bundle savedInstanceState) {
-//        if (savedInstanceState != null) {
-//            viewState = savedInstanceState.getParcelable("ViewState");
-//        }
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         EventBus.getDefault().register(this);
@@ -264,7 +255,7 @@ public class EventsFragment extends
     @Override
     public List<Event> getData() {
         Log.i(TAG, "getData()");
-        return adapter.getItems();
+        return eventsList;
     }
 
 
@@ -302,13 +293,16 @@ public class EventsFragment extends
             canLoadMore = false;
             Toast.makeText(getActivity(), "No more events to show", Toast.LENGTH_SHORT).show();
         } else {
+            eventsList.addAll(model);
             adapter.addItems(model);
         }
     }
 
     @Override
     public void setData(List<Event> data) {
-        Log.i(TAG, "setData(), size: " + data.size());
+        Log.i(TAG, "setData()");
+        eventsList = new ArrayList<>();
+        eventsList.addAll(data);
         adapter.setItems(data);
         adapter.notifyDataSetChanged();
         swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(false));

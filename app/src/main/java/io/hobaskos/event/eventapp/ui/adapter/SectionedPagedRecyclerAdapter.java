@@ -90,8 +90,8 @@ public abstract class SectionedPagedRecyclerAdapter<T> extends RecyclerView.Adap
         }
     }
 
-    @Override public int getItemViewType(int position) {
-
+    @Override
+    public int getItemViewType(int position) {
         if (showLoadMore && position == totalPositions) { // At last position add load more item
             return VIEW_TYPE_LOADING;
         } else if (isHeader(position)){
