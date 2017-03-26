@@ -11,14 +11,14 @@
         android:layout_centerInParent="true"
         android:src="@mipmap/eventure_logo" />
 
-    <TextView
-        android:layout_width="fill_parent"
+    <ProgressBar
+        android:id="@+id/ProgressBar"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:textSize="12dp"
-        android:textColor="#454545"
-        android:gravity="center_horizontal"
-        android:layout_alignParentBottom="true"
-        android:text="www.androidhive.info" />
+        android:layout_marginTop="24dp"
+        android:layout_below="@+id/imgLogo"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true" >
+    </ProgressBar>
 
 </RelativeLayout>
