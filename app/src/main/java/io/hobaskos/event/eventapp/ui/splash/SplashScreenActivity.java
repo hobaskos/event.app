@@ -1,10 +1,13 @@
 package io.hobaskos.event.eventapp.ui.splash;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v13.app.ActivityCompat;
 
 import com.google.gson.JsonParser;
 
@@ -17,32 +20,38 @@ import io.hobaskos.event.eventapp.ui.main.MainActivity;
 
 public class SplashScreenActivity extends Activity {
 
-    // Splash screen timer
-    private static int SPLASH_TIME_OUT = 2000;
+    // Permissions:
+    private static final String[] INITIAL_PERMS={
+            Manifest.permission.ACCESS_FINE_LOCATION
+    };
+
+    // Permission Request:
+    private static final int INITIAL_REQUEST=1337;
+    private static final int LOCATION_REQUEST=INITIAL_REQUEST+3;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
-        new Handler().postDelayed(new Runnable() {
+        // Request permissions:
+        ActivityCompat.requestPermissions(SplashScreenActivity.this, INITIAL_PERMS, INITIAL_REQUEST);
 
-            /*
-             * Showing splash screen with a timer. This will be useful when you
-             * want to show case your app logo / company
-             */
-
-            @Override
-            public void run() {
-                // This method will be executed once the timer is over
-                // Start your app main activity
-                Intent i = new Intent(SplashScreenActivity.this, MainActivity.class);
-                startActivity(i);
-
-                // close this activity
-                finish();
-            }
-        }, SPLASH_TIME_OUT);
     }
+
+    //TODO: More advanced request handling
+    // http://stackoverflow.com/questions/33266328/how-can-i-customize-permission-dialog-in-android
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        // Start MainActivity after all preconfiguration and loading is done
+        Intent i = new Intent(SplashScreenActivity.this, MainActivity.class);
+        startActivity(i);
+
+        // close this activity
+        finish();
+    }
+
+
 
 }
