@@ -1,22 +1,16 @@
 package io.hobaskos.event.eventapp.ui.adapter;
 
 import android.content.Context;
-import android.support.v4.util.ArrayMap;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import org.joda.time.DateTime;
-import org.joda.time.Days;
-import org.joda.time.Weeks;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import io.hobaskos.event.eventapp.R;
-import io.hobaskos.event.eventapp.data.model.Event;
 import rx.functions.Action1;
 
 /**
@@ -32,38 +26,39 @@ public abstract class SectionedPagedRecyclerAdapter<T> extends RecyclerView.Adap
     protected final int VIEW_TYPE_LOADING = 1;
     protected final int VIEW_TYPE_HEADER = -2;
 
-    private final ArrayMap<Integer, Integer> headerLocationMap;
-    private ArrayList<Section<T>> sectionList;
+    protected ArrayList<Section<T>> activeSectionsList;
 
     protected List<T> items;
     protected Context context;
     protected final Action1<T> onItemClick;
     //private final Action1<Integer> onListBottom;
 
-    private boolean showLoadMore = false;
+    protected boolean showLoadMore = false;
+
+    protected int totalPositions;
 
     public SectionedPagedRecyclerAdapter(Context context, Action1<T> onItemClick) {
-        headerLocationMap = new ArrayMap<>();
         this.context = context;
         this.onItemClick = onItemClick;
+        totalPositions = 0;
     }
 
-    public final boolean isHeader(int position) {
-        return headerLocationMap.get(position) != null;
+    protected boolean isHeader(int position) {
+        for (Section section : activeSectionsList) {
+            if (section.getRelativePosition() == position) {
+                return true;
+            }
+        }
+        return false;
     }
 
-    public List<T> getItems() {
-        return items;
-    }
-
-    public void setItems(List<T> items) {
-        this.items = items;
-    }
-
-    public void addItems(List<T> items) {
-        int startPosition = items.size();
-        this.items.addAll(items);
-        notifyItemRangeInserted(startPosition, items.size());
+    protected String getHeaderTitle(int position) {
+        for (Section section : activeSectionsList) {
+            if (section.getRelativePosition() == position) {
+                return section.getHeaderTitle();
+            }
+        }
+        return null;
     }
 
     public void setLoadMore(boolean enabled) {
@@ -79,12 +74,12 @@ public abstract class SectionedPagedRecyclerAdapter<T> extends RecyclerView.Adap
         }
     }
 
-    protected String getSectionTitleToPosition(int position) 
-
     @Override public int getItemViewType(int position) {
 
-        if (showLoadMore && position == items.size()) { // At last position add load more item
+        if (showLoadMore && position == totalPositions) { // At last position add load more item
             return VIEW_TYPE_LOADING;
+        } else if (isHeader(position)){
+            return VIEW_TYPE_HEADER;
         } else {
             return VIEW_TYPE_ITEM;
         }
@@ -101,7 +96,7 @@ public abstract class SectionedPagedRecyclerAdapter<T> extends RecyclerView.Adap
         int count = 0;
         int relativePosition = position;
 
-        for (Section<T> section : sectionList) {
+        for (Section<T> section : activeSectionsList) {
             count += section.getItemCount();
             relativePosition -= 1; // header offset
             if (count >= position) {

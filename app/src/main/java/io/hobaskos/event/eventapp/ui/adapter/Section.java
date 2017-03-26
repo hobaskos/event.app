@@ -10,6 +10,7 @@ public  class Section<M> {
 
     private String headerTitle;
     private ArrayList<M> items;
+    private int relativePosition;
 
 
     public Section() {
@@ -20,12 +21,25 @@ public  class Section<M> {
         this.headerTitle = headerTitle;
         items = new ArrayList<M>();
     }
-    public Section(String headerTitle, ArrayList<M> items) {
+
+    public Section(String headerTitle, int relativePosition) {
+        this.headerTitle = headerTitle;
+        this.relativePosition = relativePosition;
+        items = new ArrayList<M>();
+    }
+    public Section(String headerTitle, ArrayList<M> items, int relativePosition) {
         this.headerTitle = headerTitle;
         this.items = items;
+        this.relativePosition = relativePosition;
     }
 
+    public int getRelativePosition() {
+        return relativePosition;
+    }
 
+    public void setRelativePosition(int relativePosition) {
+        this.relativePosition = relativePosition;
+    }
 
     public String getHeaderTitle() {
         return headerTitle;
@@ -57,6 +71,14 @@ public  class Section<M> {
 
     public void addItem(M item) {
         this.items.add(item);
+    }
+
+    public boolean isEmpty() {
+        if (items == null || items.size() == 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }
