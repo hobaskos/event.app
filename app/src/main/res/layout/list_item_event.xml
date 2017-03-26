@@ -171,6 +171,7 @@
                 android:layout_height="120dp"
                 android:background="@android:color/transparent"
                 android:scaleType="centerCrop"
+                android:alpha="0.8"
                 android:layout_alignParentEnd="true"/>
 
         </RelativeLayout>
