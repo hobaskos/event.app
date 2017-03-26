@@ -75,7 +75,7 @@ public class EventsFragment extends
 
     private DrawerLayout drawerLayout;
 
-    private String searchQuery;
+    private String searchQuery = "";
 
     @Inject
     public EventsPresenter eventsPresenter;

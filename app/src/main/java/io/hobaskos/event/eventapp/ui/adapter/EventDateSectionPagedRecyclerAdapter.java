@@ -5,7 +5,10 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import org.joda.time.DateTime;
 import org.joda.time.Days;
@@ -19,6 +22,7 @@ import java.util.function.Predicate;
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.util.ColorUtil;
+import io.hobaskos.event.eventapp.util.UrlUtil;
 import rx.functions.Action1;
 
 /**
@@ -182,6 +186,13 @@ public class EventDateSectionPagedRecyclerAdapter extends SectionedPagedRecycler
                 eventHolder.eventDate.setText(event.getDate(context));
                 eventHolder.attendanceCount.setText(String.valueOf(event.getAttendanceCount()));
                 ColorUtil.setCategoryColorCardView(context,eventHolder.cardView, event.getCategory().getTheme());
+
+                //TODO: Load placeholder image if loading image fails
+                Picasso.with(context)
+                        .load(UrlUtil.getImageUrl(event.getImageUrl()))
+                        .into(eventHolder.eventImage);
+
+
                 break;
             case VIEW_TYPE_HEADER:
                 SectionViewHolder sectionViewHolder = (SectionViewHolder) holder;
@@ -204,6 +215,7 @@ public class EventDateSectionPagedRecyclerAdapter extends SectionedPagedRecycler
         public View categoryColor;
         public View categorySubColor;
         public CardView cardView;
+        public ImageView eventImage;
 
         public EventViewHolder(View itemView) {
             super(itemView);
@@ -216,6 +228,8 @@ public class EventDateSectionPagedRecyclerAdapter extends SectionedPagedRecycler
             //categoryColor = itemView.findViewById(R.id.category_theme_color);
             //categorySubColor = itemView.findViewById(R.id.category_theme_color_sub);
             cardView = (CardView) itemView.findViewById(R.id.card_view);
+            eventImage = (ImageView) itemView.findViewById(R.id.event_list_item_image);
+
 
             //eventId = (TextView) itemView.findViewById(R.id.event_id);
             //background = (ImageView) itemView.findViewById(R.id.image);
