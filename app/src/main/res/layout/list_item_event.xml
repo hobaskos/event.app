@@ -4,14 +4,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingStart="@dimen/text_margin"
-    android:background="@color/cardview_light_background"
     android:orientation="horizontal">
+    
+    <android.support.v7.widget.CardView
+        android:id="@+id/card_view"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:elevation="3dp"
+        card_view:cardCornerRadius="0dp">
+
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:orientation="vertical"
-        android:paddingBottom="4dp"
+        android:padding="16dp"
         android:layout_height="wrap_content">
 
         <TextView
@@ -19,7 +27,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Placeholder title"
-            android:textColor="@android:color/black"
+            android:textColor="@color/cardview_text"
+            android:paddingBottom="8dp"
             android:textSize="20sp"/>
 
 
@@ -28,7 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Placeholder location"
-            android:textColor="@android:color/black"
+            android:textColor="@color/cardview_text"
             android:textSize="14sp"/>
 
         <LinearLayout
@@ -41,6 +50,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
+                android:tint="@color/cardview_text"
                 android:src="@drawable/ic_query_builder_black_24dp"
                 android:scaleType="centerCrop" />
 
@@ -51,12 +61,14 @@
                 android:paddingLeft="4dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/cardview_text"
                 android:textSize="14sp"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingStart="@dimen/text_margin"
+                android:textColor="@color/cardview_text"
                 android:text="@string/event_going"
                 />
 
@@ -65,12 +77,13 @@
                 android:paddingStart="4dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/cardview_text"
                 android:textSize="14sp"/>
 
             <TextView
                 android:id="@+id/my_attendance"
                 android:paddingStart="@dimen/text_margin"
-                android:textColor="@color/colorRed"
+                android:textColor="@color/cardview_text"
                 android:text="@string/attending"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -81,6 +94,7 @@
 
     </LinearLayout>
 
+            <!--
     <Space
         android:layout_width="0dp"
         android:layout_weight="1"
@@ -102,5 +116,8 @@
             android:background="@color/colorBlueDark"
             android:layout_height="6dp" />
     </LinearLayout>
+    -->
+
+    </android.support.v7.widget.CardView>
 
 </LinearLayout>

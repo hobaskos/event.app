@@ -42,4 +42,8 @@
     <color name="divider">#BDBDBD</color>
 
     <color name="light_gray">#F3F6F9</color>
+
+
+    <color name="cardview_text">#FFFFFF</color>
+
 </resources>

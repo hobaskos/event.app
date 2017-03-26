@@ -1,6 +1,7 @@
 package io.hobaskos.event.eventapp.ui.adapter;
 
 import android.content.Context;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -117,13 +118,13 @@ public class EventDateSectionPagedRecyclerAdapter extends SectionedPagedRecycler
             if (date.dayOfYear().equals(currDate.dayOfYear())) {
                 insertItem(item, sectionToday, "Today");
                 // Tomorrow:
-            } else if ((Days.daysBetween(currDate, date).getDays() == 1)) {
+            } else if ((date.dayOfYear().get() - currDate.dayOfYear().get()) == 1) {
                 insertItem(item, sectionTomorrow, "Tomorrow");
                 //This week:
             } else if (date.weekOfWeekyear().equals(currDate.weekOfWeekyear())) {
                 insertItem(item, sectionThisWeek, "This week");
                 //Next week:
-            } else if ((Weeks.weeksBetween(currDate, date).getWeeks() == 1)) {
+            } else if ((date.weekOfWeekyear().get() - currDate.weekOfWeekyear().get()) == 1) {
                 insertItem(item, sectionNextWeek, "Next week");
                 // January:
             } else if (date.getMonthOfYear() == 1) {
@@ -180,11 +181,12 @@ public class EventDateSectionPagedRecyclerAdapter extends SectionedPagedRecycler
                 eventHolder.eventLocation.setText(event.getLocation());
                 eventHolder.eventDate.setText(event.getDate(context));
                 eventHolder.attendanceCount.setText(String.valueOf(event.getAttendanceCount()));
-                ColorUtil.setCategoryColorView(context,eventHolder.categoryColor, eventHolder.categorySubColor, event.getCategory().getTheme());
+                ColorUtil.setCategoryColorCardView(context,eventHolder.cardView, event.getCategory().getTheme());
                 break;
             case VIEW_TYPE_HEADER:
                 SectionViewHolder sectionViewHolder = (SectionViewHolder) holder;
                 String sectionTitle = getHeaderTitle(position);
+                sectionTitle = sectionTitle.toUpperCase();
                 sectionViewHolder.sectionTitle.setText(sectionTitle);
             case VIEW_TYPE_LOADING:
                 //LoadMoreViewHolder holder1 = (LoadMoreViewHolder) holder;
@@ -201,6 +203,7 @@ public class EventDateSectionPagedRecyclerAdapter extends SectionedPagedRecycler
         public TextView eventTitle, eventLocation, eventDate, attendanceCount, myAttendance;
         public View categoryColor;
         public View categorySubColor;
+        public CardView cardView;
 
         public EventViewHolder(View itemView) {
             super(itemView);
@@ -210,8 +213,9 @@ public class EventDateSectionPagedRecyclerAdapter extends SectionedPagedRecycler
             attendanceCount = (TextView) itemView.findViewById(R.id.attendance_count);
             myAttendance = (TextView) itemView.findViewById(R.id.my_attendance);
             eventDate = (TextView) itemView.findViewById(R.id.event_time);
-            categoryColor = itemView.findViewById(R.id.category_theme_color);
-            categorySubColor = itemView.findViewById(R.id.category_theme_color_sub);
+            //categoryColor = itemView.findViewById(R.id.category_theme_color);
+            //categorySubColor = itemView.findViewById(R.id.category_theme_color_sub);
+            cardView = (CardView) itemView.findViewById(R.id.card_view);
 
             //eventId = (TextView) itemView.findViewById(R.id.event_id);
             //background = (ImageView) itemView.findViewById(R.id.image);

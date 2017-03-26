@@ -176,7 +176,7 @@ public class EventsFragment extends
 
         dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
                 linearLayoutManager.getOrientation());
-        recyclerView.addItemDecoration(dividerItemDecoration);
+        //recyclerView.addItemDecoration(dividerItemDecoration);
 
         openMapFab.setOnClickListener(new View.OnClickListener() {
             @Override
