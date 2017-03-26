@@ -26,24 +26,24 @@ import rx.functions.Action1;
 
 public class EventDateSectionPagedRecyclerAdapter extends SectionedPagedRecyclerAdapter<Event> {
 
-    Section<Event> sectionToday;
-    Section<Event> sectionTomorrow;
-    Section<Event> sectionThisWeek;
-    Section<Event> sectionNextWeek;
+    private Section<Event> sectionToday;
+    private Section<Event> sectionTomorrow;
+    private Section<Event> sectionThisWeek;
+    private Section<Event> sectionNextWeek;
 
     //Months
-    Section<Event> sectionJanuary;
-    Section<Event> sectionFebruary;
-    Section<Event> sectionMarch;
-    Section<Event> sectionApril;
-    Section<Event> sectionMay;
-    Section<Event> sectionJune;
-    Section<Event> sectionJuly;
-    Section<Event> sectionAugust;
-    Section<Event> sectionSeptember;
-    Section<Event> sectionOctober;
-    Section<Event> sectionNovember;
-    Section<Event> sectionDecember;
+    private Section<Event> sectionJanuary;
+    private Section<Event> sectionFebruary;
+    private Section<Event> sectionMarch;
+    private Section<Event> sectionApril;
+    private Section<Event> sectionMay;
+    private Section<Event> sectionJune;
+    private Section<Event> sectionJuly;
+    private Section<Event> sectionAugust;
+    private Section<Event> sectionSeptember;
+    private Section<Event> sectionOctober;
+    private Section<Event> sectionNovember;
+    private Section<Event> sectionDecember;
 
 
     public EventDateSectionPagedRecyclerAdapter(Context context, Action1<Event> onItemClick) {
@@ -66,6 +66,7 @@ public class EventDateSectionPagedRecyclerAdapter extends SectionedPagedRecycler
 
     private void insertItem(Event event, Section section, String title) {
         if (section == null) {
+            Log.i(TAG, "New section for " + title);
             // Create new section if it does not yet exist
             section = new Section(title);
             // Set relative position of section to current totalPositions
@@ -196,7 +197,7 @@ public class EventDateSectionPagedRecyclerAdapter extends SectionedPagedRecycler
         }
     }
 
-
+/*
     // NOT CURRENTLY IN USE
     private boolean insertItemIfEligible(Event event, Section section, String title, Predicate<Event> tester) {
         if (tester.test(event)) {
@@ -295,4 +296,6 @@ public class EventDateSectionPagedRecyclerAdapter extends SectionedPagedRecycler
 
         }
     }
+
+    */
 }

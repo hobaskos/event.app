@@ -60,9 +60,11 @@ public abstract class SectionedPagedRecyclerAdapter<T> extends RecyclerView.Adap
     protected boolean isHeader(int position) {
         for (Section section : activeSectionsList) {
             if (section.getRelativePosition() == position) {
+                Log.d(TAG, "isHeader true @ position: " + position);
                 return true;
             }
         }
+        Log.d(TAG, "isHeader false @ position: " + position);
         return false;
     }
 
@@ -113,10 +115,14 @@ public abstract class SectionedPagedRecyclerAdapter<T> extends RecyclerView.Adap
         int relativePosition = position;
 
         for (Section<T> section : activeSectionsList) {
-            count += section.getItemCount();
+            int sectionStartPos = section.getRelativePosition();
+            int sectionEndPos = sectionStartPos + section.getItemCount() + 1;
+
+
+            count += section.getItemCount() + 1;
             if (count >= position) {
                 // Item resides in current section
-                return section.getItemAtPosition(position);
+                return section.getItemAtPosition(relativePosition-1);
             } else {
                 // Item does not reside in current section
                 //Update relative position / subtract values in current section:
@@ -175,15 +181,18 @@ public abstract class SectionedPagedRecyclerAdapter<T> extends RecyclerView.Adap
     public class LoadMoreViewHolder extends RecyclerView.ViewHolder {
         public LoadMoreViewHolder(View itemView) {
             super(itemView);
+            Log.i(TAG, "LoadMoreViewHolder()");
         }
     }
 
     // SectionViewHolder Class for Sections
     public static class SectionViewHolder extends RecyclerView.ViewHolder {
+
         final TextView sectionTitle;
 
         public SectionViewHolder(View itemView) {
             super(itemView);
+            Log.i(TAG, "SectionViewHolder()");
 
             sectionTitle = (TextView) itemView.findViewById(R.id.sectionTitle);
         }
