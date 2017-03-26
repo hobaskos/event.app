@@ -37,6 +37,7 @@ import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.eventbus.FiltersUpdatedEvent;
 import io.hobaskos.event.eventapp.data.model.Event;
+import io.hobaskos.event.eventapp.ui.adapter.EventDateSectionPagedRecyclerAdapter;
 import io.hobaskos.event.eventapp.ui.base.view.fragment.BaseLceViewStateFragment;
 import io.hobaskos.event.eventapp.ui.event.filter.FilterEventsActivity;
 import io.hobaskos.event.eventapp.ui.event.details.EventActivity;
@@ -65,7 +66,7 @@ public class EventsFragment extends
 
     // Model
     List<Event> eventsList = new ArrayList<>();
-    private EventsAdapter adapter;
+    private EventDateSectionPagedRecyclerAdapter adapter;
 
     // State
     @State boolean canLoadMore = true;
@@ -160,7 +161,7 @@ public class EventsFragment extends
         // Configure recyclerview:
         linearLayoutManager = new NpaLinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
-        adapter = new EventsAdapter(eventsList, getContext(),
+        adapter = new EventDateSectionPagedRecyclerAdapter(getContext(),
                 event -> {
                     Intent intent = new Intent(getActivity(), EventActivity.class);
                     intent.putExtra(EventActivity.EVENT_ID, event.getId());
@@ -308,7 +309,7 @@ public class EventsFragment extends
     @Override
     public void setData(List<Event> data) {
         Log.i(TAG, "setData(), size: " + data.size());
-        adapter.setItems(data);
+        adapter.addItems(data);
         adapter.notifyDataSetChanged();
         swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(false));
     }
@@ -326,7 +327,7 @@ public class EventsFragment extends
     @Override
     public void showContent() {
         super.showContent();
-        if (adapter.getItems().isEmpty()) {
+        if (adapter.isEmpty()) {
             contentView.setVisibility(View.GONE);
             emptyResultView.setVisibility(View.VISIBLE);
         } else {

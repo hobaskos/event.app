@@ -40,6 +40,14 @@ public class EventsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         this.onItemClick = onItemClick;
     }
 
+    public boolean isEmpty() {
+        if (items == null || items.size() == 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public List<Event> getItems() {
         return items;
     }

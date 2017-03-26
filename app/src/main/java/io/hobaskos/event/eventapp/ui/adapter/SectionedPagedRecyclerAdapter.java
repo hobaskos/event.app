@@ -2,6 +2,7 @@ package io.hobaskos.event.eventapp.ui.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +20,7 @@ import rx.functions.Action1;
 
 public abstract class SectionedPagedRecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    public final static String TAG = PagedRecyclerAdapter.class.getName();
+    public final static String TAG = SectionedPagedRecyclerAdapter.class.getName();
 
 
     protected final int VIEW_TYPE_ITEM = 0;
@@ -41,6 +42,19 @@ public abstract class SectionedPagedRecyclerAdapter<T> extends RecyclerView.Adap
         this.context = context;
         this.onItemClick = onItemClick;
         totalPositions = 0;
+        activeSectionsList = new ArrayList<>();
+    }
+
+    public boolean isEmpty() {
+        for (Section section : activeSectionsList) {
+            Log.d(TAG, "isEmpty() for loop");
+            if (!section.isEmpty()) {
+                Log.d(TAG, "isEmpty() false");
+                return false; // adapter is not empty
+            }
+        }
+        Log.d(TAG, "isEmpty() true");
+        return true; // adapter is empty
     }
 
     protected boolean isHeader(int position) {
@@ -87,25 +101,26 @@ public abstract class SectionedPagedRecyclerAdapter<T> extends RecyclerView.Adap
 
     @Override
     public int getItemCount() {
-        return items.size() + (showLoadMore ? 1 : 0);
+        //return items.size() + (showLoadMore ? 1 : 0);
+        return totalPositions + (showLoadMore ? 1 : 0);
     }
 
 
     public T getItemAtPosition(int position) {
-
+        Log.d(TAG, "getItemAtPosition() totalPositions: " + totalPositions);
+        Log.d(TAG, "getItemAtPosition() position: " + position);
         int count = 0;
         int relativePosition = position;
 
         for (Section<T> section : activeSectionsList) {
             count += section.getItemCount();
-            relativePosition -= 1; // header offset
             if (count >= position) {
                 // Item resides in current section
-                return section.getItemAtPosition(relativePosition);
+                return section.getItemAtPosition(position);
             } else {
                 // Item does not reside in current section
                 //Update relative position / subtract values in current section:
-                relativePosition -= section.getItemCount();
+                relativePosition -= (section.getItemCount() +1);
             }
         }
 

@@ -26,46 +26,28 @@ import rx.functions.Action1;
 
 public class EventDateSectionPagedRecyclerAdapter extends SectionedPagedRecyclerAdapter<Event> {
 
-    Section<Event> sectionToday = new Section<Event>("Today");
-    Section<Event> sectionTomorrow = new Section<Event>("Tomorrow");
-    Section<Event> sectionThisWeek = new Section<Event>("This week");
-    Section<Event> sectionNextWeek = new Section<Event>("Next week");
+    Section<Event> sectionToday;
+    Section<Event> sectionTomorrow;
+    Section<Event> sectionThisWeek;
+    Section<Event> sectionNextWeek;
 
     //Months
-    Section<Event> sectionJanuary = new Section<Event>("January");
-    Section<Event> sectionFebruary = new Section<Event>("February");
-    Section<Event> sectionMarch = new Section<Event>("March");
-    Section<Event> sectionApril = new Section<Event>("April");
-    Section<Event> sectionMay = new Section<Event>("May");
-    Section<Event> sectionJune = new Section<Event>("June");
-    Section<Event> sectionJuly = new Section<Event>("July");
-    Section<Event> sectionAugust = new Section<Event>("August");
-    Section<Event> sectionSeptember = new Section<Event>("September");
-    Section<Event> sectionOctober = new Section<Event>("October");
-    Section<Event> sectionNovember = new Section<Event>("November");
-    Section<Event> sectionDecember = new Section<Event>("December");
+    Section<Event> sectionJanuary;
+    Section<Event> sectionFebruary;
+    Section<Event> sectionMarch;
+    Section<Event> sectionApril;
+    Section<Event> sectionMay;
+    Section<Event> sectionJune;
+    Section<Event> sectionJuly;
+    Section<Event> sectionAugust;
+    Section<Event> sectionSeptember;
+    Section<Event> sectionOctober;
+    Section<Event> sectionNovember;
+    Section<Event> sectionDecember;
 
-    private ArrayList<Section<Event>> nonActiveSections;
 
     public EventDateSectionPagedRecyclerAdapter(Context context, Action1<Event> onItemClick) {
         super(context, onItemClick);
-        nonActiveSections = new ArrayList<>();
-        nonActiveSections.add(sectionToday);
-        nonActiveSections.add(sectionTomorrow);
-        nonActiveSections.add(sectionThisWeek);
-        nonActiveSections.add(sectionNextWeek);
-        nonActiveSections.add(sectionJanuary);
-        nonActiveSections.add(sectionFebruary);
-        nonActiveSections.add(sectionApril);
-        nonActiveSections.add(sectionMay);
-        nonActiveSections.add(sectionJune);
-        nonActiveSections.add(sectionJuly);
-        nonActiveSections.add(sectionAugust);
-        nonActiveSections.add(sectionSeptember);
-        nonActiveSections.add(sectionOctober);
-        nonActiveSections.add(sectionNovember);
-        nonActiveSections.add(sectionDecember);
-
     }
 
     public List<Event> getItems() {
@@ -100,10 +82,11 @@ public class EventDateSectionPagedRecyclerAdapter extends SectionedPagedRecycler
     }
 
     private void addItemsToDatedSections(List<Event> items) {
-
+        Log.d(TAG, "addItemsToDatedSections");
         DateTime currDate = DateTime.now();
         for (Event item : items) {
             DateTime date = item.getFromDate();
+            //Log.d(TAG, "getMonthOfYear: " + date.getMonthOfYear());
             // Today:
             if (date.dayOfYear().equals(currDate.dayOfYear())) {
                 insertItem(item, sectionToday, "Today");
@@ -212,7 +195,7 @@ public class EventDateSectionPagedRecyclerAdapter extends SectionedPagedRecycler
             itemView.setOnClickListener((i) -> listener.call(event));
         }
     }
-    
+
 
     // NOT CURRENTLY IN USE
     private boolean insertItemIfEligible(Event event, Section section, String title, Predicate<Event> tester) {
