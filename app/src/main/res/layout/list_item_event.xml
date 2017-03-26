@@ -61,7 +61,7 @@
                         android:paddingTop="2dp"
                         android:paddingLeft="4dp"
                         android:textColor="@color/cardview_text"
-                        android:textSize="14sp"/>
+                        android:textSize="12sp"/>
                 </LinearLayout>
 
                 <!-- TIME -->
@@ -88,7 +88,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/cardview_text"
-                        android:textSize="14sp"/>
+                        android:textSize="12sp"/>
                 </LinearLayout>
 
                 <!-- GOING & ATTENDANCE -->
@@ -96,29 +96,42 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/peopleIcon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:tint="@color/cardview_text"
+                        android:src="@drawable/ic_people_black_24dp"
+                        android:scaleType="centerCrop" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingStart="@dimen/text_margin"
+                        android:paddingTop="2dp"
+                        android:paddingLeft="4dp"
                         android:textColor="@color/cardview_text"
+                        android:textSize="12sp"
                         android:text="@string/event_going"
                         />
                     <TextView
                         android:id="@+id/attendance_count"
                         android:paddingStart="4dp"
+                        android:paddingTop="2dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/cardview_text"
-                        android:textSize="14sp"/>
+                        android:textSize="12sp"/>
 
                     <TextView
                         android:id="@+id/my_attendance"
                         android:paddingStart="@dimen/text_margin"
+                        android:paddingTop="2dp"
                         android:textColor="@color/cardview_text"
                         android:text="@string/attending"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="14sp"/>
+                        android:textSize="12sp"/>
                 </LinearLayout>
 
             </LinearLayout>
