@@ -50,12 +50,37 @@ public class EventDateSectionPagedRecyclerAdapter extends SectionedPagedRecycler
         super(context, onItemClick);
     }
 
+    private void initializeSections() {
+        sectionToday = new Section<>("Today");
+        sectionTomorrow = new Section<>("Tomorrow");
+        sectionThisWeek = new Section<>("This week");
+        sectionNextWeek = new Section<>("Next week");
+
+        //Months
+        sectionJanuary = new Section<>("January");
+        sectionFebruary = new Section<>("February");
+        sectionMarch = new Section<>("March");
+        sectionApril = new Section<>("April");
+        sectionMay = new Section<>("May");
+        sectionJune = new Section<>("June");
+        sectionJuly = new Section<>("July");
+        sectionAugust = new Section<>("August");
+        sectionSeptember = new Section<>("September");
+        sectionOctober = new Section<>("October");
+        sectionNovember = new Section<>("November");
+        sectionDecember = new Section<>("December");
+    }
+
     public List<Event> getItems() {
         return items;
     }
 
     public void setItems(List<Event> items) {
-        this.items = items;
+        initializeSections();
+        activeSectionsList = new ArrayList<>();
+        totalPositions = 0;
+        addItemsToDatedSections(items);
+        notifyDataSetChanged();
     }
 
     public void addItems(List<Event> items) {
@@ -65,10 +90,10 @@ public class EventDateSectionPagedRecyclerAdapter extends SectionedPagedRecycler
 
 
     private void insertItem(Event event, Section section, String title) {
-        if (section == null) {
+        if (section.isEmpty()) {
             Log.i(TAG, "New section for " + title);
             // Create new section if it does not yet exist
-            section = new Section(title);
+            //section = new Section(title);
             // Set relative position of section to current totalPositions
             section.setRelativePosition(totalPositions);
             // Add to section list

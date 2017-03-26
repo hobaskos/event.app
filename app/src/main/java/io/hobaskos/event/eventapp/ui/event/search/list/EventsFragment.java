@@ -309,7 +309,7 @@ public class EventsFragment extends
     @Override
     public void setData(List<Event> data) {
         Log.i(TAG, "setData(), size: " + data.size());
-        adapter.addItems(data);
+        adapter.setItems(data);
         adapter.notifyDataSetChanged();
         swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(false));
     }
