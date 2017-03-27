@@ -1,7 +1,11 @@
 package io.hobaskos.event.eventapp.ui.event.details.competition.list;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -15,8 +19,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.hannesdorfmann.mosby.mvp.viewstate.lce.LceViewState;
+import com.hannesdorfmann.mosby.mvp.MvpFragment;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,14 +34,17 @@ import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.model.CompetitionImage;
 import io.hobaskos.event.eventapp.data.model.Event;
-import io.hobaskos.event.eventapp.ui.base.view.fragment.BaseLceViewStateFragment;
+import io.hobaskos.event.eventapp.util.ImageUtil;
+
+import static android.app.Activity.RESULT_OK;
+import static io.hobaskos.event.eventapp.util.ImageUtil.PICK_IMAGE_REQUEST;
 
 /**
  * Created by hans on 23/03/2017.
  */
 
-public class CompetitionFragment extends BaseLceViewStateFragment<SwipeRefreshLayout, List<CompetitionImage>, CompetitionView, CompetitionPresenter>
-                implements CompetitionView {
+public class CompetitionFragment extends MvpFragment<CompetitionView, CompetitionPresenter>
+        implements CompetitionView {
 
     public static final String TAG = CompetitionFragment.class.getName();
     public static final String ARG_IS_LOGGED_IN = "isLoggedIn";
@@ -103,11 +111,6 @@ public class CompetitionFragment extends BaseLceViewStateFragment<SwipeRefreshLa
         setRetainInstance(true);
     }
 
-    @Override
-    protected int getLayoutRes() {
-        Log.i(TAG, "getLayoutRes");
-        return R.layout.fragment_competition_list;
-    }
 
     @Nullable
     @Override
@@ -130,8 +133,10 @@ public class CompetitionFragment extends BaseLceViewStateFragment<SwipeRefreshLa
                 linearLayoutManager.getOrientation());
         recyclerView.addItemDecoration(dividerItemDecoration);
 
+        Log.i(TAG, "isLoggedIn=" + isLoggedIn);
         if(isLoggedIn) {
             addCompetitionImage.setOnClickListener(v -> showAddCompetitionImageDialog());
+            addCompetitionImage.setVisibility(View.VISIBLE);
         } else {
             addCompetitionImage.setVisibility(View.GONE);
         }
@@ -169,26 +174,24 @@ public class CompetitionFragment extends BaseLceViewStateFragment<SwipeRefreshLa
         listener = null;
     }
 
-    @Override
-    public LceViewState<List<CompetitionImage>, CompetitionView> createViewState() {
-        Log.i(TAG, "createViewState");
-        return new CompetitionViewState();
-    }
-
-    @Override
-    public CompetitionViewState getViewState() {
-        Log.i(TAG, "getViewState");
-        return (CompetitionViewState) super.getViewState();
-    }
-
-    @Override
-    public ArrayList<CompetitionImage> getData() {
-        Log.i(TAG, "getData");
-        return competitionImages;
-    }
-
     private void showAddCompetitionImageDialog() {
         Log.i(TAG, "Add Competition FAB clicked!");
+        openGallery();
+    }
+
+    @Override
+    public void showLoading(boolean pullToRefresh) {
+
+    }
+
+    @Override
+    public void showContent() {
+
+    }
+
+    @Override
+    public void showError(Throwable e, boolean pullToRefresh) {
+
     }
 
     @Override
@@ -204,14 +207,8 @@ public class CompetitionFragment extends BaseLceViewStateFragment<SwipeRefreshLa
     @Override
     public void loadData(boolean pullToRefresh) {
         Log.i(TAG, "loadData pullToRefresh: " + pullToRefresh);
-        presenter.get(eventId);
+        competitionPresenter.get(eventId);
         canLoadMore = false;
-    }
-
-    @Override
-    protected String getErrorMessage(Throwable e, boolean pullToRefresh) {
-        Log.i(TAG, "getErrorMessage: " + e.getMessage());
-        return null;
     }
 
     @Override
@@ -232,13 +229,50 @@ public class CompetitionFragment extends BaseLceViewStateFragment<SwipeRefreshLa
 
     }
 
-    
-
     @Override
     public void onResume() {
         Log.i(TAG, "onResume-method called");
         super.onResume();
-        presenter.get(eventId);
+        competitionPresenter.get(eventId);
+    }
+
+    public void onUpVoteButtonClicked(Long id) {
+        presenter.upVote(id);
+    }
+
+    public void onDownVoteButtonClicked(Long id) {
+        presenter.downVote(id);
+    }
+
+    public void onAddImageButtonClicked() {
+
+    }
+
+    private void openGallery(){
+        Intent intent = new Intent();
+        // Only show images
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        // Always show the chooser
+        startActivityForResult(Intent.createChooser(intent, "Select image"), PICK_IMAGE_REQUEST);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == PICK_IMAGE_REQUEST && data != null && data.getData() != null) {
+                Uri uri = data.getData();
+
+                try {
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
+                    String image = ImageUtil.getEncoded64ImageStringFromBitmap(bitmap);
+                    Log.i(TAG, image);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
 }

@@ -49,7 +49,7 @@ public class CompetitionRecyclerViewAdapter extends
         Picasso.with(context)
                 .load(currentImage.getImageUrl() != null ? currentImage.getAbsoluteImageUrl() : COMPETITION_IMAGE_URL_PLACEHOLDER)
                 .into(holder.image);
-        holder.numberOfVotes.setText("Number of votes: " + currentImage.getNumberOfVotes());
+        holder.numberOfVotes.setText(currentImage.getNumberOfVotes() + "");
     }
 
     @Override
@@ -61,6 +61,8 @@ public class CompetitionRecyclerViewAdapter extends
 
         public final ImageView image;
         public final TextView numberOfVotes;
+        public final ImageView upVoteButton;
+        public final ImageView downVoteButton;
         public Long id;
 
         public CompetitionViewHolder(View view) {
@@ -68,14 +70,35 @@ public class CompetitionRecyclerViewAdapter extends
 
             image = (ImageView) view.findViewById(R.id.image);
             numberOfVotes = (TextView) view.findViewById(R.id.number_of_votes);
+            upVoteButton = (ImageView) view.findViewById(R.id.up_vote);
+            downVoteButton = (ImageView) view.findViewById(R.id.down_vote);
 
             // TODO: check if user is logged in
             image.setOnClickListener(v -> {
                 if(null != listener) {
                     listener.onListFragmentInteraction(id);
-
                 }
             });
+
+            if(isLoggedIn) {
+
+                upVoteButton.setOnClickListener(v -> {
+                    if(null != listener) {
+                        listener.onUpVoteButtonClicked(id);
+                    }
+                });
+
+                downVoteButton.setOnClickListener(v -> {
+                    if(null != listener) {
+                        listener.onDownVoteButtonClicked(id);
+                    }
+                });
+
+            } else {
+
+                // TODO: user is not logged in. Make Vote-action redirect to Login/Register-splash.
+
+            }
 
 
         }

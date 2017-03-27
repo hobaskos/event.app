@@ -6,4 +6,6 @@ package io.hobaskos.event.eventapp.ui.event.details.competition.list;
 
 public interface OnCompetitionListInteractionListener {
     void onListFragmentInteraction(Long id);
+    void onUpVoteButtonClicked(Long id);
+    void onDownVoteButtonClicked(Long id);
 }

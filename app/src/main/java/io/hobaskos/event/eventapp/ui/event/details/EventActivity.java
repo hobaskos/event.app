@@ -20,6 +20,7 @@ import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.model.CompetitionImage;
 import io.hobaskos.event.eventapp.data.model.Event;
+import io.hobaskos.event.eventapp.data.model.EventCategory;
 import io.hobaskos.event.eventapp.data.model.EventCategoryTheme;
 import io.hobaskos.event.eventapp.data.model.Location;
 import io.hobaskos.event.eventapp.data.model.User;
@@ -53,7 +54,15 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     public final static String EVENT_THEME = "eventTheme";
     public final static String TAG = EventActivity.class.getName();
 
+    // States
+    public static final int EDIT_EVENT_REQUEST = 1;
+    public static final int ADD_LOCATION_REQUEST = 2;
+    public static final int EDIT_LOCATION_REQUEST = 3;
+    public static final int VIEW_COMPETITION_CAROUSEL = 4;
+
     private Long eventId;
+    private EventCategoryTheme theme;
+
     private EventPagerAdapter eventPagerAdapter;
     protected ViewPager viewPager;
     protected TabLayout tabLayout;
@@ -63,6 +72,8 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     private boolean hasBeenPaused = false;
     private Menu menu;
 
+
+
     @Inject public EventPresenter presenter;
 
     @Override
@@ -71,28 +82,15 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
 
         setTitle(R.string.loading);
 
-        if(savedInstanceState == null) {
-
-            Log.i("EventActivity", "Inside onCreate with savedInstanceState == null");
-
-            EventCategoryTheme theme =
-                    (EventCategoryTheme) getIntent().getExtras().getSerializable(EVENT_THEME);
-
-            if (theme != null) { setEventTheme(theme); }
-
-            eventId = getIntent().getExtras().getLong(EVENT_ID);
-
-
-        } else {
+        if(savedInstanceState != null) {
 
             // The Activity was restarted
             Log.i("EventActivity", "Inside onCreate with savedInstanceState != null");
 
             try {
 
-                EventCategoryTheme theme =
-                        EventCategoryTheme.valueOf(savedInstanceState.get(EVENT_THEME).toString());
-
+                eventId = savedInstanceState.getLong(EVENT_ID);
+                theme = EventCategoryTheme.valueOf(savedInstanceState.get(EVENT_THEME).toString());
                 setEventTheme(theme);
 
             } catch (NullPointerException e) {
@@ -101,7 +99,18 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
 
             }
 
-            eventId = savedInstanceState.getLong(EVENT_ID);
+        } else {
+
+            // The Activity is newly started from CreateEventActivity or the ListActivity.
+            Log.i("EventActivity", "Inside onCreate with savedInstanceState == null");
+
+            eventId = getIntent().getExtras().getLong(EVENT_ID);
+
+            theme =
+                    (EventCategoryTheme) getIntent().getExtras().getSerializable(EVENT_THEME);
+
+            if (theme != null) { setEventTheme(theme); }
+
         }
 
         presenter.getEvent(eventId);
@@ -116,16 +125,8 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     }
 
     @Override
-    protected void onRestart() {
-        Log.i(TAG, "onRestart method called.");
-        super.onRestart();
-    }
-
-    @Override
     protected void onStop() {
         Log.i(TAG, "onStop method called.");
-        eventPagerAdapter = null;
-        viewPager.setAdapter(null);
         super.onStop();
     }
 
@@ -160,10 +161,10 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         Log.i("EventActivity", "Inside onSaveInstanceState");
-        if(event != null) {
-            Log.i("EventActivity", "Inside onSaveInstanceState. Event != null");
-            outState.putLong(EVENT_ID, event.getId());
-            outState.putString(EVENT_THEME, event.getCategory().getTheme().toString());
+
+        if(eventId > 0 && theme != null) {
+            outState.putLong(EVENT_ID, eventId);
+            outState.putString(EVENT_THEME, theme.toString());
         }
     }
 
@@ -251,7 +252,8 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
                 Intent editIntent = new Intent(this, CreateEventActivity.class);
                 editIntent.putExtra(ACTIVITY_STATE, 1);
                 editIntent.putExtra(EVENT, event);
-                startActivity(editIntent);
+                //startActivity(editIntent);
+                startActivityForResult(editIntent, EDIT_EVENT_REQUEST);
                 break;
             case R.id.map:
                 Intent intent = new Intent(this, MapsActivity.class);
@@ -268,7 +270,8 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
         Intent intent = new Intent(this, LocationActivity.class);
         intent.putExtra(LocationActivity.EVENT_STATE, 1);
         intent.putExtra(LocationActivity.LOCATION, item);
-        startActivity(intent);
+        startActivityForResult(intent, EDIT_LOCATION_REQUEST);
+        //startActivity(intent);
     }
 
     @Override
@@ -301,25 +304,6 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
         super.onPause();
 
         hasBeenPaused = true;
-    }
-
-    protected void onResume() {
-        super.onResume();
-
-        if(hasBeenPaused) {
-            Log.i("EventActivity", "onResume(): hasBeenPaused==true");
-            refresh();
-        }
-    }
-
-    private void refresh() {
-        Log.i("EventActivity", "Refreshing activity...");
-        recreate();
-    }
-
-    @Override
-    public void recreate() {
-        super.recreate();
     }
 
     @Override
@@ -370,6 +354,90 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
         Intent intent = new Intent(this, ImageCarouselActivity.class);
         intent.putExtra(ImageCarouselActivity.ARG_STARTING_COMPETION_IMAGE, id);
         intent.putExtra(ImageCarouselActivity.ARG_EVENT_ID, eventId);
-        startActivity(intent);
+        startActivityForResult(intent, VIEW_COMPETITION_CAROUSEL);
+        //startActivity(intent);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+
+            case EDIT_EVENT_REQUEST:
+
+                Log.i(TAG, "activityForResult with request code == EDIT_EVENT_REQUEST");
+
+                if(resultCode == RESULT_OK) {
+                    Log.i(TAG, "activityForResult with result code == RESULT_OK");
+                    Log.i(TAG, "eventId=" + data.getLongExtra(EVENT_ID, -1));
+                    Log.i(TAG, "theme=" + data.getStringExtra(EVENT_THEME));
+                    eventId = data.getLongExtra(EVENT_ID, -1);
+
+                    theme = EventCategoryTheme.valueOf(data.getStringExtra(EVENT_THEME));
+
+                    recreate();
+                }
+
+                break;
+
+            case ADD_LOCATION_REQUEST:
+
+                Log.i(TAG, "activityForResult with request code == ADD_LOCATION_REQUEST");
+
+                if(resultCode == RESULT_OK) {
+
+                    // refresh list
+                    // show locations tab
+
+                }
+
+                break;
+
+            case EDIT_LOCATION_REQUEST:
+
+                Log.i(TAG, "activityForResult with request code == EDIT_LOCATION_REQUEST");
+
+                if(resultCode == RESULT_OK) {
+
+                    // refresh list
+                    // show locations tab
+
+                }
+
+                break;
+
+            case VIEW_COMPETITION_CAROUSEL:
+
+                Log.i(TAG, "activityForResult with request code == VIEW_COMPETiTION_CAROUSEL");
+
+                if(resultCode == RESULT_OK) {
+
+                    // refresh list
+                    // show competition list tab
+
+                }
+
+                break;
+
+            default:
+                Log.i(TAG, "activityForResult without legal request code.");
+
+                // To something ??
+
+                break;
+        }
+    }
+
+    @Override
+    public void onUpVoteButtonClicked(Long id) {
+        CompetitionFragment competitionFragment = (CompetitionFragment) eventPagerAdapter.getItem(3);
+        competitionFragment.onUpVoteButtonClicked(id);
+    }
+
+    @Override
+    public void onDownVoteButtonClicked(Long id) {
+        CompetitionFragment competitionFragment = (CompetitionFragment) eventPagerAdapter.getItem(3);
+        competitionFragment.onDownVoteButtonClicked(id);
     }
 }

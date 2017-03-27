@@ -245,13 +245,15 @@ public class CreateEventActivity extends MvpActivity<CreateEventView, CreateEven
     public void onSuccess(Event event) {
         hideLoader();
 
+        Intent intent = new Intent(this, EventActivity.class);
+        intent.putExtra(EventActivity.EVENT_ID, event.getId());
+        intent.putExtra(EventActivity.EVENT_THEME, event.getCategory().getTheme().toString());
+
         if(activityState.equals(ActivityState.CREATE)) {
-            Intent intent = new Intent(this, EventActivity.class);
-            intent.putExtra(EventActivity.EVENT_ID, event.getId());
-            intent.putExtra(EventActivity.EVENT_THEME, event.getCategory().getTheme());
             startActivity(intent);
         }
 
+        setResult(RESULT_OK, intent);
         finish();
     }
 
@@ -287,4 +289,12 @@ public class CreateEventActivity extends MvpActivity<CreateEventView, CreateEven
         categories.setVisibility(View.VISIBLE);
     }
 
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+
+        Intent intent = new Intent();
+        setResult(RESULT_CANCELED, intent);
+        finish();
+    }
 }

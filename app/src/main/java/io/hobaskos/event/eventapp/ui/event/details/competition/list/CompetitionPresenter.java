@@ -2,21 +2,25 @@ package io.hobaskos.event.eventapp.ui.event.details.competition.list;
 
 import android.util.Log;
 
+import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
+
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.inject.Inject;
 
 import icepick.State;
 import io.hobaskos.event.eventapp.data.model.CompetitionImage;
+import io.hobaskos.event.eventapp.data.model.EventImageVoteDTO;
 import io.hobaskos.event.eventapp.data.repository.EventImageVoteRepository;
-import io.hobaskos.event.eventapp.ui.base.presenter.BaseRxLcePresenter;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by hans on 24/03/2017.
  */
 
-public class CompetitionPresenter extends BaseRxLcePresenter<CompetitionView,List<CompetitionImage>> {
+public class CompetitionPresenter extends MvpBasePresenter<CompetitionView> {
 
     public static final String IMAGE_ONE = "http://cdn01.androidauthority.net/wp-content/uploads/2016/06/draw-300x170.png";
     public static final String IMAGE_TWO = "http://cdn01.androidauthority.net/wp-content/uploads/2016/06/android-win-2-300x162.png";
@@ -25,9 +29,6 @@ public class CompetitionPresenter extends BaseRxLcePresenter<CompetitionView,Lis
 
     @State
     protected Long eventId;
-
-    private static final String Apple = "";
-
     private EventImageVoteRepository eventImageVoteRepository;
 
     @Inject
@@ -41,6 +42,39 @@ public class CompetitionPresenter extends BaseRxLcePresenter<CompetitionView,Lis
             Log.i(TAG, "view is attached");
             getView().setData(getCompetitionImageList());
         }
+    }
+
+    public void upVote(Long id) {
+        Log.i(TAG, "UpVoting image with id = " + id);
+        EventImageVoteDTO eventImageVoteDTO = new EventImageVoteDTO();
+        eventImageVoteDTO.setEventImageId(id);
+        eventImageVoteDTO.setVote(1);
+        eventImageVoteRepository
+                .postVote(eventImageVoteDTO)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<EventImageVoteDTO>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(EventImageVoteDTO eventImageVoteDTO) {
+                if(isViewAttached() && getView() != null) {
+
+                }
+            }
+        });
+    }
+
+    public void downVote(Long id) {
+        Log.i(TAG, "DownVoting image with id = " + id);
     }
 
     private ArrayList<CompetitionImage> getCompetitionImageList() {
