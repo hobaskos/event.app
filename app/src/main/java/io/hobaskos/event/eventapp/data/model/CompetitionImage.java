@@ -3,17 +3,69 @@ package io.hobaskos.event.eventapp.data.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.SerializedName;
+
+import io.hobaskos.event.eventapp.config.Constants;
+import io.hobaskos.event.eventapp.util.UrlUtil;
+
 /**
  * Created by hans on 23/03/2017.
  */
 
 public class CompetitionImage implements CompetitionItem, Parcelable {
 
+    @SerializedName("id")
     private Long id;
+    @SerializedName("ownerLogin")
     private String ownerLogin;
+    @SerializedName("voteCount")
     private int numberOfVotes;
+    @SerializedName("imageUrl")
     private String imageUrl;
+    @SerializedName("hasMyVote")
     private boolean hasMyVote;
+    @SerializedName("file")
+    private String imageBase64;
+    @SerializedName("pollId")
+    private Long competitionId;
+    @SerializedName("fileContentType")
+    private String fileContentType;
+
+    protected CompetitionImage(Parcel in) {
+        ownerLogin = in.readString();
+        numberOfVotes = in.readInt();
+        imageUrl = in.readString();
+        hasMyVote = in.readByte() != 0;
+        imageBase64 = in.readString();
+        fileContentType = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(ownerLogin);
+        dest.writeInt(numberOfVotes);
+        dest.writeString(imageUrl);
+        dest.writeByte((byte) (hasMyVote ? 1 : 0));
+        dest.writeString(imageBase64);
+        dest.writeString(fileContentType);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<CompetitionImage> CREATOR = new Creator<CompetitionImage>() {
+        @Override
+        public CompetitionImage createFromParcel(Parcel in) {
+            return new CompetitionImage(in);
+        }
+
+        @Override
+        public CompetitionImage[] newArray(int size) {
+            return new CompetitionImage[size];
+        }
+    };
 
     public Long getId() {
         return id;
@@ -60,11 +112,36 @@ public class CompetitionImage implements CompetitionItem, Parcelable {
         this.imageUrl = imageUrl;
     }
 
-    public String getAbsoluteImageUrl() {
-        //String s = "https://" + Constants.API_HOST + "/api" + imageUrl;
+    public String getFileContentType() {
+        return fileContentType;
+    }
 
-        // for early development only:
-        return imageUrl;
+    public void setFileContentType(String fileContentType) {
+        this.fileContentType = fileContentType;
+    }
+
+    public String getAbsoluteImageUrl() {
+        return UrlUtil.getImageUrl(imageUrl);
+    }
+
+    public boolean isHasMyVote() {
+        return hasMyVote;
+    }
+
+    public String getImageBase64() {
+        return imageBase64;
+    }
+
+    public void setImageBase64(String imageBase64) {
+        this.imageBase64 = imageBase64;
+    }
+
+    public Long getCompetitionId() {
+        return competitionId;
+    }
+
+    public void setCompetitionId(Long competitionId) {
+        this.competitionId = competitionId;
     }
 
     @Override
@@ -76,40 +153,7 @@ public class CompetitionImage implements CompetitionItem, Parcelable {
     }
 
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeValue(this.id);
-        dest.writeString(this.ownerLogin);
-        dest.writeInt(this.numberOfVotes);
-        dest.writeString(this.imageUrl);
-        dest.writeByte(this.hasMyVote ? (byte) 1 : (byte) 0);
-    }
-
     public CompetitionImage() {
     }
 
-    protected CompetitionImage(Parcel in) {
-        this.id = (Long) in.readValue(Long.class.getClassLoader());
-        this.ownerLogin = in.readString();
-        this.numberOfVotes = in.readInt();
-        this.imageUrl = in.readString();
-        this.hasMyVote = in.readByte() != 0;
-    }
-
-    public static final Parcelable.Creator<CompetitionImage> CREATOR = new Parcelable.Creator<CompetitionImage>() {
-        @Override
-        public CompetitionImage createFromParcel(Parcel source) {
-            return new CompetitionImage(source);
-        }
-
-        @Override
-        public CompetitionImage[] newArray(int size) {
-            return new CompetitionImage[size];
-        }
-    };
 }

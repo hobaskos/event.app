@@ -8,4 +8,5 @@ public interface OnCompetitionListInteractionListener {
     void onListFragmentInteraction(Long id);
     void onUpVoteButtonClicked(Long id);
     void onDownVoteButtonClicked(Long id);
+    void submitCompetitionImageVote(Long id, int vote);
 }

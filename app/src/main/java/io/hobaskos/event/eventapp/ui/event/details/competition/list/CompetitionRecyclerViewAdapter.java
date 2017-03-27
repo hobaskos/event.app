@@ -84,13 +84,13 @@ public class CompetitionRecyclerViewAdapter extends
 
                 upVoteButton.setOnClickListener(v -> {
                     if(null != listener) {
-                        listener.onUpVoteButtonClicked(id);
+                        listener.submitCompetitionImageVote(id, +1);
                     }
                 });
 
                 downVoteButton.setOnClickListener(v -> {
                     if(null != listener) {
-                        listener.onDownVoteButtonClicked(id);
+                        listener.submitCompetitionImageVote(id, -1);
                     }
                 });
 

@@ -124,12 +124,6 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
         tabLayout = (TabLayout) findViewById(R.id.tabs);
     }
 
-    @Override
-    protected void onStop() {
-        Log.i(TAG, "onStop method called.");
-        super.onStop();
-    }
-
     private void setEventTheme(EventCategoryTheme theme) {
         Log.i("EventActivity", "Setting EventTheme: " + theme.name());
         switch (theme) {
@@ -218,13 +212,24 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
         setTitle(event.getTitle());
 
         Log.i(TAG, "setData");
-        eventPagerAdapter = new EventPagerAdapter(event, isOwner, isLoggedIn, this, getSupportFragmentManager());
-        viewPager.setAdapter(eventPagerAdapter);
-        tabLayout.setTabMode(TabLayout.MODE_FIXED);
-        tabLayout.setupWithViewPager(viewPager);
-        tabLayout.getTabAt(0).setIcon(R.drawable.ic_event);
-        tabLayout.getTabAt(1).setIcon(R.drawable.ic_location_on);
-        tabLayout.getTabAt(2).setIcon(R.drawable.ic_group);
+
+        if(eventPagerAdapter == null) {
+            Log.i(TAG, "eventPagerAdapter == null");
+            eventPagerAdapter = new EventPagerAdapter(this.event, isOwner, isLoggedIn, this, getSupportFragmentManager());
+            viewPager.setAdapter(eventPagerAdapter);
+            tabLayout.setTabMode(TabLayout.MODE_FIXED);
+            tabLayout.setupWithViewPager(viewPager);
+            tabLayout.getTabAt(0).setIcon(R.drawable.ic_event);
+            tabLayout.getTabAt(1).setIcon(R.drawable.ic_location_on);
+            tabLayout.getTabAt(2).setIcon(R.drawable.ic_group);
+
+            if(isLoggedIn) {
+                tabLayout.getTabAt(3).setIcon(R.drawable.ic_competition_tab_white);
+            }
+        }
+
+        //Log.i(TAG, "eventPagerAdapter != null");
+        //eventPagerAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -300,13 +305,6 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
         }
 
         Toast.makeText(this, owner ? "Owner" : "Not owner", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-
-        hasBeenPaused = true;
     }
 
     @Override
@@ -442,5 +440,11 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     public void onDownVoteButtonClicked(Long id) {
         CompetitionFragment competitionFragment = (CompetitionFragment) eventPagerAdapter.getItem(3);
         competitionFragment.onDownVoteButtonClicked(id);
+    }
+
+    @Override
+    public void submitCompetitionImageVote(Long id, int vote) {
+        CompetitionFragment competitionFragment = (CompetitionFragment) eventPagerAdapter.getItem(3);
+        competitionFragment.getPresenter().vote(id, vote);
     }
 }

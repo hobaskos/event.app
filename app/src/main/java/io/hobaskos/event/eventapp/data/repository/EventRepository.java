@@ -42,6 +42,9 @@ public class EventRepository implements BaseRepository<Event, Long> {
         return eventServiceAnonymously.getEvent(id);
     }
 
+    public Observable<Event> get2(Long id) {
+        return eventServiceAuthenticated.getEvent(id);
+    }
 
     @Override
     public Observable<Event> save(Event item) {

@@ -63,6 +63,9 @@ public class Event implements Parcelable {
     @SerializedName("imageContentType")
     private String imageContentType;
 
+    @SerializedName("defaultPollId")
+    private int defaultPollId;
+
     private boolean privateEvent;
 
     private String invitationCode;
@@ -191,6 +194,14 @@ public class Event implements Parcelable {
         this.myAttendance = myAttendance;
     }
 
+    public int getDefaultPollId() {
+        return defaultPollId;
+    }
+
+    public void setDefaultPollId(int defaultPollId) {
+        this.defaultPollId = defaultPollId;
+    }
+
     public String getDate(Context context) {
         return fromDate != null ? DateUtils.formatDateTime(context, fromDate.toDate().getTime(), DateUtils.FORMAT_SHOW_DATE) : "";
     }
@@ -302,6 +313,7 @@ public class Event implements Parcelable {
     public Event() {
     }
 
+
     @Override
     public int describeContents() {
         return 0;
@@ -322,6 +334,7 @@ public class Event implements Parcelable {
         dest.writeInt(this.myAttendance == null ? -1 : this.myAttendance.ordinal());
         dest.writeString(this.image);
         dest.writeString(this.imageContentType);
+        dest.writeValue(this.defaultPollId);
         dest.writeByte(this.privateEvent ? (byte) 1 : (byte) 0);
         dest.writeString(this.invitationCode);
     }
@@ -341,11 +354,12 @@ public class Event implements Parcelable {
         this.myAttendance = tmpMyAttendance == -1 ? null : EventAttendingType.values()[tmpMyAttendance];
         this.image = in.readString();
         this.imageContentType = in.readString();
+        this.defaultPollId = (int) in.readValue(Long.class.getClassLoader());
         this.privateEvent = in.readByte() != 0;
         this.invitationCode = in.readString();
     }
 
-    public static final Creator<Event> CREATOR = new Creator<Event>() {
+    public static final Parcelable.Creator<Event> CREATOR = new Parcelable.Creator<Event>() {
         @Override
         public Event createFromParcel(Parcel source) {
             return new Event(source);

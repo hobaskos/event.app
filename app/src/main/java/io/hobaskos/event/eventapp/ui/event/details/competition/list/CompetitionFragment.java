@@ -88,8 +88,12 @@ public class CompetitionFragment extends MvpFragment<CompetitionView, Competitio
     public static CompetitionFragment newInstance(Event event, boolean isLoggedIn) {
         CompetitionFragment fragment = new CompetitionFragment();
         Bundle args = new Bundle();
+        Log.i(TAG, event.getId().toString() + "");
+        Log.i(TAG, event.getDefaultPollId() + "");
+
         args.putLong(ARG_EVENT_ID, event.getId());
         args.putBoolean(ARG_IS_LOGGED_IN, isLoggedIn);
+        args.putLong(ARG_COMPETITION_ID, event.getDefaultPollId());
         fragment.setArguments(args);
         return fragment;
     }
@@ -103,8 +107,10 @@ public class CompetitionFragment extends MvpFragment<CompetitionView, Competitio
 
         if(getArguments() != null) {
             eventId = getArguments().getLong(ARG_EVENT_ID);
+            competitionId = getArguments().getLong(ARG_COMPETITION_ID);
             isLoggedIn = getArguments().getBoolean(ARG_IS_LOGGED_IN);
             Log.i(TAG, "event id = " + eventId);
+            Log.i(TAG, "competition id = " + competitionId);
             Log.i(TAG, "is logged in = " + isLoggedIn);
         }
 
@@ -151,7 +157,7 @@ public class CompetitionFragment extends MvpFragment<CompetitionView, Competitio
 
         if(eventId != null) {
             Log.i(TAG, "eventId != null");
-            competitionPresenter.get(eventId);
+            competitionPresenter.get(competitionId);
         }
     }
 
@@ -199,7 +205,8 @@ public class CompetitionFragment extends MvpFragment<CompetitionView, Competitio
         Log.i(TAG, "setData with size = " + data.size());
         this.competitionImages.clear();
         this.competitionImages.addAll(data);
-        competitionRecyclerViewAdapter.notifyDataSetChanged();
+        competitionRecyclerViewAdapter = new CompetitionRecyclerViewAdapter(competitionImages, listener, getContext(), isLoggedIn);
+        recyclerView.setAdapter(competitionRecyclerViewAdapter);
         swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(false));
 
     }
@@ -207,7 +214,7 @@ public class CompetitionFragment extends MvpFragment<CompetitionView, Competitio
     @Override
     public void loadData(boolean pullToRefresh) {
         Log.i(TAG, "loadData pullToRefresh: " + pullToRefresh);
-        competitionPresenter.get(eventId);
+        competitionPresenter.get(competitionId);
         canLoadMore = false;
     }
 
@@ -233,19 +240,15 @@ public class CompetitionFragment extends MvpFragment<CompetitionView, Competitio
     public void onResume() {
         Log.i(TAG, "onResume-method called");
         super.onResume();
-        competitionPresenter.get(eventId);
+        competitionPresenter.get(competitionId);
     }
 
     public void onUpVoteButtonClicked(Long id) {
-        presenter.upVote(id);
+        presenter.vote(id, +1);
     }
 
     public void onDownVoteButtonClicked(Long id) {
-        presenter.downVote(id);
-    }
-
-    public void onAddImageButtonClicked() {
-
+        presenter.vote(id, -1);
     }
 
     private void openGallery(){
@@ -260,6 +263,7 @@ public class CompetitionFragment extends MvpFragment<CompetitionView, Competitio
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        Log.i(TAG, "onActivityResult");
         if (resultCode == RESULT_OK) {
             if (requestCode == PICK_IMAGE_REQUEST && data != null && data.getData() != null) {
                 Uri uri = data.getData();
@@ -268,6 +272,7 @@ public class CompetitionFragment extends MvpFragment<CompetitionView, Competitio
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
                     String image = ImageUtil.getEncoded64ImageStringFromBitmap(bitmap);
                     Log.i(TAG, image);
+                    presenter.nomiateImage(competitionId, image);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

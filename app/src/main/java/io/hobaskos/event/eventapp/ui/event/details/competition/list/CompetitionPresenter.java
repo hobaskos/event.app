@@ -5,12 +5,15 @@ import android.util.Log;
 import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
 import icepick.State;
+import io.hobaskos.event.eventapp.data.api.EventImageService;
 import io.hobaskos.event.eventapp.data.model.CompetitionImage;
 import io.hobaskos.event.eventapp.data.model.EventImageVoteDTO;
+import io.hobaskos.event.eventapp.data.repository.EventImageRepository;
 import io.hobaskos.event.eventapp.data.repository.EventImageVoteRepository;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -29,82 +32,104 @@ public class CompetitionPresenter extends MvpBasePresenter<CompetitionView> {
 
     @State
     protected Long eventId;
+
     private EventImageVoteRepository eventImageVoteRepository;
+    private EventImageRepository eventImageRepository;
 
     @Inject
-    public CompetitionPresenter(EventImageVoteRepository eventImageVoteRepository) {
+    public CompetitionPresenter(EventImageVoteRepository eventImageVoteRepository, EventImageRepository eventImageRepository) {
         this.eventImageVoteRepository = eventImageVoteRepository;
+        this.eventImageRepository = eventImageRepository;
     }
 
     public void get(Long id) {
         Log.i(TAG, "get(" + id + ")");
-        if(isViewAttached() && getView() != null) {
-            Log.i(TAG, "view is attached");
-            getView().setData(getCompetitionImageList());
-        }
+
+        eventImageRepository
+                .getCompetitionImages(id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<List<CompetitionImage>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.i(TAG, "Could not fetch list of competition images.");
+                        Log.i(TAG, e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(List<CompetitionImage> competitionImages) {
+                        Log.i(TAG, "Could fetch list of competition images.");
+                        Log.i(TAG, "Size=" + competitionImages.size());
+                        for(int i = 0; i < competitionImages.size(); i++) {
+                            Log.i(TAG, "ImageUrl= " + competitionImages.get(i).getAbsoluteImageUrl());
+                        }
+                        if(isViewAttached() && getView() != null) {
+                            getView().setData(competitionImages);
+                        }
+                    }
+                });
     }
 
-    public void upVote(Long id) {
-        Log.i(TAG, "UpVoting image with id = " + id);
+    public void vote(Long id, int vote) {
         EventImageVoteDTO eventImageVoteDTO = new EventImageVoteDTO();
         eventImageVoteDTO.setEventImageId(id);
-        eventImageVoteDTO.setVote(1);
+        eventImageVoteDTO.setVote(vote);
         eventImageVoteRepository
                 .postVote(eventImageVoteDTO)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<EventImageVoteDTO>() {
-            @Override
-            public void onCompleted() {
+                    @Override
+                    public void onCompleted() {
 
-            }
+                    }
 
-            @Override
-            public void onError(Throwable e) {
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.i(TAG, "Vote unsuccessful");
+                    }
 
-            }
+                    @Override
+                    public void onNext(EventImageVoteDTO eventImageVoteDTO) {
+                        Log.i(TAG, "Vote successful");
+                        if(isViewAttached() && getView() != null) {
 
-            @Override
-            public void onNext(EventImageVoteDTO eventImageVoteDTO) {
-                if(isViewAttached() && getView() != null) {
-
-                }
-            }
-        });
+                        }
+                    }
+                });
     }
 
-    public void downVote(Long id) {
-        Log.i(TAG, "DownVoting image with id = " + id);
-    }
+    public void nomiateImage(Long id, String image) {
+        Log.i(TAG, "Nominating image...");
+        CompetitionImage competitionImage = new CompetitionImage();
+        competitionImage.setCompetitionId(id);
+        competitionImage.setImageBase64(image);
+        competitionImage.setFileContentType("image/jpg");
 
-    private ArrayList<CompetitionImage> getCompetitionImageList() {
+        eventImageRepository.saveImage(competitionImage)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<CompetitionImage>() {
+                    @Override
+                    public void onCompleted() {
 
-        CompetitionImage ci1 = new CompetitionImage();
-        ci1.setId(1L);
-        ci1.setImageUrl(IMAGE_ONE);
-        ci1.setNumberOfVotes(20);
-        ci1.setHasMyVote(true);
-        ci1.setOwnerLogin("Hans");
+                    }
 
-        CompetitionImage ci2 = new CompetitionImage();
-        ci2.setId(2L);
-        ci2.setImageUrl(IMAGE_TWO);
-        ci2.setNumberOfVotes(10);
-        ci2.setHasMyVote(true);
-        ci2.setOwnerLogin("Magnus");
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.i(TAG, "Could not save competition image.");
+                        Log.i(TAG, "Error: " + e.getMessage());
+                    }
 
-        CompetitionImage ci3 = new CompetitionImage();
-        ci3.setId(3L);
-        ci3.setImageUrl(IMAGE_THREE);
-        ci3.setNumberOfVotes(30);
-        ci3.setHasMyVote(false);
-        ci3.setOwnerLogin("Alex");
-
-        ArrayList<CompetitionImage> competitionItems = new ArrayList<>();
-        competitionItems.add(ci1);
-        competitionItems.add(ci2);
-        competitionItems.add(ci3);
-
-        return competitionItems;
+                    @Override
+                    public void onNext(CompetitionImage competitionImage) {
+                        Log.i(TAG, "Competition image saved successfully.");
+                    }
+                });
     }
 }
