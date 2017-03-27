@@ -1,162 +1,163 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
-    android:paddingTop="16dp">
-
-    <!-- LOCATION -->
+    android:fillViewport="true"
+    >
     <RelativeLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="16dp"
-        android:id="@+id/locationLayout">
+        android:layout_height="match_parent"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="16dp">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Location"
-            android:textAllCaps="true"
-            android:textSize="16dp"
-            android:id="@+id/locationTextView"
-            android:labelFor="@+id/locationAutoCompleteTextView"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:id="@+id/gpsLayout"
-            android:layout_below="@+id/locationTextView">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:text="Use current location" />
-
-            <android.support.v7.widget.SwitchCompat
-                android:id="@+id/fragment_filter_events_gps_switch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="false" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:id="@+id/placesLayout"
-            android:layout_below="@+id/gpsLayout">
-
-            <fragment
-                android:id="@+id/place_autocomplete_fragment"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:name="com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment"
-                />
-
-        </LinearLayout>
-
-
-
-    </RelativeLayout>
-
-    <!-- DISTANCE -->
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:id="@+id/distanceLayout"
-        android:layout_marginTop="16dp"
-        android:layout_below="@+id/locationLayout" >
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Distance"
-            android:textAllCaps="true"
-            android:textSize="16dp"
-            android:id="@+id/distanceTextView" />
-
+        <!-- LOCATION -->
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
             android:layout_marginTop="16dp"
-            android:id="@+id/distanceTextViews"
-            android:layout_below="@+id/distanceTextView">
+            android:id="@+id/locationLayout">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:text="1KM"/>
+                android:text="Location"
+                android:textAllCaps="true"
+                android:textSize="16dp"
+                android:id="@+id/locationTextView"
+                android:labelFor="@+id/locationAutoCompleteTextView"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/gpsLayout"
+                android:layout_below="@+id/locationTextView">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:text="Use current location" />
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/fragment_filter_events_gps_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="false" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/placesLayout"
+                android:layout_below="@+id/gpsLayout">
+
+                <!-- AUTOCOMPLETE PLACES -->
+                <fragment
+                    android:id="@+id/place_autocomplete_fragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:name="com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment"
+                    />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <!-- DISTANCE -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:id="@+id/distanceLayout"
+            android:layout_marginTop="16dp"
+            android:layout_below="@+id/locationLayout" >
 
             <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Distance"
+                android:textAllCaps="true"
+                android:textSize="16dp"
+                android:id="@+id/distanceTextView" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:id="@+id/distanceTextViews"
+                android:layout_below="@+id/distanceTextView">
+
+                <TextView
+                    android:id="@+id/minimumDistanceTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"/>
+
+                <TextView
+                    android:id="@+id/maxDistanceTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"/>
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/seekBarText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:text="150KM"/>
+                android:layout_above="@+id/seekBar"
+                android:layout_marginBottom="8dp"
+                android:visibility="gone"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
 
+            <SeekBar
+                style="@style/Widget.AppCompat.SeekBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="29"
+                android:progress="1"
+                android:id="@+id/seekBar"
+                android:layout_below="@+id/distanceTextViews"/>
+        </RelativeLayout>
+
+        <!-- CATEGORY -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/distanceLayout"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="16dp"
+            android:id="@+id/categoryLayout">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Category"
+                android:textAllCaps="true"
+                android:textSize="16dp"
+                android:id="@+id/categoryTextView" />
+
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/categoryTextView"
+                android:layout_marginTop="16dp"
+                android:id="@+id/categorySpinner" />
 
         </RelativeLayout>
 
-        <TextView
-            android:id="@+id/seekBarText"
+        <Button
+            android:text="Apply Filters"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/seekBar"
-            android:layout_marginBottom="8dp"
-            android:visibility="gone"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-        <SeekBar
-            style="@style/Widget.AppCompat.SeekBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:max="150"
-            android:progress="1"
-            android:id="@+id/seekBar"
-            android:layout_below="@+id/distanceTextViews"/>
-    </RelativeLayout>
-
-    <!-- CATEGORY -->
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/distanceLayout"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="16dp"
-        android:id="@+id/categoryLayout">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Category"
-            android:textAllCaps="true"
-            android:textSize="16dp"
-            android:id="@+id/categoryTextView" />
-
-        <Spinner
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/categoryTextView"
-            android:layout_marginTop="16dp"
-            android:id="@+id/categorySpinner" />
+            android:layout_below="@+id/categoryLayout"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="32dp"
+            android:id="@+id/applyFiltersButton"/>
 
     </RelativeLayout>
-
-    <Button
-        android:text="Apply Filters"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/categoryLayout"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="32dp"
-        android:id="@+id/applyFiltersButton"/>
-
-
-</RelativeLayout>
+</ScrollView>

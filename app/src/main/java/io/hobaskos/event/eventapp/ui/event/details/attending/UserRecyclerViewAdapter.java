@@ -4,10 +4,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
+import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.model.User;
+import io.hobaskos.event.eventapp.util.UrlUtil;
+import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 
 import java.util.List;
 
@@ -34,6 +40,13 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
         holder.item = user;
         holder.name.setText(user.getName());
 
+        if (user.getProfileImageUrl() != null && !user.getProfileImageUrl().equals("")) {
+            Picasso.with(App.getInst())
+                    .load(UrlUtil.getImageUrl(user.getProfileImageUrl()))
+                    .transform(new CropCircleTransformation())
+                    .fit().into(holder.profileImage);
+        }
+
         holder.view.setOnClickListener((view) -> {
             if (null != listener) {
                 listener.onListFragmentInteraction(holder.item);
@@ -48,6 +61,7 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
 
     public class UserViewHolder extends RecyclerView.ViewHolder {
         public final View view;
+        public final ImageView profileImage;
         public final TextView name;
         public User item;
 
@@ -55,6 +69,7 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
             super(view);
             this.view = view;
             name = (TextView) view.findViewById(R.id.name);
+            profileImage = (ImageView) view.findViewById(R.id.profile_image);
         }
     }
 }

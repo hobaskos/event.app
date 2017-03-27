@@ -2,6 +2,7 @@ package io.hobaskos.event.eventapp.data.api;
 
 import java.util.List;
 
+import io.hobaskos.event.eventapp.data.model.Device;
 import io.hobaskos.event.eventapp.data.model.JwtToken;
 import io.hobaskos.event.eventapp.data.model.LoginVM;
 import io.hobaskos.event.eventapp.data.model.SocialUserVM;
@@ -32,4 +33,7 @@ public interface UserService {
 
     @GET("api/events/{id}/attending")
     Observable<List<User>> getAttendingForEvent(@Path("id") Long id);
+
+    @POST("api/account/devices")
+    Observable<Device> saveDevice(@Body Device device);
 }

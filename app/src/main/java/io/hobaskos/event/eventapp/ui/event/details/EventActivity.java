@@ -222,6 +222,9 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
         viewPager.setAdapter(eventPagerAdapter);
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
         tabLayout.setupWithViewPager(viewPager);
+        tabLayout.getTabAt(0).setIcon(R.drawable.ic_event);
+        tabLayout.getTabAt(1).setIcon(R.drawable.ic_location_on);
+        tabLayout.getTabAt(2).setIcon(R.drawable.ic_group);
     }
 
     @Override
@@ -292,7 +295,7 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     public void setIsOwner(boolean owner) {
         isOwner = owner;
 
-        if(!hasBeenPaused && isOwner) {
+        if(isOwner && menu != null) {
             menu.getItem(0).setVisible(true);
         }
 

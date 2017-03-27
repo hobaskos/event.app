@@ -92,4 +92,7 @@
     <string name="previous">Forrige</string>
     <string name="next">Neste</string>
     <string name="competitions">Konkurranser</string>
+    <string name="private_event_invite_code">Privat event, invitasjonskode:</string>
+    <string name="organizer">Organisator:</string>
+    <string name="event_category">Kategori:</string>
 </resources>

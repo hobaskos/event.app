@@ -95,4 +95,7 @@
     <string name="previous">Previous</string>
     <string name="next">Next</string>
     <string name="competitions">Competitions</string>
+    <string name="private_event_invite_code">Private event, invitation code:</string>
+    <string name="organizer">Organizer:</string>
+    <string name="event_category">Category:</string>
 </resources>

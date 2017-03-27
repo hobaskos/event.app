@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -17,6 +18,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.model.Event;
+import io.hobaskos.event.eventapp.util.UrlUtil;
 
 public class EventInfoFragment extends Fragment {
 
@@ -33,6 +35,14 @@ public class EventInfoFragment extends Fragment {
     protected TextView attendanceCount;
     @BindView(R.id.my_attendance)
     protected TextView myAttendance;
+    @BindView(R.id.private_event)
+    protected LinearLayout privateEventWrapper;
+    @BindView(R.id.private_event_invite_code)
+    protected TextView inviteCode;
+    @BindView(R.id.organizer)
+    protected TextView organizer;
+    @BindView(R.id.category)
+    protected TextView category;
 
     private Event event;
 
@@ -62,7 +72,7 @@ public class EventInfoFragment extends Fragment {
         ButterKnife.bind(this, view);
 
         Picasso.with(getContext())
-                .load(event.getImageUrl() != null ? event.getAbsoluteImageUrl() : EVENT_IMAGE_URL_PLACEHOLDER)
+                .load(UrlUtil.getImageUrl(event.getImageUrl()))
                 .into(eventImage);
 
         if(event.getFromDate() != null) {
@@ -72,6 +82,13 @@ public class EventInfoFragment extends Fragment {
 
         eventDescription.setText(event.getDescription());
         attendanceCount.setText(String.valueOf(event.getAttendanceCount()));
+        organizer.setText("REPLACE ME");
+        category.setText(event.getCategory().getTitle());
+
+        if (event.isPrivateEvent()) {
+            privateEventWrapper.setVisibility(View.VISIBLE);
+            inviteCode.setText(event.getInvitationCode());
+        }
 
         if (event.getMyAttendance() != null) {
             myAttendance.setText(R.string.attending_event);
