@@ -45,6 +45,7 @@ import io.hobaskos.event.eventapp.ui.event.details.EventActivity;
 import io.hobaskos.event.eventapp.ui.event.search.list.EventsFragment;
 import io.hobaskos.event.eventapp.ui.login.LoginActivity;
 import io.hobaskos.event.eventapp.ui.profile.ProfileFragment;
+import io.hobaskos.event.eventapp.ui.profile.ProfileFragmentActivity;
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 import rx.Observer;
 
@@ -173,14 +174,13 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
                 fragment = new EventsFragment();
                 break;
             case R.id.nav_create_event:
-                fragment = new EventsFragment();
                 startActivity(new Intent(this, CreateEventActivity.class));
                 break;
             case R.id.nav_join_private_event:
                 joinPrivateEvent();
                 break;
             case R.id.nav_profile:
-                fragment = new ProfileFragment();
+                startActivity(new Intent(this, ProfileFragmentActivity.class));
                 break;
             case R.id.nav_login:
                 startActivity(new Intent(this, LoginActivity.class));
