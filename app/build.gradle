@@ -124,6 +124,10 @@ dependencies {
     annotationProcessor "com.google.dagger:dagger-compiler:${dagger_version}"
     provided 'javax.annotation:jsr250-api:1.0'
 
+    // Firebase
+    compile "com.google.firebase:firebase-core:${firebase_version}"
+    compile "com.google.firebase:firebase-messaging:${firebase_version}"
+
     //--- TESTING ---//
     // hack for the robolectric api > 22 problem
     testCompile "org.robolectric:robolectric:${robolectric_version}"
@@ -142,7 +146,8 @@ dependencies {
     testCompile 'com.android.support:support-compat:25.2.0'
 //    testCompile 'com.android.support:support-annotations:25.2.0'
 
-
-
-
 }
+
+// ADD THIS AT THE BOTTOM
+// NEEDS VALID ~/app/google-services.json file...
+//apply plugin: 'com.google.gms.google-services'

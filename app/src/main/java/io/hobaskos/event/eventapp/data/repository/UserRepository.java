@@ -15,12 +15,14 @@ import javax.inject.Inject;
 import io.hobaskos.event.eventapp.data.AccountManager;
 import io.hobaskos.event.eventapp.data.api.UserService;
 import io.hobaskos.event.eventapp.data.eventbus.UserHasLoggedInEvent;
+import io.hobaskos.event.eventapp.data.model.Device;
 import io.hobaskos.event.eventapp.data.model.JwtToken;
 import io.hobaskos.event.eventapp.data.model.LoginVM;
 import io.hobaskos.event.eventapp.data.model.SocialUserVM;
 import io.hobaskos.event.eventapp.data.model.User;
 import io.hobaskos.event.eventapp.data.storage.JwtStorageProxy;
 import io.hobaskos.event.eventapp.data.storage.PersistentStorage;
+import io.hobaskos.event.eventapp.service.TokenService;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -30,6 +32,8 @@ import rx.schedulers.Schedulers;
  */
 
 public class UserRepository {
+
+    public final static String TAG = UserRepository.class.getName();
 
     private final static String LOCAL_ACCOUNT_KEY = UserRepository.class.getName() + "LOCAL_ACCOUNT_KEY";
 
@@ -62,6 +66,7 @@ public class UserRepository {
                 .observeOn(AndroidSchedulers.mainThread())
                 .map(t -> {
                     jwtStorage.put(t.getIdToken());
+                    sendDeviceTokenToServer();
                     service.getAccount()
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
@@ -85,6 +90,7 @@ public class UserRepository {
                 .observeOn(AndroidSchedulers.mainThread())
                 .map(t -> {
                     jwtStorage.put(t.getIdToken());
+                    sendDeviceTokenToServer();
                     service.getAccount()
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
@@ -132,5 +138,20 @@ public class UserRepository {
      */
     public Observable<List<User>> getAttendingForEvent(Long eventId) {
         return service.getAttendingForEvent(eventId);
+    }
+
+    private void sendDeviceTokenToServer() {
+        String token = persistentStorage.get(TokenService.FIREBASE_TOKEN_KEY);
+
+        if (token == null || token.equals("")) return;
+
+        Log.d(TAG, "sendDeviceTokenToServer: " + token);
+        service.saveDevice(new Device(token))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        device -> {},
+                        throwable -> Log.d(TAG, throwable.getMessage())
+                );
     }
 }
