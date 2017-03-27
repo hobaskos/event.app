@@ -15,107 +15,111 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:android="http://schemas.android.com/apk/res/android">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collapsing_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"/>
-            <!--app:layout_scrollFlags="scroll|enterAlways|snap"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_collapseMode="parallax">
+
+                <ImageView
+                    android:id="@+id/header_cover_image"
+                    android:layout_width="match_parent"
+                    android:scaleType="centerCrop"
+                    android:layout_height="120dp"
+                    android:src="@drawable/header_img"
+                    />
+                <!--android:src="@drawable/profile" -->
+
+
+                <ImageButton
+                    android:id="@+id/user_profile_photo"
+                    android:layout_marginTop="45dp"
+                    android:background="@drawable/profile_circular_border_imageview"
+                    android:elevation="5dp"
+                    android:scaleType="centerCrop"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true" />
+
+                <RelativeLayout
+                    android:id="@+id/profile_layout"
+                    android:layout_width="match_parent"
+                    android:background="#4054B2"
+                    android:elevation="4dp"
+                    android:paddingBottom="24dp"
+                    android:layout_height="150dp"
+                    android:layout_below="@+id/header_cover_image"
+                    android:layout_alignParentStart="true">
+
+
+                    <!--android:src="@drawable/ic_action_user_add"-->
+
+
+                    <!--android:src="@drawable/ic_action_overflow" -->
+
+
+                    <TextView
+                        android:id="@+id/user_profile_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ola Normann"
+                        android:textColor="#fff"
+                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginBottom="11dp" />
+
+                    <TextView
+                        android:id="@+id/edit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:text="rediger"
+                        android:textColor="#fff"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginStart="25dp" />
+
+                </RelativeLayout>
+            </RelativeLayout>
+
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:layout_collapseMode="pin"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                app:popupTheme="@style/AppTheme.PopupOverlay"/>
+            <!--app:layout_scrollFlags="scroll|enterAlways|snap
             app:popupTheme="@style/AppTheme.PopupOverlay"-->
 
+            </android.support.design.widget.CollapsingToolbarLayout>
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tabsLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabMode="fixed" />
 
     </android.support.design.widget.AppBarLayout>
 
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:background="@android:color/white"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+    />
 
-            <ImageView
-                android:id="@+id/header_cover_image"
-                android:layout_width="match_parent"
-                android:scaleType="centerCrop"
-                android:layout_height="120dp"
-                android:src="@drawable/header_img"
-                />
-            <!--android:src="@drawable/profile" -->
-
-
-            <ImageButton
-                android:id="@+id/user_profile_photo"
-                android:layout_marginTop="45dp"
-                android:background="@drawable/profile_circular_border_imageview"
-                android:elevation="5dp"
-                android:scaleType="centerCrop"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true" />
-
-            <RelativeLayout
-                android:id="@+id/profile_layout"
-                android:layout_width="match_parent"
-                android:background="#4054B2"
-                android:elevation="4dp"
-                android:paddingBottom="24dp"
-                android:layout_height="150dp"
-                android:layout_below="@+id/header_cover_image"
-                android:layout_alignParentStart="true">
-
-
-                <!--android:src="@drawable/ic_action_user_add"-->
-
-
-                <!--android:src="@drawable/ic_action_overflow" -->
-
-
-                <TextView
-                    android:id="@+id/user_profile_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Ola Normann"
-                    android:textColor="#fff"
-                    android:textSize="24sp"
-                    android:textStyle="bold"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginBottom="11dp" />
-
-                <TextView
-                    android:id="@+id/edit"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:clickable="true"
-                    android:text="rediger"
-                    android:textColor="#fff"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginStart="25dp" />
-
-            </RelativeLayout>
-
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:layout_below="@id/profile_layout">
-
-                <android.support.design.widget.TabLayout
-                    android:id="@+id/tabsLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:tabMode="fixed" />
-
-                <android.support.v4.view.ViewPager
-                    android:id="@+id/viewPager"
-                    android:layout_width="match_parent"
-                    android:layout_height="fill_parent"
-                    android:background="@android:color/white"
-                    app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-                />
-
-            </LinearLayout>
-
-        </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>
