@@ -2,8 +2,9 @@ package io.hobaskos.event.eventapp.ui.event.details.competition.carousel;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.view.MotionEventCompat;
 import android.util.Log;
-import android.view.View;
+import android.view.MotionEvent;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -30,9 +31,9 @@ public class ImageCarouselActivity extends MvpActivity<ImageCarouselView, ImageC
 
     private static final String COMPETITION_IMAGE_URL_PLACEHOLDER = "https://mave.me/img/projects/full_placeholder.png";
     private final String TAG = "CompetitionFragment";
-    public static final String ARG_STARTING_COMPETION_IMAGE = "startingImage";
+    public static final String ARG_STARTING_COMPETITION_IMAGE = "startingImage";
     public static final String ARG_EVENT_ID = "eventId";
-    public static final String ARG_COMPETITION_IMAGES_LIST = "competitionImagesList";
+    public static final String ARG_COMPETITION_ID = "competitionId";
 
     @Inject
     public ImageCarouselPresenter presenter;
@@ -41,16 +42,16 @@ public class ImageCarouselActivity extends MvpActivity<ImageCarouselView, ImageC
     private int currentItem = 0;
     private Long selectedItemId;
     private Long eventId;
+    private Long competitionId;
+    private int numberOfImages = 0;
     private boolean initialSettingOfData = true;
 
-    @BindView(R.id.previous_image)
-    protected ImageView previous;
-    @BindView(R.id.next_image)
-    protected ImageView next;
     @BindView(R.id.competition_image_view)
     protected ImageView image;
-    @BindView(R.id.competition_plus_one)
-    protected ImageView plusOne;
+    @BindView(R.id.competition_up_vote)
+    protected ImageView upVoteButton;
+    @BindView(R.id.competition_down_vote)
+    protected ImageView downVoteButton;
     @BindView(R.id.owner_login)
     protected TextView ownerLogin;
     @BindView(R.id.number_of_votes)
@@ -62,25 +63,44 @@ public class ImageCarouselActivity extends MvpActivity<ImageCarouselView, ImageC
         setContentView(R.layout.activity_image_carousel);
         ButterKnife.bind(this);
 
-        previous.setOnClickListener(v -> onPreviousButtonPressed());
-        next.setOnClickListener(v -> onNextButtonPressed());
-        plusOne.setOnClickListener(v -> onVoteButtonPressed());
+        upVoteButton.setOnClickListener(v -> onUpVoteButtonPressed());
+        downVoteButton.setOnClickListener(v -> onDownVoteButtonPressed());
 
         eventId = getIntent().getLongExtra(ARG_EVENT_ID, 0);
-        selectedItemId = getIntent().getLongExtra(ARG_STARTING_COMPETION_IMAGE, 0);
+        competitionId = getIntent().getLongExtra(ARG_COMPETITION_ID, 0);
+        selectedItemId = getIntent().getLongExtra(ARG_STARTING_COMPETITION_IMAGE, 0);
         currentItem = -1;
         competitionImages = new ArrayList<>();
 
         presenter.attachView(this);
-        presenter.get(eventId);
+        presenter.setCompetitionId(competitionId);
+        presenter.get();
+
+        image.setOnClickListener(v -> Log.i(TAG, "image clicked!"));
+        image.setOnTouchListener(new OnSwipeTouchListener(ImageCarouselActivity.this) {
+            @Override
+            public boolean onSwipeLeft() {
+                onPreviousButtonPressed();
+                return true;
+            }
+            @Override
+            public boolean onSwipeRight() {
+                onNextButtonPressed();
+                return true;
+            }
+        });
     }
 
     private int getIndexOfSelectedCompetitionImage(Long selectedItem) {
-        for(int i = 0; i < competitionImages.size(); i++) {
+        if(numberOfImages == 1) {
+            return 0;
+        }
+
+        for(int i = 0; i < numberOfImages; i++) {
 
             CompetitionImage competitionImage = competitionImages.get(i);
 
-            if (competitionImage.getId() == selectedItem) {
+            if (competitionImage.getId().equals(selectedItem)) {
                 return i;
             }
         }
@@ -88,17 +108,21 @@ public class ImageCarouselActivity extends MvpActivity<ImageCarouselView, ImageC
         return -1;
     }
 
-
     @NonNull
     @Override
     public ImageCarouselPresenter createPresenter() {
+        Log.i(TAG, "Creating presenter...");
         App.getInst().getComponent().inject(this);
         return presenter;
     }
 
     private void onPreviousButtonPressed() {
+        if(numberOfImages < 2) {
+            return;
+        }
+
         if(currentItem == 0) {
-            currentItem = competitionImages.size() - 1;
+            currentItem = numberOfImages - 1;
         } else {
             currentItem--;
         }
@@ -109,7 +133,11 @@ public class ImageCarouselActivity extends MvpActivity<ImageCarouselView, ImageC
     }
 
     private void onNextButtonPressed() {
-        if(currentItem == competitionImages.size() - 1) {
+        if(numberOfImages < 2) {
+            return;
+        }
+
+        if(currentItem == numberOfImages - 1) {
             currentItem = 0;
         } else {
             currentItem++;
@@ -120,35 +148,24 @@ public class ImageCarouselActivity extends MvpActivity<ImageCarouselView, ImageC
         populateView();
     }
 
-    private void onVoteButtonPressed() {
+    private void onUpVoteButtonPressed() {
         CompetitionImage currentImage = competitionImages.get(currentItem);
-        if(currentImage.getHasMyVote()) {
-            currentImage.setHasMyVote(false);
-            showLikeLink();
-            refreshVotesView();
-            return;
-        }
-
-        presenter.vote(new Long(currentItem));
         currentImage.setHasMyVote(true);
-        showDislikeLink();
-        refreshVotesView();
+        presenter.vote(currentImage.getId(), +1);
+    }
+
+    private void onDownVoteButtonPressed() {
+        CompetitionImage currentImage = competitionImages.get(currentItem);
+        currentImage.setHasMyVote(true);
+        presenter.vote(currentImage.getId(), -1);
     }
 
     private void refreshVotesView() {
         numberOfVotes.setText("Number of votes: " + competitionImages.get(currentItem).getNumberOfVotes());
     }
 
-    private void showLikeLink(){
-        plusOne.setImageResource(R.mipmap.ic_like);
-    }
-
-    private void showDislikeLink(){
-        plusOne.setImageResource(R.mipmap.ic_dislike);
-    }
-
     private void populateView() {
-        if(currentItem >= 0) {
+        if(numberOfImages > 0) {
             Log.i(TAG, "Populating view for image number: " + currentItem);
 
             Log.i(TAG, competitionImages.get(currentItem).toString());
@@ -160,15 +177,6 @@ public class ImageCarouselActivity extends MvpActivity<ImageCarouselView, ImageC
                     .fit()
                     .centerCrop()
                     .into(image);
-
-            if(currentImage.getHasMyVote()) {
-                showDislikeLink();
-            } else {
-                showLikeLink();
-            }
-
-            ownerLogin.setText(competitionImages.get(currentItem).getOwnerLogin());
-            numberOfVotes.setText("Number of votes: " + competitionImages.get(currentItem).getNumberOfVotes());
         }
     }
 
@@ -188,12 +196,10 @@ public class ImageCarouselActivity extends MvpActivity<ImageCarouselView, ImageC
         this.competitionImages.addAll(data);
 
         if(initialSettingOfData) {
-            currentItem = getIndexOfSelectedCompetitionImage(selectedItemId);
 
-            if(competitionImages.size() == 1) {
-                previous.setVisibility(View.GONE);
-                next.setVisibility(View.GONE);
-            }
+            numberOfImages = data.size();
+
+            currentItem = getIndexOfSelectedCompetitionImage(selectedItemId);
 
             initialSettingOfData = false;
         }
@@ -205,6 +211,18 @@ public class ImageCarouselActivity extends MvpActivity<ImageCarouselView, ImageC
     public void onBackPressed() {
         super.onBackPressed();
         finish();
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+
+        int action = MotionEventCompat.getActionMasked(event);
+
+        switch (action) {
+
+        }
+
+        return super.onTouchEvent(event);
     }
 }
 

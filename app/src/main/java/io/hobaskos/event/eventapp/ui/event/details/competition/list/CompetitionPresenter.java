@@ -25,13 +25,12 @@ import rx.schedulers.Schedulers;
 
 public class CompetitionPresenter extends MvpBasePresenter<CompetitionView> {
 
-    public static final String IMAGE_ONE = "http://cdn01.androidauthority.net/wp-content/uploads/2016/06/draw-300x170.png";
-    public static final String IMAGE_TWO = "http://cdn01.androidauthority.net/wp-content/uploads/2016/06/android-win-2-300x162.png";
-    public static final String IMAGE_THREE = "http://cdn01.androidauthority.net/wp-content/uploads/2016/06/android-win-1-300x214.png";
     public static final String TAG = CompetitionPresenter.class.getName();
 
     @State
     protected Long eventId;
+    @State
+    protected Long competitionId;
 
     private EventImageVoteRepository eventImageVoteRepository;
     private EventImageRepository eventImageRepository;
@@ -42,40 +41,49 @@ public class CompetitionPresenter extends MvpBasePresenter<CompetitionView> {
         this.eventImageRepository = eventImageRepository;
     }
 
-    public void get(Long id) {
-        Log.i(TAG, "get(" + id + ")");
+    public void setCompetitionId(Long id) {
+        competitionId = id;
+    }
 
-        eventImageRepository
-                .getCompetitionImages(id)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<List<CompetitionImage>>() {
-                    @Override
-                    public void onCompleted() {
+    public void get() {
 
-                    }
+        if(competitionId != null) {
 
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.i(TAG, "Could not fetch list of competition images.");
-                        Log.i(TAG, e.getMessage());
-                    }
+            eventImageRepository
+                    .getCompetitionImages(competitionId)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Subscriber<List<CompetitionImage>>() {
+                        @Override
+                        public void onCompleted() {
 
-                    @Override
-                    public void onNext(List<CompetitionImage> competitionImages) {
-                        Log.i(TAG, "Could fetch list of competition images.");
-                        Log.i(TAG, "Size=" + competitionImages.size());
-                        for(int i = 0; i < competitionImages.size(); i++) {
-                            Log.i(TAG, "ImageUrl= " + competitionImages.get(i).getAbsoluteImageUrl());
                         }
-                        if(isViewAttached() && getView() != null) {
-                            getView().setData(competitionImages);
+
+                        @Override
+                        public void onError(Throwable e) {
+                            Log.i(TAG, "Could not fetch list of competition images.");
+                            Log.i(TAG, e.getMessage());
                         }
-                    }
-                });
+
+                        @Override
+                        public void onNext(List<CompetitionImage> competitionImages) {
+                            Log.i(TAG, "Could fetch list of competition images.");
+                            Log.i(TAG, "Size=" + competitionImages.size());
+                            for(int i = 0; i < competitionImages.size(); i++) {
+                                Log.i(TAG, "ImageUrl= " + competitionImages.get(i).getAbsoluteImageUrl());
+                            }
+                            if(isViewAttached() && getView() != null) {
+                                getView().setData(competitionImages);
+                            }
+                        }
+                    });
+        }
+
+
     }
 
     public void vote(Long id, int vote) {
+        Log.i(TAG, "Voting: " + vote);
         EventImageVoteDTO eventImageVoteDTO = new EventImageVoteDTO();
         eventImageVoteDTO.setEventImageId(id);
         eventImageVoteDTO.setVote(vote);
@@ -97,39 +105,39 @@ public class CompetitionPresenter extends MvpBasePresenter<CompetitionView> {
                     @Override
                     public void onNext(EventImageVoteDTO eventImageVoteDTO) {
                         Log.i(TAG, "Vote successful");
-                        if(isViewAttached() && getView() != null) {
-
-                        }
+                        get();
                     }
                 });
     }
 
-    public void nomiateImage(Long id, String image) {
+    public void nomiateImage(String image) {
         Log.i(TAG, "Nominating image...");
-        CompetitionImage competitionImage = new CompetitionImage();
-        competitionImage.setCompetitionId(id);
-        competitionImage.setImageBase64(image);
-        competitionImage.setFileContentType("image/jpg");
+        if(competitionId != null) {
+            CompetitionImage competitionImage = new CompetitionImage();
+            competitionImage.setCompetitionId(competitionId);
+            competitionImage.setImageBase64(image);
+            competitionImage.setFileContentType("image/jpg");
 
-        eventImageRepository.saveImage(competitionImage)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<CompetitionImage>() {
-                    @Override
-                    public void onCompleted() {
+            eventImageRepository.saveImage(competitionImage)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Subscriber<CompetitionImage>() {
+                        @Override
+                        public void onCompleted() {
 
-                    }
+                        }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.i(TAG, "Could not save competition image.");
-                        Log.i(TAG, "Error: " + e.getMessage());
-                    }
+                        @Override
+                        public void onError(Throwable e) {
+                            Log.i(TAG, "Could not save competition image.");
+                            Log.i(TAG, "Error: " + e.getMessage());
+                        }
 
-                    @Override
-                    public void onNext(CompetitionImage competitionImage) {
-                        Log.i(TAG, "Competition image saved successfully.");
-                    }
-                });
+                        @Override
+                        public void onNext(CompetitionImage competitionImage) {
+                            Log.i(TAG, "Competition image saved successfully.");
+                        }
+                    });
+        }
     }
 }

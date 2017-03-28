@@ -21,28 +21,21 @@
         android:layout_weight="1">
 
         <ImageView
-            android:id="@+id/previous_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:src="@mipmap/ic_previous"
-            android:text="@string/previous" />
-
-        <ImageView
-            android:id="@+id/competition_plus_one"
+            android:id="@+id/competition_up_vote"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:padding="16dp"
-            android:src="@mipmap/ic_like" />
+            android:src="@mipmap/ic_up" />
 
         <ImageView
-            android:id="@+id/next_image"
+            android:id="@+id/competition_down_vote"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:padding="16dp"
-            android:src="@mipmap/ic_next"
-            android:text="@string/next" />
+            android:src="@mipmap/ic_down" />
+
     </GridLayout>
 
     <TextView

@@ -194,8 +194,8 @@ public class Event implements Parcelable {
         this.myAttendance = myAttendance;
     }
 
-    public int getDefaultPollId() {
-        return defaultPollId;
+    public Long getDefaultPollId() {
+        return new Long(defaultPollId);
     }
 
     public void setDefaultPollId(int defaultPollId) {

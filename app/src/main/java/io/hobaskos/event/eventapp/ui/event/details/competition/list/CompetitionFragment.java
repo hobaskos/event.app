@@ -155,9 +155,10 @@ public class CompetitionFragment extends MvpFragment<CompetitionView, Competitio
         Log.i(TAG, "onViewCreated");
         super.onViewCreated(view, savedInstanceState);
 
-        if(eventId != null) {
+        if(competitionId != null) {
             Log.i(TAG, "eventId != null");
-            competitionPresenter.get(competitionId);
+            competitionPresenter.setCompetitionId(competitionId);
+            competitionPresenter.get();
         }
     }
 
@@ -214,7 +215,7 @@ public class CompetitionFragment extends MvpFragment<CompetitionView, Competitio
     @Override
     public void loadData(boolean pullToRefresh) {
         Log.i(TAG, "loadData pullToRefresh: " + pullToRefresh);
-        competitionPresenter.get(competitionId);
+        competitionPresenter.get();
         canLoadMore = false;
     }
 
@@ -240,7 +241,7 @@ public class CompetitionFragment extends MvpFragment<CompetitionView, Competitio
     public void onResume() {
         Log.i(TAG, "onResume-method called");
         super.onResume();
-        competitionPresenter.get(competitionId);
+        competitionPresenter.get();
     }
 
     public void onUpVoteButtonClicked(Long id) {
@@ -272,7 +273,7 @@ public class CompetitionFragment extends MvpFragment<CompetitionView, Competitio
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
                     String image = ImageUtil.getEncoded64ImageStringFromBitmap(bitmap);
                     Log.i(TAG, image);
-                    presenter.nomiateImage(competitionId, image);
+                    presenter.nomiateImage(image);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

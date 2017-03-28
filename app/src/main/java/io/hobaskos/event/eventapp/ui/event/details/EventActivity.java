@@ -353,8 +353,9 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     public void onListFragmentInteraction(Long id) {
         Log.i(TAG, "Clicked on image number " + id);
         Intent intent = new Intent(this, ImageCarouselActivity.class);
-        intent.putExtra(ImageCarouselActivity.ARG_STARTING_COMPETION_IMAGE, id);
+        intent.putExtra(ImageCarouselActivity.ARG_STARTING_COMPETITION_IMAGE, id);
         intent.putExtra(ImageCarouselActivity.ARG_EVENT_ID, eventId);
+        intent.putExtra(ImageCarouselActivity.ARG_COMPETITION_ID, event.getDefaultPollId());
         startActivityForResult(intent, VIEW_COMPETITION_CAROUSEL);
         //startActivity(intent);
     }

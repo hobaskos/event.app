@@ -49,7 +49,7 @@ public class CompetitionRecyclerViewAdapter extends
         Picasso.with(context)
                 .load(currentImage.getImageUrl() != null ? currentImage.getAbsoluteImageUrl() : COMPETITION_IMAGE_URL_PLACEHOLDER)
                 .into(holder.image);
-        holder.numberOfVotes.setText(currentImage.getNumberOfVotes() + "");
+        holder.voteScore.setText(currentImage.getVoteScore() + "");
     }
 
     @Override
@@ -60,7 +60,7 @@ public class CompetitionRecyclerViewAdapter extends
     public class CompetitionViewHolder extends RecyclerView.ViewHolder {
 
         public final ImageView image;
-        public final TextView numberOfVotes;
+        public final TextView voteScore;
         public final ImageView upVoteButton;
         public final ImageView downVoteButton;
         public Long id;
@@ -69,7 +69,7 @@ public class CompetitionRecyclerViewAdapter extends
             super(view);
 
             image = (ImageView) view.findViewById(R.id.image);
-            numberOfVotes = (TextView) view.findViewById(R.id.number_of_votes);
+            voteScore = (TextView) view.findViewById(R.id.number_of_votes);
             upVoteButton = (ImageView) view.findViewById(R.id.up_vote);
             downVoteButton = (ImageView) view.findViewById(R.id.down_vote);
 

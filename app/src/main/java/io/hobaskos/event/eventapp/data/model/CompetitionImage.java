@@ -30,42 +30,8 @@ public class CompetitionImage implements CompetitionItem, Parcelable {
     private Long competitionId;
     @SerializedName("fileContentType")
     private String fileContentType;
-
-    protected CompetitionImage(Parcel in) {
-        ownerLogin = in.readString();
-        numberOfVotes = in.readInt();
-        imageUrl = in.readString();
-        hasMyVote = in.readByte() != 0;
-        imageBase64 = in.readString();
-        fileContentType = in.readString();
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(ownerLogin);
-        dest.writeInt(numberOfVotes);
-        dest.writeString(imageUrl);
-        dest.writeByte((byte) (hasMyVote ? 1 : 0));
-        dest.writeString(imageBase64);
-        dest.writeString(fileContentType);
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    public static final Creator<CompetitionImage> CREATOR = new Creator<CompetitionImage>() {
-        @Override
-        public CompetitionImage createFromParcel(Parcel in) {
-            return new CompetitionImage(in);
-        }
-
-        @Override
-        public CompetitionImage[] newArray(int size) {
-            return new CompetitionImage[size];
-        }
-    };
+    @SerializedName("voteScore")
+    private Long voteScore;
 
     public Long getId() {
         return id;
@@ -144,6 +110,16 @@ public class CompetitionImage implements CompetitionItem, Parcelable {
         this.competitionId = competitionId;
     }
 
+    public Long getVoteScore() {
+        return voteScore;
+    }
+
+    public void setVoteScore(Long voteScore) {
+        this.voteScore = voteScore;
+    }
+
+
+
     @Override
     public String toString() {
         return "CompetitionImage{" +
@@ -156,4 +132,45 @@ public class CompetitionImage implements CompetitionItem, Parcelable {
     public CompetitionImage() {
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(this.id);
+        dest.writeString(this.ownerLogin);
+        dest.writeInt(this.numberOfVotes);
+        dest.writeString(this.imageUrl);
+        dest.writeByte(this.hasMyVote ? (byte) 1 : (byte) 0);
+        dest.writeString(this.imageBase64);
+        dest.writeValue(this.competitionId);
+        dest.writeString(this.fileContentType);
+        dest.writeValue(this.voteScore);
+    }
+
+    protected CompetitionImage(Parcel in) {
+        this.id = (Long) in.readValue(Long.class.getClassLoader());
+        this.ownerLogin = in.readString();
+        this.numberOfVotes = in.readInt();
+        this.imageUrl = in.readString();
+        this.hasMyVote = in.readByte() != 0;
+        this.imageBase64 = in.readString();
+        this.competitionId = (Long) in.readValue(Long.class.getClassLoader());
+        this.fileContentType = in.readString();
+        this.voteScore = (Long) in.readValue(Long.class.getClassLoader());
+    }
+
+    public static final Parcelable.Creator<CompetitionImage> CREATOR = new Parcelable.Creator<CompetitionImage>() {
+        @Override
+        public CompetitionImage createFromParcel(Parcel source) {
+            return new CompetitionImage(source);
+        }
+
+        @Override
+        public CompetitionImage[] newArray(int size) {
+            return new CompetitionImage[size];
+        }
+    };
 }

@@ -85,7 +85,8 @@
         <activity android:name=".ui.event.search.map.SearchEventsMapActivity" />
         <activity android:name=".ui.event.filter.FilterEventsActivity" />
         <activity
-            android:name=".ui.event.details.competition.carousel.ImageCarouselActivity" />
+            android:name=".ui.event.details.competition.carousel.ImageCarouselActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
 
         <activity android:name=".ui.profile.ProfileFragmentActivity"
             android:label="@string/my_profile"
