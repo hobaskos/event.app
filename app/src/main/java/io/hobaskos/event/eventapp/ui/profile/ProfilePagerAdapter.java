@@ -55,7 +55,7 @@ public class ProfilePagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 3;
+        return 2;
     }
 
     @Override

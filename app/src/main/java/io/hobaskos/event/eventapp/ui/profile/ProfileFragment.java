@@ -42,10 +42,8 @@ public class ProfileFragment extends MvpFragment<ProfileView, ProfilePresenter> 
     @BindView(R.id.user_profile_name) TextView userProfileName;
     @BindView(R.id.user_profile_photo) ImageView userProfilePhoto;
     @BindView(R.id.edit) TextView edit;
-    @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.tabsLayout) TabLayout tabLayout;
     @BindView(R.id.viewPager) ViewPager viewPager;
-    private DrawerLayout drawerLayout;
 
     private ProfilePagerAdapter profilePagerAdapter;
 
@@ -67,25 +65,13 @@ public class ProfileFragment extends MvpFragment<ProfileView, ProfilePresenter> 
 
         unbinder = ButterKnife.bind(this, view);
 
-        // Configure toolbar:
-        setHasOptionsMenu(true);
-        toolbar.setTitle(getString(R.string.my_profile));
-
-        // Setup Navigation Drawer
-        drawerLayout = (DrawerLayout) getActivity().findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                getActivity(), drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawerLayout.setDrawerListener(toggle);
-        toggle.syncState();
-
-
         edit.setOnClickListener((View v) -> {
             Intent i = new Intent(getContext(), ProfileEditActivity.class);
             startActivity(i);
         });
 
         //Initializing viewPager
-        viewPager = (ViewPager) getView().findViewById(R.id.viewPager);
+        viewPager = (ViewPager) view.findViewById(R.id.viewPager);
 
         profilePagerAdapter = new ProfilePagerAdapter(getFragmentManager());
         viewPager.setAdapter(profilePagerAdapter);
