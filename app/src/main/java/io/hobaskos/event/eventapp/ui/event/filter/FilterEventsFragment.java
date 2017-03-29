@@ -130,7 +130,7 @@ public class FilterEventsFragment extends BaseFragment
 
         button.setOnClickListener(v -> {
             presenter.storeDistance(seekBarProgress);
-            Log.i("jJJJJ", "lat, lon: " + lat + ", " + lon);
+            Log.i(TAG, "lat, lon: " + lat + ", " + lon);
 
             presenter.storeCurrentLocationStatus(locationIsChecked);
             presenter.storeLocation(location, lat, lon);

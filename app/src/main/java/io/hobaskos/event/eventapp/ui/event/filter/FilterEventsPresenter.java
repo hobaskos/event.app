@@ -81,7 +81,7 @@ public class FilterEventsPresenter extends MvpBasePresenter<FilterEventsView> {
     }
 
     public void loadCurrentLocationStatus() {
-        getView().setCurrentLocationStatus(filterSettings.getCurrentLocation());
+        getView().setCurrentLocationStatus(filterSettings.isUsingCurrentLocation());
     }
 
 }
