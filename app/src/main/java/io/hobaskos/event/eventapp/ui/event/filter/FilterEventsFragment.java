@@ -62,6 +62,7 @@ public class FilterEventsFragment extends BaseFragment
 
     @BindView(R.id.minimumDistanceTextView) TextView minimumDistanceTextView;
     @BindView(R.id.maxDistanceTextView) TextView maxDistanceTextView;
+    @BindView(R.id.selctedDistanceTextView) TextView selctedDistanceTextView;
 
     @BindView(R.id.placesLayout)
     LinearLayout placesLayout;
@@ -151,19 +152,20 @@ public class FilterEventsFragment extends BaseFragment
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                seekBarText.setVisibility(View.GONE);
+                //seekBarText.setVisibility(View.GONE);
             }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-                seekBarText.setVisibility(View.VISIBLE);
+                //seekBarText.setVisibility(View.VISIBLE);
             }
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress,boolean fromUser) {
                 seekBarProgress = progress + MINIMUM_DISTANCE; // Add minimum progress/start value to progress value
                 String progressText = String.valueOf(seekBarProgress) + " km";
-                seekBarText.setText(progressText);
+                //seekBarText.setText(progressText);
+                selctedDistanceTextView.setText(progressText);
                 int seek_label_pos = (((seekBar.getRight() - seekBar.getLeft()) * seekBar.getProgress()) / seekBar.getMax()) + seekBar.getLeft();
-                seekBarText.setX(seek_label_pos - seekBarText.getWidth() / 2);
+                //seekBarText.setX(seek_label_pos - seekBarText.getWidth() / 2);
             }
         });
 
@@ -199,9 +201,10 @@ public class FilterEventsFragment extends BaseFragment
     }
 
     @Override
-    public void setDistance(int defaultValue) {
-        seekBarProgress = defaultValue;
+    public void setDistance(int startValue) {
+        seekBarProgress = startValue;
         seekBar.setProgress(seekBarProgress);
+        selctedDistanceTextView.setText(startValue);
     }
 
     @Override
