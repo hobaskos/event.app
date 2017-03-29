@@ -130,7 +130,7 @@ public class EventsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 eventHolder.eventLocation.setText(event.getLocation());
                 eventHolder.eventDate.setText(event.getDate(context));
                 eventHolder.attendanceCount.setText(String.valueOf(event.getAttendanceCount()));
-                setCategoryColorView(eventHolder.categoryColor, eventHolder.categorySubColor, event.getCategory().getTheme());
+                //setCategoryColorView(eventHolder.categoryColor, eventHolder.categorySubColor, event.getCategory().getTheme());
                 break;
             case 1:
                 //LoadMoreViewHolder holder1 = (LoadMoreViewHolder) holder;
@@ -185,8 +185,8 @@ public class EventsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             attendanceCount = (TextView) itemView.findViewById(R.id.attendance_count);
             myAttendance = (TextView) itemView.findViewById(R.id.my_attendance);
             eventDate = (TextView) itemView.findViewById(R.id.event_time);
-            categoryColor = itemView.findViewById(R.id.category_theme_color);
-            categorySubColor = itemView.findViewById(R.id.category_theme_color_sub);
+            //categoryColor = itemView.findViewById(R.id.category_theme_color);
+            //categorySubColor = itemView.findViewById(R.id.category_theme_color_sub);
 
             //eventId = (TextView) itemView.findViewById(R.id.event_id);
             //background = (ImageView) itemView.findViewById(R.id.image);

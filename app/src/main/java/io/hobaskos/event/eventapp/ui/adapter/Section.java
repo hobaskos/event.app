@@ -54,6 +54,7 @@ public  class Section<M> {
     }
 
     public M getItemAtPosition(int position) {
+        M item;
         return items.get(position);
     }
 
