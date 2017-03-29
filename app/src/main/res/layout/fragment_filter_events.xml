@@ -84,12 +84,38 @@
                 android:textSize="16dp"
                 android:id="@+id/distanceTextView" />
 
+            <LinearLayout
+                android:id="@+id/selectedDistanceLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/distanceTextView"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Selected distance"
+                    android:layout_weight="1"
+                    android:gravity="left"
+                    android:id="@+id/selctedDistanceLabelTextView"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Test"
+                    android:gravity="right"
+                    android:id="@+id/selctedDistanceTextView"/>
+
+            </LinearLayout>
+
+
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:id="@+id/distanceTextViews"
-                android:layout_below="@+id/distanceTextView">
+                android:layout_below="@+id/selectedDistanceLayout">
 
                 <TextView
                     android:id="@+id/minimumDistanceTextView"
