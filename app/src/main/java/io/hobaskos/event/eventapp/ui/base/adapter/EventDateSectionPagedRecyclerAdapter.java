@@ -52,24 +52,24 @@ public class EventDateSectionPagedRecyclerAdapter extends SectionedPagedRecycler
     }
 
     private void initializeSections() {
-        sectionToday = new Section<>("Today");
-        sectionTomorrow = new Section<>("Tomorrow");
-        sectionThisWeek = new Section<>("This week");
-        sectionNextWeek = new Section<>("Next week");
+        sectionToday = new Section<>(context.getResources().getString(R.string.today));
+        sectionTomorrow = new Section<>(context.getResources().getString(R.string.tomorrow));
+        sectionThisWeek = new Section<>(context.getResources().getString(R.string.this_week));
+        sectionNextWeek = new Section<>(context.getResources().getString(R.string.next_week));
 
         //Months
-        sectionJanuary = new Section<>("January");
-        sectionFebruary = new Section<>("February");
-        sectionMarch = new Section<>("March");
-        sectionApril = new Section<>("April");
-        sectionMay = new Section<>("May");
-        sectionJune = new Section<>("June");
-        sectionJuly = new Section<>("July");
-        sectionAugust = new Section<>("August");
-        sectionSeptember = new Section<>("September");
-        sectionOctober = new Section<>("October");
-        sectionNovember = new Section<>("November");
-        sectionDecember = new Section<>("December");
+        sectionJanuary = new Section<>(context.getResources().getString(R.string.january));
+        sectionFebruary = new Section<>(context.getResources().getString(R.string.february));
+        sectionMarch = new Section<>(context.getResources().getString(R.string.march));
+        sectionApril = new Section<>(context.getResources().getString(R.string.april));
+        sectionMay = new Section<>(context.getResources().getString(R.string.may));
+        sectionJune = new Section<>(context.getResources().getString(R.string.june));
+        sectionJuly = new Section<>(context.getResources().getString(R.string.july));
+        sectionAugust = new Section<>(context.getResources().getString(R.string.august));
+        sectionSeptember = new Section<>(context.getResources().getString(R.string.september));
+        sectionOctober = new Section<>(context.getResources().getString(R.string.october));
+        sectionNovember = new Section<>(context.getResources().getString(R.string.november));
+        sectionDecember = new Section<>(context.getResources().getString(R.string.december));
     }
 
     public List<Event> getItems() {

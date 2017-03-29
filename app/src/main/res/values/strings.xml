@@ -12,7 +12,7 @@
     <string name="error_event_not_found">This event no longer exists</string>
     <string name="filters_applied">Filters applied</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
+    <!-- -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="description_label">Description</string>
     <string name="button_name">+</string>
@@ -96,4 +96,24 @@
     <string name="private_event_invite_code">Private event, invitation code:</string>
     <string name="organizer">Organizer:</string>
     <string name="event_category">Category:</string>
+
+    <!-- Date Sections -->
+    <string name="today">Today</string>
+    <string name="tomorrow">Tomorrow</string>
+    <string name="this_week">This week</string>
+    <string name="next_week">Next week</string>
+
+    <string name="january">January</string>
+    <string name="february">February</string>
+    <string name="march">March</string>
+    <string name="april">April</string>
+    <string name="may">May</string>
+    <string name="june">June</string>
+    <string name="july">July</string>
+    <string name="august">August</string>
+    <string name="september">September</string>
+    <string name="october">October</string>
+    <string name="november">November</string>
+    <string name="december">December</string>
+
 </resources>
