@@ -432,20 +432,8 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     }
 
     @Override
-    public void onUpVoteButtonClicked(Long id) {
+    public void onCompetitionImageVoteSubmitted(Long id, int vote) {
         CompetitionFragment competitionFragment = (CompetitionFragment) eventPagerAdapter.getItem(3);
-        competitionFragment.onUpVoteButtonClicked(id);
-    }
-
-    @Override
-    public void onDownVoteButtonClicked(Long id) {
-        CompetitionFragment competitionFragment = (CompetitionFragment) eventPagerAdapter.getItem(3);
-        competitionFragment.onDownVoteButtonClicked(id);
-    }
-
-    @Override
-    public void submitCompetitionImageVote(Long id, int vote) {
-        CompetitionFragment competitionFragment = (CompetitionFragment) eventPagerAdapter.getItem(3);
-        competitionFragment.getPresenter().vote(id, vote);
+        competitionFragment.onCompetitionImageVoteSubmitted(id, vote);
     }
 }

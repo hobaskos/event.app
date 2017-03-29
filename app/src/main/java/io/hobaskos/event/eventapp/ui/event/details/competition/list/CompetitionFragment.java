@@ -23,6 +23,8 @@ import com.hannesdorfmann.mosby.mvp.MvpFragment;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -204,8 +206,14 @@ public class CompetitionFragment extends MvpFragment<CompetitionView, Competitio
     @Override
     public void setData(List<CompetitionImage> data) {
         Log.i(TAG, "setData with size = " + data.size());
-        this.competitionImages.clear();
-        this.competitionImages.addAll(data);
+        competitionImages.clear();
+        Collections.sort(competitionImages, new Comparator<CompetitionImage>() {
+            @Override
+            public int compare(CompetitionImage o1, CompetitionImage o2) {
+                return Long.compare(o1.getVoteScore(), o2.getVoteScore());
+            }
+        });
+        competitionImages.addAll(data);
         competitionRecyclerViewAdapter = new CompetitionRecyclerViewAdapter(competitionImages, listener, getContext(), isLoggedIn);
         recyclerView.setAdapter(competitionRecyclerViewAdapter);
         swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(false));
@@ -244,12 +252,49 @@ public class CompetitionFragment extends MvpFragment<CompetitionView, Competitio
         competitionPresenter.get();
     }
 
-    public void onUpVoteButtonClicked(Long id) {
-        presenter.vote(id, +1);
+    public void onCompetitionImageVoteSubmitted(Long id, int vote) {
+        Log.i(TAG, "Inside onCompetitionImageVoteSubmitted()");
+        competitionPresenter.vote(id, vote);
+
+        updateCompetitionImageVoteScore(id, vote);
+
     }
 
-    public void onDownVoteButtonClicked(Long id) {
-        presenter.vote(id, -1);
+    private void updateCompetitionImageVoteScore(Long id, int vote) {
+        Log.i(TAG, "Inside updateCompetitionImageVoteScore()");
+        CompetitionImage competitionImage = getCompetitionImageById(id);
+        int index = competitionImages.indexOf(competitionImage);
+        Log.i(TAG, "Image has index = " + index);
+        competitionImage.setHasMyVote(true);
+        int numberOfVotes = competitionImage.getNumberOfVotes();
+        Long voteScore = competitionImage.getVoteScore();
+        Log.i(TAG, "Image has now " + numberOfVotes + " votes");
+        Log.i(TAG, "Image has now " + voteScore + " voteScore");
+        competitionImage.setNumberOfVotes(numberOfVotes + 1);
+        competitionImage.setVoteScore(voteScore + vote);
+        competitionImages.set(index, competitionImage);
+        competitionRecyclerViewAdapter.notifyDataSetChanged();
+        competitionRecyclerViewAdapter.notifyItemChanged(index);
+    }
+
+
+    private CompetitionImage getCompetitionImageById(Long id) {
+        for(int i = 0; i < competitionImages.size(); i++) {
+            if(competitionImages.get(i).getId().equals(id)){
+                Log.i(TAG, "getCompetitionImageById() => returning real image;");
+                return competitionImages.get(i);
+            }
+        }
+
+        Log.i(TAG, "getCompetitionImageById() => new CompetitionImage();");
+        return new CompetitionImage();
+    }
+
+    @Override
+    public void imageWasSuccessfullyNominated(CompetitionImage competitionImage) {
+        competitionImages.add(competitionImage);
+        competitionRecyclerViewAdapter.notifyDataSetChanged();
+        recyclerView.scrollToPosition(competitionImages.size() - 1);
     }
 
     private void openGallery(){

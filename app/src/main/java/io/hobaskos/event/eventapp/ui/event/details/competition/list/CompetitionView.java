@@ -11,5 +11,6 @@ import io.hobaskos.event.eventapp.ui.base.view.viewcontract.MvpLoadMoreView;
 
 public interface CompetitionView extends MvpLoadMoreView<List<CompetitionImage>> {
 
+    void imageWasSuccessfullyNominated(CompetitionImage competitionImage);
 
 }

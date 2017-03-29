@@ -105,7 +105,6 @@ public class CompetitionPresenter extends MvpBasePresenter<CompetitionView> {
                     @Override
                     public void onNext(EventImageVoteDTO eventImageVoteDTO) {
                         Log.i(TAG, "Vote successful");
-                        get();
                     }
                 });
     }
@@ -136,6 +135,9 @@ public class CompetitionPresenter extends MvpBasePresenter<CompetitionView> {
                         @Override
                         public void onNext(CompetitionImage competitionImage) {
                             Log.i(TAG, "Competition image saved successfully.");
+                            if(isViewAttached() && getView() != null) {
+                                getView().imageWasSuccessfullyNominated(competitionImage);
+                            }
                         }
                     });
         }

@@ -160,10 +160,6 @@ public class ImageCarouselActivity extends MvpActivity<ImageCarouselView, ImageC
         presenter.vote(currentImage.getId(), -1);
     }
 
-    private void refreshVotesView() {
-        numberOfVotes.setText("Number of votes: " + competitionImages.get(currentItem).getNumberOfVotes());
-    }
-
     private void populateView() {
         if(numberOfImages > 0) {
             Log.i(TAG, "Populating view for image number: " + currentItem);
