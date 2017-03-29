@@ -11,7 +11,6 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.Spinner;
@@ -70,7 +69,7 @@ public class FilterEventsFragment extends BaseFragment
     private int seekBarProgress;
     private SupportPlaceAutocompleteFragment placeAutocompleteFragment;
 
-    private GoogleApiClient mGoogleApiClient;
+    private GoogleApiClient googleApiClient;
 
     String location;
     double lat;
@@ -89,7 +88,7 @@ public class FilterEventsFragment extends BaseFragment
         App.getInst().getComponent().inject(this);
         presenter.attachView(this);
 
-        mGoogleApiClient = new GoogleApiClient
+        googleApiClient = new GoogleApiClient
                 .Builder(getActivity())
                 .addApi(Places.GEO_DATA_API)
                 .addApi(Places.PLACE_DETECTION_API)
@@ -126,6 +125,7 @@ public class FilterEventsFragment extends BaseFragment
 
         seekBar = (SeekBar) getView().findViewById(R.id.seekBar);
         seekBarText = (TextView) getView().findViewById(R.id.seekBarText);
+        selctedDistanceTextView = (TextView) getView().findViewById(R.id.selctedDistanceTextView);
         spinner = (Spinner) getView().findViewById(R.id.categorySpinner);
         button = (Button) getView().findViewById(R.id.applyFiltersButton);
 
@@ -146,9 +146,9 @@ public class FilterEventsFragment extends BaseFragment
             getActivity().finish();
         });
 
-        seekBar.setMax( (MAX_DISTANCE - MINIMUM_DISTANCE) / DISTANCE_STEP );
+        seekBar.setMax( MAX_DISTANCE / DISTANCE_STEP );
         minimumDistanceTextView.setText(MINIMUM_DISTANCE + "KM");
-        maxDistanceTextView.setText(MAX_DISTANCE + "KM");
+        maxDistanceTextView.setText("> " + MAX_DISTANCE + "KM");
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
@@ -161,10 +161,15 @@ public class FilterEventsFragment extends BaseFragment
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress,boolean fromUser) {
                 seekBarProgress = progress + MINIMUM_DISTANCE; // Add minimum progress/start value to progress value
-                String progressText = String.valueOf(seekBarProgress) + " km";
+                String progressText = "";
+                if (progress <= (MAX_DISTANCE - MINIMUM_DISTANCE)) {
+                    progressText = String.valueOf(seekBarProgress) + " km";
+                } else {
+                    progressText = "Unlimited";
+                }
                 //seekBarText.setText(progressText);
                 selctedDistanceTextView.setText(progressText);
-                int seek_label_pos = (((seekBar.getRight() - seekBar.getLeft()) * seekBar.getProgress()) / seekBar.getMax()) + seekBar.getLeft();
+                //int seek_label_pos = (((seekBar.getRight() - seekBar.getLeft()) * seekBar.getProgress()) / seekBar.getMax()) + seekBar.getLeft();
                 //seekBarText.setX(seek_label_pos - seekBarText.getWidth() / 2);
             }
         });
@@ -204,7 +209,6 @@ public class FilterEventsFragment extends BaseFragment
     public void setDistance(int startValue) {
         seekBarProgress = startValue;
         seekBar.setProgress(seekBarProgress);
-        selctedDistanceTextView.setText(startValue);
     }
 
     @Override
@@ -271,7 +275,7 @@ public class FilterEventsFragment extends BaseFragment
     @Override
     public void onPause() {
         super.onPause();
-        mGoogleApiClient.stopAutoManage(getActivity());
-        mGoogleApiClient.disconnect();
+        googleApiClient.stopAutoManage(getActivity());
+        googleApiClient.disconnect();
     }
 }
