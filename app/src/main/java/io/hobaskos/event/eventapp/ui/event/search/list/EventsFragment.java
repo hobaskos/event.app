@@ -37,6 +37,7 @@ import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.eventbus.FiltersUpdatedEvent;
 import io.hobaskos.event.eventapp.data.model.Event;
+import io.hobaskos.event.eventapp.ui.adapter.EventDateSectionPagedRecyclerAdapter;
 import io.hobaskos.event.eventapp.ui.base.view.fragment.BaseLceViewStateFragment;
 import io.hobaskos.event.eventapp.ui.event.filter.FilterEventsActivity;
 import io.hobaskos.event.eventapp.ui.event.details.EventActivity;
@@ -65,7 +66,7 @@ public class EventsFragment extends
 
     // Model
     List<Event> eventsList = new ArrayList<>();
-    private EventsAdapter adapter;
+    private EventDateSectionPagedRecyclerAdapter adapter;
 
     // State
     @State boolean canLoadMore = true;
@@ -74,21 +75,12 @@ public class EventsFragment extends
 
     private DrawerLayout drawerLayout;
 
-//    @Override
-//    public void onSaveInstanceState(Bundle outState) {
-//        outState.putParcelable("ViewState", getViewState());
-//        super.onSaveInstanceState(outState);
-//    }
-
-    private String searchQuery;
+    private String searchQuery = "";
 
     @Inject
     public EventsPresenter eventsPresenter;
 
     @Override public void onCreate(Bundle savedInstanceState) {
-//        if (savedInstanceState != null) {
-//            viewState = savedInstanceState.getParcelable("ViewState");
-//        }
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         EventBus.getDefault().register(this);
@@ -160,7 +152,7 @@ public class EventsFragment extends
         // Configure recyclerview:
         linearLayoutManager = new NpaLinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
-        adapter = new EventsAdapter(eventsList, getContext(),
+        adapter = new EventDateSectionPagedRecyclerAdapter(getContext(),
                 event -> {
                     Intent intent = new Intent(getActivity(), EventActivity.class);
                     intent.putExtra(EventActivity.EVENT_ID, event.getId());
@@ -184,7 +176,7 @@ public class EventsFragment extends
 
         dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
                 linearLayoutManager.getOrientation());
-        recyclerView.addItemDecoration(dividerItemDecoration);
+        //recyclerView.addItemDecoration(dividerItemDecoration);
 
         openMapFab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -263,7 +255,7 @@ public class EventsFragment extends
     @Override
     public List<Event> getData() {
         Log.i(TAG, "getData()");
-        return adapter.getItems();
+        return eventsList;
     }
 
 
@@ -301,13 +293,16 @@ public class EventsFragment extends
             canLoadMore = false;
             Toast.makeText(getActivity(), "No more events to show", Toast.LENGTH_SHORT).show();
         } else {
+            eventsList.addAll(model);
             adapter.addItems(model);
         }
     }
 
     @Override
     public void setData(List<Event> data) {
-        Log.i(TAG, "setData(), size: " + data.size());
+        Log.i(TAG, "setData()");
+        eventsList = new ArrayList<>();
+        eventsList.addAll(data);
         adapter.setItems(data);
         adapter.notifyDataSetChanged();
         swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(false));
@@ -326,7 +321,7 @@ public class EventsFragment extends
     @Override
     public void showContent() {
         super.showContent();
-        if (adapter.getItems().isEmpty()) {
+        if (adapter.isEmpty()) {
             contentView.setVisibility(View.GONE);
             emptyResultView.setVisibility(View.VISIBLE);
         } else {
