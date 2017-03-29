@@ -35,7 +35,7 @@
         android:id="@+id/fragment_attendees_attend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|left"
+        android:layout_gravity="bottom|right"
         android:layout_marginLeft="16dp"
         android:layout_marginBottom="16dp"
         android:src="@drawable/ic_media_play_dark" />

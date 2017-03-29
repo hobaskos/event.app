@@ -1,4 +1,4 @@
-package io.hobaskos.event.eventapp.ui.adapter;
+package io.hobaskos.event.eventapp.ui.base.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.CardView;
@@ -11,13 +11,9 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import org.joda.time.DateTime;
-import org.joda.time.Days;
-import org.joda.time.Weeks;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.function.Predicate;
 
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.model.Event;
