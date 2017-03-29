@@ -113,4 +113,7 @@
     <string name="october">Oktober</string>
     <string name="november">November</string>
     <string name="december">Desember</string>
+
+    <string name="next_year">Neste år</string>
+
 </resources>
