@@ -18,6 +18,7 @@ import io.hobaskos.event.eventapp.data.service.GPSTracker;
 import io.hobaskos.event.eventapp.data.storage.FilterSettings;
 import io.hobaskos.event.eventapp.data.storage.PersistentStorage;
 import io.hobaskos.event.eventapp.ui.base.presenter.BaseRxLcePresenter;
+import io.hobaskos.event.eventapp.ui.event.filter.FilterEventsFragment;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -85,11 +86,13 @@ public class EventsPresenter extends BaseRxLcePresenter<EventsView, List<Event>>
         DateTime fromDate = DateTime.now();
         DateTime toDate = fromDate.plusYears(2);
 
-        Log.i(TAG, "Observable up");
-        // Setup observable:
-        final Observable<List<Event>> observable =
-                eventRepository.searchNearby(0, searchQuery, lat, lon, distance + "km", fromDate, toDate, categoryId + "");
+        // If distance is higher than MAX_DISTANCE, set a high value for unlimited distance
+        if (distance > FilterEventsFragment.MAX_DISTANCE) {
+            distance = Integer.MAX_VALUE;
+        }
 
+        // Setup observable:
+        Observable<List<Event>> observable = eventRepository.searchNearby(0, searchQuery, lat, lon, distance + "km", fromDate, toDate, categoryId + "");
         // setup and start subscription:
         subscribe(observable, pullToRefresh);
     }
@@ -158,6 +161,7 @@ public class EventsPresenter extends BaseRxLcePresenter<EventsView, List<Event>>
 
         usingCurrentLocation = filterSettings.isUsingCurrentLocation();
 
+        // Check if "Use current location" is selcted
         if (usingCurrentLocation) {
             Log.i(TAG, " USE CURRENT LOCATION");
             lat = gpsTracker.getLatitude();

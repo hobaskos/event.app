@@ -208,7 +208,7 @@ public class FilterEventsFragment extends BaseFragment
     @Override
     public void setDistance(int startValue) {
         seekBarProgress = startValue;
-        seekBar.setProgress(seekBarProgress);
+        seekBar.setProgress(seekBarProgress - MINIMUM_DISTANCE); // subtract minimum distance (is added back in seekbarListeners.OnProgressChanged
     }
 
     @Override
