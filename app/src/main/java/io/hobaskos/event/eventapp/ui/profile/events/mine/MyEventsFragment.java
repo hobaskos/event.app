@@ -24,7 +24,7 @@ import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.ui.base.view.fragment.BaseLceViewStateFragment;
 import io.hobaskos.event.eventapp.ui.event.details.EventActivity;
-import io.hobaskos.event.eventapp.ui.event.search.list.NpaLinearLayoutManager;
+import io.hobaskos.event.eventapp.ui.base.adapter.NpaLinearLayoutManager;
 
 /**
  * Created by Magnus on 13.03.2017.

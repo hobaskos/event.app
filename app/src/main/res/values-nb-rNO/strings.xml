@@ -77,12 +77,12 @@
     <string name="invalid_invite_code">Fant ingen eventer med den invitasjonskoden</string>
     <string name="delete">Slett</string>
     <string name="delete_location">Vil du slette denne lokasjonen?</string>
-    <string name="attend_event">Attend event</string>
-    <string name="event_going">Going:</string>
-    <string name="attending_event">Attending event</string>
-    <string name="attend_event_desc">Do you want to attend this event?</string>
-    <string name="could_not_attend_event">Could not attend event, maybe you are already attending?</string>
-    <string name="attending_event_count">Attendance count:</string>
+    <string name="attend_event">Delta på arrangement</string>
+    <string name="event_going">Påmeldte:</string>
+    <string name="attending_event">Påmeldt</string>
+    <string name="attend_event_desc">Lnsker du å delta på dette arrangementet?</string>
+    <string name="could_not_attend_event">Klarte ikke å delta, deltar du allerede?</string>
+    <string name="attending_event_count">Antall påmeldte:</string>
     <string name="place_is_a_required_field">Sted er et nødvendig felt.</string>
     <string name="from_date">Start dato</string>
     <string name="from_time">Start tid</string>
@@ -93,4 +93,27 @@
     <string name="private_event_invite_code">Privat event, invitasjonskode:</string>
     <string name="organizer">Organisator:</string>
     <string name="event_category">Kategori:</string>
+
+
+    <!-- Date Sections -->
+    <string name="today">I dag</string>
+    <string name="tomorrow">I morgen</string>
+    <string name="this_week">Denne uken</string>
+    <string name="next_week">Neste uke</string>
+
+    <string name="january">Januar</string>
+    <string name="february">Februar</string>
+    <string name="march">Mars</string>
+    <string name="april">April</string>
+    <string name="may">Mai</string>
+    <string name="june">Juni</string>
+    <string name="july">Juli</string>
+    <string name="august">August</string>
+    <string name="september">September</string>
+    <string name="october">Oktober</string>
+    <string name="november">November</string>
+    <string name="december">Desember</string>
+
+    <string name="next_year">Neste år</string>
+
 </resources>

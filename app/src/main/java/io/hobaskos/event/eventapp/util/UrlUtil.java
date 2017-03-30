@@ -6,7 +6,7 @@ import io.hobaskos.event.eventapp.config.Constants;
  * Created by alex on 3/24/17.
  */
 
-public class UrlUtil {
+public final class UrlUtil {
 
     public static String getImageUrl(String s) {
         if (s.contains("http")) return s;

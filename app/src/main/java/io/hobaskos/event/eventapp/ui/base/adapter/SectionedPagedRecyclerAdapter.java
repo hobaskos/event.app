@@ -1,4 +1,4 @@
-package io.hobaskos.event.eventapp.ui.adapter;
+package io.hobaskos.event.eventapp.ui.base.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

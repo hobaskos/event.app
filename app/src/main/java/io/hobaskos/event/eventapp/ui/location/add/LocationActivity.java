@@ -33,7 +33,7 @@ import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.model.DateTimeVM;
 import io.hobaskos.event.eventapp.data.model.GeoPoint;
 import io.hobaskos.event.eventapp.data.model.Location;
-import io.hobaskos.event.eventapp.ui.ActivityState;
+import io.hobaskos.event.eventapp.ui.event.create.ActivityState;
 
 import static com.wdullaer.materialdatetimepicker.date.DatePickerDialog.Version.VERSION_2;
 

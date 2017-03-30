@@ -1,4 +1,4 @@
-package io.hobaskos.event.eventapp.ui.adapter;
+package io.hobaskos.event.eventapp.ui.base.adapter;
 
 import java.util.ArrayList;
 
