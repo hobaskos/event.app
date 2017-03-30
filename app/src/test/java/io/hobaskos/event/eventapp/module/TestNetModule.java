@@ -43,7 +43,7 @@ public class TestNetModule extends NetModule {
 
         when(eventService.getEvents(anyInt(), anyInt())).thenReturn(Observable.just(eventList));
 
-        when(eventService.search(anyInt(), anyInt(), anyString(), anyDouble(), anyDouble(), anyString(),
+        when(eventService.searchNearby(anyInt(), anyInt(), anyString(), anyDouble(), anyDouble(), anyString(),
                 any(DateTime.class), any(DateTime.class), anyString(), anyString()))
                 .thenReturn(Observable.just(eventList));
 
