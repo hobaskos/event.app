@@ -167,9 +167,6 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
             case R.id.nav_create_event:
                 startActivity(new Intent(this, CreateEventActivity.class));
                 break;
-            case R.id.nav_competitions:
-                startActivity(new Intent(this, CompetitionFragment.class));
-                break;
             case R.id.nav_join_private_event:
                 joinPrivateEvent();
                 break;

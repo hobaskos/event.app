@@ -25,11 +25,6 @@
             android:title="@string/create_event" />
 
         <item
-            android:id="@+id/nav_competitions"
-            android:icon="@drawable/ic_event_black_24dp"
-            android:title="@string/competitions" />
-
-        <item
             android:id="@+id/nav_join_private_event"
             android:icon="@drawable/ic_event_black_24dp"
             android:title="@string/join_private" />
@@ -38,6 +33,7 @@
             android:id="@+id/nav_profile"
             android:icon="@drawable/ic_person_black_24dp"
             android:title="@string/my_profile" />
+
         <item
             android:id="@+id/nav_logout"
             android:icon="@drawable/ic_exit_to_app_black_24dp"

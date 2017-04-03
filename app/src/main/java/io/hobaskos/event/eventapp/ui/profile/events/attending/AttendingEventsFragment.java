@@ -1,24 +1,16 @@
 package io.hobaskos.event.eventapp.ui.profile.events.attending;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-
-import android.support.annotation.NonNull;
 
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.hannesdorfmann.mosby.mvp.MvpFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,14 +24,7 @@ import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.ui.base.view.fragment.BaseLceViewStateFragment;
 import io.hobaskos.event.eventapp.ui.event.details.EventActivity;
-import io.hobaskos.event.eventapp.ui.event.details.attending.AttendeesPresenter;
-import io.hobaskos.event.eventapp.ui.event.details.attending.AttendeesView;
-import io.hobaskos.event.eventapp.ui.event.search.list.EventsAdapter;
-import io.hobaskos.event.eventapp.ui.event.search.list.NpaLinearLayoutManager;
-import io.hobaskos.event.eventapp.ui.profile.events.mine.EventPagedRecyclerAdapter;
-import io.hobaskos.event.eventapp.ui.profile.events.mine.MyEventsFragment;
-import io.hobaskos.event.eventapp.ui.profile.events.mine.MyEventsPresenter;
-import io.hobaskos.event.eventapp.ui.profile.events.mine.MyEventsViewState;
+import io.hobaskos.event.eventapp.ui.base.adapter.NpaLinearLayoutManager;
 
 /**
  * Created by Magnus on 13.03.2017.

@@ -31,15 +31,21 @@ public interface EventService
         Observable<Event> getEvent(@Path("id") Long id);
 
         @GET("api/_search/events-nearby")
+        Observable<List<Event>> searchNearby(@Query("page") int page,
+                                             @Query("size") int pageSize,
+                                             @Query("query") String query,
+                                             @Query("lat") double lat,
+                                             @Query("lon") double lon,
+                                             @Query("distance") String distance,
+                                             @Query("fromDate") DateTime fromDate,
+                                             @Query("toDate") DateTime toDate,
+                                             @Query("categories") String categories,
+                                             @Query("sort") String sort);
+
+        @GET("api/_search/events")
         Observable<List<Event>> search(@Query("page") int page,
                                        @Query("size") int pageSize,
                                        @Query("query") String query,
-                                       @Query("lat") double lat,
-                                       @Query("lon") double lon,
-                                       @Query("distance") String distance,
-                                       @Query("fromDate") DateTime fromDate,
-                                       @Query("toDate") DateTime toDate,
-                                       @Query("categories") String categories,
                                        @Query("sort") String sort);
 
         @GET("api/events/{id}/attending")

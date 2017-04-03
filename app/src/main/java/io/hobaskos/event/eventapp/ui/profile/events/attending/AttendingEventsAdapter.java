@@ -10,8 +10,7 @@ import java.util.List;
 
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.model.Event;
-import io.hobaskos.event.eventapp.ui.adapter.PagedRecyclerAdapter;
-import io.hobaskos.event.eventapp.util.ColorUtil;
+import io.hobaskos.event.eventapp.ui.base.adapter.PagedRecyclerAdapter;
 import rx.functions.Action1;
 
 /**

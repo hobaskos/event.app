@@ -10,7 +10,7 @@ import java.io.ByteArrayOutputStream;
  * Created by hansp on 11.03.2017.
  */
 
-public class ImageUtil {
+public final class ImageUtil {
 
     public static final int PICK_IMAGE_REQUEST = 1;
 

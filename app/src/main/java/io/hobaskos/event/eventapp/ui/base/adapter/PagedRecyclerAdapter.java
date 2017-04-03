@@ -1,17 +1,14 @@
-package io.hobaskos.event.eventapp.ui.adapter;
+package io.hobaskos.event.eventapp.ui.base.adapter;
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import java.util.List;
 
 import io.hobaskos.event.eventapp.R;
-import io.hobaskos.event.eventapp.data.model.EventCategoryTheme;
 import rx.functions.Action1;
 
 /**
