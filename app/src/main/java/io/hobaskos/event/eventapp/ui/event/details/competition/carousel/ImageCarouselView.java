@@ -12,8 +12,6 @@ import io.hobaskos.event.eventapp.data.model.CompetitionImage;
 
 public interface ImageCarouselView extends MvpView {
 
-    void voteWasSuccessful();
-    void voteWasUnsuccessful();
     void setData(List<CompetitionImage> data);
 
 }

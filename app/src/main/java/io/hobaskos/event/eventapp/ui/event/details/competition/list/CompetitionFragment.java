@@ -24,6 +24,7 @@ import com.hannesdorfmann.mosby.mvp.MvpFragment;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -57,7 +58,6 @@ public class CompetitionFragment extends MvpFragment<CompetitionView, Competitio
     private DividerItemDecoration dividerItemDecoration;
 
     private CompetitionRecyclerViewAdapter competitionRecyclerViewAdapter;
-    private Long eventId;
     private Long competitionId;
     private boolean isLoggedIn;
 
@@ -101,18 +101,13 @@ public class CompetitionFragment extends MvpFragment<CompetitionView, Competitio
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        Log.i(TAG, "onCreate");
         super.onCreate(savedInstanceState);
 
         competitionImages = new ArrayList<>();
 
         if(getArguments() != null) {
-            eventId = getArguments().getLong(ARG_EVENT_ID);
             competitionId = getArguments().getLong(ARG_COMPETITION_ID);
             isLoggedIn = getArguments().getBoolean(ARG_IS_LOGGED_IN);
-            Log.i(TAG, "event id = " + eventId);
-            Log.i(TAG, "competition id = " + competitionId);
-            Log.i(TAG, "is logged in = " + isLoggedIn);
         }
 
         setRetainInstance(true);
@@ -122,7 +117,6 @@ public class CompetitionFragment extends MvpFragment<CompetitionView, Competitio
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Log.i(TAG, "onCreateView");
         View view = inflater.inflate(R.layout.fragment_competition_list, container, false);
 
         ButterKnife.bind(this, view);
@@ -198,14 +192,18 @@ public class CompetitionFragment extends MvpFragment<CompetitionView, Competitio
 
     @Override
     public void setData(List<CompetitionImage> data) {
+
         competitionImages.clear();
-        Collections.sort(competitionImages, (o1, o2) -> Long.compare(o1.getVoteScore(), o2.getVoteScore()));
         competitionImages.addAll(data);
+
+        Collections.sort(competitionImages, (o1, o2) -> o2.getVoteScore().compareTo(o1.getVoteScore()));
+
         competitionRecyclerViewAdapter =
                 new CompetitionRecyclerViewAdapter(competitionImages, listener, getContext(), isLoggedIn);
-        recyclerView.setAdapter(competitionRecyclerViewAdapter);
-        swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(false));
 
+        recyclerView.setAdapter(competitionRecyclerViewAdapter);
+
+        swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(false));
     }
 
     @Override
@@ -238,9 +236,11 @@ public class CompetitionFragment extends MvpFragment<CompetitionView, Competitio
     }
 
     public void onCompetitionImageVoteSubmitted(Long id, int vote) {
-        competitionPresenter.vote(id, vote);
+        if(!getCompetitionImageById(id).hasMyVote()) {
+            competitionPresenter.vote(id, vote);
 
-        updateCompetitionImageVoteScore(id, vote);
+            updateCompetitionImageVoteScore(id, vote);
+        }
     }
 
     private void updateCompetitionImageVoteScore(Long id, int vote) {
@@ -256,8 +256,11 @@ public class CompetitionFragment extends MvpFragment<CompetitionView, Competitio
         competitionImage.setNumberOfVotes(numberOfVotes + 1);
         competitionImage.setVoteScore(voteScore + vote);
         competitionImages.set(index, competitionImage);
+        Collections.sort(competitionImages, (o1, o2) -> o2.getVoteScore().compareTo(o1.getVoteScore()));
         competitionRecyclerViewAdapter.notifyDataSetChanged();
         competitionRecyclerViewAdapter.notifyItemChanged(index);
+        index = competitionImages.indexOf(competitionImage);
+        recyclerView.scrollToPosition(index);
     }
 
 

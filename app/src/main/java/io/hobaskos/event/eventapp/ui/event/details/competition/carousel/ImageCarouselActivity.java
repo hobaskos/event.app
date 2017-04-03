@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.hannesdorfmann.mosby.mvp.MvpActivity;
 import com.squareup.picasso.Picasso;
@@ -137,14 +138,20 @@ public class ImageCarouselActivity extends MvpActivity<ImageCarouselView, ImageC
 
     private void onUpVoteButtonPressed() {
         CompetitionImage currentImage = competitionImages.get(currentItem);
-        currentImage.setHasMyVote(true);
-        presenter.vote(currentImage.getId(), +1);
+
+        if(currentImage.hasMyVote()) {
+            currentImage.setHasMyVote(true);
+            presenter.vote(currentImage.getId(), +1);
+        }
     }
 
     private void onDownVoteButtonPressed() {
         CompetitionImage currentImage = competitionImages.get(currentItem);
-        currentImage.setHasMyVote(true);
-        presenter.vote(currentImage.getId(), -1);
+
+        if(currentImage.hasMyVote()) {
+            currentImage.setHasMyVote(true);
+            presenter.vote(currentImage.getId(), -1);
+        }
     }
 
     private void populateView() {
@@ -162,18 +169,6 @@ public class ImageCarouselActivity extends MvpActivity<ImageCarouselView, ImageC
 
             voteScore.setText(currentImage.getVoteScoreAsReadable());
         }
-    }
-
-
-
-    @Override
-    public void voteWasSuccessful() {
-
-    }
-
-    @Override
-    public void voteWasUnsuccessful() {
-
     }
 
     @Override

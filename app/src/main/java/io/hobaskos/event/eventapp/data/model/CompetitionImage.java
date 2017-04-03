@@ -58,6 +58,10 @@ public class CompetitionImage implements CompetitionItem, Parcelable {
         }
     }
 
+    public boolean hasMyVote() {
+        return hasMyVote;
+    }
+
     public String getImageUrl() {
         return imageUrl;
     }
