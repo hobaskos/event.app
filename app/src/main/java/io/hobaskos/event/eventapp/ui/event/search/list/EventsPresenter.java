@@ -1,14 +1,6 @@
 package io.hobaskos.event.eventapp.ui.event.search.list;
 
-import android.location.Location;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.Log;
-
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationServices;
 
 import org.greenrobot.eventbus.EventBus;
 import org.joda.time.DateTime;
@@ -43,10 +35,9 @@ public class EventsPresenter extends BaseRxLcePresenter<EventsView, List<Event>>
 
     private Subscriber<List<Event>> moreEventSubscriber;
 
-    private PersistentStorage persistentStorage;
     private FilterSettings filterSettings;
 
-    private boolean useCurrentLocation;
+    private boolean usingCurrentLocation;
 
     private int distance;
     private double lat;
@@ -73,7 +64,6 @@ public class EventsPresenter extends BaseRxLcePresenter<EventsView, List<Event>>
                            PersistentStorage persistentStorage) {
         this.eventRepository = eventRepository;
         this.filterSettings = filterSettings;
-        this.persistentStorage = persistentStorage;
 
         //this.gpsService = new GPSService();
         this.gpsTracker = new GPSTracker(App.getInst().getApplicationContext());
@@ -166,9 +156,9 @@ public class EventsPresenter extends BaseRxLcePresenter<EventsView, List<Event>>
         lon = filterSettings.getPlaceLon();
         categoryId = filterSettings.getCategoryId();
 
-        useCurrentLocation = filterSettings.getCurrentLocation();
+        usingCurrentLocation = filterSettings.isUsingCurrentLocation();
 
-        if (useCurrentLocation) {
+        if (usingCurrentLocation) {
             Log.i(TAG, " USE CURRENT LOCATION");
             lat = gpsTracker.getLatitude();
             lon = gpsTracker.getLongitude();

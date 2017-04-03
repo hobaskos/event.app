@@ -3,9 +3,7 @@ package io.hobaskos.event.eventapp.ui.event.details.competition.carousel;
 import android.util.Log;
 
 import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
-import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -15,7 +13,6 @@ import io.hobaskos.event.eventapp.data.model.CompetitionImage;
 import io.hobaskos.event.eventapp.data.model.EventImageVoteDTO;
 import io.hobaskos.event.eventapp.data.repository.EventImageRepository;
 import io.hobaskos.event.eventapp.data.repository.EventImageVoteRepository;
-import io.hobaskos.event.eventapp.ui.event.details.competition.list.CompetitionPresenter;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -49,7 +46,6 @@ public class ImageCarouselPresenter extends MvpBasePresenter<ImageCarouselView> 
 
     public void get() {
         if(competitionId != null) {
-            Log.i(TAG, "get() with competitionId == " + competitionId);
             eventImageRepository
                     .getCompetitionImages(competitionId)
                     .subscribeOn(Schedulers.io())
@@ -62,17 +58,11 @@ public class ImageCarouselPresenter extends MvpBasePresenter<ImageCarouselView> 
 
                         @Override
                         public void onError(Throwable e) {
-                            Log.i(TAG, "Could not fetch list of competition images.");
                             Log.i(TAG, e.getMessage());
                         }
 
                         @Override
                         public void onNext(List<CompetitionImage> competitionImages) {
-                            Log.i(TAG, "Could fetch list of competition images.");
-                            Log.i(TAG, "Size=" + competitionImages.size());
-                            for(int i = 0; i < competitionImages.size(); i++) {
-                                Log.i(TAG, "ImageUrl= " + competitionImages.get(i).getAbsoluteImageUrl());
-                            }
                             if(isViewAttached() && getView() != null) {
                                 getView().setData(competitionImages);
                             }
@@ -82,7 +72,6 @@ public class ImageCarouselPresenter extends MvpBasePresenter<ImageCarouselView> 
     }
 
     public void vote(Long id, int vote) {
-        Log.i(TAG, "Voting: " + vote);
         EventImageVoteDTO eventImageVoteDTO = new EventImageVoteDTO();
         eventImageVoteDTO.setEventImageId(id);
         eventImageVoteDTO.setVote(vote);
@@ -98,7 +87,7 @@ public class ImageCarouselPresenter extends MvpBasePresenter<ImageCarouselView> 
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.i(TAG, "Vote unsuccessful");
+                        Log.i(TAG, e.getMessage());
                     }
 
                     @Override

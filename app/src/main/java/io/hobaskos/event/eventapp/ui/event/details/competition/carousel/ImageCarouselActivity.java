@@ -29,10 +29,8 @@ import io.hobaskos.event.eventapp.data.model.CompetitionImage;
 public class ImageCarouselActivity extends MvpActivity<ImageCarouselView, ImageCarouselPresenter>
         implements ImageCarouselView {
 
-    private static final String COMPETITION_IMAGE_URL_PLACEHOLDER = "https://mave.me/img/projects/full_placeholder.png";
-    private final String TAG = "CompetitionFragment";
+    public static final String COMPETITION_IMAGE_URL_PLACEHOLDER = "https://mave.me/img/projects/full_placeholder.png";
     public static final String ARG_STARTING_COMPETITION_IMAGE = "startingImage";
-    public static final String ARG_EVENT_ID = "eventId";
     public static final String ARG_COMPETITION_ID = "competitionId";
 
     @Inject
@@ -41,8 +39,6 @@ public class ImageCarouselActivity extends MvpActivity<ImageCarouselView, ImageC
     private ArrayList<CompetitionImage> competitionImages;
     private int currentItem = 0;
     private Long selectedItemId;
-    private Long eventId;
-    private Long competitionId;
     private int numberOfImages = 0;
     private boolean initialSettingOfData = true;
 
@@ -54,8 +50,8 @@ public class ImageCarouselActivity extends MvpActivity<ImageCarouselView, ImageC
     protected ImageView downVoteButton;
     @BindView(R.id.owner_login)
     protected TextView ownerLogin;
-    @BindView(R.id.number_of_votes)
-    protected TextView numberOfVotes;
+    @BindView(R.id.voteScore)
+    protected TextView voteScore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,8 +62,7 @@ public class ImageCarouselActivity extends MvpActivity<ImageCarouselView, ImageC
         upVoteButton.setOnClickListener(v -> onUpVoteButtonPressed());
         downVoteButton.setOnClickListener(v -> onDownVoteButtonPressed());
 
-        eventId = getIntent().getLongExtra(ARG_EVENT_ID, 0);
-        competitionId = getIntent().getLongExtra(ARG_COMPETITION_ID, 0);
+        Long competitionId = getIntent().getLongExtra(ARG_COMPETITION_ID, 0);
         selectedItemId = getIntent().getLongExtra(ARG_STARTING_COMPETITION_IMAGE, 0);
         currentItem = -1;
         competitionImages = new ArrayList<>();
@@ -76,7 +71,6 @@ public class ImageCarouselActivity extends MvpActivity<ImageCarouselView, ImageC
         presenter.setCompetitionId(competitionId);
         presenter.get();
 
-        image.setOnClickListener(v -> Log.i(TAG, "image clicked!"));
         image.setOnTouchListener(new OnSwipeTouchListener(ImageCarouselActivity.this) {
             @Override
             public boolean onSwipeLeft() {
@@ -111,7 +105,6 @@ public class ImageCarouselActivity extends MvpActivity<ImageCarouselView, ImageC
     @NonNull
     @Override
     public ImageCarouselPresenter createPresenter() {
-        Log.i(TAG, "Creating presenter...");
         App.getInst().getComponent().inject(this);
         return presenter;
     }
@@ -127,8 +120,6 @@ public class ImageCarouselActivity extends MvpActivity<ImageCarouselView, ImageC
             currentItem--;
         }
 
-        Log.i(TAG, "onPreviousButtonPressed, moving to image number: " + currentItem);
-
         populateView();
     }
 
@@ -142,8 +133,6 @@ public class ImageCarouselActivity extends MvpActivity<ImageCarouselView, ImageC
         } else {
             currentItem++;
         }
-
-        Log.i(TAG, "onNextButtonPressed, moving to image number: " + currentItem);
 
         populateView();
     }
@@ -162,28 +151,31 @@ public class ImageCarouselActivity extends MvpActivity<ImageCarouselView, ImageC
 
     private void populateView() {
         if(numberOfImages > 0) {
-            Log.i(TAG, "Populating view for image number: " + currentItem);
-
-            Log.i(TAG, competitionImages.get(currentItem).toString());
 
             CompetitionImage currentImage = competitionImages.get(currentItem);
 
             Picasso.with(this)
-                    .load(currentImage.getImageUrl() != null ? currentImage.getAbsoluteImageUrl() : COMPETITION_IMAGE_URL_PLACEHOLDER)
+                    .load(currentImage.getImageUrl() != null
+                            ? currentImage.getAbsoluteImageUrl()
+                            : COMPETITION_IMAGE_URL_PLACEHOLDER)
                     .fit()
                     .centerCrop()
                     .into(image);
+
+            voteScore.setText(currentImage.getVoteScoreAsReadable());
         }
     }
 
+
+
     @Override
     public void voteWasSuccessful() {
-        Log.i(TAG, "vote was successful!");
+
     }
 
     @Override
     public void voteWasUnsuccessful() {
-        Log.i(TAG, "vote was unsuccessful!");
+
     }
 
     @Override
@@ -209,20 +201,4 @@ public class ImageCarouselActivity extends MvpActivity<ImageCarouselView, ImageC
         finish();
     }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-
-        int action = MotionEventCompat.getActionMasked(event);
-
-        switch (action) {
-
-        }
-
-        return super.onTouchEvent(event);
-    }
 }
-
-
-
-
-

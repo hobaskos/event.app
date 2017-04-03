@@ -13,4 +13,5 @@ public interface CompetitionView extends MvpLoadMoreView<List<CompetitionImage>>
 
     void imageWasSuccessfullyNominated(CompetitionImage competitionImage);
 
+
 }

@@ -5,6 +5,6 @@ package io.hobaskos.event.eventapp.ui.event.details.competition.list;
  */
 
 public interface OnCompetitionListInteractionListener {
-    void onListFragmentInteraction(Long id);
-    void onCompetitionImageVoteSubmitted(Long id, int vote);
+    void onCompetitionImageClick(Long id);
+    void onCompetitionVoteButtonClicked(Long id, int vote);
 }

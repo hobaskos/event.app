@@ -203,7 +203,16 @@ public class Event implements Parcelable {
     }
 
     public String getDate(Context context) {
-        return fromDate != null ? DateUtils.formatDateTime(context, fromDate.toDate().getTime(), DateUtils.FORMAT_SHOW_DATE) : "";
+        String dateString = "";
+        if (fromDate != null) {
+            dateString += DateUtils.formatDateTime(context, fromDate.toDate().getTime(), DateUtils.FORMAT_SHOW_WEEKDAY); // Add Weekday
+            dateString += ", ";
+            dateString += DateUtils.formatDateTime(context, fromDate.toDate().getTime(), DateUtils.FORMAT_SHOW_DATE); // Add date
+            dateString += " @ ";
+            dateString += DateUtils.formatDateTime(context, fromDate.toDate().getTime(), DateUtils.FORMAT_SHOW_TIME); // Add Weekday // Add date
+        }
+        //return fromDate != null ? DateUtils.formatDateTime(context, fromDate.toDate().getTime(), DateUtils.FORMAT_SHOW_DATE) : "";
+        return dateString;
     }
 
     public String getLocation() {

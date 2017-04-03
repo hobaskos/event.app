@@ -1,7 +1,6 @@
 package io.hobaskos.event.eventapp.ui.event.details.competition.carousel;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -34,7 +33,7 @@ public class OnSwipeTouchListener implements View.OnTouchListener {
     private final class GestureListener extends GestureDetector.SimpleOnGestureListener {
 
         private static final int SWIPE_DISTANCE_THRESHOLD = 100;
-        private static final int SWIPE_VOLOCITY_THRESHOLD = 100;
+        private static final int SWIPE_VELOCITY_THRESHOLD = 100;
 
         @Override
         public boolean onDown(MotionEvent e) {
@@ -42,7 +41,6 @@ public class OnSwipeTouchListener implements View.OnTouchListener {
         }
 
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-            Log.i("onSwipeTouchListener", "inside onFling!");
             boolean result = false;
             try {
 
@@ -51,7 +49,7 @@ public class OnSwipeTouchListener implements View.OnTouchListener {
 
                 if(Math.abs(diffX) > Math.abs(diffY)) {
 
-                    if(Math.abs(diffX) > SWIPE_DISTANCE_THRESHOLD && Math.abs(velocityX) > SWIPE_VOLOCITY_THRESHOLD) {
+                    if(Math.abs(diffX) > SWIPE_DISTANCE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
 
                         if(diffX > 0) {
                             result = onSwipeRight();

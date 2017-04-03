@@ -24,7 +24,6 @@ import com.hannesdorfmann.mosby.mvp.MvpFragment;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -141,7 +140,6 @@ public class CompetitionFragment extends MvpFragment<CompetitionView, Competitio
                 linearLayoutManager.getOrientation());
         recyclerView.addItemDecoration(dividerItemDecoration);
 
-        Log.i(TAG, "isLoggedIn=" + isLoggedIn);
         if(isLoggedIn) {
             addCompetitionImage.setOnClickListener(v -> showAddCompetitionImageDialog());
             addCompetitionImage.setVisibility(View.VISIBLE);
@@ -154,11 +152,9 @@ public class CompetitionFragment extends MvpFragment<CompetitionView, Competitio
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        Log.i(TAG, "onViewCreated");
         super.onViewCreated(view, savedInstanceState);
 
         if(competitionId != null) {
-            Log.i(TAG, "eventId != null");
             competitionPresenter.setCompetitionId(competitionId);
             competitionPresenter.get();
         }
@@ -166,7 +162,6 @@ public class CompetitionFragment extends MvpFragment<CompetitionView, Competitio
 
     @Override
     public void onAttach(Context context) {
-        Log.i(TAG, "onAttach");
         super.onAttach(context);
         if(context instanceof OnCompetitionListInteractionListener) {
             listener = (OnCompetitionListInteractionListener) context;
@@ -178,13 +173,11 @@ public class CompetitionFragment extends MvpFragment<CompetitionView, Competitio
 
     @Override
     public void onDetach() {
-        Log.i(TAG, "onDetach");
         super.onDetach();
         listener = null;
     }
 
     private void showAddCompetitionImageDialog() {
-        Log.i(TAG, "Add Competition FAB clicked!");
         openGallery();
     }
 
@@ -205,16 +198,11 @@ public class CompetitionFragment extends MvpFragment<CompetitionView, Competitio
 
     @Override
     public void setData(List<CompetitionImage> data) {
-        Log.i(TAG, "setData with size = " + data.size());
         competitionImages.clear();
-        Collections.sort(competitionImages, new Comparator<CompetitionImage>() {
-            @Override
-            public int compare(CompetitionImage o1, CompetitionImage o2) {
-                return Long.compare(o1.getVoteScore(), o2.getVoteScore());
-            }
-        });
+        Collections.sort(competitionImages, (o1, o2) -> Long.compare(o1.getVoteScore(), o2.getVoteScore()));
         competitionImages.addAll(data);
-        competitionRecyclerViewAdapter = new CompetitionRecyclerViewAdapter(competitionImages, listener, getContext(), isLoggedIn);
+        competitionRecyclerViewAdapter =
+                new CompetitionRecyclerViewAdapter(competitionImages, listener, getContext(), isLoggedIn);
         recyclerView.setAdapter(competitionRecyclerViewAdapter);
         swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(false));
 
@@ -222,24 +210,22 @@ public class CompetitionFragment extends MvpFragment<CompetitionView, Competitio
 
     @Override
     public void loadData(boolean pullToRefresh) {
-        Log.i(TAG, "loadData pullToRefresh: " + pullToRefresh);
         competitionPresenter.get();
         canLoadMore = false;
     }
 
     @Override
     public void showLoadMore(boolean showLoadMore) {
-        Log.i(TAG, "showLoadMore");
+
     }
 
     @Override
     public void showLoadMoreError(Throwable e) {
-        Log.i(TAG, "showLoadMoreError");
+
     }
 
     @Override
     public void addMoreData(List<CompetitionImage> model) {
-        Log.i(TAG, "addMoreData");
         this.competitionImages.addAll(model);
         competitionRecyclerViewAdapter.notifyDataSetChanged();
 
@@ -247,17 +233,14 @@ public class CompetitionFragment extends MvpFragment<CompetitionView, Competitio
 
     @Override
     public void onResume() {
-        Log.i(TAG, "onResume-method called");
         super.onResume();
         competitionPresenter.get();
     }
 
     public void onCompetitionImageVoteSubmitted(Long id, int vote) {
-        Log.i(TAG, "Inside onCompetitionImageVoteSubmitted()");
         competitionPresenter.vote(id, vote);
 
         updateCompetitionImageVoteScore(id, vote);
-
     }
 
     private void updateCompetitionImageVoteScore(Long id, int vote) {
@@ -309,7 +292,7 @@ public class CompetitionFragment extends MvpFragment<CompetitionView, Competitio
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.i(TAG, "onActivityResult");
+
         if (resultCode == RESULT_OK) {
             if (requestCode == PICK_IMAGE_REQUEST && data != null && data.getData() != null) {
                 Uri uri = data.getData();
@@ -317,8 +300,7 @@ public class CompetitionFragment extends MvpFragment<CompetitionView, Competitio
                 try {
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
                     String image = ImageUtil.getEncoded64ImageStringFromBitmap(bitmap);
-                    Log.i(TAG, image);
-                    presenter.nomiateImage(image);
+                    presenter.nominateImage(image);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

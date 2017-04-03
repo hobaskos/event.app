@@ -18,34 +18,38 @@
     <GridLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:weightSum="3" >
 
         <ImageView
             android:id="@+id/competition_up_vote"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_columnWeight="1"
             android:padding="16dp"
             android:src="@mipmap/ic_up" />
+
+        <TextView
+            android:id="@+id/voteScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="16dp"
+            android:layout_columnWeight="1"
+            android:text="100K"
+            android:textColor="@color/mdtp_white"
+            android:textSize="30sp"/>
 
         <ImageView
             android:id="@+id/competition_down_vote"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_columnWeight="1"
             android:padding="16dp"
             android:src="@mipmap/ic_down" />
 
     </GridLayout>
-
-    <TextView
-        android:id="@+id/owner_login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <TextView
-        android:id="@+id/number_of_votes"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
 
 </LinearLayout>

@@ -85,7 +85,6 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
         if(savedInstanceState != null) {
 
             // The Activity was restarted
-            Log.i("EventActivity", "Inside onCreate with savedInstanceState != null");
 
             try {
 
@@ -102,7 +101,6 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
         } else {
 
             // The Activity is newly started from CreateEventActivity or the ListActivity.
-            Log.i("EventActivity", "Inside onCreate with savedInstanceState == null");
 
             eventId = getIntent().getExtras().getLong(EVENT_ID);
 
@@ -192,7 +190,6 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
 
     @Override
     protected String getErrorMessage(Throwable e, boolean pullToRefresh) {
-        //Log.i("event-activity", e.getMessage());
         if (e.getMessage().contains("404")) { // 404 Not Found
             Toast.makeText(this, getString(R.string.error_event_not_found), Toast.LENGTH_SHORT).show();
             onBackPressed();
@@ -227,9 +224,6 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
                 tabLayout.getTabAt(3).setIcon(R.drawable.ic_competition_tab_white);
             }
         }
-
-        //Log.i(TAG, "eventPagerAdapter != null");
-        //eventPagerAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -279,7 +273,6 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
         intent.putExtra(LocationActivity.EVENT_STATE, 1);
         intent.putExtra(LocationActivity.LOCATION, item);
         startActivityForResult(intent, EDIT_LOCATION_REQUEST);
-        //startActivity(intent);
     }
 
     @Override
@@ -347,17 +340,6 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     @Override
     public void onCancelButtonClicked() {
 
-    }
-
-    @Override
-    public void onListFragmentInteraction(Long id) {
-        Log.i(TAG, "Clicked on image number " + id);
-        Intent intent = new Intent(this, ImageCarouselActivity.class);
-        intent.putExtra(ImageCarouselActivity.ARG_STARTING_COMPETITION_IMAGE, id);
-        intent.putExtra(ImageCarouselActivity.ARG_EVENT_ID, eventId);
-        intent.putExtra(ImageCarouselActivity.ARG_COMPETITION_ID, event.getDefaultPollId());
-        startActivityForResult(intent, VIEW_COMPETITION_CAROUSEL);
-        //startActivity(intent);
     }
 
     @Override
@@ -432,8 +414,16 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     }
 
     @Override
-    public void onCompetitionImageVoteSubmitted(Long id, int vote) {
+    public void onCompetitionVoteButtonClicked(Long id, int vote) {
         CompetitionFragment competitionFragment = (CompetitionFragment) eventPagerAdapter.getItem(3);
         competitionFragment.onCompetitionImageVoteSubmitted(id, vote);
+    }
+
+    @Override
+    public void onCompetitionImageClick(Long id) {
+        Intent intent = new Intent(this, ImageCarouselActivity.class);
+        intent.putExtra(ImageCarouselActivity.ARG_STARTING_COMPETITION_IMAGE, id);
+        intent.putExtra(ImageCarouselActivity.ARG_COMPETITION_ID, event.getDefaultPollId());
+        startActivityForResult(intent, VIEW_COMPETITION_CAROUSEL);
     }
 }

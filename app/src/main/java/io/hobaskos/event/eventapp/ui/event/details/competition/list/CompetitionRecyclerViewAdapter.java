@@ -22,7 +22,7 @@ import io.hobaskos.event.eventapp.data.model.CompetitionImage;
 public class CompetitionRecyclerViewAdapter extends
         RecyclerView.Adapter<CompetitionRecyclerViewAdapter.CompetitionViewHolder> {
 
-    private static final String COMPETITION_IMAGE_URL_PLACEHOLDER = "https://mave.me/img/projects/full_placeholder.png";
+    public static final String COMPETITION_IMAGE_URL_PLACEHOLDER = "https://mave.me/img/projects/full_placeholder.png";
     private final List<CompetitionImage> images;
     private final OnCompetitionListInteractionListener listener;
     private final Context context;
@@ -73,10 +73,9 @@ public class CompetitionRecyclerViewAdapter extends
             upVoteButton = (ImageView) view.findViewById(R.id.up_vote);
             downVoteButton = (ImageView) view.findViewById(R.id.down_vote);
 
-            // TODO: check if user is logged in
             image.setOnClickListener(v -> {
                 if(null != listener) {
-                    listener.onListFragmentInteraction(id);
+                    listener.onCompetitionImageClick(id);
                 }
             });
 
@@ -84,13 +83,13 @@ public class CompetitionRecyclerViewAdapter extends
 
                 upVoteButton.setOnClickListener(v -> {
                     if(null != listener) {
-                        listener.onCompetitionImageVoteSubmitted(id, +1);
+                        listener.onCompetitionVoteButtonClicked(id, +1);
                     }
                 });
 
                 downVoteButton.setOnClickListener(v -> {
                     if(null != listener) {
-                        listener.onCompetitionImageVoteSubmitted(id, -1);
+                        listener.onCompetitionVoteButtonClicked(id, -1);
                     }
                 });
 

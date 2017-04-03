@@ -41,14 +41,6 @@ public class CompetitionImage implements CompetitionItem, Parcelable {
         this.id = id;
     }
 
-    public String getOwnerLogin() {
-        return ownerLogin;
-    }
-
-    public void setOwnerLogin(String ownerLogin) {
-        this.ownerLogin = ownerLogin;
-    }
-
     public int getNumberOfVotes() {
         return numberOfVotes;
     }
@@ -66,20 +58,8 @@ public class CompetitionImage implements CompetitionItem, Parcelable {
         }
     }
 
-    public boolean getHasMyVote() {
-        return hasMyVote;
-    }
-
     public String getImageUrl() {
         return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
-    public String getFileContentType() {
-        return fileContentType;
     }
 
     public void setFileContentType(String fileContentType) {
@@ -90,20 +70,8 @@ public class CompetitionImage implements CompetitionItem, Parcelable {
         return UrlUtil.getImageUrl(imageUrl);
     }
 
-    public boolean isHasMyVote() {
-        return hasMyVote;
-    }
-
-    public String getImageBase64() {
-        return imageBase64;
-    }
-
     public void setImageBase64(String imageBase64) {
         this.imageBase64 = imageBase64;
-    }
-
-    public Long getCompetitionId() {
-        return competitionId;
     }
 
     public void setCompetitionId(Long competitionId) {
@@ -118,7 +86,13 @@ public class CompetitionImage implements CompetitionItem, Parcelable {
         this.voteScore = voteScore;
     }
 
+    public String getVoteScoreAsReadable() {
+        if(voteScore > 1000) {
+            return voteScore / 1000 + "k";
+        }
 
+        return voteScore.toString();
+    }
 
     @Override
     public String toString() {
