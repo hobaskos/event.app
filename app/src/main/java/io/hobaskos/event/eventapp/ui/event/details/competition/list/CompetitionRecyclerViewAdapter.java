@@ -26,13 +26,13 @@ public class CompetitionRecyclerViewAdapter extends
     private final List<CompetitionImage> images;
     private final OnCompetitionListInteractionListener listener;
     private final Context context;
-    private final boolean isLoggedIn;
+    private final boolean isAttending;
 
-    public CompetitionRecyclerViewAdapter(List<CompetitionImage> images, OnCompetitionListInteractionListener listener, Context context, boolean isLoggedIn) {
+    public CompetitionRecyclerViewAdapter(List<CompetitionImage> images, OnCompetitionListInteractionListener listener, Context context, boolean isAttending) {
         this.images = images;
         this.listener = listener;
         this.context = context;
-        this.isLoggedIn = isLoggedIn;
+        this.isAttending = isAttending;
     }
 
     @Override
@@ -79,7 +79,7 @@ public class CompetitionRecyclerViewAdapter extends
                 }
             });
 
-            if(isLoggedIn) {
+            if(isAttending) {
 
                 upVoteButton.setOnClickListener(v -> {
                     if(null != listener) {
@@ -94,9 +94,8 @@ public class CompetitionRecyclerViewAdapter extends
                 });
 
             } else {
-
-                // TODO: user is not logged in. Make Vote-action redirect to Login/Register-splash.
-
+                upVoteButton.setVisibility(View.GONE);
+                downVoteButton.setVisibility(View.GONE);
             }
 
 

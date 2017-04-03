@@ -44,7 +44,7 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
         EventPresenter> implements
         EventView,
         LocationsFragment.OnListFragmentInteractionListener,
-        AttendeesFragment.OnUserListFragmentInteractionListener,
+        AttendeesFragment.OnAttendeesInteractionListener,
         OnCompetitionListInteractionListener,
         DeleteDialogListener<Location> {
 
@@ -287,6 +287,14 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     @Override
     public void onListFragmentInteraction(User item) {
         Toast.makeText(this, item.getName(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onAttendeesFabInteraction() {
+        Log.i(TAG, "onAttendeesFabInteraction");
+        CompetitionFragment competitionFragment = (CompetitionFragment)
+        eventPagerAdapter.getItem(EventPagerAdapter.COMPETITIONS_FRAGMENT);
+        competitionFragment.setAttendingEvent(true);
     }
 
     @Override

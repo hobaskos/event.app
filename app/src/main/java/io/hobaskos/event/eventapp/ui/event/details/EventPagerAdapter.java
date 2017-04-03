@@ -30,6 +30,11 @@ public class EventPagerAdapter extends FragmentPagerAdapter {
     private AttendeesFragment attendeesFragment;
     private CompetitionFragment competitionFragment;
 
+    public static final int EVENT_INFO_FRAGMENT = 0;
+    public static final int LOCATIONS_FRAGMENT = 1;
+    public static final int ATTENDEES_FRAGMENT = 2;
+    public static final int COMPETITIONS_FRAGMENT = 3;
+
     private Context context;
     private Event event;
     private boolean isOwner;
@@ -48,7 +53,7 @@ public class EventPagerAdapter extends FragmentPagerAdapter {
         locationsFragment = LocationsFragment.newInstance(event, isOwner);
         attendeesFragment = AttendeesFragment.newInstance(event.getId(), event.getMyAttendance() != null);
         if(isLoggedIn) {
-            competitionFragment = CompetitionFragment.newInstance(event, isLoggedIn);
+            competitionFragment = CompetitionFragment.newInstance(event);
         }
     }
 

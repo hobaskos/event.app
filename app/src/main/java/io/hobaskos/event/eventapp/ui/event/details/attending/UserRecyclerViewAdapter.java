@@ -20,9 +20,9 @@ import java.util.List;
 public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerViewAdapter.UserViewHolder> {
 
     private final List<User> users;
-    private final AttendeesFragment.OnUserListFragmentInteractionListener listener;
+    private final AttendeesFragment.OnAttendeesInteractionListener listener;
 
-    public UserRecyclerViewAdapter(List<User> users, AttendeesFragment.OnUserListFragmentInteractionListener listener) {
+    public UserRecyclerViewAdapter(List<User> users, AttendeesFragment.OnAttendeesInteractionListener listener) {
         this.users = users;
         this.listener = listener;
     }

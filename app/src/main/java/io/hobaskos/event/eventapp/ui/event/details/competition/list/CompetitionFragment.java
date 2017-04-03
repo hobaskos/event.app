@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hannesdorfmann.mosby.mvp.MvpFragment;
@@ -36,6 +37,7 @@ import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.model.CompetitionImage;
 import io.hobaskos.event.eventapp.data.model.Event;
+import io.hobaskos.event.eventapp.data.model.enumeration.EventAttendingType;
 import io.hobaskos.event.eventapp.util.ImageUtil;
 
 import static android.app.Activity.RESULT_OK;
@@ -49,17 +51,15 @@ public class CompetitionFragment extends MvpFragment<CompetitionView, Competitio
         implements CompetitionView {
 
     public static final String TAG = CompetitionFragment.class.getName();
-    public static final String ARG_IS_LOGGED_IN = "isLoggedIn";
     public static final String ARG_COMPETITION_ID = "competitionId";
-    public static final String ARG_EVENT_ID = "eventId";
+    public static final String ARG_IS_ATTENDING_EVENT = "myAttendance";
 
     private ArrayList<CompetitionImage> competitionImages;
     private OnCompetitionListInteractionListener listener;
-    private DividerItemDecoration dividerItemDecoration;
 
     private CompetitionRecyclerViewAdapter competitionRecyclerViewAdapter;
     private Long competitionId;
-    private boolean isLoggedIn;
+    private boolean isAttending;
 
     @BindView(R.id.contentView)
     protected SwipeRefreshLayout swipeRefreshLayout;
@@ -86,14 +86,18 @@ public class CompetitionFragment extends MvpFragment<CompetitionView, Competitio
         return competitionPresenter;
     }
 
-    public static CompetitionFragment newInstance(Event event, boolean isLoggedIn) {
+    public static CompetitionFragment newInstance(Event event) {
         CompetitionFragment fragment = new CompetitionFragment();
         Bundle args = new Bundle();
-        Log.i(TAG, event.getId().toString() + "");
-        Log.i(TAG, event.getDefaultPollId() + "");
 
-        args.putLong(ARG_EVENT_ID, event.getId());
-        args.putBoolean(ARG_IS_LOGGED_IN, isLoggedIn);
+        boolean going = false;
+
+        if(event.getMyAttendance() != null) {
+            Log.i(TAG, event.getMyAttendance().toString());
+            going =  event.getMyAttendance().equals(EventAttendingType.GOING);
+        }
+
+        args.putBoolean(ARG_IS_ATTENDING_EVENT, going);
         args.putLong(ARG_COMPETITION_ID, event.getDefaultPollId());
         fragment.setArguments(args);
         return fragment;
@@ -107,7 +111,7 @@ public class CompetitionFragment extends MvpFragment<CompetitionView, Competitio
 
         if(getArguments() != null) {
             competitionId = getArguments().getLong(ARG_COMPETITION_ID);
-            isLoggedIn = getArguments().getBoolean(ARG_IS_LOGGED_IN);
+            isAttending = getArguments().getBoolean(ARG_IS_ATTENDING_EVENT);
         }
 
         setRetainInstance(true);
@@ -125,20 +129,22 @@ public class CompetitionFragment extends MvpFragment<CompetitionView, Competitio
         Context context = view.getContext();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(linearLayoutManager);
-        competitionRecyclerViewAdapter = new CompetitionRecyclerViewAdapter(competitionImages, listener, context, isLoggedIn);
+        competitionRecyclerViewAdapter = new CompetitionRecyclerViewAdapter(competitionImages, listener, context, isAttending);
         recyclerView.setAdapter(competitionRecyclerViewAdapter);
 
         swipeRefreshLayout.setOnRefreshListener(() -> loadData(true));
 
-        dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
                 linearLayoutManager.getOrientation());
         recyclerView.addItemDecoration(dividerItemDecoration);
 
-        if(isLoggedIn) {
-            addCompetitionImage.setOnClickListener(v -> showAddCompetitionImageDialog());
+        addCompetitionImage.setOnClickListener(v -> showAddCompetitionImageDialog());
+
+        if(isAttending) {
             addCompetitionImage.setVisibility(View.VISIBLE);
         } else {
             addCompetitionImage.setVisibility(View.GONE);
+
         }
 
         return view;
@@ -199,7 +205,7 @@ public class CompetitionFragment extends MvpFragment<CompetitionView, Competitio
         Collections.sort(competitionImages, (o1, o2) -> o2.getVoteScore().compareTo(o1.getVoteScore()));
 
         competitionRecyclerViewAdapter =
-                new CompetitionRecyclerViewAdapter(competitionImages, listener, getContext(), isLoggedIn);
+                new CompetitionRecyclerViewAdapter(competitionImages, listener, getContext(), isAttending);
 
         recyclerView.setAdapter(competitionRecyclerViewAdapter);
 
@@ -310,6 +316,22 @@ public class CompetitionFragment extends MvpFragment<CompetitionView, Competitio
             }
         }
     }
+
+    public void setAttendingEvent(boolean isAttendingEvent) {
+        isAttending = isAttendingEvent;
+
+        Log.i(TAG, "setAttendingEvent = " + isAttendingEvent);
+
+        if(isAttendingEvent) {
+            addCompetitionImage.setVisibility(View.VISIBLE);
+        } else {
+            addCompetitionImage.setVisibility(View.GONE);
+        }
+
+        competitionPresenter.get();
+    }
+
+
 
 }
 
