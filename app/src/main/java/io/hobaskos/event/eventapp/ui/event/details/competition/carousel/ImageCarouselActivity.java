@@ -48,8 +48,6 @@ public class ImageCarouselActivity extends MvpActivity<ImageCarouselView, ImageC
     protected ImageView upVoteButton;
     @BindView(R.id.competition_down_vote)
     protected ImageView downVoteButton;
-    @BindView(R.id.owner_login)
-    protected TextView ownerLogin;
     @BindView(R.id.voteScore)
     protected TextView voteScore;
 
