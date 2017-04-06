@@ -7,9 +7,13 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.util.Log;
 
 
+import java.util.ArrayList;
+
 import io.hobaskos.event.eventapp.R;
+import io.hobaskos.event.eventapp.data.model.CompetitionImage;
 import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.ui.event.details.attending.AttendeesFragment;
+import io.hobaskos.event.eventapp.ui.event.details.competition.list.CompetitionFragment;
 import io.hobaskos.event.eventapp.ui.event.details.info.EventInfoFragment;
 import io.hobaskos.event.eventapp.ui.event.details.location.LocationsFragment;
 
@@ -24,22 +28,28 @@ public class EventPagerAdapter extends FragmentPagerAdapter {
     private EventInfoFragment eventInfoFragment;
     private LocationsFragment locationsFragment;
     private AttendeesFragment attendeesFragment;
+    private CompetitionFragment competitionFragment;
 
     private Context context;
     private Event event;
     private boolean isOwner;
+    private boolean isLoggedIn;
 
-    public EventPagerAdapter(Event event, Context context, FragmentManager fm, boolean isOwner) {
+    public EventPagerAdapter(Event event, boolean isOwner, boolean isLoggedIn, Context context, FragmentManager fm) {
         super(fm);
         this.event = event;
         this.context = context;
         this.isOwner = isOwner;
+        this.isLoggedIn = isLoggedIn;
 
         Log.d(TAG, "EventPagerAdapter: " + event.getId() + ", myAttendance: " + event.getMyAttendance());
 
         eventInfoFragment = EventInfoFragment.newInstance(event);
         locationsFragment = LocationsFragment.newInstance(event, isOwner);
         attendeesFragment = AttendeesFragment.newInstance(event.getId(), event.getMyAttendance() != null);
+        if(isLoggedIn) {
+            competitionFragment = CompetitionFragment.newInstance(event, isLoggedIn);
+        }
     }
 
     @Override
@@ -54,6 +64,11 @@ public class EventPagerAdapter extends FragmentPagerAdapter {
             case 2:
                 Log.i(TAG, "getItem attendeesFragment");
                 return attendeesFragment;
+            case 3:
+                if(isLoggedIn) {
+                    Log.i(TAG, "getItem competitionFragment");
+                    return competitionFragment;
+                }
             default:
                 return new Fragment();
         }
@@ -61,7 +76,7 @@ public class EventPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 3;
+        return isLoggedIn ? 4 : 3;
     }
 
     @Override
@@ -78,4 +93,6 @@ public class EventPagerAdapter extends FragmentPagerAdapter {
         }
         */
     }
+
+
 }

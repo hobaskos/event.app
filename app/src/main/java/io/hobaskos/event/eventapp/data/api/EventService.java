@@ -55,6 +55,9 @@ public interface EventService
     }
 
     interface Authenticated {
+        @GET("api/events/{id}")
+        Observable<Event> getEvent(@Path("id") Long id);
+
         @POST("api/events")
         Observable<Event> saveEvent(@Body Event event);
 
