@@ -45,7 +45,7 @@ public class AttendeesFragment
     public static final String EVENT_ID = "eventId";
     public static final String EVENT_ATTENDING = "eventAttending";
 
-    private OnUserListFragmentInteractionListener listener;
+    private OnAttendeesInteractionListener listener;
     private DividerItemDecoration dividerItemDecoration;
 
     private List<User> users = new ArrayList<>();
@@ -154,6 +154,7 @@ public class AttendeesFragment
                         @Override
                         public void onNext(EventAttendance attendance) {
                             dialog.dismiss();
+                            listener.onAttendeesFabInteraction();
                             loadData(true);
                             attendFab.hide();
                         }
@@ -167,11 +168,11 @@ public class AttendeesFragment
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnUserListFragmentInteractionListener) {
-            listener = (OnUserListFragmentInteractionListener) context;
+        if (context instanceof OnAttendeesInteractionListener) {
+            listener = (OnAttendeesInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnUserListFragmentInteractionListener");
+                    + " must implement OnAttendeesInteractionListener");
         }
     }
 
@@ -179,10 +180,6 @@ public class AttendeesFragment
     public void onDetach() {
         super.onDetach();
         listener = null;
-    }
-
-    public interface OnUserListFragmentInteractionListener {
-        void onListFragmentInteraction(User item);
     }
 
     @Override
@@ -245,4 +242,11 @@ public class AttendeesFragment
     public void showLoadMoreError(Throwable e) {
 
     }
+
+    public interface OnAttendeesInteractionListener {
+        void onListFragmentInteraction(User item);
+        void onAttendeesFabInteraction();
+    }
+
+
 }

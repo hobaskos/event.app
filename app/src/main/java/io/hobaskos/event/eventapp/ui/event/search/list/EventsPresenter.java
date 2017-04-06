@@ -4,6 +4,7 @@ import android.util.Log;
 
 import org.greenrobot.eventbus.EventBus;
 import org.joda.time.DateTime;
+import org.joda.time.Hours;
 
 import java.util.List;
 
@@ -69,12 +70,10 @@ public class EventsPresenter extends BaseRxLcePresenter<EventsView, List<Event>>
         //this.gpsService = new GPSService();
         this.gpsTracker = new GPSTracker(App.getInst().getApplicationContext());
 
-
     }
 
     public void loadEvents(boolean pullToRefresh, String searchQuery) {
         searchQuery = searchQuery + "*";
-
 
         // in case the previous action was load more we have to reset the view
         if (isViewAttached()) {
@@ -83,7 +82,7 @@ public class EventsPresenter extends BaseRxLcePresenter<EventsView, List<Event>>
         // Load filter values (from shared preferences)
         loadFilterValues();
 
-        DateTime fromDate = DateTime.now();
+        DateTime fromDate = DateTime.now().minusDays(2);
         DateTime toDate = fromDate.plusYears(2);
 
         // If distance is higher than MAX_DISTANCE, set a high value for unlimited distance
@@ -160,6 +159,7 @@ public class EventsPresenter extends BaseRxLcePresenter<EventsView, List<Event>>
         categoryId = filterSettings.getCategoryId();
 
         usingCurrentLocation = filterSettings.isUsingCurrentLocation();
+
 
         // Check if "Use current location" is selcted
         if (usingCurrentLocation) {

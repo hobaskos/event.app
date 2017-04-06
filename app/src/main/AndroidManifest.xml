@@ -100,6 +100,19 @@
         <activity android:name=".ui.location.add.LocationActivity" android:parentActivityName=".ui.event.details.EventActivity"/>
         <activity android:name=".ui.event.search.map.SearchEventsMapActivity" />
         <activity android:name=".ui.event.filter.FilterEventsActivity" />
+        <activity
+            android:name=".ui.event.details.competition.carousel.ImageCarouselActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <activity android:name=".ui.profile.ProfileFragmentActivity"
+            android:label="@string/my_profile"
+            android:parentActivityName=".ui.main.MainActivity"
+            />
+
+        <activity android:name=".ui.profile.ProfileFragmentActivity"
+            android:label="@string/my_profile"
+            android:parentActivityName=".ui.main.MainActivity"
+            />
 
         <activity android:name=".ui.profile.ProfileFragmentActivity"
             android:label="@string/my_profile"

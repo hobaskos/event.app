@@ -18,15 +18,20 @@ import javax.inject.Inject;
 
 import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
+import io.hobaskos.event.eventapp.data.model.CompetitionImage;
 import io.hobaskos.event.eventapp.data.model.Event;
+import io.hobaskos.event.eventapp.data.model.EventCategory;
 import io.hobaskos.event.eventapp.data.model.EventCategoryTheme;
 import io.hobaskos.event.eventapp.data.model.Location;
 import io.hobaskos.event.eventapp.data.model.User;
 import io.hobaskos.event.eventapp.ui.base.view.activity.BaseLceViewStateActivity;
+import io.hobaskos.event.eventapp.ui.event.details.competition.list.CompetitionFragment;
 import io.hobaskos.event.eventapp.ui.dialog.DeleteDialogFragment;
 import io.hobaskos.event.eventapp.ui.dialog.DeleteDialogListener;
 import io.hobaskos.event.eventapp.ui.event.create.CreateEventActivity;
 import io.hobaskos.event.eventapp.ui.event.details.attending.AttendeesFragment;
+import io.hobaskos.event.eventapp.ui.event.details.competition.carousel.ImageCarouselActivity;
+import io.hobaskos.event.eventapp.ui.event.details.competition.list.OnCompetitionListInteractionListener;
 import io.hobaskos.event.eventapp.ui.event.details.location.LocationsFragment;
 import io.hobaskos.event.eventapp.ui.event.details.map.MapsActivity;
 import io.hobaskos.event.eventapp.ui.location.add.LocationActivity;
@@ -39,7 +44,8 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
         EventPresenter> implements
         EventView,
         LocationsFragment.OnListFragmentInteractionListener,
-        AttendeesFragment.OnUserListFragmentInteractionListener,
+        AttendeesFragment.OnAttendeesInteractionListener,
+        OnCompetitionListInteractionListener,
         DeleteDialogListener<Location> {
 
     public static final String ACTIVITY_STATE = "activity_state";
@@ -48,14 +54,25 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     public final static String EVENT_THEME = "eventTheme";
     public final static String TAG = EventActivity.class.getName();
 
+    // States
+    public static final int EDIT_EVENT_REQUEST = 1;
+    public static final int ADD_LOCATION_REQUEST = 2;
+    public static final int EDIT_LOCATION_REQUEST = 3;
+    public static final int VIEW_COMPETITION_CAROUSEL = 4;
+
     private Long eventId;
+    private EventCategoryTheme theme;
+
     private EventPagerAdapter eventPagerAdapter;
     protected ViewPager viewPager;
     protected TabLayout tabLayout;
     private boolean isOwner = false;
+    private boolean isLoggedIn;
     private Event event;
     private boolean hasBeenPaused = false;
     private Menu menu;
+
+
 
     @Inject public EventPresenter presenter;
 
@@ -63,25 +80,44 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // The Activity was started from the Event-List
-        if(savedInstanceState == null) {
-            Log.i("EventActivity", "Inside onCreate with savedInstanceState == null");
-            // This must be before setContentView!
-            EventCategoryTheme theme = (EventCategoryTheme) getIntent().getExtras().getSerializable(EVENT_THEME);
-            if (theme != null) { setEventTheme(theme); }
-        } else {
+        setTitle(R.string.loading);
+
+        if(savedInstanceState != null) {
+
             // The Activity was restarted
-            event = (Event) savedInstanceState.get(EVENT);
-            Log.i("EventActivity", "Inside onCreate with savedInstanceState != null");
-            setEventTheme(event.getCategory().getTheme());
+
+            try {
+
+                eventId = savedInstanceState.getLong(EVENT_ID);
+                theme = EventCategoryTheme.valueOf(savedInstanceState.get(EVENT_THEME).toString());
+                setEventTheme(theme);
+
+            } catch (NullPointerException e) {
+
+                Log.i(TAG, e.getMessage());
+
+            }
+
+        } else {
+
+            // The Activity is newly started from CreateEventActivity or the ListActivity.
+
+            eventId = getIntent().getExtras().getLong(EVENT_ID);
+
+            theme =
+                    (EventCategoryTheme) getIntent().getExtras().getSerializable(EVENT_THEME);
+
+            if (theme != null) { setEventTheme(theme); }
+
         }
 
+        presenter.getEvent(eventId);
+
         setContentView(R.layout.activity_event);
-        setTitle(R.string.loading);
         getSupportActionBar().setElevation(0);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        eventId = getIntent().getExtras().getLong(EVENT_ID);
+        isLoggedIn = presenter.isLoggedIn();
         viewPager = (ViewPager) findViewById(R.id.container);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
     }
@@ -117,9 +153,10 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         Log.i("EventActivity", "Inside onSaveInstanceState");
-        if(event != null) {
-            Log.i("EventActivity", "Inside onSaveInstanceState. Event != null");
-            outState.putParcelable(EVENT, event);
+
+        if(eventId > 0 && theme != null) {
+            outState.putLong(EVENT_ID, eventId);
+            outState.putString(EVENT_THEME, theme.toString());
         }
     }
 
@@ -153,7 +190,6 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
 
     @Override
     protected String getErrorMessage(Throwable e, boolean pullToRefresh) {
-        //Log.i("event-activity", e.getMessage());
         if (e.getMessage().contains("404")) { // 404 Not Found
             Toast.makeText(this, getString(R.string.error_event_not_found), Toast.LENGTH_SHORT).show();
             onBackPressed();
@@ -172,12 +208,22 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
         presenter.getOwnerStatus(event);
         setTitle(event.getTitle());
 
-        viewPager.setAdapter(eventPagerAdapter = new EventPagerAdapter(event, this, getSupportFragmentManager(), isOwner));
-        tabLayout.setTabMode(TabLayout.MODE_FIXED);
-        tabLayout.setupWithViewPager(viewPager);
-        tabLayout.getTabAt(0).setIcon(R.drawable.ic_event);
-        tabLayout.getTabAt(1).setIcon(R.drawable.ic_location_on);
-        tabLayout.getTabAt(2).setIcon(R.drawable.ic_group);
+        Log.i(TAG, "setData");
+
+        if(eventPagerAdapter == null) {
+            Log.i(TAG, "eventPagerAdapter == null");
+            eventPagerAdapter = new EventPagerAdapter(this.event, isOwner, isLoggedIn, this, getSupportFragmentManager());
+            viewPager.setAdapter(eventPagerAdapter);
+            tabLayout.setTabMode(TabLayout.MODE_FIXED);
+            tabLayout.setupWithViewPager(viewPager);
+            tabLayout.getTabAt(0).setIcon(R.drawable.ic_event);
+            tabLayout.getTabAt(1).setIcon(R.drawable.ic_location_on);
+            tabLayout.getTabAt(2).setIcon(R.drawable.ic_group);
+
+            if(isLoggedIn) {
+                tabLayout.getTabAt(3).setIcon(R.drawable.ic_competition_tab_white);
+            }
+        }
     }
 
     @Override
@@ -190,7 +236,7 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
         getMenuInflater().inflate(R.menu.event_menu, menu);
         this.menu = menu;
 
-        if(isOwner) {
+        if(!hasBeenPaused && isOwner) {
             // Edit Event button
             menu.getItem(0).setVisible(true);
         }
@@ -208,7 +254,8 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
                 Intent editIntent = new Intent(this, CreateEventActivity.class);
                 editIntent.putExtra(ACTIVITY_STATE, 1);
                 editIntent.putExtra(EVENT, event);
-                startActivity(editIntent);
+                //startActivity(editIntent);
+                startActivityForResult(editIntent, EDIT_EVENT_REQUEST);
                 break;
             case R.id.map:
                 Intent intent = new Intent(this, MapsActivity.class);
@@ -225,7 +272,7 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
         Intent intent = new Intent(this, LocationActivity.class);
         intent.putExtra(LocationActivity.EVENT_STATE, 1);
         intent.putExtra(LocationActivity.LOCATION, item);
-        startActivity(intent);
+        startActivityForResult(intent, EDIT_LOCATION_REQUEST);
     }
 
     @Override
@@ -243,6 +290,14 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     }
 
     @Override
+    public void onAttendeesFabInteraction() {
+        Log.i(TAG, "onAttendeesFabInteraction");
+        CompetitionFragment competitionFragment = (CompetitionFragment)
+        eventPagerAdapter.getItem(EventPagerAdapter.COMPETITIONS_FRAGMENT);
+        competitionFragment.setAttendingEvent(true);
+    }
+
+    @Override
     public void setIsOwner(boolean owner) {
         isOwner = owner;
 
@@ -251,32 +306,6 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
         }
 
         Toast.makeText(this, owner ? "Owner" : "Not owner", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-
-        hasBeenPaused = true;
-    }
-
-    protected void onResume() {
-        super.onResume();
-
-        if(hasBeenPaused) {
-            Log.i("EventActivity", "onResume(): hasBeenPaused==true");
-            refresh();
-        }
-    }
-
-    private void refresh() {
-        Log.i("EventActivity", "Refreshing activity...");
-        recreate();
-    }
-
-    @Override
-    public void recreate() {
-        super.recreate();
     }
 
     @Override
@@ -319,5 +348,90 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     @Override
     public void onCancelButtonClicked() {
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+
+            case EDIT_EVENT_REQUEST:
+
+                Log.i(TAG, "activityForResult with request code == EDIT_EVENT_REQUEST");
+
+                if(resultCode == RESULT_OK) {
+                    Log.i(TAG, "activityForResult with result code == RESULT_OK");
+                    Log.i(TAG, "eventId=" + data.getLongExtra(EVENT_ID, -1));
+                    Log.i(TAG, "theme=" + data.getStringExtra(EVENT_THEME));
+                    eventId = data.getLongExtra(EVENT_ID, -1);
+
+                    theme = EventCategoryTheme.valueOf(data.getStringExtra(EVENT_THEME));
+
+                    recreate();
+                }
+
+                break;
+
+            case ADD_LOCATION_REQUEST:
+
+                Log.i(TAG, "activityForResult with request code == ADD_LOCATION_REQUEST");
+
+                if(resultCode == RESULT_OK) {
+
+                    // refresh list
+                    // show locations tab
+
+                }
+
+                break;
+
+            case EDIT_LOCATION_REQUEST:
+
+                Log.i(TAG, "activityForResult with request code == EDIT_LOCATION_REQUEST");
+
+                if(resultCode == RESULT_OK) {
+
+                    // refresh list
+                    // show locations tab
+
+                }
+
+                break;
+
+            case VIEW_COMPETITION_CAROUSEL:
+
+                Log.i(TAG, "activityForResult with request code == VIEW_COMPETiTION_CAROUSEL");
+
+                if(resultCode == RESULT_OK) {
+
+                    // refresh list
+                    // show competition list tab
+
+                }
+
+                break;
+
+            default:
+                Log.i(TAG, "activityForResult without legal request code.");
+
+                // To something ??
+
+                break;
+        }
+    }
+
+    @Override
+    public void onCompetitionVoteButtonClicked(Long id, int vote) {
+        CompetitionFragment competitionFragment = (CompetitionFragment) eventPagerAdapter.getItem(3);
+        competitionFragment.onCompetitionImageVoteSubmitted(id, vote);
+    }
+
+    @Override
+    public void onCompetitionImageClick(Long id) {
+        Intent intent = new Intent(this, ImageCarouselActivity.class);
+        intent.putExtra(ImageCarouselActivity.ARG_STARTING_COMPETITION_IMAGE, id);
+        intent.putExtra(ImageCarouselActivity.ARG_COMPETITION_ID, event.getDefaultPollId());
+        startActivityForResult(intent, VIEW_COMPETITION_CAROUSEL);
     }
 }

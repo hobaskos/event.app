@@ -10,11 +10,15 @@ import io.hobaskos.event.eventapp.data.api.AccountService;
 import io.hobaskos.event.eventapp.data.AccountManager;
 import io.hobaskos.event.eventapp.data.api.ApiService;
 import io.hobaskos.event.eventapp.data.api.EventCategoryService;
+import io.hobaskos.event.eventapp.data.api.EventImageService;
+import io.hobaskos.event.eventapp.data.api.EventImageVoteService;
 import io.hobaskos.event.eventapp.data.api.EventService;
 import io.hobaskos.event.eventapp.data.api.JWTTokenInterceptor;
 import io.hobaskos.event.eventapp.data.api.LocationService;
 import io.hobaskos.event.eventapp.data.api.UserService;
 import io.hobaskos.event.eventapp.data.repository.EventCategoryRepository;
+import io.hobaskos.event.eventapp.data.repository.EventImageRepository;
+import io.hobaskos.event.eventapp.data.repository.EventImageVoteRepository;
 import io.hobaskos.event.eventapp.data.repository.EventRepository;
 import io.hobaskos.event.eventapp.data.repository.AccountRepository;
 import io.hobaskos.event.eventapp.data.repository.LocationRepository;
@@ -111,6 +115,29 @@ public class NetModule {
         return new AccountRepository(accountService);
     }
 
-    public LocationRepository providesLocationRepository(LocationService service){ return new LocationRepository(service); }
+    @Singleton
+    @Provides
+    public EventImageVoteService providesEventImageVoteService(Cache cache, JWTTokenInterceptor interceptor) {
+        return ApiService.build(httpUrl).createService(EventImageVoteService.class, cache, interceptor);
+    }
+
+    @Singleton
+    @Provides
+    public EventImageVoteRepository providesEventImageVoteRepository(EventImageVoteService eventImageVoteService) {
+        return new EventImageVoteRepository(eventImageVoteService);
+    }
+
+    @Singleton
+    @Provides
+    public EventImageService providesEventImageService(Cache cache, JWTTokenInterceptor interceptor) {
+        return ApiService.build(httpUrl).createService(EventImageService.class, cache, interceptor);
+    }
+
+    @Singleton
+    @Provides
+    public EventImageRepository providesEventImageRepository(EventImageService eventImageService) {
+        return new EventImageRepository(eventImageService);
+    }
+
 
 }

@@ -3,9 +3,13 @@ package io.hobaskos.event.eventapp.module;
 import javax.inject.Singleton;
 
 import dagger.Component;
+import io.hobaskos.event.eventapp.ui.event.details.competition.carousel.ImageCarouselActivity;
 import io.hobaskos.event.eventapp.ui.event.create.CreateEventActivity;
 import io.hobaskos.event.eventapp.ui.event.create.CreateEventFragment;
 import io.hobaskos.event.eventapp.ui.event.create.CreateEventPresenter;
+import io.hobaskos.event.eventapp.ui.event.details.competition.carousel.ImageCarouselPresenter;
+import io.hobaskos.event.eventapp.ui.event.details.competition.list.CompetitionFragment;
+import io.hobaskos.event.eventapp.ui.event.details.competition.list.CompetitionPresenter;
 import io.hobaskos.event.eventapp.ui.event.search.list.EventsFragment;
 import io.hobaskos.event.eventapp.ui.event.details.attending.AttendeesFragment;
 import io.hobaskos.event.eventapp.ui.location.add.LocationActivity;
@@ -46,8 +50,10 @@ public interface DiComponent {
     void inject(ProfileEditActivity profileEditActivity);
     void inject(AttendingEventsFragment attendingEventsFragment);
     void inject(AttendeesFragment attendeesFragment);
-
-
+    void inject(ImageCarouselActivity imageCarouselActivity);
+    void inject(CompetitionFragment competitionFragment);
     void inject(MyEventsFragment myEventsFragment);
     void inject(ArchivedEventsFragment archivedEventsFragment);
+    void inject(CompetitionPresenter competitionPresenter);
+    void inject(ImageCarouselPresenter imageCarouselPresenter);
 }

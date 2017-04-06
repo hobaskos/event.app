@@ -40,6 +40,7 @@ import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.eventbus.UserHasLoggedInEvent;
 import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.ui.base.view.activity.BaseViewStateActivity;
+import io.hobaskos.event.eventapp.ui.event.details.competition.list.CompetitionFragment;
 import io.hobaskos.event.eventapp.ui.event.create.CreateEventActivity;
 import io.hobaskos.event.eventapp.ui.event.details.EventActivity;
 import io.hobaskos.event.eventapp.ui.event.search.list.EventsFragment;

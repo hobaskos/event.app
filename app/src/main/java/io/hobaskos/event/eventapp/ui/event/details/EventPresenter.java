@@ -41,7 +41,7 @@ public class EventPresenter extends BaseRxLcePresenter<EventView, Event> {
 
         Log.i("EventPresenter", "Getting event with ID=" + id);
 
-        eventRepository.get(id)
+        eventRepository.get2(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<Event>() {
@@ -60,7 +60,7 @@ public class EventPresenter extends BaseRxLcePresenter<EventView, Event> {
                     public void onNext(Event event) {
                         Log.i("EventPresenter", "Found event with id=" + event.getId());
                         if(isViewAttached() && getView() != null) {
-                            Log.i("EventPresenter", "View is attached.");
+                            Log.i("EventPresenter", "Competition id=" + event.getDefaultPollId());
                             getView().setData(event);
                         }
                     }
@@ -92,6 +92,10 @@ public class EventPresenter extends BaseRxLcePresenter<EventView, Event> {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer);
+    }
+
+    public boolean isLoggedIn() {
+        return accountManager.isLoggedIn();
     }
 }
 

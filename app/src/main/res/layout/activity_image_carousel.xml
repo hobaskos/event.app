@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="5"
+    android:background="@color/colorBlack">
+
+    <ImageView
+        android:id="@+id/competition_image_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:adjustViewBounds="true"
+        android:layout_weight="4"
+        android:src="@drawable/header_img" />
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:weightSum="3" >
+
+        <ImageView
+            android:id="@+id/competition_up_vote"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_columnWeight="1"
+            android:padding="16dp"
+            android:src="@mipmap/ic_up" />
+
+        <TextView
+            android:id="@+id/voteScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="16dp"
+            android:layout_columnWeight="1"
+            android:text="100K"
+            android:textColor="@color/mdtp_white"
+            android:textSize="30sp"/>
+
+        <ImageView
+            android:id="@+id/competition_down_vote"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_columnWeight="1"
+            android:padding="16dp"
+            android:src="@mipmap/ic_down" />
+
+    </GridLayout>
+
+</LinearLayout>

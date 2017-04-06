@@ -64,4 +64,5 @@ public class EventAttendance {
     public void setUserLogin(String userLogin) {
         this.userLogin = userLogin;
     }
+
 }
