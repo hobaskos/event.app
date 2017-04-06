@@ -2,9 +2,7 @@ package io.hobaskos.event.eventapp.data.repository;
 
 import android.util.Log;
 
-import com.facebook.AccessToken;
 import com.google.gson.Gson;
-import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.VoidViewState;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -12,7 +10,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import io.hobaskos.event.eventapp.data.AccountManager;
 import io.hobaskos.event.eventapp.data.api.UserService;
 import io.hobaskos.event.eventapp.data.eventbus.UserHasLoggedInEvent;
 import io.hobaskos.event.eventapp.data.model.Device;
@@ -22,7 +19,7 @@ import io.hobaskos.event.eventapp.data.model.SocialUserVM;
 import io.hobaskos.event.eventapp.data.model.User;
 import io.hobaskos.event.eventapp.data.storage.JwtStorageProxy;
 import io.hobaskos.event.eventapp.data.storage.PersistentStorage;
-import io.hobaskos.event.eventapp.service.TokenService;
+import io.hobaskos.event.eventapp.service.FcmTokenService;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -61,10 +58,12 @@ public class UserRepository {
     public Observable<Void> login(LoginVM loginVM) {
         Observable<JwtToken> token = service.login(loginVM);
 
+        Log.d(TAG, "login: starting login routine");
         return token
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .map(t -> {
+                    Log.d(TAG, "login: mapping callback to save data");
                     jwtStorage.put(t.getIdToken());
                     sendDeviceTokenToServer();
                     service.getAccount()
@@ -85,10 +84,12 @@ public class UserRepository {
     public Observable<Void> login(SocialUserVM socialUserVM) {
         Observable<JwtToken> token = service.login(socialUserVM);
 
+        Log.d(TAG, "login: starting login routine");
         return token
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .map(t -> {
+                    Log.d(TAG, "login: mapping callback to save data");
                     jwtStorage.put(t.getIdToken());
                     sendDeviceTokenToServer();
                     service.getAccount()
@@ -141,9 +142,12 @@ public class UserRepository {
     }
 
     private void sendDeviceTokenToServer() {
-        String token = persistentStorage.get(TokenService.FIREBASE_TOKEN_KEY);
+        String token = persistentStorage.get(FcmTokenService.FIREBASE_TOKEN_KEY);
 
-        if (token == null || token.equals("")) return;
+        if (token == null || token.equals("")) {
+            Log.d(TAG, "sendDeviceTokenToServer: token was not found");
+            return;
+        }
 
         Log.d(TAG, "sendDeviceTokenToServer: " + token);
         service.saveDevice(new Device(token))

@@ -154,4 +154,4 @@ dependencies {
 
 // ADD THIS AT THE BOTTOM
 // NEEDS VALID ~/app/google-services.json file...
-//apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.gms.google-services'
