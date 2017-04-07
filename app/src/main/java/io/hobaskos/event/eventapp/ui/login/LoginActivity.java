@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -47,6 +48,9 @@ public class LoginActivity extends MvpActivity<LoginView, LoginPresenter> implem
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        // Don't show keyboard by default
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+
         setTitle(R.string.login);
 
         etLogin = (EditText) findViewById(R.id.field_username);
@@ -62,7 +66,7 @@ public class LoginActivity extends MvpActivity<LoginView, LoginPresenter> implem
         initFacebookLogin();
 
         TextView linkSkip = (TextView) findViewById(R.id.link_skip_login);
-        linkSkip.setOnClickListener(v -> startActivity(new Intent(getBaseContext(), MainActivity.class)));
+        linkSkip.setOnClickListener(v -> finish());
     }
 
     @NonNull
@@ -111,10 +115,7 @@ public class LoginActivity extends MvpActivity<LoginView, LoginPresenter> implem
 
         LoginVM loginVM = new LoginVM(etLogin.getText().toString(), etPassword.getText().toString());
 
-        new android.os.Handler().postDelayed(() -> {
-            presenter.login(loginVM);
-        }, 1000);
-
+        presenter.login(loginVM);
     }
 
     public boolean validate() {

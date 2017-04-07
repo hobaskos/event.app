@@ -177,7 +177,7 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
                 startActivity(new Intent(this, LoginActivity.class));
                 break;
             case R.id.nav_logout:
-                logout();
+                presenter.logout();
                 break;
         }
         // Set navdrawer item to checked
@@ -193,11 +193,6 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
         // Close drawer
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    private void logout() {
-        presenter.logout();
-        startActivity(new Intent(this, LoginActivity.class));
     }
 
     private void joinPrivateEvent() {
@@ -266,13 +261,22 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
     }
 
     @Override
+    public void onUserHasLoggedOutEvent() {
+        Log.d(TAG, "onUserHasLoggedOutEvent: user has logged out");
+        setUserName("");
+        setDefaultPicture();
+        hideNavigationHeader();
+        viewAnonymousNavigation();
+        Toast.makeText(this, R.string.you_have_now_logged_out, Toast.LENGTH_SHORT).show();
+        //startActivity(new Intent(this, LoginActivity.class));
+    }
+
     public void setUserName(String text) {
         View header = navigationView.getHeaderView(0);
         TextView tvNavHeaderUsername = (TextView) header.findViewById(R.id.nav_header_username);
         tvNavHeaderUsername.setText(text);
     }
 
-    @Override
     public void setUserPicture(String imageUrl) {
         View header = navigationView.getHeaderView(0);
         ImageView imageView = (ImageView) header.findViewById(R.id.imageView);
@@ -289,7 +293,6 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
                 .into(imageView);
     }
 
-    @Override
     public void setDefaultPicture() {
         View header = navigationView.getHeaderView(0);
         ImageView imageView = (ImageView) header.findViewById(R.id.imageView);
@@ -299,11 +302,13 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
     @Override
     public void viewAuthenticatedNavigation() {
         navigationView.getMenu().findItem(R.id.nav_login).setVisible(false);
+        navigationView.getMenu().setGroupVisible(R.id.navigational_menu_logged_in, true);
     }
 
     @Override
     public void viewAnonymousNavigation() {
         navigationView.getMenu().setGroupVisible(R.id.navigational_menu_logged_in, false);
+        navigationView.getMenu().findItem(R.id.nav_login).setVisible(true);
     }
 
     @Override

@@ -25,6 +25,8 @@ import rx.schedulers.Schedulers;
 
 public class MainPresenter extends MvpBasePresenter<MainView> {
 
+    private static final String TAG = MainPresenter.class.getName();
+
     private AccountManager accountManager;
     private EventRepository eventRepository;
 
@@ -35,7 +37,6 @@ public class MainPresenter extends MvpBasePresenter<MainView> {
     }
 
     public void fetchAccountInfo() {
-
         accountManager.getAccount()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -47,29 +48,28 @@ public class MainPresenter extends MvpBasePresenter<MainView> {
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.i("MainPresenter", e.getMessage());
+                        Log.i(TAG, e.getMessage());
                         e.printStackTrace();
                     }
 
                     @Override
                     public void onNext(User user) {
-                        Log.i("MainPresenter", "Name of user: " + user.getFirstName() + " " + user.getLastName());
-                        Log.i("User", user.toString());
-                        if(isViewAttached() && getView() != null)
-                        {
-                            getView().setUserName(user.getFirstName() + " " + user.getLastName());
-                            getView().setUserPicture(user.getProfileImageUrl());
+                        Log.i(TAG, "Name of user: " + user.getFirstName() + " " + user.getLastName());
+                        Log.i(TAG, user.toString());
+                        if(isViewAttached() && getView() != null) {
+                            Log.d(TAG, "logout: notifying the view");
+                            getView().onUserHasLoggedInEvent(null);
                         }
                     }
                 });
     }
 
     public void logout() {
+        Log.d(TAG, "logout: logging out");
         accountManager.logout();
         if(isViewAttached() && getView() != null) {
-            getView().setUserName("");
-            getView().setDefaultPicture();
-            getView().hideNavigationHeader();
+            Log.d(TAG, "logout: notifying the view");
+            getView().onUserHasLoggedOutEvent();
         }
     }
 
@@ -90,6 +90,4 @@ public class MainPresenter extends MvpBasePresenter<MainView> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(callback);
     }
-
-
 }
