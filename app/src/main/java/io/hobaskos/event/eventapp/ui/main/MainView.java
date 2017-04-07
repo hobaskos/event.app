@@ -2,6 +2,7 @@ package io.hobaskos.event.eventapp.ui.main;
 
 import com.hannesdorfmann.mosby.mvp.MvpView;
 
+import io.hobaskos.event.eventapp.data.eventbus.UserHasLoggedInEvent;
 import io.hobaskos.event.eventapp.data.model.User;
 
 /**
@@ -9,9 +10,8 @@ import io.hobaskos.event.eventapp.data.model.User;
  */
 
 public interface MainView extends MvpView {
-    void setUserName(String text);
-    void setUserPicture(String imageUrl);
-    void setDefaultPicture();
+    void onUserHasLoggedInEvent(UserHasLoggedInEvent userHasLoggedInEvent);
+    void onUserHasLoggedOutEvent();
     void viewAuthenticatedNavigation();
     void viewAnonymousNavigation();
     void hideNavigationHeader();

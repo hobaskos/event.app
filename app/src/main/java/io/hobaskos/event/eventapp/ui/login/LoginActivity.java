@@ -62,7 +62,7 @@ public class LoginActivity extends MvpActivity<LoginView, LoginPresenter> implem
         initFacebookLogin();
 
         TextView linkSkip = (TextView) findViewById(R.id.link_skip_login);
-        linkSkip.setOnClickListener(v -> startActivity(new Intent(getBaseContext(), MainActivity.class)));
+        linkSkip.setOnClickListener(v -> finish());
     }
 
     @NonNull
@@ -111,10 +111,7 @@ public class LoginActivity extends MvpActivity<LoginView, LoginPresenter> implem
 
         LoginVM loginVM = new LoginVM(etLogin.getText().toString(), etPassword.getText().toString());
 
-        new android.os.Handler().postDelayed(() -> {
-            presenter.login(loginVM);
-        }, 1000);
-
+        presenter.login(loginVM);
     }
 
     public boolean validate() {
