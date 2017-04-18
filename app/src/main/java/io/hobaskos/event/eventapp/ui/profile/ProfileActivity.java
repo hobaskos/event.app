@@ -3,12 +3,12 @@ package io.hobaskos.event.eventapp.ui.profile;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -33,18 +33,20 @@ public class ProfileActivity extends BaseViewStateActivity<ProfileView, ProfileP
 
     private final static String PROFILE_FRAGMENT_TAG = "profileFragment";
 
-    @BindView(R.id.user_profile_name)
-    protected TextView userProfileName;
     @BindView(R.id.user_profile_photo)
     protected ImageView userProfilePhoto;
-    @BindView(R.id.edit)
-    protected TextView edit;
     @BindView(R.id.tabsLayout)
     protected TabLayout tabLayout;
-    @BindView(R.id.viewPager)
+    @BindView(R.id.container)
     protected ViewPager viewPager;
 
+    @BindView(R.id.appbar_layout)
+    protected AppBarLayout appBarLayout;
+    @BindView(R.id.toolbar)
+    protected Toolbar toolbar;
+
     private ProfilePagerAdapter profilePagerAdapter;
+    private CollapsingToolbarLayout collapsingToolbarLayout;
 
     @Inject
     public ProfilePresenter presenter;
@@ -55,14 +57,20 @@ public class ProfileActivity extends BaseViewStateActivity<ProfileView, ProfileP
         setRetainInstance(true);
         App.getInst().getComponent().inject(this);
 
-        setContentView(R.layout.fragment_profile);
+        setContentView(R.layout.activity_profile);
 
         ButterKnife.bind(this);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        /*
         edit.setOnClickListener((View v) -> {
             Intent i = new Intent(this, ProfileEditActivity.class);
             startActivity(i);
         });
+        */
+
+        collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar_layout);
 
         profilePagerAdapter = new ProfilePagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(profilePagerAdapter);
@@ -76,11 +84,21 @@ public class ProfileActivity extends BaseViewStateActivity<ProfileView, ProfileP
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.profile_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
                 return true;
+            case R.id.edit:
+                Intent i = new Intent(this, ProfileEditActivity.class);
+                startActivity(i);
+                break;
         }
 
         return super.onOptionsItemSelected(item);
@@ -103,7 +121,8 @@ public class ProfileActivity extends BaseViewStateActivity<ProfileView, ProfileP
 
     @Override
     public void setProfileData(User user) {
-        userProfileName.setText(user.getFirstName() + " " + user.getLastName());
+        collapsingToolbarLayout.setTitle(user.getName());
+
         if (user.hasProfilePicture()) {
             Picasso.with(this)
                     .load(user.getProfileImageUrl())

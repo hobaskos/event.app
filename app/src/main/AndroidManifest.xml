@@ -102,6 +102,7 @@
         <activity android:name=".ui.profile.ProfileActivity"
             android:label="@string/my_profile"
             android:parentActivityName=".ui.main.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar"
             />
 
         <meta-data
