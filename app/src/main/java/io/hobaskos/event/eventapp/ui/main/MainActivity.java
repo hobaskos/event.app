@@ -35,14 +35,17 @@ import javax.inject.Inject;
 
 import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
+import io.hobaskos.event.eventapp.data.AccountManager;
 import io.hobaskos.event.eventapp.data.eventbus.UserHasLoggedInEvent;
 import io.hobaskos.event.eventapp.data.model.Event;
+import io.hobaskos.event.eventapp.data.model.User;
 import io.hobaskos.event.eventapp.ui.base.view.activity.BaseViewStateActivity;
 import io.hobaskos.event.eventapp.ui.event.create.CreateEventActivity;
 import io.hobaskos.event.eventapp.ui.event.details.EventActivity;
 import io.hobaskos.event.eventapp.ui.event.search.list.EventsFragment;
 import io.hobaskos.event.eventapp.ui.login.LoginActivity;
 import io.hobaskos.event.eventapp.ui.profile.ProfileActivity;
+import io.hobaskos.event.eventapp.util.UrlUtil;
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 import rx.Observer;
 
@@ -58,17 +61,17 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
 
     public final static String TAG = MainActivity.class.getName();
 
-
-
     // Views:
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
-
 
     private final static String JOIN_EVENT_KEY = "joinEventFragment";
 
     @Inject
     public MainPresenter presenter;
+
+    @Inject
+    public AccountManager accountManager;
 
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -85,7 +88,7 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
         App.getInst().getComponent().inject(this);
         setContentView(R.layout.activity_main_navigation);
 
-        if(!googleServicesAvailable()) {
+        if (!googleServicesAvailable()) {
             Log.i("MainActivity", "Google services is not working");
         }
 
@@ -113,6 +116,9 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
                     .commit();
         }
 
+        if (accountManager.isLoggedIn()) {
+            insertUserToNavigationDrawer(accountManager.getLocalAccount());
+        }
     }
 
     @NonNull
@@ -136,9 +142,6 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
         }
         return false;
     }
-
-
-
 
     /**
      * Handles navigation view item clicks
@@ -236,7 +239,6 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
     @Override
     public void onStop() {
         super.onStop();
-
         EventBus.getDefault().unregister(this);
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -247,8 +249,7 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onUserHasLoggedInEvent(UserHasLoggedInEvent userHasLoggedInEvent) {
-        setUserName(userHasLoggedInEvent.getName());
-        setUserPicture(userHasLoggedInEvent.getImageUrl());
+        insertUserToNavigationDrawer(userHasLoggedInEvent.getUser());
         viewAuthenticatedNavigation();
     }
 
@@ -261,6 +262,11 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
         viewAnonymousNavigation();
         Toast.makeText(this, R.string.you_have_now_logged_out, Toast.LENGTH_SHORT).show();
         //startActivity(new Intent(this, LoginActivity.class));
+    }
+
+    private void insertUserToNavigationDrawer(User user) {
+        setUserName(user.getName());
+        setUserPicture(user.getProfileImageUrl());
     }
 
     public void setUserName(String text) {
@@ -279,7 +285,7 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
         }
 
         Picasso.with(getApplicationContext())
-                .load(imageUrl)
+                .load(UrlUtil.getImageUrl(imageUrl))
                 .transform(new CropCircleTransformation())
                 .fit()
                 .into(imageView);

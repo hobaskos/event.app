@@ -1,9 +1,13 @@
 package io.hobaskos.event.eventapp.ui.profile.edit;
 
+import android.util.Log;
+import android.widget.Toast;
+
 import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
 
 import javax.inject.Inject;
 
+import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.data.AccountManager;
 import io.hobaskos.event.eventapp.data.model.User;
 import rx.Subscriber;
@@ -13,8 +17,9 @@ import rx.schedulers.Schedulers;
 /**
  * Created by Magnus on 08.03.2017.
  */
-
 public class ProfileEditPresenter extends MvpBasePresenter<ProfileEditView> {
+
+    public static final String TAG = ProfileEditActivity.class.getName();
     private AccountManager accountManager;
 
     @Inject
@@ -28,13 +33,12 @@ public class ProfileEditPresenter extends MvpBasePresenter<ProfileEditView> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<User>() {
                     @Override
-                    public void onCompleted() {
-
-                    }
+                    public void onCompleted() {}
 
                     @Override
                     public void onError(Throwable e) {
-
+                        Log.d(TAG, "onError: " + e.getMessage());
+                        Toast.makeText(App.getInst(), e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -43,7 +47,6 @@ public class ProfileEditPresenter extends MvpBasePresenter<ProfileEditView> {
                             getView().setProfileData(user);
                         }
                     }
-
                 });
     }
 
@@ -58,6 +61,8 @@ public class ProfileEditPresenter extends MvpBasePresenter<ProfileEditView> {
 
                     @Override
                     public void onError(Throwable e) {
+                        Log.d(TAG, "onError: " + e.getMessage());
+                        Toast.makeText(App.getInst(), e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -67,9 +72,7 @@ public class ProfileEditPresenter extends MvpBasePresenter<ProfileEditView> {
 
                         }
                     }
-
                 });
     }
-
-}//End of class
+}
 
