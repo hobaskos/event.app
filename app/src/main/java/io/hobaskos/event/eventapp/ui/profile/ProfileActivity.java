@@ -26,6 +26,7 @@ import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.model.User;
 import io.hobaskos.event.eventapp.ui.base.view.activity.BaseViewStateActivity;
 import io.hobaskos.event.eventapp.ui.profile.edit.ProfileEditActivity;
+import io.hobaskos.event.eventapp.util.UrlUtil;
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 
 public class ProfileActivity extends BaseViewStateActivity<ProfileView, ProfilePresenter>
@@ -117,6 +118,12 @@ public class ProfileActivity extends BaseViewStateActivity<ProfileView, ProfileP
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        presenter.refreshProfileData();
+    }
+
+    @Override
     public void onNewViewStateInstance() {}
 
     @Override
@@ -125,7 +132,7 @@ public class ProfileActivity extends BaseViewStateActivity<ProfileView, ProfileP
 
         if (user.hasProfilePicture()) {
             Picasso.with(this)
-                    .load(user.getProfileImageUrl())
+                    .load(UrlUtil.getImageUrl(user.getProfileImageUrl()))
                     .transform(new CropCircleTransformation())
                     .fit()
                     .into(userProfilePhoto);

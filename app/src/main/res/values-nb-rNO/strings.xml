@@ -4,7 +4,7 @@
 
     <!-- Screen titles -->
     <string name="events">Arrangementer</string>
-    <string name="edit_profile">Forandre profilinstillinger</string>
+    <string name="edit_profile">Rediger profil</string>
     <string name="filter_events">Søkefiltere</string>
 
     <string name="navigation_drawer_open">Åpne navigasjonsskuffen</string>
@@ -58,6 +58,7 @@
     <string name="could_not_load_categories">Kunne ikke hente kategoriene. </string>
     <string name="could_not_add_location">Kunne ikke legge til lokasjonen. Vennligst prøv på nytt.</string>
     <string name="could_not_edit_location">Kunne ikke endre lokasjonen. Vennligst prøv på nytt.</string>
+    <string name="could_not_find_camera">Ingen kamera tilgjengelig på denne enheten</string>
     <string name="private_event_label">Privat Event</string>
     <string name="event_category_label">Kategori</string>
     <string name="from">Fra</string>
@@ -70,6 +71,7 @@
     </string-array>
     <string name="close">Lukk</string>
     <string name="submit">Send</string>
+    <string name="save">Lagre</string>
     <string name="join_private_event">Gå til privat event</string>
     <string name="enter_invitation_code">Oppgi invitasjonskode</string>
     <string name="join_private">Gå til privat event</string>
@@ -121,4 +123,12 @@
     <string name="you_have_now_logged_out">Ha det bra. Du er nå logget ut</string>
 
     <string name="or">Eller</string>
+
+    <string name="edit_image">Rediger bilde</string>
+    <string name="select_image_option">Velg bildetype</string>
+    <string name="capture_image">Ta nytt bilde</string>
+    <string name="select_image_from_lib">Velg bilde fra bibliotek</string>
+
+    <string name="first_name">Fornavn</string>
+    <string name="last_name">Etternavn</string>
 </resources>
