@@ -90,10 +90,6 @@ public class ProfileFragment extends MvpFragment<ProfileView, ProfilePresenter> 
         unbinder.unbind();
     }
 
-    /**
-     *
-     * @return
-     */
     @NonNull
     @Override
     public ProfilePresenter createPresenter() {
@@ -101,16 +97,11 @@ public class ProfileFragment extends MvpFragment<ProfileView, ProfilePresenter> 
         return presenter;
     }
 
-    /**
-     *
-     * @param user
-     */
     @Override
     public void setProfileData(User user) {
         userProfileName.setText(user.getFirstName() + " " + user.getLastName());
 
-        if(user.hasProfilePicture())
-        {
+        if (user.hasProfilePicture()) {
             Picasso.with(getContext())
                     .load(user.getProfileImageUrl())
                     .transform(new CropCircleTransformation())
@@ -132,12 +123,8 @@ public class ProfileFragment extends MvpFragment<ProfileView, ProfilePresenter> 
     }
 
     @Override
-    public void onTabUnselected(TabLayout.Tab tab) {
-
-    }
+    public void onTabUnselected(TabLayout.Tab tab) {}
 
     @Override
-    public void onTabReselected(TabLayout.Tab tab) {
-
-    }
+    public void onTabReselected(TabLayout.Tab tab) {}
 }

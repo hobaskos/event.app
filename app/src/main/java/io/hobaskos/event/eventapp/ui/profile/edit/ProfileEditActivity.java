@@ -12,6 +12,7 @@ import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -34,11 +35,10 @@ import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 
 public class ProfileEditActivity extends MvpActivity<ProfileEditView, ProfileEditPresenter> implements ProfileEditView {
 
-    private static final String TAG = "ProfileEditActivity";
+    private static final String TAG = ProfileEditActivity.class.getName();
 
     private static final int REQUEST_IMAGE_CAPTURE = 0;
     private static final int REQUEST_IMAGE_LIBRARY = 1;
-
 
     private TextView firstname;
     private TextView lastname;
@@ -57,8 +57,9 @@ public class ProfileEditActivity extends MvpActivity<ProfileEditView, ProfileEdi
         setContentView(R.layout.activity_edit_profile);
 
         setTitle(R.string.edit_profile);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        // Don't show keyboard by default
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
         firstname = (TextView) findViewById(R.id.firstnameInput);
         lastname = (TextView) findViewById(R.id.lastnameInput);
@@ -67,12 +68,9 @@ public class ProfileEditActivity extends MvpActivity<ProfileEditView, ProfileEdi
         userProfilePhoto = (ImageView) findViewById(R.id.user_profile_photo);
         btnDone = (Button) findViewById(R.id.btn_done);
 
-        if (!hasCamera())
-            changeIMG.setEnabled(false);
+        if (!hasCamera()) { changeIMG.setEnabled(false); }
 
-        btnDone.setOnClickListener((View v) -> {
-            updateProfileData();
-        });
+        btnDone.setOnClickListener((View v) -> updateProfileData());
 
         presenter.refreshProfileData();
 

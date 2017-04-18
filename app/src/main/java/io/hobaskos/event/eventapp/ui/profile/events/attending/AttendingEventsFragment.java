@@ -22,6 +22,7 @@ import icepick.State;
 import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.model.Event;
+import io.hobaskos.event.eventapp.ui.base.adapter.EventDateSectionPagedRecyclerAdapter;
 import io.hobaskos.event.eventapp.ui.base.view.fragment.BaseLceViewStateFragment;
 import io.hobaskos.event.eventapp.ui.event.details.EventActivity;
 import io.hobaskos.event.eventapp.ui.base.adapter.NpaLinearLayoutManager;
@@ -36,44 +37,42 @@ public class AttendingEventsFragment extends BaseLceViewStateFragment<SwipeRefre
     public final static String TAG = AttendingEventsFragment.class.getName();
 
     // Views
-    @BindView(R.id.recyclerView)RecyclerView recyclerView;
-    @BindView(R.id.contentView) SwipeRefreshLayout swipeRefreshLayout;
+    @BindView(R.id.recyclerView) protected RecyclerView recyclerView;
+    @BindView(R.id.contentView) protected SwipeRefreshLayout swipeRefreshLayout;
 
-    TextView emptyResultView;
+    private TextView emptyResultView;
 
     private NpaLinearLayoutManager linearLayoutManager;
     private DividerItemDecoration dividerItemDecoration;
 
     // Model
-    List<Event> eventsList = new ArrayList<>();
-    private AttendingEventsAdapter adapter;
+    private List<Event> eventsList = new ArrayList<>();
+    private EventDateSectionPagedRecyclerAdapter adapter;
 
     // State
-    @State
-    boolean canLoadMore = true;
+    @State boolean canLoadMore = true;
     @State boolean isLoadingMore = false;
     @State int page = 0;
-
 
     @Inject
     public AttendingEventsPresenter attendingEventsPresenter;
 
-    @Override public void onCreate(Bundle savedInstanceState) {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
     }
 
-
-    @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         Log.i(TAG, "onViewCreated()");
         super.onViewCreated(view, savedInstanceState);
-        Log.i(TAG, "page: " + page );
+        Log.i(TAG, "page: " + page);
 
         emptyResultView = (TextView) view.findViewById(R.id.emptyView);
 
         recyclerView = (RecyclerView) getView().findViewById(R.id.recyclerView);
         swipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.contentView);
-
-
 
         // Configure Swipe refresh:
         swipeRefreshLayout.setOnRefreshListener(() -> loadData(true));
@@ -81,7 +80,7 @@ public class AttendingEventsFragment extends BaseLceViewStateFragment<SwipeRefre
         // Configure recyclerview:
         linearLayoutManager = new NpaLinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
-        adapter = new AttendingEventsAdapter(eventsList, getContext(),
+        adapter = new EventDateSectionPagedRecyclerAdapter(getContext(),
                 event -> {
                     Intent intent = new Intent(getActivity(), EventActivity.class);
                     intent.putExtra(EventActivity.EVENT_ID, event.getId());
@@ -142,9 +141,8 @@ public class AttendingEventsFragment extends BaseLceViewStateFragment<SwipeRefre
     @Override
     public List<Event> getData() {
         Log.i(TAG, "getData()");
-        return adapter.getItems();
+        return eventsList;
     }
-
 
     @Override
     protected String getErrorMessage(Throwable e, boolean pullToRefresh) {
@@ -156,7 +154,6 @@ public class AttendingEventsFragment extends BaseLceViewStateFragment<SwipeRefre
             return e.getMessage();
         }
     }
-
 
     @Override
     public void showLoadMore(boolean showLoadMore) {
@@ -180,6 +177,7 @@ public class AttendingEventsFragment extends BaseLceViewStateFragment<SwipeRefre
             canLoadMore = false;
             Toast.makeText(getActivity(), "No more events to show", Toast.LENGTH_SHORT).show();
         } else {
+            eventsList.addAll(model);
             adapter.addItems(model);
         }
     }
@@ -188,6 +186,8 @@ public class AttendingEventsFragment extends BaseLceViewStateFragment<SwipeRefre
     public void setData(List<Event> data) {
         Log.i(TAG, "setData(), size: " + data.size());
         Log.i(TAG, "setData(), toString: " + data.toString());
+        eventsList = new ArrayList<>();
+        eventsList.addAll(data);
         adapter.setItems(data);
         adapter.notifyDataSetChanged();
         swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(false));
@@ -207,7 +207,7 @@ public class AttendingEventsFragment extends BaseLceViewStateFragment<SwipeRefre
     public void showContent() {
         Log.i(TAG, "showContent");
         super.showContent();
-        if (adapter.getItems().isEmpty()) {
+        if (adapter.isEmpty()) {
             contentView.setVisibility(View.GONE);
             emptyResultView.setVisibility(View.VISIBLE);
         } else {
@@ -224,4 +224,4 @@ public class AttendingEventsFragment extends BaseLceViewStateFragment<SwipeRefre
         emptyResultView.setVisibility(View.GONE);
         super.showLoading(pullToRefresh);
     }
-} // end of Class
+}
