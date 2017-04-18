@@ -63,7 +63,7 @@
         </activity>
 
         <activity android:name=".ui.profile.edit.ProfileEditActivity"
-            android:parentActivityName=".ui.profile.ProfileFragmentActivity"/>
+            android:parentActivityName=".ui.profile.ProfileActivity"/>
 
         <activity android:name=".ui.event.create.CreateEventActivity"
             android:parentActivityName=".ui.main.MainActivity" />
@@ -99,7 +99,7 @@
             android:name=".ui.event.details.competition.carousel.ImageCarouselActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
 
-        <activity android:name=".ui.profile.ProfileFragmentActivity"
+        <activity android:name=".ui.profile.ProfileActivity"
             android:label="@string/my_profile"
             android:parentActivityName=".ui.main.MainActivity"
             />
