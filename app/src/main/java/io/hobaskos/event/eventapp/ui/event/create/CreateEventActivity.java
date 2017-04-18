@@ -7,11 +7,13 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.SwitchCompat;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -51,9 +53,7 @@ public class CreateEventActivity extends MvpActivity<CreateEventView, CreateEven
     private String image;
     private Spinner categories;
     private SwitchCompat privateEvent;
-    private Button chooseImage;
-    private Button create;
-    private Button edit;
+    private ImageView chooseImage;
     private RelativeLayout loadingPanel;
     private Event event;
 
@@ -70,26 +70,13 @@ public class CreateEventActivity extends MvpActivity<CreateEventView, CreateEven
 
         description = (EditText) findViewById(R.id.create_event_field_description);
 
-        chooseImage = (Button) findViewById(R.id.create_event_button_choose_image);
+        chooseImage = (ImageView) findViewById(R.id.create_event_button_choose_image);
         chooseImage.setOnClickListener(v -> openGallery());
 
         categories = (Spinner) findViewById(R.id.create_event_spinner_event_categories);
         categories.setVisibility(View.INVISIBLE);
 
         privateEvent = (SwitchCompat) findViewById(R.id.create_event_switch_private_event);
-
-        create = (Button) findViewById(R.id.create_event_button_create);
-        create.setOnClickListener(v -> {
-            create.setEnabled(false);
-            onCreateButtonClicked();
-        });
-
-        edit = (Button) findViewById(R.id.create_event_button_edit);
-        edit.setVisibility(View.GONE);
-        edit.setOnClickListener(v -> {
-            edit.setEnabled(false);
-            onEditButtonClicked();
-        });
 
         loadingPanel = (RelativeLayout) findViewById(R.id.activity_create_event_loading_panel);
 
@@ -104,8 +91,6 @@ public class CreateEventActivity extends MvpActivity<CreateEventView, CreateEven
             title.setText(event.getTitle());
             description.setText(event.getDescription());
             categories.setSelection(getIndex(event.getEventCategory()));
-            create.setVisibility(View.GONE);
-            edit.setVisibility(View.VISIBLE);
         }
     }
 
@@ -134,10 +119,20 @@ public class CreateEventActivity extends MvpActivity<CreateEventView, CreateEven
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.edit_event_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
+                return true;
+            case R.id.save:
+                if (activityState == ActivityState.EDIT) onEditButtonClicked();
+                else onCreateButtonClicked();
                 return true;
         }
 
@@ -145,10 +140,7 @@ public class CreateEventActivity extends MvpActivity<CreateEventView, CreateEven
     }
 
     private void onCreateButtonClicked() {
-        if(!validate()) {
-            create.setEnabled(true);
-            return;
-        }
+        if(!validate()) { return; }
 
         Event event = new Event();
         event.setTitle(title.getText().toString());
@@ -164,10 +156,7 @@ public class CreateEventActivity extends MvpActivity<CreateEventView, CreateEven
     }
 
     private void onEditButtonClicked() {
-        if(!validate()) {
-            edit.setEnabled(true);
-            return;
-        }
+        if(!validate()) { return; }
 
         event.setTitle(title.getText().toString());
         event.setDescription(description.getText().toString());
@@ -216,6 +205,7 @@ public class CreateEventActivity extends MvpActivity<CreateEventView, CreateEven
                 try {
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
                     image = ImageUtil.getEncoded64ImageStringFromBitmap(bitmap);
+                    chooseImage.setImageBitmap(bitmap);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -245,7 +235,7 @@ public class CreateEventActivity extends MvpActivity<CreateEventView, CreateEven
 
         Intent intent = new Intent(this, EventActivity.class);
         intent.putExtra(EventActivity.EVENT_ID, event.getId());
-        intent.putExtra(EventActivity.EVENT_THEME, event.getCategory().getTheme().toString());
+        intent.putExtra(EventActivity.EVENT_THEME, event.getCategory().getTheme());
 
         if(activityState.equals(ActivityState.CREATE)) {
             startActivity(intent);
@@ -262,12 +252,10 @@ public class CreateEventActivity extends MvpActivity<CreateEventView, CreateEven
 
         if(activityState.equals(ActivityState.CREATE)) {
             Toast.makeText(this, R.string.could_not_create_event, Toast.LENGTH_SHORT).show();
-            create.setEnabled(true);
             return;
         }
 
         Toast.makeText(this, R.string.could_not_edit_event, Toast.LENGTH_SHORT).show();
-        edit.setEnabled(true);
     }
 
     @Override

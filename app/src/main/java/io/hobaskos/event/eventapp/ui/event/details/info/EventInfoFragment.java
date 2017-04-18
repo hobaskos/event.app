@@ -71,9 +71,11 @@ public class EventInfoFragment extends Fragment {
 
         ButterKnife.bind(this, view);
 
-        Picasso.with(getContext())
-                .load(UrlUtil.getImageUrl(event.getImageUrl()))
-                .into(eventImage);
+        if (event.getImageUrl() != null && !event.getImageUrl().equals("")) {
+            Picasso.with(getContext())
+                    .load(UrlUtil.getImageUrl(event.getImageUrl()))
+                    .into(eventImage);
+        }
 
         if(event.getFromDate() != null) {
             eventTime.setText(DateUtils.formatDateTime(getContext(),
@@ -82,7 +84,7 @@ public class EventInfoFragment extends Fragment {
 
         eventDescription.setText(event.getDescription());
         attendanceCount.setText(String.valueOf(event.getAttendanceCount()));
-        organizer.setText("REPLACE ME");
+        //organizer.setText("REPLACE ME");
         category.setText(event.getCategory().getTitle());
 
         if (event.isPrivateEvent()) {

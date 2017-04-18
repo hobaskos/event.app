@@ -103,10 +103,7 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
             // The Activity is newly started from CreateEventActivity or the ListActivity.
 
             eventId = getIntent().getExtras().getLong(EVENT_ID);
-
-            theme =
-                    (EventCategoryTheme) getIntent().getExtras().getSerializable(EVENT_THEME);
-
+            theme = (EventCategoryTheme) getIntent().getExtras().getSerializable(EVENT_THEME);
             if (theme != null) { setEventTheme(theme); }
 
         }
