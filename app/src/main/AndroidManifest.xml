@@ -155,7 +155,7 @@
             </intent-filter>
         </service>
 
-        <service android:name=".service.TokenService">
+        <service android:name=".service.FcmTokenService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
             </intent-filter>

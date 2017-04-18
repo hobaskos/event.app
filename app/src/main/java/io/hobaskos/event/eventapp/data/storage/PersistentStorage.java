@@ -12,8 +12,8 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class PersistentStorage {
 
-    private String PREFS_NAME = "ls";
-    private int MODE = MODE_PRIVATE;
+    public static final String PREFS_NAME = "ls";
+    public static final int MODE = MODE_PRIVATE;
     private SharedPreferences preferences;
 
     public PersistentStorage(App app) {
