@@ -12,7 +12,8 @@ import java.io.ByteArrayOutputStream;
 
 public final class ImageUtil {
 
-    public static final int PICK_IMAGE_REQUEST = 1;
+    public static final int CAPTURE_IMAGE_REQUEST = 0;
+    public static final int PICK_IMAGE_REQUEST = 2;
 
     public static String getEncoded64ImageStringFromBitmap(Bitmap bitmap) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();

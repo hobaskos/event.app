@@ -106,7 +106,6 @@ public class ProfileEditActivity extends MvpActivity<ProfileEditView, ProfileEdi
     }
 
     public void launchCamera() {
-
         if (!hasCamera()) {
             Toast.makeText(this, R.string.could_not_find_camera, Toast.LENGTH_SHORT).show();
             return;
