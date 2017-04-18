@@ -1,18 +1,21 @@
 package io.hobaskos.event.eventapp.ui.profile.edit;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
+import android.support.v7.app.AlertDialog;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,31 +24,35 @@ import android.widget.Toast;
 import com.hannesdorfmann.mosby.mvp.MvpActivity;
 import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
+
 import javax.inject.Inject;
 
 import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.model.User;
+import io.hobaskos.event.eventapp.util.ImageUtil;
+import io.hobaskos.event.eventapp.util.UrlUtil;
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 
 /**
  * Created by Magnus on 08.03.2017.
  */
-
 public class ProfileEditActivity extends MvpActivity<ProfileEditView, ProfileEditPresenter> implements ProfileEditView {
 
-    private static final String TAG = "ProfileEditActivity";
+    private static final String TAG = ProfileEditActivity.class.getName();
 
     private static final int REQUEST_IMAGE_CAPTURE = 0;
     private static final int REQUEST_IMAGE_LIBRARY = 1;
 
+    private static final String[] CAMERA_PERMS = { Manifest.permission.CAMERA };
+    private static final int CAMERA_REQUEST = 3337;
 
-    private TextView firstname;
-    private TextView lastname;
-    private TextView changeIMG;
-    private TextView deleteIMG;
+    private TextView firstName;
+    private TextView lastName;
     private ImageView userProfilePhoto;
-    private Button btnDone;
+
+    private String image;
     private User user;
 
     @Inject
@@ -57,40 +64,69 @@ public class ProfileEditActivity extends MvpActivity<ProfileEditView, ProfileEdi
         setContentView(R.layout.activity_edit_profile);
 
         setTitle(R.string.edit_profile);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        // Don't show keyboard by default
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
-        firstname = (TextView) findViewById(R.id.firstnameInput);
-        lastname = (TextView) findViewById(R.id.lastnameInput);
-        changeIMG = (TextView) findViewById(R.id.change_img);
-        deleteIMG = (TextView) findViewById(R.id.delete_img);
+        firstName = (TextView) findViewById(R.id.firstnameInput);
+        lastName = (TextView) findViewById(R.id.lastnameInput);
         userProfilePhoto = (ImageView) findViewById(R.id.user_profile_photo);
-        btnDone = (Button) findViewById(R.id.btn_done);
-
-        if (!hasCamera())
-            changeIMG.setEnabled(false);
-
-        btnDone.setOnClickListener((View v) -> {
-            updateProfileData();
-        });
 
         presenter.refreshProfileData();
 
     }
-    //Check if the device has a camera at all, front or backfaceing
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.profile_edit_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
     private boolean hasCamera() {
         return getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY);
     }
 
-    public void launchCamera(View view) {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        //Take a picture and pass result along to onActiviyResult
-        startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
+    public void pickNewProfileImage(View view) {
+        CharSequence options[] = new CharSequence[]{
+                getString(R.string.capture_image),
+                getString(R.string.select_image_from_lib)};
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.select_image_option))
+               .setItems(options, (dialog, which) -> {
+                    switch (which) {
+                        case 0: launchCamera(); break;
+                        case 1: launchLibrary(); break;
+                    }
+               })
+               .setNegativeButton(R.string.close, (dialog, which) -> {
+                   dialog.dismiss();
+               })
+               .show();
     }
 
-    public void launchLibrary(View view) {
-        Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(intent , REQUEST_IMAGE_LIBRARY);
+    public void launchCamera() {
+
+        if (!hasCamera()) {
+            Toast.makeText(this, R.string.could_not_find_camera, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, CAMERA_PERMS, CAMERA_REQUEST);
+        } else {
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
+        }
+    }
+
+    public void launchLibrary() {
+        Intent intent = new Intent();
+        // Only show images
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        // Always show the chooser
+        startActivityForResult(Intent.createChooser(intent, "Select image"), REQUEST_IMAGE_LIBRARY);
     }
 
     @Override
@@ -99,23 +135,37 @@ public class ProfileEditActivity extends MvpActivity<ProfileEditView, ProfileEdi
             case android.R.id.home:
                 onBackPressed();
                 return true;
+            case R.id.save:
+                updateProfileData();
+                break;
         }
 
         return super.onOptionsItemSelected(item);
-    } // end of onOptionsItemSelected()
-
-
-    //If you want to return the taken image
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        String imgDecodableString;
+        super.onActivityResult(requestCode, resultCode, data);
         RoundedBitmapDrawable roundDrawable;
-        User user = new User();
 
-        try {
+        if (resultCode == RESULT_OK) {
+            if (requestCode == REQUEST_IMAGE_LIBRARY && data != null && data.getData() != null) {
+                Uri uri = data.getData();
+                try {
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
 
-            if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+                    roundDrawable = RoundedBitmapDrawableFactory.create(getResources(), bitmap);
+                    roundDrawable.setCircular(true);
+                    userProfilePhoto.setImageDrawable(roundDrawable);
+
+                    image = ImageUtil.getEncoded64ImageStringFromBitmap(bitmap);
+                    user.setProfileImage(image);
+                    user.setProfileImageContentType("image/png");
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else if (requestCode == REQUEST_IMAGE_CAPTURE) {
                 //Get the photo
                 Bundle extras = data.getExtras();
                 Bitmap photo = (Bitmap) extras.get("data");
@@ -126,40 +176,12 @@ public class ProfileEditActivity extends MvpActivity<ProfileEditView, ProfileEdi
 
                 user.setProfileImageUrl(roundDrawable.toString());
                 userProfilePhoto.setImageDrawable(roundDrawable);
+
+                image = ImageUtil.getEncoded64ImageStringFromBitmap(photo);
+                user.setProfileImage(image);
+                user.setProfileImageContentType("image/png");
             }
-            // When an Image is picked
-            if (requestCode == REQUEST_IMAGE_LIBRARY && resultCode == RESULT_OK
-                    && null != data) {
-                // Get the Image from data
-
-                Uri selectedImage = data.getData();
-                String[] filePathColumn = {MediaStore.Images.Media.DATA};
-
-                // Get the cursor
-                Cursor cursor = getContentResolver().query(selectedImage,
-                        filePathColumn, null, null, null);
-                // Move to first row
-                cursor.moveToFirst();
-
-                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                imgDecodableString = cursor.getString(columnIndex);
-                cursor.close();
-                // Set the Image in ImageView after decoding the String
-                roundDrawable = RoundedBitmapDrawableFactory.create(getResources(), imgDecodableString);
-                roundDrawable.setCircular(true);
-
-                user.setProfileImageUrl(roundDrawable.toString());
-                userProfilePhoto.setImageDrawable(roundDrawable);
-
-
-            }
-        } catch (Exception e) {
-            Toast.makeText(this, "Ups, dette gikk ikke bra! :(", Toast.LENGTH_LONG).show();
         }
-    }
-
-    public void deleteIMG(View view) {
-        userProfilePhoto.setImageResource(android.R.color.transparent);
     }
 
     @NonNull
@@ -172,29 +194,44 @@ public class ProfileEditActivity extends MvpActivity<ProfileEditView, ProfileEdi
     @Override
     public void setProfileData(User user) {
         this.user = user;
-        firstname.setText(user.getFirstName());
-        lastname.setText(user.getLastName());
+        firstName.setText(user.getFirstName());
+        lastName.setText(user.getLastName());
 
-        if(user.hasProfilePicture()) {
-            Picasso.with(getApplicationContext())
-                    .load(user.getProfileImageUrl())
+        if (user.hasProfilePicture()) {
+            Picasso.with(this)
+                    .load(UrlUtil.getImageUrl(user.getProfileImageUrl()))
                     .transform(new CropCircleTransformation())
                     .fit()
                     .into(userProfilePhoto);
         }
     }
+
     @Override
     public void updateProfileData() {
-        user.setFirstName(firstname.getText().toString());
-        user.setLastName(lastname.getText().toString());
+        user.setFirstName(firstName.getText().toString());
+        user.setLastName(lastName.getText().toString());
 
         presenter.updateProfile(user);
     }
 
-    public void savedProfileData() {
-        finish();
+    public void savedProfileData() { finish(); }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case CAMERA_REQUEST: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
+                } else {
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+        }
     }
-
-}// End of class ProfileEditActivity
-
+}
 

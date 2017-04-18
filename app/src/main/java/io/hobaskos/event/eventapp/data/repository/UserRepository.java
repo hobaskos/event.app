@@ -113,7 +113,15 @@ public class UserRepository {
     }
 
     public Observable<Void> saveAccount(User user) {
-        return service.saveAccount(user);
+        return service.saveAccount(user)
+                .doOnNext(aVoid -> {
+                    service.getAccount()
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(this::setLocalAccount, throwable -> {
+                                Log.i("UserRepository", throwable.getMessage());
+                            });
+                });
     }
 
     public User getLocalAccount() {
@@ -125,7 +133,7 @@ public class UserRepository {
         Log.i("UserRepository", "User=" + user.toString());
         String serialized = new Gson().toJson(user);
         persistentStorage.put(LOCAL_ACCOUNT_KEY, serialized);
-        EventBus.getDefault().postSticky(new UserHasLoggedInEvent(user.getName(), user.getProfileImageUrl()));
+        EventBus.getDefault().postSticky(new UserHasLoggedInEvent(user));
     }
 
     public void removeLocalAccount() {

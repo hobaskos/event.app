@@ -3,54 +3,51 @@ package io.hobaskos.event.eventapp.ui.profile;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
-import com.hannesdorfmann.mosby.mvp.MvpActivity;
+import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
 import com.squareup.picasso.Picasso;
-
-import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
-import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.data.model.User;
-
+import io.hobaskos.event.eventapp.ui.base.view.activity.BaseViewStateActivity;
 import io.hobaskos.event.eventapp.ui.profile.edit.ProfileEditActivity;
+import io.hobaskos.event.eventapp.util.UrlUtil;
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 
+public class ProfileActivity extends BaseViewStateActivity<ProfileView, ProfilePresenter>
+        implements ProfileView {
 
-/**
- * Created by Magnus on 22.02.2017.
- */
+    private final static String PROFILE_FRAGMENT_TAG = "profileFragment";
 
-public class ProfileActivity extends MvpActivity<ProfileView, ProfilePresenter> implements ProfileView {
+    @BindView(R.id.user_profile_photo)
+    protected ImageView userProfilePhoto;
+    @BindView(R.id.tabsLayout)
+    protected TabLayout tabLayout;
+    @BindView(R.id.container)
+    protected ViewPager viewPager;
 
-    private static final String TAG = "ProfileActivity";
+    @BindView(R.id.appbar_layout)
+    protected AppBarLayout appBarLayout;
+    @BindView(R.id.toolbar)
+    protected Toolbar toolbar;
 
-    /**
-     *
-     */
-    private TextView userProfileName;
-
-    /**
-     *
-     */
-    private ImageView userProfilePhoto;
-
-    /**
-     *
-     */
-    private TextView edit;
-    private Event event;
-
-    List<Event> eventsAttending;
+    private ProfilePagerAdapter profilePagerAdapter;
+    private CollapsingToolbarLayout collapsingToolbarLayout;
 
     @Inject
     public ProfilePresenter presenter;
@@ -58,31 +55,61 @@ public class ProfileActivity extends MvpActivity<ProfileView, ProfilePresenter> 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+        App.getInst().getComponent().inject(this);
+
         setContentView(R.layout.activity_profile);
 
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
-        viewPager.setAdapter(new ProfilePagerAdapter(getSupportFragmentManager()));
+        ButterKnife.bind(this);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabsLayout);
-        tabLayout.setupWithViewPager(viewPager);
-
-
-        userProfileName = (TextView) findViewById(R.id.user_profile_name);
-        userProfilePhoto = (ImageView) findViewById(R.id.user_profile_photo);
-        edit = (TextView) findViewById(R.id.edit);
-
+        /*
         edit.setOnClickListener((View v) -> {
             Intent i = new Intent(this, ProfileEditActivity.class);
             startActivity(i);
         });
+        */
 
+        collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar_layout);
+
+        profilePagerAdapter = new ProfilePagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(profilePagerAdapter);
+
+        tabLayout.setTabMode(TabLayout.MODE_FIXED);
+        tabLayout.setupWithViewPager(viewPager);
+
+        presenter.attachView(this);
         presenter.refreshProfileData();
+
     }
 
-    /**
-     *
-     * @return
-     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.profile_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            case R.id.edit:
+                Intent i = new Intent(this, ProfileEditActivity.class);
+                startActivity(i);
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public ViewState<ProfileView> createViewState() {
+        return new ProfileViewState();
+    }
+
     @NonNull
     @Override
     public ProfilePresenter createPresenter() {
@@ -90,36 +117,25 @@ public class ProfileActivity extends MvpActivity<ProfileView, ProfilePresenter> 
         return presenter;
     }
 
-    /**
-     *
-     * @param user
-     */
-    @Override
-    public void setProfileData(User user) {
-        userProfileName.setText(user.getFirstName() + " " + user.getLastName());
-
-        if(user.hasProfilePicture())
-        {
-            Picasso.with(getApplicationContext())
-                    .load(user.getProfileImageUrl())
-                    .transform(new CropCircleTransformation())
-                    .fit()
-                    .into(userProfilePhoto);
-        }
-    }
-
-
     @Override
     public void onResume() {
         super.onResume();
         presenter.refreshProfileData();
     }
 
+    @Override
+    public void onNewViewStateInstance() {}
+
+    @Override
+    public void setProfileData(User user) {
+        collapsingToolbarLayout.setTitle(user.getName());
+
+        if (user.hasProfilePicture()) {
+            Picasso.with(this)
+                    .load(UrlUtil.getImageUrl(user.getProfileImageUrl()))
+                    .transform(new CropCircleTransformation())
+                    .fit()
+                    .into(userProfilePhoto);
+        }
+    }
 }
-
-
-/*
-List<String> list2 = list1.stream().collect(Collectors.toList());
-
-List<SomeBean> newList = new ArrayList<SomeBean>(otherList);
- */

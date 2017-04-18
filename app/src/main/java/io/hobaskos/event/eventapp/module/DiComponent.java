@@ -20,7 +20,6 @@ import io.hobaskos.event.eventapp.ui.login.LoginActivity;
 import io.hobaskos.event.eventapp.ui.login.LoginPresenter;
 import io.hobaskos.event.eventapp.ui.main.MainActivity;
 import io.hobaskos.event.eventapp.ui.profile.ProfileActivity;
-import io.hobaskos.event.eventapp.ui.profile.ProfileFragment;
 import io.hobaskos.event.eventapp.ui.profile.edit.ProfileEditActivity;
 import io.hobaskos.event.eventapp.ui.profile.events.archived.ArchivedEventsFragment;
 import io.hobaskos.event.eventapp.ui.profile.events.attending.AttendingEventsFragment;
@@ -46,7 +45,6 @@ public interface DiComponent {
     void inject(LoginPresenter loginPresenter);
     void inject(LoginActivity loginActivity);
     void inject(ProfileActivity profileActivity);
-    void inject(ProfileFragment profileFragment);
     void inject(ProfileEditActivity profileEditActivity);
     void inject(AttendingEventsFragment attendingEventsFragment);
     void inject(AttendeesFragment attendeesFragment);

@@ -55,18 +55,18 @@ public class EventsFragment extends
     public final static String TAG = EventsFragment.class.getName();
 
     // Views
-    @BindView(R.id.recyclerView)RecyclerView recyclerView;
-    Toolbar toolbar;
-    @BindView(R.id.contentView) SwipeRefreshLayout swipeRefreshLayout;
-    @BindView(R.id.fragment_events_fab) FloatingActionButton openMapFab;
+    @BindView(R.id.recyclerView) protected RecyclerView recyclerView;
+    @BindView(R.id.contentView) protected SwipeRefreshLayout swipeRefreshLayout;
+    @BindView(R.id.fragment_events_fab) protected FloatingActionButton openMapFab;
 
-    TextView emptyResultView;
+    private Toolbar toolbar;
 
+    private TextView emptyResultView;
     private NpaLinearLayoutManager linearLayoutManager;
     private DividerItemDecoration dividerItemDecoration;
 
     // Model
-    List<Event> eventsList = new ArrayList<>();
+    private List<Event> eventsList = new ArrayList<>();
     private EventDateSectionPagedRecyclerAdapter adapter;
 
     // State
@@ -108,10 +108,7 @@ public class EventsFragment extends
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "page: " + page );
 
-
-
         emptyResultView = (TextView) view.findViewById(R.id.emptyView);
-
 
         recyclerView = (RecyclerView) getView().findViewById(R.id.recyclerView);
         //progressBar = (ProgressBar) getView().findViewById(R.id.progress);
@@ -177,14 +174,10 @@ public class EventsFragment extends
 
         dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
                 linearLayoutManager.getOrientation());
-        //recyclerView.addItemDecoration(dividerItemDecoration);
 
-        openMapFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        openMapFab.setOnClickListener(v -> {
                 Intent intent = new Intent(getActivity(), SearchEventsMapActivity.class);
                 startActivity(intent);
-            }
         });
     }
 
@@ -210,13 +203,7 @@ public class EventsFragment extends
                 return true;
             }
         });
-        searchView.setOnClickListener(new View.OnClickListener() {
-                                          @Override
-                                          public void onClick(View v) {
-
-                                          }
-                                      }
-        );
+        searchView.setOnClickListener(v ->  {});
 
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -231,7 +218,6 @@ public class EventsFragment extends
     @Override
     public EventsViewState createViewState() {
         Log.i(TAG, "createViewState()");
-        EventsViewState viewState = new EventsViewState();
         return new EventsViewState();
     }
 
@@ -259,7 +245,6 @@ public class EventsFragment extends
         return eventsList;
     }
 
-
     @Override
     protected String getErrorMessage(Throwable e, boolean pullToRefresh) {
         Log.i(TAG, "getErrorMessage()");
@@ -270,7 +255,6 @@ public class EventsFragment extends
             return e.getMessage();
         }
     }
-
 
     @Override
     public void showLoadMore(boolean showLoadMore) {

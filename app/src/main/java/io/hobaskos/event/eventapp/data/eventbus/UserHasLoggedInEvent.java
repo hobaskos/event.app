@@ -1,25 +1,20 @@
 package io.hobaskos.event.eventapp.data.eventbus;
 
+import io.hobaskos.event.eventapp.data.model.User;
+
 /**
  * Created by hans on 22/03/2017.
  */
 
 public class UserHasLoggedInEvent {
 
-    private final String name;
-    private final String imageUrl;
+    private final User user;
 
-    public UserHasLoggedInEvent(String name, String imageUrl) {
-        this.name = name;
-        this.imageUrl = imageUrl;
+    public UserHasLoggedInEvent(User user) {
+        this.user = user;
     }
 
-    public String getName() {
-        return name;
+    public User getUser() {
+        return user;
     }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
 }
