@@ -30,7 +30,7 @@ public class MyEventsViewState extends CastedArrayListLceViewState<List<Event>, 
     boolean loadingMore = false;
 
     // Constructors;
-    public MyEventsViewState() {};
+    public MyEventsViewState() {}
 
     protected MyEventsViewState(Parcel source) {
         super(source);
@@ -39,7 +39,6 @@ public class MyEventsViewState extends CastedArrayListLceViewState<List<Event>, 
     public void setLoadingMore(boolean loadingMore) {
         this.loadingMore = loadingMore;
     }
-
 
     @Override public void apply(MyEventsView view, boolean retained) {
         super.apply(view, retained);

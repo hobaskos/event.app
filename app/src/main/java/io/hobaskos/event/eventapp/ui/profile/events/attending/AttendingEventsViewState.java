@@ -29,7 +29,7 @@ public class AttendingEventsViewState extends CastedArrayListLceViewState<List<E
     boolean loadingMore = false;
 
     // Constructors;
-    public AttendingEventsViewState() {};
+    public AttendingEventsViewState() {}
 
     protected AttendingEventsViewState(Parcel source) {
         super(source);
@@ -39,12 +39,11 @@ public class AttendingEventsViewState extends CastedArrayListLceViewState<List<E
         this.loadingMore = loadingMore;
     }
 
-
     @Override public void apply(AttendingEventsView view, boolean retained) {
         super.apply(view, retained);
 
         if (currentViewState == STATE_SHOW_CONTENT) {
-        view.showLoadMore(loadingMore);
+            view.showLoadMore(loadingMore);
         }
     }
 }

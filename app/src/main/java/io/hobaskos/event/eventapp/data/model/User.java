@@ -16,6 +16,13 @@ public class User implements Parcelable {
     private String lastName;
     private String email;
     private String profileImageUrl;
+    private String profileImageContentType;
+    private String profileImage;
+    private LocalDateTime createdDate;
+    private LocalDateTime lastModifiedDate;
+    private String login;
+    private boolean activated;
+
 
     public User(String firstName, String lastName) {
         this.firstName = firstName;
@@ -34,11 +41,6 @@ public class User implements Parcelable {
     {
         return !profileImageUrl.equals("");
     }
-
-    private LocalDateTime createdDate;
-    private LocalDateTime lastModifiedDate;
-    private String login;
-    private boolean activated;
 
     public long getId() {
         return id;
@@ -98,6 +100,22 @@ public class User implements Parcelable {
 
     public void setActivated(boolean activated) {
         this.activated = activated;
+    }
+
+    public String getProfileImageContentType() {
+        return profileImageContentType;
+    }
+
+    public void setProfileImageContentType(String profileImageContentType) {
+        this.profileImageContentType = profileImageContentType;
+    }
+
+    public String getProfileImage() {
+        return profileImage;
+    }
+
+    public void setProfileImage(String profileImage) {
+        this.profileImage = profileImage;
     }
 
     public String getName() {

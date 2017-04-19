@@ -20,9 +20,8 @@ import io.hobaskos.event.eventapp.ui.profile.events.mine.MyEventsFragment;
  */
 
 public class ProfilePagerAdapter extends FragmentPagerAdapter {
+
     public final static String TAG = ProfilePagerAdapter.class.getName();
-
-
 
     private AttendingEventsFragment attendingEventsFragment;
     private MyEventsFragment myEventsFragment;
@@ -35,21 +34,12 @@ public class ProfilePagerAdapter extends FragmentPagerAdapter {
         archivedEventsFragment = new ArchivedEventsFragment();
     }
 
-
     @Override
     public Fragment getItem(int position) {
         switch (position) {
-            case 0:
-                Log.i(TAG, "getItem attending");
-                return attendingEventsFragment;
-            case 1:
-                Log.i(TAG, "getItem myEvents");
-                return myEventsFragment;
-            case 2:
-                Log.i(TAG, "getItem archived");
-                return archivedEventsFragment;
-            default:
-                return new Fragment();
+            case 0: return attendingEventsFragment;
+            case 1: return myEventsFragment;
+            default: return archivedEventsFragment;
         }
     }
 

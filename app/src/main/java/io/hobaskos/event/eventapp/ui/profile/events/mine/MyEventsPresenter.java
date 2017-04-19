@@ -30,14 +30,13 @@ import rx.schedulers.Schedulers;
  * Created by test on 3/16/2017.
  */
 
-public class MyEventsPresenter extends BaseRxLoadMoreLcePresenter<MyEventsView, List<Event>> {
+public class MyEventsPresenter extends BaseRxLcePresenter<MyEventsView, List<Event>> {
 
     public final static String TAG = MyEventsPresenter.class.getName();
 
     protected EventRepository eventRepository;
 
     private Subscriber<List<Event>> moreEventSubscriber;
-
 
     @Inject
     public MyEventsPresenter(EventRepository eventRepository) {
@@ -47,13 +46,10 @@ public class MyEventsPresenter extends BaseRxLoadMoreLcePresenter<MyEventsView, 
     public void loadEvents(boolean pullToRefresh) {
 
         // in case the previous action was load more we have to reset the view
-        if (isViewAttached()) {
-            getView().showLoadMore(false);
-        }
+        if (isViewAttached()) { getView().showLoadMore(false); }
 
         // Setup observable:
-        final Observable<List<Event>> observable =
-                eventRepository.getMyEvents(0);
+        final Observable<List<Event>> observable = eventRepository.getMyEvents(0);
 
         // setup and start subscription:
         subscribe(observable, pullToRefresh);
@@ -64,14 +60,32 @@ public class MyEventsPresenter extends BaseRxLoadMoreLcePresenter<MyEventsView, 
         unsubscribe();
 
         // Setup observable:
-        final Observable<List<Event>> observable =
-                eventRepository.getMyEvents(nextPage);
-        // Show loading in view:
-        if (isViewAttached()) {
-            getView().showLoadMore(true);
-        }
+        final Observable<List<Event>> observable = eventRepository.getMyEvents(nextPage);
 
-        subscribeMore(observable);
+        // Show loading in view:
+        if (isViewAttached()) { getView().showLoadMore(true); }
+
+        // Setup subscriber:
+        moreEventSubscriber = new Subscriber<List<Event>>() {
+            @Override public void onCompleted() {
+            }
+            @Override  public void onError(Throwable e) {
+                if (isViewAttached()) {
+                    getView().showLoadMoreError(e);
+                    getView().showLoadMore(false);
+                }
+            }
+            @Override public void onNext(List<Event> events) {
+                if (isViewAttached()) {
+                    getView().addMoreData(events);
+                    getView().showLoadMore(false);
+                }
+            }
+        };
+
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(moreEventSubscriber);
     }
 
     @Override protected void unsubscribe() {

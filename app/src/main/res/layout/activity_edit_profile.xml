@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/primary"
     tools:context="io.hobaskos.event.eventapp.ui.profile.edit.ProfileEditActivity">
 
 
@@ -21,7 +20,6 @@
             />
         <!--android:src="@drawable/profile" -->
 
-
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -32,7 +30,7 @@
 
         </LinearLayout>
 
-        <ImageButton
+        <ImageView
             android:id="@+id/user_profile_photo"
             android:layout_marginTop="45dp"
             android:background="@drawable/profile_circular_border_imageview"
@@ -40,147 +38,48 @@
             android:scaleType="centerCrop"
             android:layout_width="150dp"
             android:layout_height="150dp"
+            android:onClick="pickNewProfileImage"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true" />
 
-        <!-- TODO: Use colors referenced in res\values\colors.xml and styles.xml Have removed android:background="#4054B2" from below -->
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/profile_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:elevation="4dp"
-            android:paddingBottom="24dp"
-            android:layout_below="@+id/header_cover_image"
+            android:orientation="vertical"
+            android:layout_below="@+id/user_profile_photo"
+            android:padding="@dimen/text_margin"
             android:layout_alignParentStart="true">
 
-            <ImageView
-                android:id="@+id/change_img_icon"
-                android:src="@drawable/ic_camera_alt_black_24dp"
-                android:fillColor="#ffffff"
-                android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                android:layout_marginTop="90dp"
-                android:layout_marginLeft="140dp"
-                />
-
-
-            <TextView
-                android:id="@+id/change_img"
-                android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                android:layout_alignTop="@+id/change_img_icon"
-                android:layout_toEndOf="@id/change_img_icon"
-                android:clickable="true"
-                android:gravity="center_vertical"
-                android:onClick="launchCamera"
-                android:text="Ta et Bilde"
-                android:textColor="#FFF"
-                android:textSize="15dp" />
-
-
-            <ImageView
-                android:id="@+id/delete_img_icon"
-                android:src="@drawable/ic_delete_forever_black_24dp"
-                android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                android:layout_marginTop="90dp"
-                android:layout_marginLeft="240dp"
-                />
-
-
-            <TextView
-                android:id="@+id/delete_img"
-                android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                android:layout_alignTop="@+id/delete_img_icon"
-                android:layout_toEndOf="@+id/delete_img_icon"
-                android:clickable="true"
-                android:gravity="center_vertical"
-                android:onClick="deleteIMG"
-                android:text="Slett Bilde"
-                android:textColor="#FFF"
-                android:textSize="15dp" />
-
-            <ImageView
-                android:id="@+id/upload_img_icon"
-                android:src="@drawable/ic_create_black_24dp"
-                android:fillColor="#ffffff"
-                android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                android:layout_marginTop="90dp"
-                android:layout_marginLeft="40dp"
-                />
-
-
-            <TextView
-                android:id="@+id/upload_img"
-                android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                android:layout_alignTop="@+id/upload_img_icon"
-                android:layout_toEndOf="@id/upload_img_icon"
-                android:clickable="true"
-                android:gravity="center_vertical"
-                android:onClick="launchLibrary"
-                android:text="Velg Bilde"
-                android:textColor="#FFF"
-                android:textSize="15dp" />
-
-
-            <TextView
-                android:id="@+id/label_firstname"
-                android:textColor="#FFF"
-                android:layout_width="wrap_content"
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/change_img_icon"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="28dp"
-                android:text="Fornavn" />
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp">
+                <EditText
+                    android:id="@+id/firstnameInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="@string/first_name"
+                    android:inputType="textPersonName" />
+            </android.support.design.widget.TextInputLayout>
 
-            <EditText
-                android:id="@+id/firstnameInput"
-                android:layout_width="wrap_content"
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/label_firstname"
-                android:layout_centerHorizontal="true"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:text="Arne"
-                android:textColor="#FFF" />
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp">
+                <EditText
+                    android:id="@+id/lastnameInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/last_name"
+                    android:ems="10"
+                    android:inputType="textPersonName" />
+            </android.support.design.widget.TextInputLayout>
 
-            <TextView
-                android:id="@+id/label_lastname"
-                android:textColor="#FFF"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignStart="@+id/label_firstname"
-                android:layout_below="@+id/firstnameInput"
-                android:layout_marginTop="23dp"
-                android:text="Etternavn" />
-
-            <EditText
-                android:id="@+id/lastnameInput"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignStart="@+id/firstnameInput"
-                android:layout_below="@+id/label_lastname"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:text="Hansen"
-                android:textColor="#FFF" />
-
-            <Button
-                android:id="@+id/btn_done"
-                android:background="@drawable/btn_back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/lastnameInput"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="18dp"
-                android:text="Ferdig" />
-
-
-
-        </RelativeLayout>
+        </LinearLayout>
 
     </RelativeLayout>
 </ScrollView>
