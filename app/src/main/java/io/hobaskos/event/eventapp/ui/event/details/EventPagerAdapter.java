@@ -50,7 +50,7 @@ public class EventPagerAdapter extends FragmentPagerAdapter {
         Log.d(TAG, "EventPagerAdapter: " + event.getId() + ", myAttendance: " + event.getMyAttendance());
 
         eventInfoFragment = EventInfoFragment.newInstance(event);
-        locationsFragment = LocationsFragment.newInstance(event, isOwner);
+        locationsFragment = LocationsFragment.newInstance(event.getId(), isOwner);
         attendeesFragment = AttendeesFragment.newInstance(event.getId(), event.getMyAttendance() != null);
         if(isLoggedIn) {
             competitionFragment = CompetitionFragment.newInstance(event);

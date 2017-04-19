@@ -10,6 +10,7 @@ import io.hobaskos.event.eventapp.ui.event.create.CreateEventPresenter;
 import io.hobaskos.event.eventapp.ui.event.details.competition.carousel.ImageCarouselPresenter;
 import io.hobaskos.event.eventapp.ui.event.details.competition.list.CompetitionFragment;
 import io.hobaskos.event.eventapp.ui.event.details.competition.list.CompetitionPresenter;
+import io.hobaskos.event.eventapp.ui.event.details.location.LocationsFragment;
 import io.hobaskos.event.eventapp.ui.event.search.list.EventsFragment;
 import io.hobaskos.event.eventapp.ui.event.details.attending.AttendeesFragment;
 import io.hobaskos.event.eventapp.ui.location.add.LocationActivity;
@@ -54,4 +55,5 @@ public interface DiComponent {
     void inject(ArchivedEventsFragment archivedEventsFragment);
     void inject(CompetitionPresenter competitionPresenter);
     void inject(ImageCarouselPresenter imageCarouselPresenter);
+    void inject(LocationsFragment locationsFragment);
 }

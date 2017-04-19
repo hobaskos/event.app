@@ -43,11 +43,17 @@ public class LocationRecyclerViewAdapter extends
         holder.title.setText(location.getName());
         holder.address.setText(location.getAddress());
         holder.date.setText(location.getDateLine(context));
-        if(isOwner) {
+        if (isOwner) {
             holder.delete.setVisibility(View.VISIBLE);
         } else {
             holder.delete.setVisibility(View.INVISIBLE);
         }
+    }
+
+    public void setItems(List<Location> items) {
+        locations.clear();
+        locations.addAll(items);
+        notifyDataSetChanged();
     }
 
     @Override

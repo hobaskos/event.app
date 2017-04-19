@@ -205,9 +205,9 @@ public class AttendeesFragment
 
     @Override
     public void setData(List<User> data) {
-        this.users.clear();
-        this.users.addAll(data);
-        userRecyclerViewAdapter.notifyDataSetChanged();
+        users = new ArrayList<>();
+        users.addAll(data);
+        userRecyclerViewAdapter.setItems(users);
         swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(false));
     }
 
@@ -247,6 +247,4 @@ public class AttendeesFragment
         void onListFragmentInteraction(User item);
         void onAttendeesFabInteraction();
     }
-
-
 }

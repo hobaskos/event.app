@@ -8,12 +8,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/list"
+    <include layout="@layout/view_loading"/>
+    <include layout="@layout/view_error"/>
+    <include layout="@layout/view_empty"/>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/contentView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layoutManager="LinearLayoutManager"
-        tools:listitem="@layout/fragment_location" />
+        >
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layoutManager="LinearLayoutManager"
+            tools:listitem="@layout/fragment_location" />
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fragment_location_list_fab"

@@ -54,6 +54,12 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
         });
     }
 
+    public void setItems(List<User> items) {
+        users.clear();
+        users.addAll(items);
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getItemCount() {
         return users.size();
