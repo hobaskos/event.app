@@ -32,16 +32,19 @@ public class NotificationService extends FirebaseMessagingService {
         String title = remoteMessage.getNotification().getTitle();
         String body = remoteMessage.getNotification().getBody();
 
+        String eventId = remoteMessage.getData().get("eventId");
+
         Log.d(TAG, "FCM Message Id: " + id);
         Log.d(TAG, "FCM Notification Title: " + title);
         Log.d(TAG, "FCM Notification Body: " + body);
+        Log.d(TAG, "FCM Event Id" + eventId);
 
-        sendNotification(title, body);
+        sendNotification(title, body, Long.valueOf(eventId));
     }
 
-    private void sendNotification(String title, String body) {
+    private void sendNotification(String title, String body, Long eventId) {
         Intent intent = new Intent(this, EventActivity.class);
-        //intent.putExtra() //TODO put relevant data here...
+        intent.putExtra(EventActivity.EVENT_ID, eventId);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
 
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
