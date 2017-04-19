@@ -1,7 +1,9 @@
 package io.hobaskos.event.eventapp.ui.event.details.competition.list;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,7 +11,9 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,6 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.hannesdorfmann.mosby.mvp.MvpFragment;
 
@@ -41,6 +46,7 @@ import io.hobaskos.event.eventapp.data.model.enumeration.EventAttendingType;
 import io.hobaskos.event.eventapp.util.ImageUtil;
 
 import static android.app.Activity.RESULT_OK;
+import static io.hobaskos.event.eventapp.util.ImageUtil.CAPTURE_IMAGE_REQUEST;
 import static io.hobaskos.event.eventapp.util.ImageUtil.PICK_IMAGE_REQUEST;
 
 /**
@@ -53,6 +59,9 @@ public class CompetitionFragment extends MvpFragment<CompetitionView, Competitio
     public static final String TAG = CompetitionFragment.class.getName();
     public static final String ARG_COMPETITION_ID = "competitionId";
     public static final String ARG_IS_ATTENDING_EVENT = "myAttendance";
+
+    private static final String[] CAMERA_PERMS = { Manifest.permission.CAMERA };
+    private static final int CAMERA_REQUEST = 4337;
 
     private ArrayList<CompetitionImage> competitionImages;
     private OnCompetitionListInteractionListener listener;
@@ -109,7 +118,7 @@ public class CompetitionFragment extends MvpFragment<CompetitionView, Competitio
 
         competitionImages = new ArrayList<>();
 
-        if(getArguments() != null) {
+        if (getArguments() != null) {
             competitionId = getArguments().getLong(ARG_COMPETITION_ID);
             isAttending = getArguments().getBoolean(ARG_IS_ATTENDING_EVENT);
         }
@@ -138,13 +147,12 @@ public class CompetitionFragment extends MvpFragment<CompetitionView, Competitio
                 linearLayoutManager.getOrientation());
         recyclerView.addItemDecoration(dividerItemDecoration);
 
-        addCompetitionImage.setOnClickListener(v -> showAddCompetitionImageDialog());
+        addCompetitionImage.setOnClickListener(v -> pickNewCompetitionImage());
 
         if(isAttending) {
             addCompetitionImage.setVisibility(View.VISIBLE);
         } else {
             addCompetitionImage.setVisibility(View.GONE);
-
         }
 
         return view;
@@ -175,10 +183,6 @@ public class CompetitionFragment extends MvpFragment<CompetitionView, Competitio
     public void onDetach() {
         super.onDetach();
         listener = null;
-    }
-
-    private void showAddCompetitionImageDialog() {
-        openGallery();
     }
 
     @Override
@@ -289,15 +293,6 @@ public class CompetitionFragment extends MvpFragment<CompetitionView, Competitio
         recyclerView.scrollToPosition(competitionImages.size() - 1);
     }
 
-    private void openGallery(){
-        Intent intent = new Intent();
-        // Only show images
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        // Always show the chooser
-        startActivityForResult(Intent.createChooser(intent, "Select image"), PICK_IMAGE_REQUEST);
-    }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -313,6 +308,12 @@ public class CompetitionFragment extends MvpFragment<CompetitionView, Competitio
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+            } else if (requestCode == CAPTURE_IMAGE_REQUEST) {
+                //Get the photo
+                Bundle extras = data.getExtras();
+                Bitmap bitmap = (Bitmap) extras.get("data");
+                String image = ImageUtil.getEncoded64ImageStringFromBitmap(bitmap);
+                presenter.nominateImage(image);
             }
         }
     }
@@ -331,7 +332,44 @@ public class CompetitionFragment extends MvpFragment<CompetitionView, Competitio
         competitionPresenter.get();
     }
 
+    public void pickNewCompetitionImage() {
+        CharSequence options[] = new CharSequence[]{
+                getString(R.string.capture_image),
+                getString(R.string.select_image_from_lib)};
 
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle(getString(R.string.select_image_option))
+                .setItems(options, (dialog, which) -> {
+                    switch (which) {
+                        case 0: launchCamera(); break;
+                        case 1: launchLibrary(); break;
+                    }
+                })
+                .setNegativeButton(R.string.close, (dialog, which) -> dialog.dismiss())
+                .show();
+    }
 
+    private void launchCamera() {
+        if (!getContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)) {
+            Toast.makeText(getContext(), R.string.could_not_find_camera, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(), CAMERA_PERMS, CAMERA_REQUEST);
+        } else {
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            startActivityForResult(intent, CAPTURE_IMAGE_REQUEST);
+        }
+    }
+
+    private void launchLibrary(){
+        Intent intent = new Intent();
+        // Only show images
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        // Always show the chooser
+        startActivityForResult(Intent.createChooser(intent, "Select image"), PICK_IMAGE_REQUEST);
+    }
 }
 
