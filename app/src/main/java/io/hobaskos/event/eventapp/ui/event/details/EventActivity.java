@@ -351,8 +351,14 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
                 recreate();
                 break;
 
+            case EDIT_LOCATION_REQUEST:
+                Log.i(TAG, "activityForResult with request code == EDIT_LOCATION_REQUEST");
+                LocationsFragment fragment = (LocationsFragment)eventPagerAdapter.getItem(EventPagerAdapter.LOCATIONS_FRAGMENT);
+                fragment.loadData(true);
+                break;
+
             case VIEW_COMPETITION_CAROUSEL:
-                Log.i(TAG, "activityForResult with request code == VIEW_COMPETiTION_CAROUSEL");
+                Log.i(TAG, "activityForResult with request code == VIEW_COMPETITION_CAROUSEL");
                 break;
 
             default:

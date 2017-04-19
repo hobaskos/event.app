@@ -56,7 +56,6 @@
 
     </LinearLayout>
 
-
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -78,18 +77,6 @@
                 android:hint="@string/to_time" />
 
     </LinearLayout>
-
-    <Button
-        android:id="@+id/activity_add_location_submit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/create" />
-
-    <Button
-        android:id="@+id/activity_add_location_edit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/edit" />
 
 </LinearLayout>
 

@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -58,8 +59,6 @@ public class LocationActivity extends MvpActivity<LocationView, LocationPresente
     private EditText fromTime;
     private EditText toDate;
     private EditText toTime;
-    private Button create;
-    private Button edit;
     private DateTimeVM fromDateTimeVM;
     private DateTimeVM toDateTimeVM;
     private Location location;
@@ -128,19 +127,6 @@ public class LocationActivity extends MvpActivity<LocationView, LocationPresente
             }
         });
 
-        create = (Button) findViewById(R.id.activity_add_location_submit);
-        create.setOnClickListener(v -> {
-            create.setEnabled(false);
-            onCreateButtonClicked();
-        });
-
-        edit = (Button) findViewById(R.id.activity_add_location_edit);
-        edit.setVisibility(View.GONE);
-        edit.setOnClickListener(v -> {
-            edit.setEnabled(false);
-            onEditButtonClicked();
-        });
-
         mGoogleApiClient = new GoogleApiClient
                 .Builder(this)
                 .addApi(Places.GEO_DATA_API)
@@ -154,7 +140,7 @@ public class LocationActivity extends MvpActivity<LocationView, LocationPresente
         eventId = getIntent().getExtras().getLong(EVENT_ID);
         setState(getIntent().getIntExtra(EVENT_STATE, 0));
 
-        if(activityState.equals(ActivityState.EDIT)) {
+        if (activityState.equals(ActivityState.EDIT)) {
             setTitle(R.string.edit_location);
             location = getIntent().getParcelableExtra(LOCATION);
             name.setText(location.getName());
@@ -167,8 +153,6 @@ public class LocationActivity extends MvpActivity<LocationView, LocationPresente
             fromTime.setText(fromDateTimeVM.getTime());
             toDate.setText(toDateTimeVM.getDate());
             toTime.setText(toDateTimeVM.getTime());
-            create.setVisibility(View.GONE);
-            edit.setVisibility(View.VISIBLE);
         }
 
         placeAutocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
@@ -209,12 +193,9 @@ public class LocationActivity extends MvpActivity<LocationView, LocationPresente
     public void onFailure() {
         if(activityState.equals(ActivityState.EDIT)) {
             Toast.makeText(this, R.string.could_not_edit_location, Toast.LENGTH_LONG).show();
-            edit.setEnabled(true);
             return;
         }
-
         Toast.makeText(this, R.string.could_not_add_location, Toast.LENGTH_LONG).show();
-        create.setEnabled(true);
     }
 
     @NonNull
@@ -303,10 +284,7 @@ public class LocationActivity extends MvpActivity<LocationView, LocationPresente
 
     private void onCreateButtonClicked() {
 
-        if(!validate()) {
-            create.setEnabled(true);
-            return;
-        }
+        if (!validate()) { return; }
 
         Location location = new Location();
         location.setEventId(eventId);
@@ -325,10 +303,7 @@ public class LocationActivity extends MvpActivity<LocationView, LocationPresente
     }
 
     private void onEditButtonClicked() {
-        if(!validate()) {
-            edit.setEnabled(true);
-            return;
-        }
+        if (!validate()) { return; }
 
         location.setName(name.getText().toString());
 
@@ -411,8 +386,19 @@ public class LocationActivity extends MvpActivity<LocationView, LocationPresente
             case android.R.id.home:
                 onBackPressed();
                 return true;
+
+            case R.id.save:
+                if (activityState.equals(ActivityState.EDIT)) onEditButtonClicked();
+                else onCreateButtonClicked();
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.locations_add_menu, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 }
