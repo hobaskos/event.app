@@ -312,20 +312,16 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
             public void onNext(Void aVoid) {
                 presenter.getEvent(eventId, new Observer<Event>() {
                     @Override
-                    public void onCompleted() {
-
-                    }
+                    public void onCompleted() {}
 
                     @Override
-                    public void onError(Throwable e) {
-
-                    }
+                    public void onError(Throwable e) {}
 
                     @Override
                     public void onNext(Event event) {
                         Toast.makeText(EventActivity.this, "Location is removed", Toast.LENGTH_SHORT).show();
                         LocationsFragment locationsFragment = (LocationsFragment) eventPagerAdapter.getItem(1);
-                        locationsFragment.refresh( (ArrayList<Location>) event.getLocations());
+                        locationsFragment.loadData(true);
                     }
                 });
             }
@@ -341,67 +337,27 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        Log.d(TAG, "onActivityResult: resultCode: " + resultCode + ", requestCode: " + requestCode);
+        if (resultCode != RESULT_OK) return;
+
         switch (requestCode) {
-
             case EDIT_EVENT_REQUEST:
-
                 Log.i(TAG, "activityForResult with request code == EDIT_EVENT_REQUEST");
-
-                if(resultCode == RESULT_OK) {
-                    Log.i(TAG, "activityForResult with result code == RESULT_OK");
-                    Log.i(TAG, "eventId=" + data.getLongExtra(EVENT_ID, -1));
-                    Log.i(TAG, "theme=" + data.getStringExtra(EVENT_THEME));
-                    eventId = data.getLongExtra(EVENT_ID, -1);
-                    theme = (EventCategoryTheme) getIntent().getExtras().getSerializable(EVENT_THEME);
-                    recreate();
-                }
-
-                break;
-
-            case ADD_LOCATION_REQUEST:
-
-                Log.i(TAG, "activityForResult with request code == ADD_LOCATION_REQUEST");
-
-                if(resultCode == RESULT_OK) {
-
-                    // refresh list
-                    // show locations tab
-
-                }
-
-                break;
-
-            case EDIT_LOCATION_REQUEST:
-
-                Log.i(TAG, "activityForResult with request code == EDIT_LOCATION_REQUEST");
-
-                if(resultCode == RESULT_OK) {
-
-                    // refresh list
-                    // show locations tab
-
-                }
-
+                Log.i(TAG, "activityForResult with result code == RESULT_OK");
+                Log.i(TAG, "eventId=" + data.getLongExtra(EVENT_ID, -1));
+                Log.i(TAG, "theme=" + data.getStringExtra(EVENT_THEME));
+                eventId = data.getLongExtra(EVENT_ID, -1);
+                theme = (EventCategoryTheme) getIntent().getExtras().getSerializable(EVENT_THEME);
+                recreate();
                 break;
 
             case VIEW_COMPETITION_CAROUSEL:
-
                 Log.i(TAG, "activityForResult with request code == VIEW_COMPETiTION_CAROUSEL");
-
-                if(resultCode == RESULT_OK) {
-
-                    // refresh list
-                    // show competition list tab
-
-                }
-
                 break;
 
             default:
                 Log.i(TAG, "activityForResult without legal request code.");
-
                 // To something ??
-
                 break;
         }
     }

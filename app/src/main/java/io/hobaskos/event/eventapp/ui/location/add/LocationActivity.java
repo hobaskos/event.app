@@ -1,6 +1,8 @@
 package io.hobaskos.event.eventapp.ui.location.add;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -198,6 +200,8 @@ public class LocationActivity extends MvpActivity<LocationView, LocationPresente
 
     @Override
     public void onSuccess() {
+        Intent returnIntent = new Intent();
+        setResult(Activity.RESULT_OK, returnIntent);
         finish();
     }
 

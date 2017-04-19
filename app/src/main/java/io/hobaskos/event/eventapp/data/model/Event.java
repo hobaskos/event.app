@@ -119,6 +119,7 @@ public class Event implements Parcelable {
     }
 
     public DateTime getFromDate() {
+        if (fromDate == null) return DateTime.now();
         return fromDate;
     }
 
