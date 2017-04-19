@@ -1,99 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_create_event"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="io.hobaskos.event.eventapp.ui.event.create.CreateEventActivity"
-    android:orientation="vertical">
-
-
-    <EditText
-        android:id="@+id/create_event_field_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/title_label"/>
-
-    <EditText
-        android:id="@+id/create_event_field_description"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/description_label" />
-
+    >
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:text="@string/event_category_label" />
-
-        <Spinner
-            android:id="@+id/create_event_spinner_event_categories"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:text="@string/private_event_label" />
-
-        <android.support.v7.widget.SwitchCompat
-            android:id="@+id/create_event_switch_private_event"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="false" />
-
-    </LinearLayout>
-
-    <Button
-        android:id="@+id/create_event_button_choose_image"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/image_label"
-        android:textAllCaps="true" />
-
-    <Button
-        android:id="@+id/create_event_button_create"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/create"
-        android:textAllCaps="true" />
-
-    <Button
-        android:id="@+id/create_event_button_edit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/edit"
-        android:textAllCaps="true" />
-
-
-    <RelativeLayout
-        android:id="@+id/activity_create_event_loading_panel"
+        android:id="@+id/activity_create_event"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="invisible"
-        android:gravity="center" >
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        tools:context="io.hobaskos.event.eventapp.ui.event.create.CreateEventActivity"
+        android:orientation="vertical">
 
-        <ProgressBar
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/event_image"
+                />
+            <ImageView
+                android:id="@+id/create_event_button_choose_image"
+                android:layout_width="match_parent"
+                android:layout_height="128dp"
+                android:text="@string/image_label"
+                android:src="@drawable/ic_image_black"
+                android:textAllCaps="true" />
+
+        </LinearLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:indeterminate="true" />
-    </RelativeLayout>
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
+            <EditText
+                android:id="@+id/create_event_field_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/title_label"/>
+        </android.support.design.widget.TextInputLayout>
 
-</LinearLayout>
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
+            <EditText
+                android:id="@+id/create_event_field_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/description_label" />
+        </android.support.design.widget.TextInputLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:text="@string/event_category_label" />
+
+            <Spinner
+                android:id="@+id/create_event_spinner_event_categories"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:text="@string/private_event_label" />
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/create_event_switch_private_event"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false" />
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/activity_create_event_loading_panel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible"
+            android:gravity="center" >
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminate="true" />
+        </RelativeLayout>
+
+    </LinearLayout>
+</ScrollView>

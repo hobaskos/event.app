@@ -18,9 +18,7 @@ import javax.inject.Inject;
 
 import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
-import io.hobaskos.event.eventapp.data.model.CompetitionImage;
 import io.hobaskos.event.eventapp.data.model.Event;
-import io.hobaskos.event.eventapp.data.model.EventCategory;
 import io.hobaskos.event.eventapp.data.model.EventCategoryTheme;
 import io.hobaskos.event.eventapp.data.model.Location;
 import io.hobaskos.event.eventapp.data.model.User;
@@ -82,31 +80,20 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
 
         setTitle(R.string.loading);
 
-        if(savedInstanceState != null) {
-
+        if (savedInstanceState != null) {
             // The Activity was restarted
-
             try {
-
                 eventId = savedInstanceState.getLong(EVENT_ID);
                 theme = EventCategoryTheme.valueOf(savedInstanceState.get(EVENT_THEME).toString());
                 setEventTheme(theme);
-
             } catch (NullPointerException e) {
-
                 Log.i(TAG, e.getMessage());
-
             }
 
         } else {
-
             // The Activity is newly started from CreateEventActivity or the ListActivity.
-
             eventId = getIntent().getExtras().getLong(EVENT_ID);
-
-            theme =
-                    (EventCategoryTheme) getIntent().getExtras().getSerializable(EVENT_THEME);
-
+            theme = (EventCategoryTheme) getIntent().getExtras().getSerializable(EVENT_THEME);
             if (theme != null) { setEventTheme(theme); }
 
         }
@@ -365,9 +352,7 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
                     Log.i(TAG, "eventId=" + data.getLongExtra(EVENT_ID, -1));
                     Log.i(TAG, "theme=" + data.getStringExtra(EVENT_THEME));
                     eventId = data.getLongExtra(EVENT_ID, -1);
-
-                    theme = EventCategoryTheme.valueOf(data.getStringExtra(EVENT_THEME));
-
+                    theme = (EventCategoryTheme) getIntent().getExtras().getSerializable(EVENT_THEME);
                     recreate();
                 }
 
