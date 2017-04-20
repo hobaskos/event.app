@@ -27,7 +27,6 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.CastedArrayListLceViewState;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -124,6 +123,7 @@ public class EventMapActivity extends FragmentActivity implements OnMapReadyCall
         Marker marker0 = map.addMarker(new MarkerOptions()
                 .position(getLatLng(locations.get(0)))
                 .title(locations.get(0).getName() + " START")
+                .snippet(locations.get(0).getDateLine(this))
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
         markers.add(marker0);
 
@@ -133,6 +133,7 @@ public class EventMapActivity extends FragmentActivity implements OnMapReadyCall
             Marker marker = map.addMarker(new MarkerOptions()
                     .position(getLatLng(locations.get(i)))
                     .title(locations.get(i).getName())
+                    .snippet(locations.get(i).getDateLine(this))
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
             markers.add(marker);
         }
@@ -141,6 +142,7 @@ public class EventMapActivity extends FragmentActivity implements OnMapReadyCall
         Marker markerLast = map.addMarker(new MarkerOptions()
                 .position(getLatLng(locations.get(locations.size() - 1)))
                 .title(locations.get(locations.size()-1).getName() + " SLUTT")
+                .snippet(locations.get(locations.size() -1).getDateLine(this))
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
         markers.add(markerLast);
 
