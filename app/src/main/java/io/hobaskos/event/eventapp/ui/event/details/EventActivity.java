@@ -246,43 +246,14 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
                 break;
             case R.id.map:
                 Intent intent = new Intent(this, MapsActivity.class);
-                intent.putParcelableArrayListExtra("loc", (ArrayList<? extends Parcelable>)event.getLocations());
+                intent.putParcelableArrayListExtra(MapsActivity.LOCATIONS, (ArrayList<? extends Parcelable>)event.getLocations());
                 startActivity(intent);
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onLocationEditInteraction(Location item) {
-        Intent intent = new Intent(this, LocationActivity.class);
-        intent.putExtra(LocationActivity.EVENT_STATE, 1);
-        intent.putExtra(LocationActivity.LOCATION, item);
-        startActivityForResult(intent, EDIT_LOCATION_REQUEST);
-    }
-
-    @Override
-    public void onLocationDeleteInteraction(Location item) {
-        DeleteDialogFragment<Location> deleteDialog = new DeleteDialogFragment<>();
-        deleteDialog.setItem(item);
-        deleteDialog.show(getFragmentManager(), "EventActivity");
-    }
-
-
-    @Override
-    public void onUserAttendingInteraction(User item) {
-        Toast.makeText(this, item.getName(), Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onAttendeesFabInteraction() {
-        Log.i(TAG, "onAttendeesFabInteraction");
-        CompetitionFragment competitionFragment = (CompetitionFragment)
-        eventPagerAdapter.getItem(EventPagerAdapter.COMPETITIONS_FRAGMENT);
-        competitionFragment.setAttendingEvent(true);
-    }
-
-    @Override
+   @Override
     public void setIsOwner(boolean owner) {
         isOwner = owner;
 
@@ -294,16 +265,14 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     }
 
     @Override
-    public void onDeleteButtonClicked(Location location) {
+    public void onDeleteDialogConfirmButtonClicked(Location location) {
         presenter.remove(location, new Observer<Void>() {
             @Override
             public void onCompleted() {
-
             }
 
             @Override
             public void onError(Throwable e) {
-
             }
 
             @Override
@@ -327,8 +296,7 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     }
 
     @Override
-    public void onCancelButtonClicked() {
-
+    public void onDeleteDialogCancelButtonClicked() {
     }
 
     @Override
@@ -378,5 +346,34 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
         intent.putExtra(ImageCarouselActivity.ARG_STARTING_COMPETITION_IMAGE, id);
         intent.putExtra(ImageCarouselActivity.ARG_COMPETITION_ID, event.getDefaultPollId());
         startActivityForResult(intent, VIEW_COMPETITION_CAROUSEL);
+    }
+
+    @Override
+    public void onLocationEditInteraction(Location item) {
+        Intent intent = new Intent(this, LocationActivity.class);
+        intent.putExtra(LocationActivity.EVENT_STATE, 1);
+        intent.putExtra(LocationActivity.LOCATION, item);
+        startActivityForResult(intent, EDIT_LOCATION_REQUEST);
+    }
+
+    @Override
+    public void onLocationDeleteInteraction(Location item) {
+        DeleteDialogFragment<Location> deleteDialog = new DeleteDialogFragment<>();
+        deleteDialog.setItem(item);
+        deleteDialog.show(getFragmentManager(), "EventActivity");
+    }
+
+
+    @Override
+    public void onUserAttendingInteraction(User item) {
+        Toast.makeText(this, item.getName(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onAttendeesFabInteraction() {
+        Log.i(TAG, "onAttendeesFabInteraction");
+        CompetitionFragment competitionFragment = (CompetitionFragment)
+        eventPagerAdapter.getItem(EventPagerAdapter.COMPETITIONS_FRAGMENT);
+        competitionFragment.setAttendingEvent(true);
     }
 }

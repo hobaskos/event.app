@@ -40,11 +40,11 @@ public class DeleteDialogFragment<T> extends DialogFragment  {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setMessage(R.string.delete_location)
                 .setPositiveButton(R.string.delete, (dialog, id) -> {
-                    listener.onDeleteButtonClicked(item);
+                    listener.onDeleteDialogConfirmButtonClicked(item);
                 })
                 .setNegativeButton(R.string.cancel, (dialog, id) -> {
                     // User cancelled the dialog
-                    listener.onCancelButtonClicked();
+                    listener.onDeleteDialogCancelButtonClicked();
                 });
         return builder.create();
     }
