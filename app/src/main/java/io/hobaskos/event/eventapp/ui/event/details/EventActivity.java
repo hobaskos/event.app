@@ -254,8 +254,7 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     }
 
     @Override
-    public void onListFragmentEditInteraction(Location item) {
-        Toast.makeText(this, item.getName(), Toast.LENGTH_SHORT).show();
+    public void onLocationEditInteraction(Location item) {
         Intent intent = new Intent(this, LocationActivity.class);
         intent.putExtra(LocationActivity.EVENT_STATE, 1);
         intent.putExtra(LocationActivity.LOCATION, item);
@@ -263,8 +262,7 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     }
 
     @Override
-    public void onListFragmentDeleteInteraction(Location item) {
-        Toast.makeText(this, item.getName(), Toast.LENGTH_SHORT).show();
+    public void onLocationDeleteInteraction(Location item) {
         DeleteDialogFragment<Location> deleteDialog = new DeleteDialogFragment<>();
         deleteDialog.setItem(item);
         deleteDialog.show(getFragmentManager(), "EventActivity");
@@ -272,7 +270,7 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
 
 
     @Override
-    public void onListFragmentInteraction(User item) {
+    public void onUserAttendingInteraction(User item) {
         Toast.makeText(this, item.getName(), Toast.LENGTH_SHORT).show();
     }
 

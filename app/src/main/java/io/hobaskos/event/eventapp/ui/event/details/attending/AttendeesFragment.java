@@ -244,7 +244,7 @@ public class AttendeesFragment
     }
 
     public interface OnAttendeesInteractionListener {
-        void onListFragmentInteraction(User item);
+        void onUserAttendingInteraction(User item);
         void onAttendeesFabInteraction();
     }
 }

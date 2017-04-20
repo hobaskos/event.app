@@ -50,7 +50,6 @@ public class LocationsFragment
 
     private ArrayList<Location> locations = new ArrayList<>();
     private OnListFragmentInteractionListener listener;
-    private DividerItemDecoration dividerItemDecoration;
     private LocationRecyclerViewAdapter locationRecyclerViewAdapter;
 
     @BindView(R.id.contentView)
@@ -113,10 +112,6 @@ public class LocationsFragment
         locationRecyclerViewAdapter = new LocationRecyclerViewAdapter(locations, listener, context, isOwner);
         recyclerView.setAdapter(locationRecyclerViewAdapter);
 
-        dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
-                linearLayoutManager.getOrientation());
-        recyclerView.addItemDecoration(dividerItemDecoration);
-
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 int totalItemCount = linearLayoutManager.getItemCount();
@@ -128,7 +123,6 @@ public class LocationsFragment
             }
         });
 
-
         if (isOwner) {
             addLocation.setOnClickListener(v -> {
                 Intent intent = new Intent(getActivity(), LocationActivity.class);
@@ -138,7 +132,6 @@ public class LocationsFragment
         } else {
             addLocation.setVisibility(View.GONE);
         }
-
         return view;
     }
 
@@ -223,7 +216,7 @@ public class LocationsFragment
     }
 
     public interface OnListFragmentInteractionListener {
-        void onListFragmentEditInteraction(Location item);
-        void onListFragmentDeleteInteraction(Location item);
+        void onLocationEditInteraction(Location item);
+        void onLocationDeleteInteraction(Location item);
     }
 }

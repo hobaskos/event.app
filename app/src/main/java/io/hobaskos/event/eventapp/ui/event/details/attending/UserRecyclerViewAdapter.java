@@ -49,7 +49,7 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
 
         holder.view.setOnClickListener((view) -> {
             if (null != listener) {
-                listener.onListFragmentInteraction(holder.item);
+                listener.onUserAttendingInteraction(holder.item);
             }
         });
     }
