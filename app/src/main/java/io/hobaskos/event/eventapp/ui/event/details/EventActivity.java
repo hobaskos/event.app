@@ -19,6 +19,7 @@ import javax.inject.Inject;
 
 import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
+import io.hobaskos.event.eventapp.data.model.CompetitionImage;
 import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.data.model.EventCategoryTheme;
 import io.hobaskos.event.eventapp.data.model.Location;
@@ -70,8 +71,6 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     private Event event;
     private boolean hasBeenPaused = false;
     private Menu menu;
-
-
 
     @Inject public EventPresenter presenter;
 
@@ -336,16 +335,16 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     }
 
     @Override
-    public void onCompetitionVoteButtonClicked(Long id, int vote) {
+    public void onCompetitionVoteButtonClicked(CompetitionImage competitionImage, int vote) {
         CompetitionFragment competitionFragment = (CompetitionFragment) eventPagerAdapter.getItem(3);
-        competitionFragment.onCompetitionImageVoteSubmitted(id, vote);
+        competitionFragment.onCompetitionImageVoteSubmitted(competitionImage, vote);
     }
 
     @Override
-    public void onCompetitionImageClick(Long id) {
+    public void onCompetitionImageClick(CompetitionImage competitionImage) {
         Intent intent = new Intent(this, ImageCarouselActivity.class);
-        intent.putExtra(ImageCarouselActivity.ARG_STARTING_COMPETITION_IMAGE, id);
         intent.putExtra(ImageCarouselActivity.ARG_COMPETITION_ID, event.getDefaultPollId());
+        intent.putExtra(ImageCarouselActivity.ARG_EVENT_TITLE, event.getTitle());
         startActivityForResult(intent, VIEW_COMPETITION_CAROUSEL);
     }
 

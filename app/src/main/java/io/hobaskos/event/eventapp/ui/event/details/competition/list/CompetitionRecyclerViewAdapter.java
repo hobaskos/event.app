@@ -27,25 +27,32 @@ public class CompetitionRecyclerViewAdapter extends
     private final OnCompetitionListInteractionListener listener;
     private final Context context;
     private final boolean isAttending;
+    private final boolean horizontal;
 
-    public CompetitionRecyclerViewAdapter(List<CompetitionImage> images, OnCompetitionListInteractionListener listener, Context context, boolean isAttending) {
+    public CompetitionRecyclerViewAdapter(List<CompetitionImage> images,
+                                          OnCompetitionListInteractionListener listener,
+                                          Context context,
+                                          boolean isAttending,
+                                          boolean horizontal) {
         this.images = images;
         this.listener = listener;
         this.context = context;
         this.isAttending = isAttending;
+        this.horizontal = horizontal;
     }
 
     @Override
     public CompetitionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_competition, parent, false);
-        return new CompetitionViewHolder(view);
+        return new CompetitionViewHolder(LayoutInflater.from(parent.getContext())
+                .inflate(horizontal ? R.layout.list_item_competition_image_horizontal : R.layout.list_item_competition_image, parent, false));
     }
 
     @Override
     public void onBindViewHolder(CompetitionViewHolder holder, int position) {
         CompetitionImage currentImage = images.get(position);
-        holder.id = currentImage.getId();
+        holder.competitionImage = currentImage;
+        holder.title.setText(currentImage.getTitle());
+        holder.author.setText(currentImage.getAuthor());
         Picasso.with(context)
                 .load(currentImage.getImageUrl() != null ? currentImage.getAbsoluteImageUrl() : COMPETITION_IMAGE_URL_PLACEHOLDER)
                 .into(holder.image);
@@ -61,44 +68,33 @@ public class CompetitionRecyclerViewAdapter extends
 
         public final ImageView image;
         public final TextView voteScore;
+        public final TextView title;
+        public final TextView author;
         public final ImageView upVoteButton;
         public final ImageView downVoteButton;
-        public Long id;
+        public CompetitionImage competitionImage;
 
         public CompetitionViewHolder(View view) {
             super(view);
 
+            title = (TextView) view.findViewById(R.id.title);
+            author = (TextView) view.findViewById(R.id.author);
             image = (ImageView) view.findViewById(R.id.image);
             voteScore = (TextView) view.findViewById(R.id.number_of_votes);
             upVoteButton = (ImageView) view.findViewById(R.id.up_vote);
             downVoteButton = (ImageView) view.findViewById(R.id.down_vote);
 
-            image.setOnClickListener(v -> {
-                if(null != listener) {
-                    listener.onCompetitionImageClick(id);
-                }
-            });
+            if (null == listener) return;
 
-            if(isAttending) {
+            image.setOnClickListener(v -> listener.onCompetitionImageClick(competitionImage));
 
-                upVoteButton.setOnClickListener(v -> {
-                    if(null != listener) {
-                        listener.onCompetitionVoteButtonClicked(id, +1);
-                    }
-                });
-
-                downVoteButton.setOnClickListener(v -> {
-                    if(null != listener) {
-                        listener.onCompetitionVoteButtonClicked(id, -1);
-                    }
-                });
-
+            if (isAttending) {
+                upVoteButton.setOnClickListener(v -> listener.onCompetitionVoteButtonClicked(competitionImage, +1));
+                downVoteButton.setOnClickListener(v -> listener.onCompetitionVoteButtonClicked(competitionImage, -1));
             } else {
                 upVoteButton.setVisibility(View.GONE);
                 downVoteButton.setVisibility(View.GONE);
             }
-
-
         }
     }
 }

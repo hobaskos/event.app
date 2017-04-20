@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.model.CompetitionImage;
 import io.hobaskos.event.eventapp.data.model.Event;
+import io.hobaskos.event.eventapp.data.model.enumeration.EventAttendingType;
 import io.hobaskos.event.eventapp.ui.event.details.attending.AttendeesFragment;
 import io.hobaskos.event.eventapp.ui.event.details.competition.list.CompetitionFragment;
 import io.hobaskos.event.eventapp.ui.event.details.info.EventInfoFragment;
@@ -53,7 +54,8 @@ public class EventPagerAdapter extends FragmentPagerAdapter {
         locationsFragment = LocationsFragment.newInstance(event.getId(), isOwner);
         attendeesFragment = AttendeesFragment.newInstance(event.getId(), event.getMyAttendance() != null);
         if(isLoggedIn) {
-            competitionFragment = CompetitionFragment.newInstance(event);
+            competitionFragment = CompetitionFragment.newInstance(event.getDefaultPollId(),
+                    (event.getMyAttendance() != null && event.getMyAttendance().equals(EventAttendingType.GOING)), false);
         }
     }
 

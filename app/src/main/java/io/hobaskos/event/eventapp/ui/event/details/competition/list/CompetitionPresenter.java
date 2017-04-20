@@ -109,10 +109,11 @@ public class CompetitionPresenter extends MvpBasePresenter<CompetitionView> {
                 });
     }
 
-    public void nominateImage(String image) {
+    public void nominateImage(String title, String image) {
         Log.i(TAG, "Nominating image...");
         if(competitionId != null) {
             CompetitionImage competitionImage = new CompetitionImage();
+            competitionImage.setTitle(title);
             competitionImage.setCompetitionId(competitionId);
             competitionImage.setImageBase64(image);
             competitionImage.setFileContentType("image/jpg");

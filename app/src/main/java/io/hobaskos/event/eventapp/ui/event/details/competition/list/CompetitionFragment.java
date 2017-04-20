@@ -44,6 +44,7 @@ import io.hobaskos.event.eventapp.data.model.CompetitionImage;
 import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.data.model.enumeration.EventAttendingType;
 import io.hobaskos.event.eventapp.util.ImageUtil;
+import rx.functions.Action1;
 
 import static android.app.Activity.RESULT_OK;
 import static io.hobaskos.event.eventapp.util.ImageUtil.CAPTURE_IMAGE_REQUEST;
@@ -59,16 +60,18 @@ public class CompetitionFragment extends MvpFragment<CompetitionView, Competitio
     public static final String TAG = CompetitionFragment.class.getName();
     public static final String ARG_COMPETITION_ID = "competitionId";
     public static final String ARG_IS_ATTENDING_EVENT = "myAttendance";
+    public static final String ARG_HORIZONTAL = "horizontal";
 
     private static final String[] CAMERA_PERMS = { Manifest.permission.CAMERA };
     private static final int CAMERA_REQUEST = 4337;
 
     private ArrayList<CompetitionImage> competitionImages;
     private OnCompetitionListInteractionListener listener;
-
     private CompetitionRecyclerViewAdapter competitionRecyclerViewAdapter;
+
     private Long competitionId;
     private boolean isAttending;
+    private boolean horizontal = false;
 
     @BindView(R.id.contentView)
     protected SwipeRefreshLayout swipeRefreshLayout;
@@ -95,19 +98,12 @@ public class CompetitionFragment extends MvpFragment<CompetitionView, Competitio
         return competitionPresenter;
     }
 
-    public static CompetitionFragment newInstance(Event event) {
+    public static CompetitionFragment newInstance(Long eventCompetitionId, boolean going, boolean horizontal) {
         CompetitionFragment fragment = new CompetitionFragment();
         Bundle args = new Bundle();
-
-        boolean going = false;
-
-        if(event.getMyAttendance() != null) {
-            Log.i(TAG, event.getMyAttendance().toString());
-            going =  event.getMyAttendance().equals(EventAttendingType.GOING);
-        }
-
         args.putBoolean(ARG_IS_ATTENDING_EVENT, going);
-        args.putLong(ARG_COMPETITION_ID, event.getDefaultPollId());
+        args.putLong(ARG_COMPETITION_ID, eventCompetitionId);
+        args.putBoolean(ARG_HORIZONTAL, horizontal);
         fragment.setArguments(args);
         return fragment;
     }
@@ -121,11 +117,11 @@ public class CompetitionFragment extends MvpFragment<CompetitionView, Competitio
         if (getArguments() != null) {
             competitionId = getArguments().getLong(ARG_COMPETITION_ID);
             isAttending = getArguments().getBoolean(ARG_IS_ATTENDING_EVENT);
+            horizontal = getArguments().getBoolean(ARG_HORIZONTAL);
         }
 
         setRetainInstance(true);
     }
-
 
     @Nullable
     @Override
@@ -136,21 +132,26 @@ public class CompetitionFragment extends MvpFragment<CompetitionView, Competitio
 
         // set the adapter
         Context context = view.getContext();
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
+        LinearLayoutManager linearLayoutManager;
+        if (horizontal) {
+            linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
+        } else {
+            linearLayoutManager = new LinearLayoutManager(context);
+        }
         recyclerView.setLayoutManager(linearLayoutManager);
-        competitionRecyclerViewAdapter = new CompetitionRecyclerViewAdapter(competitionImages, listener, context, isAttending);
+        competitionRecyclerViewAdapter = new CompetitionRecyclerViewAdapter(competitionImages, listener, context, isAttending, horizontal);
         recyclerView.setAdapter(competitionRecyclerViewAdapter);
 
         swipeRefreshLayout.setOnRefreshListener(() -> loadData(true));
 
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
-                linearLayoutManager.getOrientation());
-        recyclerView.addItemDecoration(dividerItemDecoration);
-
-        addCompetitionImage.setOnClickListener(v -> pickNewCompetitionImage());
-
-        if(isAttending) {
+        if (isAttending) {
             addCompetitionImage.setVisibility(View.VISIBLE);
+        } else {
+            addCompetitionImage.setVisibility(View.GONE);
+        }
+
+        if (!horizontal) {
+            addCompetitionImage.setOnClickListener(v -> pickNewCompetitionImage());
         } else {
             addCompetitionImage.setVisibility(View.GONE);
         }
@@ -175,7 +176,7 @@ public class CompetitionFragment extends MvpFragment<CompetitionView, Competitio
             listener = (OnCompetitionListInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
+                    + " must implement OnCompetitionListInteractionListener");
         }
     }
 
@@ -209,7 +210,7 @@ public class CompetitionFragment extends MvpFragment<CompetitionView, Competitio
         Collections.sort(competitionImages, (o1, o2) -> o2.getVoteScore().compareTo(o1.getVoteScore()));
 
         competitionRecyclerViewAdapter =
-                new CompetitionRecyclerViewAdapter(competitionImages, listener, getContext(), isAttending);
+                new CompetitionRecyclerViewAdapter(competitionImages, listener, getContext(), isAttending, horizontal);
 
         recyclerView.setAdapter(competitionRecyclerViewAdapter);
 
@@ -245,20 +246,20 @@ public class CompetitionFragment extends MvpFragment<CompetitionView, Competitio
         competitionPresenter.get();
     }
 
-    public void onCompetitionImageVoteSubmitted(Long id, int vote) {
-        if(!getCompetitionImageById(id).hasMyVote()) {
-            competitionPresenter.vote(id, vote);
-
-            updateCompetitionImageVoteScore(id, vote);
+    public void onCompetitionImageVoteSubmitted(CompetitionImage competitionImage, int vote) {
+        if (!competitionImage.hasMyVote()) {
+            competitionPresenter.vote(competitionImage.getId(), vote);
+            updateCompetitionImageVoteScore(competitionImage, vote);
+        } else {
+            Toast.makeText(getContext(), R.string.already_voted, Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void updateCompetitionImageVoteScore(Long id, int vote) {
+    private void updateCompetitionImageVoteScore(CompetitionImage competitionImage, int vote) {
         Log.i(TAG, "Inside updateCompetitionImageVoteScore()");
-        CompetitionImage competitionImage = getCompetitionImageById(id);
         int index = competitionImages.indexOf(competitionImage);
         Log.i(TAG, "Image has index = " + index);
-        competitionImage.setHasMyVote(true);
+        competitionImage.setHasMyVote(vote);
         int numberOfVotes = competitionImage.getNumberOfVotes();
         Long voteScore = competitionImage.getVoteScore();
         Log.i(TAG, "Image has now " + numberOfVotes + " votes");
@@ -273,19 +274,6 @@ public class CompetitionFragment extends MvpFragment<CompetitionView, Competitio
         recyclerView.scrollToPosition(index);
     }
 
-
-    private CompetitionImage getCompetitionImageById(Long id) {
-        for(int i = 0; i < competitionImages.size(); i++) {
-            if(competitionImages.get(i).getId().equals(id)){
-                Log.i(TAG, "getCompetitionImageById() => returning real image;");
-                return competitionImages.get(i);
-            }
-        }
-
-        Log.i(TAG, "getCompetitionImageById() => new CompetitionImage();");
-        return new CompetitionImage();
-    }
-
     @Override
     public void imageWasSuccessfullyNominated(CompetitionImage competitionImage) {
         competitionImages.add(competitionImage);
@@ -297,25 +285,33 @@ public class CompetitionFragment extends MvpFragment<CompetitionView, Competitio
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == RESULT_OK) {
-            if (requestCode == PICK_IMAGE_REQUEST && data != null && data.getData() != null) {
-                Uri uri = data.getData();
+        Bitmap bitmap = null;
 
-                try {
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
-                    String image = ImageUtil.getEncoded64ImageStringFromBitmap(bitmap);
-                    presenter.nominateImage(image);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            } else if (requestCode == CAPTURE_IMAGE_REQUEST) {
-                //Get the photo
-                Bundle extras = data.getExtras();
-                Bitmap bitmap = (Bitmap) extras.get("data");
-                String image = ImageUtil.getEncoded64ImageStringFromBitmap(bitmap);
-                presenter.nominateImage(image);
-            }
+        if (resultCode != RESULT_OK) return;
+
+        if (requestCode == PICK_IMAGE_REQUEST && data != null && data.getData() != null) {
+            Uri uri = data.getData();
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
+            } catch (IOException e) { e.printStackTrace(); }
+        } else if (requestCode == CAPTURE_IMAGE_REQUEST) {
+            Bundle extras = data.getExtras();
+            bitmap = (Bitmap) extras.get("data");
         }
+
+        final Bitmap bMap = bitmap;
+
+        UploadImageFragment.newInstance()
+                .setImage(bitmap)
+                .onConfirmAction((string) -> uploadImage(string, bMap))
+                .show(getFragmentManager(), "imageUpload");
+    }
+
+    private void uploadImage(String title, Bitmap bitmap) {
+        if (bitmap == null) return;
+
+        String image = ImageUtil.getEncoded64ImageStringFromBitmap(bitmap);
+        presenter.nominateImage(title, image);
     }
 
     public void setAttendingEvent(boolean isAttendingEvent) {
@@ -323,7 +319,7 @@ public class CompetitionFragment extends MvpFragment<CompetitionView, Competitio
 
         Log.i(TAG, "setAttendingEvent = " + isAttendingEvent);
 
-        if(isAttendingEvent) {
+        if (isAttendingEvent) {
             addCompetitionImage.setVisibility(View.VISIBLE);
         } else {
             addCompetitionImage.setVisibility(View.GONE);

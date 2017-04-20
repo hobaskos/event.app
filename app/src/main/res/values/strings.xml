@@ -54,6 +54,7 @@
     <string name="error_message_required_field_from_time">From time is a required field.</string>
     <string name="error_message_required_field_to_date">To date is a required field.</string>
     <string name="error_message_required_field_to_time">To time is a required field.</string>
+    <string name="title">Title</string>
     <string name="title_label">Title</string>
     <string name="image_label">Image</string>
     <string name="could_not_create_event">Could not create event. Please try again.</string>
@@ -134,4 +135,9 @@
 
     <string name="first_name">First name</string>
     <string name="last_name">Last name</string>
+
+    <string name="already_voted">You have already voted for this image</string>
+    <string name="image_author">Uploader: </string>
+    <string name="upload_new_image">Upload new image</string>
+    <string name="add_image">Add image</string>
 </resources>

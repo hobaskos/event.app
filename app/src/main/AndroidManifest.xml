@@ -63,14 +63,14 @@
             -->
         </activity>
 
-        <activity android:name=".ui.profile.edit.ProfileEditActivity"
+        <activity
+            android:name=".ui.profile.edit.ProfileEditActivity"
             android:parentActivityName=".ui.profile.ProfileActivity"/>
-
-        <activity android:name=".ui.event.create.CreateEventActivity"
+        <activity
+            android:name=".ui.event.create.CreateEventActivity"
             android:parentActivityName=".ui.main.MainActivity" />
-
-        <activity android:name=".ui.event.details.EventActivity" />
-
+        <activity
+            android:name=".ui.event.details.EventActivity" />
         <activity
             android:name=".ui.login.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -93,14 +93,18 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.location.add.LocationActivity" android:parentActivityName=".ui.event.details.EventActivity"/>
-        <activity android:name=".ui.event.search.map.SearchEventsMapActivity" />
-        <activity android:name=".ui.event.filter.FilterEventsActivity" />
+        <activity
+            android:name=".ui.location.add.LocationActivity"
+            android:parentActivityName=".ui.event.details.EventActivity"/>
+        <activity
+            android:name=".ui.event.search.map.SearchEventsMapActivity" />
+        <activity
+            android:name=".ui.event.filter.FilterEventsActivity" />
         <activity
             android:name=".ui.event.details.competition.carousel.ImageCarouselActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
-
-        <activity android:name=".ui.profile.ProfileActivity"
+            android:parentActivityName=".ui.event.details.EventActivity"/>
+        <activity
+            android:name=".ui.profile.ProfileActivity"
             android:label="@string/my_profile"
             android:parentActivityName=".ui.main.MainActivity"
             android:theme="@style/AppTheme.NoActionBar"
@@ -118,7 +122,6 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_api_key"/>
-
 
         <!-- https://github.com/robolectric/robolectric/issues/2579 -->
         <meta-data

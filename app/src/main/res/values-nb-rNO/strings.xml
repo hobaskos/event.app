@@ -52,6 +52,7 @@
     <string name="error_message_required_field_from_time">Start-tid er et nødvendig felt.</string>
     <string name="error_message_required_field_to_date">Slutt-dato er et nødvendig felt.</string>
     <string name="error_message_required_field_to_time">Slutt-tid er et nødvendig felt.</string>
+    <string name="title">Tittel</string>
     <string name="title_label">Navn</string>
     <string name="image_label">Bilde</string>
     <string name="could_not_create_event">Kunne ikke opprette event. Vennligst prøv på nytt.</string>
@@ -132,4 +133,9 @@
 
     <string name="first_name">Fornavn</string>
     <string name="last_name">Etternavn</string>
+
+    <string name="already_voted">Du har allerede stemt på dette bildet</string>
+    <string name="image_author">Opplaster: </string>
+    <string name="upload_new_image">Last opp nytt bilde</string>
+    <string name="add_image">Nytt bilde</string>
 </resources>
