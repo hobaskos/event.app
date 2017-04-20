@@ -24,6 +24,7 @@ import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.data.model.EventCategoryTheme;
 import io.hobaskos.event.eventapp.data.model.Location;
 import io.hobaskos.event.eventapp.data.model.User;
+import io.hobaskos.event.eventapp.data.model.enumeration.EventAttendingType;
 import io.hobaskos.event.eventapp.ui.base.view.activity.BaseLceViewStateActivity;
 import io.hobaskos.event.eventapp.ui.event.details.competition.list.CompetitionFragment;
 import io.hobaskos.event.eventapp.ui.dialog.DeleteDialogFragment;
@@ -62,6 +63,7 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
 
     private Long eventId;
     private EventCategoryTheme theme;
+    private boolean eventGoing;
 
     private EventPagerAdapter eventPagerAdapter;
     protected ViewPager viewPager;
@@ -193,6 +195,7 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     public void setData(Event event) {
         this.event = event;
         presenter.getOwnerStatus(event);
+        eventGoing = (event.getMyAttendance() != null && event.getMyAttendance().equals(EventAttendingType.GOING));
         setTitle(event.getTitle());
 
         Log.i(TAG, "setData");
@@ -345,6 +348,7 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
         Intent intent = new Intent(this, ImageCarouselActivity.class);
         intent.putExtra(ImageCarouselActivity.ARG_COMPETITION_ID, event.getDefaultPollId());
         intent.putExtra(ImageCarouselActivity.ARG_EVENT_TITLE, event.getTitle());
+        intent.putExtra(ImageCarouselActivity.ARG_EVENT_GOING, eventGoing);
         startActivityForResult(intent, VIEW_COMPETITION_CAROUSEL);
     }
 
@@ -381,8 +385,9 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     @Override
     public void onAttendeesFabInteraction() {
         Log.i(TAG, "onAttendeesFabInteraction");
-        CompetitionFragment competitionFragment = (CompetitionFragment)
-        eventPagerAdapter.getItem(EventPagerAdapter.COMPETITIONS_FRAGMENT);
+        CompetitionFragment competitionFragment =
+                (CompetitionFragment) eventPagerAdapter.getItem(EventPagerAdapter.COMPETITIONS_FRAGMENT);
         competitionFragment.setAttendingEvent(true);
+        eventGoing = true;
     }
 }

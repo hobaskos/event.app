@@ -38,8 +38,10 @@ public class ImageCarouselActivity extends AppCompatActivity
 
     public static final String ARG_COMPETITION_ID = "competitionId";
     public static final String ARG_EVENT_TITLE = "eventTitle";
+    public static final String ARG_EVENT_GOING = "eventGoing";
 
     private String eventTitle;
+    private boolean eventGoing = false;
 
     protected ImageView image;
     protected ImageView upVoteButton;
@@ -60,11 +62,12 @@ public class ImageCarouselActivity extends AppCompatActivity
 
         if (getIntent().getExtras() != null) {
             eventTitle = getIntent().getExtras().getString(ARG_EVENT_TITLE);
+            eventGoing = getIntent().getExtras().getBoolean(ARG_EVENT_GOING);
             setTitle(eventTitle);
         }
 
         Long competitionId = getIntent().getLongExtra(ARG_COMPETITION_ID, 0);
-        competitionFragment = CompetitionFragment.newInstance(competitionId, true, true);
+        competitionFragment = CompetitionFragment.newInstance(competitionId, eventGoing, true);
 
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.main_pane, competitionFragment)
@@ -90,7 +93,7 @@ public class ImageCarouselActivity extends AppCompatActivity
                 finish();
                 return true;
             case R.id.add:
-                competitionFragment.pickNewCompetitionImage();
+                if (eventGoing) { competitionFragment.pickNewCompetitionImage(); }
                 return true;
         }
         return super.onOptionsItemSelected(item);
