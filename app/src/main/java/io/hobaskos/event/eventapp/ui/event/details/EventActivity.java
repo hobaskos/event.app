@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -31,7 +32,7 @@ import io.hobaskos.event.eventapp.ui.event.details.attending.AttendeesFragment;
 import io.hobaskos.event.eventapp.ui.event.details.competition.carousel.ImageCarouselActivity;
 import io.hobaskos.event.eventapp.ui.event.details.competition.list.OnCompetitionListInteractionListener;
 import io.hobaskos.event.eventapp.ui.event.details.location.LocationsFragment;
-import io.hobaskos.event.eventapp.ui.event.details.map.MapsActivity;
+import io.hobaskos.event.eventapp.ui.event.details.map.EventMapActivity;
 import io.hobaskos.event.eventapp.ui.location.add.LocationActivity;
 import rx.Observer;
 
@@ -245,8 +246,8 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
                 startActivityForResult(editIntent, EDIT_EVENT_REQUEST);
                 break;
             case R.id.map:
-                Intent intent = new Intent(this, MapsActivity.class);
-                intent.putParcelableArrayListExtra(MapsActivity.LOCATIONS, (ArrayList<? extends Parcelable>)event.getLocations());
+                Intent intent = new Intent(this, EventMapActivity.class);
+                intent.putParcelableArrayListExtra(EventMapActivity.LOCATIONS, (ArrayList<? extends Parcelable>)event.getLocations());
                 startActivity(intent);
                 break;
         }
@@ -349,6 +350,16 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     }
 
     @Override
+    public void onLocationMapInteraction(List<Location> locations, Location focus) {
+        Intent intent = new Intent(this, EventMapActivity.class);
+        intent.putExtra(EventMapActivity.FOCUS_POINT, true);
+        intent.putExtra(EventMapActivity.FOCUS_LAT, focus.getGeoPoint().getLat());
+        intent.putExtra(EventMapActivity.FOCUS_LNG, focus.getGeoPoint().getLon());
+        intent.putParcelableArrayListExtra(EventMapActivity.LOCATIONS, (ArrayList<? extends Parcelable>)locations);
+        startActivity(intent);
+    }
+
+    @Override
     public void onLocationEditInteraction(Location item) {
         Intent intent = new Intent(this, LocationActivity.class);
         intent.putExtra(LocationActivity.EVENT_STATE, 1);
@@ -362,7 +373,6 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
         deleteDialog.setItem(item);
         deleteDialog.show(getFragmentManager(), "EventActivity");
     }
-
 
     @Override
     public void onUserAttendingInteraction(User item) {

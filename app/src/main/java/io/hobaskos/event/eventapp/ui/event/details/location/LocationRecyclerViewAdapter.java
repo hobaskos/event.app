@@ -81,16 +81,13 @@ public class LocationRecyclerViewAdapter extends
             delete = (ImageView) view.findViewById(R.id.delete);
             edit = (ImageView) view.findViewById(R.id.edit);
 
+            if (listener == null) return;
+
+            contentWrapper.setOnClickListener(v -> listener.onLocationMapInteraction(locations, location));
+
             if (isOwner) {
-
-                edit.setOnClickListener(v -> {
-                    if (listener != null) { listener.onLocationEditInteraction(location); }
-                });
-
-                delete.setOnClickListener(v -> {
-                    if(listener != null) { listener.onLocationDeleteInteraction(location); }
-                });
-
+                edit.setOnClickListener(v -> listener.onLocationEditInteraction(location));
+                delete.setOnClickListener(v -> listener.onLocationDeleteInteraction(location));
             } else {
                 actionWrapper.setVisibility(View.GONE);
             }

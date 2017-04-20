@@ -216,6 +216,7 @@ public class LocationsFragment
     }
 
     public interface OnListFragmentInteractionListener {
+        void onLocationMapInteraction(List<Location> locations, Location focus);
         void onLocationEditInteraction(Location item);
         void onLocationDeleteInteraction(Location item);
     }

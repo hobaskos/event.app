@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -26,6 +27,7 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.CastedArrayListLceViewState;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,22 +35,30 @@ import java.util.List;
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.model.Location;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
+public class EventMapActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
 
-    public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
+    public static final String TAG = EventMapActivity.class.getName();
+
     public static final String LOCATIONS = "locations";
+    public static final String FOCUS_POINT = "focusPoint";
+    public static final String FOCUS_LAT = "focusLat";
+    public static final String FOCUS_LNG = "focusLng";
 
     private GoogleMap map;
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
     private android.location.Location mLastLocation;
     private Marker mCurrLocationMarker;
+
     private ArrayList<LatLng> points = new ArrayList<>();
     private ArrayList<Location> locations = new ArrayList<>();
     private List<Marker> markers = new ArrayList<>();
+    private boolean focusPoint = false;
+    private Double focusLat;
+    private Double focusLng;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +68,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (getIntent() != null) {
             Bundle extra = getIntent().getExtras();
             locations = extra.getParcelableArrayList(LOCATIONS);
+            focusLat = extra.getDouble(FOCUS_LAT);
+            focusLng = extra.getDouble(FOCUS_LNG);
+            focusPoint = extra.getBoolean(FOCUS_POINT);
         } else {
             Toast.makeText(this, "Kan ikke hente lokasjoner", Toast.LENGTH_LONG).show();
             finish();
@@ -87,6 +100,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
         map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        map.getUiSettings().setZoomControlsEnabled(true);
 
         //Initializing Google Play Services
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -143,8 +157,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         int padding = (int) (width * 0.20); // offset from edges of the map 20% of screen
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding);
 
-        map.moveCamera(cameraUpdate);
-        map.getUiSettings().setZoomControlsEnabled(true);
+        if (focusPoint && focusLat != null && focusLng != null) {
+            Log.d(TAG, "focusPoint: " + focusLat + ", " + focusLng);
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(focusLat, focusLng), 20));
+        } else {
+            map.moveCamera(cameraUpdate);
+        }
 
         //Creat a pathline from first to last location
         for (int i = 0; i < locations.size(); i++) {
