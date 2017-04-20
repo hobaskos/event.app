@@ -2,15 +2,12 @@ package io.hobaskos.event.eventapp.ui.event.details.map;
 
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.location.Location;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -34,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.hobaskos.event.eventapp.R;
+import io.hobaskos.event.eventapp.data.model.Location;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
@@ -41,14 +39,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LocationListener {
 
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
+    public static final String LOCATIONS = "locations";
 
-    private GoogleMap mMap;
+    private GoogleMap map;
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
-    private Location mLastLocation;
+    private android.location.Location mLastLocation;
     private Marker mCurrLocationMarker;
     private ArrayList<LatLng> points = new ArrayList<>();
-    private ArrayList<io.hobaskos.event.eventapp.data.model.Location> locations = new ArrayList<>();
+    private ArrayList<Location> locations = new ArrayList<>();
     private List<Marker> markers = new ArrayList<>();
 
     @Override
@@ -58,24 +57,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         if (getIntent() != null) {
             Bundle extra = getIntent().getExtras();
-            locations = extra.getParcelableArrayList("loc");
+            locations = extra.getParcelableArrayList(LOCATIONS);
         } else {
             Toast.makeText(this, "Kan ikke hente lokasjoner", Toast.LENGTH_LONG).show();
-            //TODO: Opening map will now crash the app. Handle this, by e.g. disabling opening the map with an informative toast
+            finish();
         }
 
-        /* NOT IN USE ATM.
-        // Check if MyLocation can be used!
-        if (ContextCompat.checkSelfPermission(this,
-                android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            mMap.setMyLocationEnabled(true);
-        } else {
-            Toast.makeText(this, "Permission MY Location denied", Toast.LENGTH_LONG).show();
-            checkLocationPermission();
-        }
-        */
-
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         MapFragment mapFragment = (MapFragment) getFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -98,8 +85,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        map = googleMap;
+        map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
         //Initializing Google Play Services
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -107,28 +94,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     android.Manifest.permission.ACCESS_FINE_LOCATION)
                     == PackageManager.PERMISSION_GRANTED) {
                 buildGoogleApiClient();
-                mMap.setMyLocationEnabled(true);
+                map.setMyLocationEnabled(true);
             }
         } else {
             buildGoogleApiClient();
-            mMap.setMyLocationEnabled(true);
+            map.setMyLocationEnabled(true);
         }
 
+        addMarkers();
+    }
 
-
-        //Print to monitor to see if there are any location coming from the getIntent and written to location Array
-        if (getIntent() != null){
-            Log.i("MapsActivity","Det finnes lokasjoner" );
-            for (io.hobaskos.event.eventapp.data.model.Location lok : locations){
-                Log.i("Lokasjon : ", lok.getGeoPoint().getLat() + " " + lok.getGeoPoint().getLon() + "\n");
-            }
-        } else{
-            Log.i("MapsActivity", "Det finnes ingenting");
-        }
+    private void addMarkers() {
 
         //Add first Marker
-        Marker marker0 = mMap.addMarker(new MarkerOptions()
-                .position(new LatLng(locations.get(0).getGeoPoint().getLat(), locations.get(0).getGeoPoint().getLon()))
+        Marker marker0 = map.addMarker(new MarkerOptions()
+                .position(getLatLng(locations.get(0)))
                 .title(locations.get(0).getName() + " START")
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
         markers.add(marker0);
@@ -136,33 +116,35 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         //Add all markers except first and last
         for (int i = 1; i < locations.size()-1; i++) {
-            Marker marker = mMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(locations.get(i).getGeoPoint().getLat(), locations.get(i).getGeoPoint().getLon()))
+            Marker marker = map.addMarker(new MarkerOptions()
+                    .position(getLatLng(locations.get(i)))
                     .title(locations.get(i).getName())
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
             markers.add(marker);
         }
 
         //Add last Marker
-        Marker markerLast = mMap.addMarker(new MarkerOptions()
-                .position(new LatLng(locations.get(locations.size()-1).getGeoPoint().getLat(), locations.get(locations.size()-1).getGeoPoint().getLon()))
+        Marker markerLast = map.addMarker(new MarkerOptions()
+                .position(getLatLng(locations.get(locations.size() - 1)))
                 .title(locations.get(locations.size()-1).getName() + " SLUTT")
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
         markers.add(markerLast);
 
-
-        //Create Zoom out a view all makers with a Padding Equal to 200
-        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+        // Create LatLng bounds from markers:
+        LatLngBounds.Builder latLngBoundsBuilder = new LatLngBounds.Builder();
         for (Marker marker : markers) {
-            builder.include(marker.getPosition());
+            latLngBoundsBuilder.include(marker.getPosition());
         }
-        LatLngBounds bounds = builder.build();
+        LatLngBounds bounds = latLngBoundsBuilder.build();
 
-        int padding = 200;
-        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
-        googleMap.moveCamera(cu);
-        googleMap.animateCamera(cu);
+        // Initialize padding for the map boundary:
+        int width = getResources().getDisplayMetrics().widthPixels;
+        int height = getResources().getDisplayMetrics().heightPixels;
+        int padding = (int) (width * 0.20); // offset from edges of the map 20% of screen
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding);
 
+        map.moveCamera(cameraUpdate);
+        map.getUiSettings().setZoomControlsEnabled(true);
 
         //Creat a pathline from first to last location
         for (int i = 0; i < locations.size(); i++) {
@@ -173,10 +155,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         polyLineOptions.color(Color.RED);
         polyLineOptions.width(5);
         polyLineOptions.addAll(points);
-
-        googleMap.addPolyline(polyLineOptions);
-
-
+        map.addPolyline(polyLineOptions);
     }
 
     protected synchronized void buildGoogleApiClient() {
@@ -187,7 +166,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .build();
         mGoogleApiClient.connect();
     }
-
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
@@ -204,32 +182,30 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onConnectionSuspended(int i) {
-
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
     }
 
     @Override
-    public void onLocationChanged(Location location) {
+    public void onLocationChanged(android.location.Location location) {
         mLastLocation = location;
         if (mCurrLocationMarker != null) {
             mCurrLocationMarker.remove();
         }
 
         //Place current location marker
-        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        LatLng latLng = getLatLng(location);
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(latLng);
         markerOptions.title("Din plassering");
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
-        mCurrLocationMarker = mMap.addMarker(markerOptions);
+        mCurrLocationMarker = map.addMarker(markerOptions);
 
         //Move map camera
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
+        map.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        map.animateCamera(CameraUpdateFactory.zoomTo(11));
 
         //Stop location updates
         if (mGoogleApiClient != null) {
@@ -237,67 +213,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    public boolean checkLocationPermission() {
-        if (ContextCompat.checkSelfPermission(this,
-                android.Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            // Asking user if explanation is needed
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    android.Manifest.permission.ACCESS_FINE_LOCATION)) {
-
-                // Show an expanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
-
-                //Prompt the user once explanation has been shown
-                ActivityCompat.requestPermissions(this,
-                        new String[] {
-                                android.Manifest.permission.ACCESS_FINE_LOCATION
-                        },
-                        MY_PERMISSIONS_REQUEST_LOCATION);
-            } else {
-                //No explanation needed, we can request the permission.
-                ActivityCompat.requestPermissions(this,
-                        new String[] {
-                                android.Manifest.permission.ACCESS_FINE_LOCATION
-                        },
-                        MY_PERMISSIONS_REQUEST_LOCATION);
-            }
-            return false;
-        } else {
-            return true;
-        }
+    private LatLng getLatLng(Location location) {
+        return new LatLng(location.getGeoPoint().getLat(), location.getGeoPoint().getLon());
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_LOCATION: {
-                //If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                    //Permission was granted
-                    if (ContextCompat.checkSelfPermission(this,
-                            android.Manifest.permission.ACCESS_FINE_LOCATION)
-                            == PackageManager.PERMISSION_GRANTED) {
-                        if (mGoogleApiClient == null) {
-                            buildGoogleApiClient();
-                        }
-                        mMap.setMyLocationEnabled(true);
-                    } else {
-
-                        // Permission denied, Disable the functionality that depends on this permission.
-                        Toast.makeText(this, "Permission denied", Toast.LENGTH_LONG).show();
-                    }
-                    return;
-                }
-            }
-            // other 'case' lines to check for other permissions this app might request.
-            //You can add here other case statements according to your requirement.
-        }
+    private LatLng getLatLng(android.location.Location location) {
+        return new LatLng(location.getLatitude(), location.getLongitude());
     }
-
-
-}// End of Class MapsActivity
+}
