@@ -24,9 +24,11 @@ import butterknife.OnClick;
 import icepick.State;
 import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
+import io.hobaskos.event.eventapp.data.AccountManager;
 import io.hobaskos.event.eventapp.data.model.EventAttendance;
 import io.hobaskos.event.eventapp.data.model.User;
 import io.hobaskos.event.eventapp.ui.base.view.fragment.BaseLceViewStateFragment;
+import io.hobaskos.event.eventapp.util.LoginDialog;
 import rx.Observer;
 
 import java.util.ArrayList;
@@ -74,6 +76,8 @@ public class AttendeesFragment
 
     @Inject
     public AttendeesPresenter attendeesPresenter;
+    @Inject
+    public AccountManager accountManager;
 
     public AttendeesFragment() {}
 
@@ -139,6 +143,10 @@ public class AttendeesFragment
 
     @OnClick(R.id.fragment_attendees_attend)
     public void attendEvent() {
+        if (!accountManager.isLoggedIn()) {
+            LoginDialog.createAndShow(getContext());
+            return;
+        }
         new AlertDialog.Builder(getContext())
                 .setTitle(R.string.attend_event)
                 .setMessage(R.string.attend_event_desc)

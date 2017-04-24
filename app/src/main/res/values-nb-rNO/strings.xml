@@ -141,4 +141,6 @@
 
     <string name="attend_upper">DELTA</string>
     <string name="explore_upper">UTFORSK</string>
+
+    <string name="must_be_logged_in">Du må være pålogget for å benytte dette</string>
 </resources>

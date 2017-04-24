@@ -143,4 +143,6 @@
 
     <string name="attend_upper">ATTEND</string>
     <string name="explore_upper">EXPLORE</string>
+
+    <string name="must_be_logged_in">You must be logged for this function</string>
 </resources>
