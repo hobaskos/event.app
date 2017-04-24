@@ -195,7 +195,7 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     public void setData(Event event) {
         this.event = event;
         presenter.getOwnerStatus(event);
-        eventGoing = (event.getMyAttendance() != null && event.getMyAttendance().equals(EventAttendingType.GOING));
+        eventGoing = event.isAttending();
         setTitle(event.getTitle());
 
         Log.i(TAG, "setData");
