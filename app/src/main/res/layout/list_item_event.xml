@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal">
@@ -154,10 +153,11 @@
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
                         android:maxLines="1"
-                        android:paddingStart="8dp"
+                        android:paddingStart="16dp"
                         android:paddingTop="2dp"
                         android:text="@string/attending"
                         android:textColor="@color/cardview_text"
+                        android:textStyle="bold"
                         android:textSize="12sp" />
                 </LinearLayout>
 
@@ -173,7 +173,8 @@
                         android:id="@+id/attend_text_view"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="ATTEND"
+                        android:text="@string/attend_upper"
+                        android:paddingEnd="16dp"
                         android:textColor="@color/cardview_text"
                         android:textSize="14sp"
                         android:textStyle="bold" />
@@ -182,8 +183,7 @@
                         android:id="@+id/explore_text_view"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingStart="16dp"
-                        android:text="EXPLORE"
+                        android:text="@string/explore_upper"
                         android:textColor="@color/cardview_text"
                         android:textSize="14sp"
                         android:textStyle="bold" />
@@ -192,30 +192,6 @@
             </LinearLayout>
 
         </android.support.constraint.ConstraintLayout>
-
-            <!--
-    <Space
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="20dp" />
-
-    <LinearLayout
-        android:layout_width="@dimen/text_margin"
-        android:orientation="vertical"
-        android:layout_height="match_parent">
-        <View
-            android:layout_width="16dp"
-            android:id="@+id/category_theme_color"
-            android:background="@color/colorBlue"
-            android:layout_height="70dp" />
-
-        <View
-            android:layout_width="16dp"
-            android:id="@+id/category_theme_color_sub"
-            android:background="@color/colorBlueDark"
-            android:layout_height="6dp" />
-    </LinearLayout>
-    -->
 
     </android.support.v7.widget.CardView>
 

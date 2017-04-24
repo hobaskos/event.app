@@ -55,7 +55,7 @@ public class Event implements Parcelable {
     private int attendanceCount;
 
     @SerializedName("myAttendance")
-    private EventAttendingType myAttendance;
+    private String myAttendance;
 
     @SerializedName("image")
     private String image;
@@ -64,7 +64,7 @@ public class Event implements Parcelable {
     private String imageContentType;
 
     @SerializedName("defaultPollId")
-    private int defaultPollId;
+    private Long defaultPollId;
 
     private boolean privateEvent;
 
@@ -163,8 +163,12 @@ public class Event implements Parcelable {
         this.attendanceCount = attendanceCount;
     }
 
-    public EventAttendingType getMyAttendance() {
+    public String getMyAttendance() {
         return myAttendance;
+    }
+
+    public boolean isAttending() {
+        return myAttendance != null && !myAttendance.equals("");
     }
 
     public boolean isPrivateEvent() {
@@ -191,15 +195,15 @@ public class Event implements Parcelable {
         this.category = category;
     }
 
-    public void setMyAttendance(EventAttendingType myAttendance) {
+    public void setMyAttendance(String myAttendance) {
         this.myAttendance = myAttendance;
     }
 
     public Long getDefaultPollId() {
-        return new Long(defaultPollId);
+        return defaultPollId;
     }
 
-    public void setDefaultPollId(int defaultPollId) {
+    public void setDefaultPollId(Long defaultPollId) {
         this.defaultPollId = defaultPollId;
     }
 
@@ -320,9 +324,6 @@ public class Event implements Parcelable {
                 '}';
     }
 
-    public Event() {
-    }
-
 
     @Override
     public int describeContents() {
@@ -341,12 +342,15 @@ public class Event implements Parcelable {
         dest.writeTypedList(this.locations);
         dest.writeParcelable(this.category, flags);
         dest.writeInt(this.attendanceCount);
-        dest.writeInt(this.myAttendance == null ? -1 : this.myAttendance.ordinal());
+        dest.writeString(this.myAttendance);
         dest.writeString(this.image);
         dest.writeString(this.imageContentType);
         dest.writeValue(this.defaultPollId);
         dest.writeByte(this.privateEvent ? (byte) 1 : (byte) 0);
         dest.writeString(this.invitationCode);
+    }
+
+    public Event() {
     }
 
     protected Event(Parcel in) {
@@ -360,16 +364,15 @@ public class Event implements Parcelable {
         this.locations = in.createTypedArrayList(Location.CREATOR);
         this.category = in.readParcelable(EventCategory.class.getClassLoader());
         this.attendanceCount = in.readInt();
-        int tmpMyAttendance = in.readInt();
-        this.myAttendance = tmpMyAttendance == -1 ? null : EventAttendingType.values()[tmpMyAttendance];
+        this.myAttendance = in.readString();
         this.image = in.readString();
         this.imageContentType = in.readString();
-        this.defaultPollId = (int) in.readValue(Long.class.getClassLoader());
+        this.defaultPollId = (Long) in.readValue(Long.class.getClassLoader());
         this.privateEvent = in.readByte() != 0;
         this.invitationCode = in.readString();
     }
 
-    public static final Parcelable.Creator<Event> CREATOR = new Parcelable.Creator<Event>() {
+    public static final Creator<Event> CREATOR = new Creator<Event>() {
         @Override
         public Event createFromParcel(Parcel source) {
             return new Event(source);

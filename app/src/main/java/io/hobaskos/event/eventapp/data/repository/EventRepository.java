@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.hobaskos.event.eventapp.data.AccountManager;
 import io.hobaskos.event.eventapp.data.api.EventService;
 import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.data.model.EventAttendance;
@@ -20,14 +21,17 @@ public class EventRepository implements BaseRepository<Event, Long> {
 
     private final EventService.Anonymously eventServiceAnonymously;
     private final EventService.Authenticated eventServiceAuthenticated;
+    private final AccountManager accountManager;
 
     public static final int PAGE_SIZE = 20;
 
     @Inject
     public EventRepository(EventService.Anonymously eventServiceAnonymously,
-                           EventService.Authenticated eventServiceAuthenticated) {
+                           EventService.Authenticated eventServiceAuthenticated,
+                           AccountManager accountManager) {
         this.eventServiceAnonymously = eventServiceAnonymously;
         this.eventServiceAuthenticated = eventServiceAuthenticated;
+        this.accountManager = accountManager;
     }
 
     @Override
@@ -60,14 +64,22 @@ public class EventRepository implements BaseRepository<Event, Long> {
     }
 
     public Observable<List<Event>> search(int page, String query) {
-        return eventServiceAnonymously
-                .search(page, PAGE_SIZE, query, "fromDate,asc");
+        if (accountManager.isLoggedIn()) {
+            return eventServiceAuthenticated.search(page, PAGE_SIZE, query, "fromDate,asc");
+        } else {
+            return eventServiceAnonymously.search(page, PAGE_SIZE, query, "fromDate,asc");
+        }
     }
 
     public Observable<List<Event>> searchNearby(int page, String query, double lat, double lon, String distance,
                                                 DateTime fromDate, DateTime toDate, String categories) {
-        return eventServiceAnonymously
-                .searchNearby(page, PAGE_SIZE, query, lat, lon, distance, fromDate, toDate, categories, "fromDate,asc");
+        if (accountManager.isLoggedIn()) {
+            return eventServiceAuthenticated
+                    .searchNearby(page, PAGE_SIZE, query, lat, lon, distance, fromDate, toDate, categories, "fromDate,asc");
+        } else {
+            return eventServiceAnonymously
+                    .searchNearby(page, PAGE_SIZE, query, lat, lon, distance, fromDate, toDate, categories, "fromDate,asc");
+        }
     }
 
     public Observable<EventAttendance> attendEvent(Long eventId) {

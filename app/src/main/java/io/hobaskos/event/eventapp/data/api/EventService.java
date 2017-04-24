@@ -67,8 +67,14 @@ public interface EventService
         @DELETE("api/events/{id}")
         Observable<Void> deleteEvent(@Path("id") Long id);
 
-        @GET("api/_search/events-nearby")
+        @GET("api/_search/events")
         Observable<List<Event>> search(@Query("page") int page,
+                                       @Query("size") int pageSize,
+                                       @Query("query") String query,
+                                       @Query("sort") String sort);
+
+        @GET("api/_search/events-nearby")
+        Observable<List<Event>> searchNearby(@Query("page") int page,
                                        @Query("size") int pageSize,
                                        @Query("query") String query,
                                        @Query("lat") double lat,
@@ -90,8 +96,6 @@ public interface EventService
         Observable<List<Event>> getMyEvents(@Query("page") int page,
                                             @Query("size") int pageSize,
                                             @Query("sort") String sort);
-
-
 
         @GET("api/event-by-invite/{code}")
         Observable<Event> getEventByInviteCode(@Path("code") String code);

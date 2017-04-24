@@ -74,8 +74,10 @@ public class NetModule {
 
     @Singleton
     @Provides
-    public EventRepository providesEventRepository(EventService.Anonymously eventServiceAnonymously, EventService.Authenticated eventServiceAuthenticated) {
-        return new EventRepository(eventServiceAnonymously, eventServiceAuthenticated);
+    public EventRepository providesEventRepository(EventService.Anonymously eventServiceAnonymously,
+                                                   EventService.Authenticated eventServiceAuthenticated,
+                                                   AccountManager accountManager) {
+        return new EventRepository(eventServiceAnonymously, eventServiceAuthenticated, accountManager);
     }
 
     @Singleton

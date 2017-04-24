@@ -138,4 +138,7 @@
     <string name="image_author">Opplaster: </string>
     <string name="upload_new_image">Last opp nytt bilde</string>
     <string name="add_image">Nytt bilde</string>
+
+    <string name="attend_upper">DELTA</string>
+    <string name="explore_upper">UTFORSK</string>
 </resources>

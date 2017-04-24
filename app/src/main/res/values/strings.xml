@@ -140,4 +140,7 @@
     <string name="image_author">Uploader: </string>
     <string name="upload_new_image">Upload new image</string>
     <string name="add_image">Add image</string>
+
+    <string name="attend_upper">ATTEND</string>
+    <string name="explore_upper">EXPLORE</string>
 </resources>
