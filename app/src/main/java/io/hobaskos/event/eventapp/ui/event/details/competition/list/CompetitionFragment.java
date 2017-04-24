@@ -14,14 +14,12 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,7 +28,6 @@ import com.hannesdorfmann.mosby.mvp.MvpFragment;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -41,10 +38,8 @@ import icepick.State;
 import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.model.CompetitionImage;
-import io.hobaskos.event.eventapp.data.model.Event;
-import io.hobaskos.event.eventapp.data.model.enumeration.EventAttendingType;
 import io.hobaskos.event.eventapp.util.ImageUtil;
-import rx.functions.Action1;
+import io.hobaskos.event.eventapp.util.SavingProgress;
 
 import static android.app.Activity.RESULT_OK;
 import static io.hobaskos.event.eventapp.util.ImageUtil.CAPTURE_IMAGE_REQUEST;
@@ -72,6 +67,7 @@ public class CompetitionFragment extends MvpFragment<CompetitionView, Competitio
     private Long competitionId;
     private boolean isAttending;
     private boolean horizontal = false;
+    private SavingProgress savingProgress;
 
     @BindView(R.id.contentView)
     protected SwipeRefreshLayout swipeRefreshLayout;
@@ -275,7 +271,14 @@ public class CompetitionFragment extends MvpFragment<CompetitionView, Competitio
     }
 
     @Override
+    public void imageWasUnsuccessfullyNominated(Throwable throwable) {
+        savingProgress.dismiss();
+        Toast.makeText(getContext(), throwable.getMessage(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
     public void imageWasSuccessfullyNominated(CompetitionImage competitionImage) {
+        savingProgress.dismiss();
         competitionImages.add(competitionImage);
         competitionRecyclerViewAdapter.notifyDataSetChanged();
         recyclerView.scrollToPosition(competitionImages.size() - 1);
@@ -311,6 +314,7 @@ public class CompetitionFragment extends MvpFragment<CompetitionView, Competitio
         if (bitmap == null) return;
 
         String image = ImageUtil.getEncoded64ImageStringFromBitmap(bitmap);
+        savingProgress = SavingProgress.createAndShow(getContext());
         presenter.nominateImage(title, image);
     }
 

@@ -17,7 +17,6 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -36,6 +35,7 @@ import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.data.model.EventCategory;
 import io.hobaskos.event.eventapp.ui.event.details.EventActivity;
 import io.hobaskos.event.eventapp.util.ImageUtil;
+import io.hobaskos.event.eventapp.util.SavingProgress;
 import io.hobaskos.event.eventapp.util.UrlUtil;
 
 import static io.hobaskos.event.eventapp.util.ImageUtil.PICK_IMAGE_REQUEST;
@@ -64,10 +64,10 @@ public class CreateEventActivity extends MvpActivity<CreateEventView, CreateEven
     private Spinner categories;
     private SwitchCompat privateEvent;
     private ImageView chooseImage;
-    private RelativeLayout loadingPanel;
     private Event event;
 
     private ActivityState activityState;
+    private SavingProgress savingProgress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,8 +87,6 @@ public class CreateEventActivity extends MvpActivity<CreateEventView, CreateEven
         categories.setVisibility(View.INVISIBLE);
 
         privateEvent = (SwitchCompat) findViewById(R.id.create_event_switch_private_event);
-
-        loadingPanel = (RelativeLayout) findViewById(R.id.activity_create_event_loading_panel);
 
         presenter.attachView(this);
         presenter.loadCategories();
@@ -268,12 +266,12 @@ public class CreateEventActivity extends MvpActivity<CreateEventView, CreateEven
     }
 
     public void showLoader() {
-        loadingPanel.setVisibility(View.VISIBLE);
+        savingProgress = SavingProgress.createAndShow(this);
     }
 
 
     public void hideLoader() {
-        loadingPanel.setVisibility(View.GONE);
+        savingProgress.dismiss();
     }
 
     @Override
@@ -284,7 +282,7 @@ public class CreateEventActivity extends MvpActivity<CreateEventView, CreateEven
         intent.putExtra(EventActivity.EVENT_ID, event.getId());
         intent.putExtra(EventActivity.EVENT_THEME, event.getCategory().getTheme());
 
-        if(activityState.equals(ActivityState.CREATE)) {
+        if (activityState.equals(ActivityState.CREATE)) {
             startActivity(intent);
         }
 
@@ -294,7 +292,6 @@ public class CreateEventActivity extends MvpActivity<CreateEventView, CreateEven
 
     @Override
     public void onFailure() {
-
         hideLoader();
 
         if(activityState.equals(ActivityState.CREATE)) {

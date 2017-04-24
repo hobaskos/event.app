@@ -96,19 +96,5 @@
                 android:checked="false" />
 
         </LinearLayout>
-
-        <RelativeLayout
-            android:id="@+id/activity_create_event_loading_panel"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="invisible"
-            android:gravity="center" >
-
-            <ProgressBar
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:indeterminate="true" />
-        </RelativeLayout>
-
     </LinearLayout>
 </ScrollView>

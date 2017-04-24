@@ -32,6 +32,7 @@ import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.model.User;
 import io.hobaskos.event.eventapp.util.ImageUtil;
+import io.hobaskos.event.eventapp.util.SavingProgress;
 import io.hobaskos.event.eventapp.util.UrlUtil;
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 
@@ -54,6 +55,8 @@ public class ProfileEditActivity extends MvpActivity<ProfileEditView, ProfileEdi
 
     private String image;
     private User user;
+
+    private SavingProgress savingProgress;
 
     @Inject
     public ProfileEditPresenter presenter;
@@ -210,10 +213,14 @@ public class ProfileEditActivity extends MvpActivity<ProfileEditView, ProfileEdi
         user.setFirstName(firstName.getText().toString());
         user.setLastName(lastName.getText().toString());
 
+        savingProgress = SavingProgress.createAndShow(this);
         presenter.updateProfile(user);
     }
 
-    public void savedProfileData() { finish(); }
+    public void savedProfileData() {
+        savingProgress.dismiss();
+        finish();
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

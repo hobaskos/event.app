@@ -4,13 +4,11 @@ import android.util.Log;
 
 import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import icepick.State;
-import io.hobaskos.event.eventapp.data.api.EventImageService;
 import io.hobaskos.event.eventapp.data.model.CompetitionImage;
 import io.hobaskos.event.eventapp.data.model.EventImageVoteDTO;
 import io.hobaskos.event.eventapp.data.repository.EventImageRepository;
@@ -124,13 +122,15 @@ public class CompetitionPresenter extends MvpBasePresenter<CompetitionView> {
                     .subscribe(new Subscriber<CompetitionImage>() {
                         @Override
                         public void onCompleted() {
-
                         }
 
                         @Override
                         public void onError(Throwable e) {
                             Log.i(TAG, "Could not save competition image.");
                             Log.i(TAG, "Error: " + e.getMessage());
+                            if(isViewAttached() && getView() != null) {
+                                getView().imageWasUnsuccessfullyNominated(e);
+                            }
                         }
 
                         @Override
