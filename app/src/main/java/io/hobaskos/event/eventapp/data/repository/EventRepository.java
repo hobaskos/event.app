@@ -41,11 +41,11 @@ public class EventRepository implements BaseRepository<Event, Long> {
 
     @Override
     public Observable<Event> get(Long id) {
-        return eventServiceAnonymously.getEvent(id);
-    }
-
-    public Observable<Event> get2(Long id) {
-        return eventServiceAuthenticated.getEvent(id);
+        if (accountManager.isLoggedIn()) {
+            return eventServiceAuthenticated.getEvent(id);
+        } else {
+            return eventServiceAnonymously.getEvent(id);
+        }
     }
 
     @Override

@@ -1,6 +1,7 @@
 package io.hobaskos.event.eventapp.ui.event.details.competition.list;
 
 import android.content.Context;
+import android.graphics.PorterDuff;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,6 +58,11 @@ public class CompetitionRecyclerViewAdapter extends
                 .load(currentImage.getImageUrl() != null ? currentImage.getAbsoluteImageUrl() : COMPETITION_IMAGE_URL_PLACEHOLDER)
                 .into(holder.image);
         holder.voteScore.setText(currentImage.getVoteScore() + "");
+
+        if (currentImage.hasMyVote()) {
+            holder.upVoteButton.setColorFilter(R.color.light_gray, PorterDuff.Mode.SRC_IN);
+            holder.downVoteButton.setColorFilter(R.color.light_gray, PorterDuff.Mode.SRC_IN);
+        }
     }
 
     @Override
@@ -84,7 +90,7 @@ public class CompetitionRecyclerViewAdapter extends
             upVoteButton = (ImageView) view.findViewById(R.id.up_vote);
             downVoteButton = (ImageView) view.findViewById(R.id.down_vote);
 
-            if (null == listener) return;
+            if (listener == null) return;
 
             image.setOnClickListener(v -> listener.onCompetitionImageClick(competitionImage));
 

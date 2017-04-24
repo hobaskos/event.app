@@ -211,7 +211,7 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
             tabLayout.getTabAt(2).setIcon(R.drawable.ic_group);
 
             if(isLoggedIn) {
-                tabLayout.getTabAt(3).setIcon(R.drawable.ic_competition_tab_white);
+                tabLayout.getTabAt(3).setIcon(R.drawable.trophy);
             }
         }
     }

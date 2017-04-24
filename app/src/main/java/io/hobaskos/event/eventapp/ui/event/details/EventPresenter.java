@@ -2,8 +2,6 @@ package io.hobaskos.event.eventapp.ui.event.details;
 
 import android.util.Log;
 
-import java.util.List;
-
 import javax.inject.Inject;
 
 import io.hobaskos.event.eventapp.data.AccountManager;
@@ -12,7 +10,6 @@ import io.hobaskos.event.eventapp.data.model.Location;
 import io.hobaskos.event.eventapp.data.repository.EventRepository;
 import io.hobaskos.event.eventapp.data.repository.LocationRepository;
 import io.hobaskos.event.eventapp.ui.base.presenter.BaseRxLcePresenter;
-import rx.Observable;
 import rx.Observer;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -23,12 +20,13 @@ import rx.schedulers.Schedulers;
  */
 public class EventPresenter extends BaseRxLcePresenter<EventView, Event> {
 
+    public static final String TAG = EventPresenter.class.getName();
+
     private EventView view;
 
     private AccountManager accountManager;
     private EventRepository eventRepository;
     private LocationRepository locationRepository;
-    private Observable<Event> eventObservable = Observable.empty();
 
     @Inject
     public EventPresenter(EventRepository eventRepository, AccountManager accountManager, LocationRepository locationRepository) {
@@ -38,29 +36,24 @@ public class EventPresenter extends BaseRxLcePresenter<EventView, Event> {
     }
 
     public void getEvent(Long id) {
-
-        Log.i("EventPresenter", "Getting event with ID=" + id);
-
-        eventRepository.get2(id)
+        Log.d(TAG, "Getting event with ID=" + id);
+        eventRepository.get(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<Event>() {
                     @Override
-                    public void onCompleted() {
-
-                    }
+                    public void onCompleted() {}
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.i("EventPresenter", "Error getting event: " + e.getMessage());
-                        e.printStackTrace();
+                        Log.d(TAG, "Error getting event: " + e.getMessage());
                     }
 
                     @Override
                     public void onNext(Event event) {
-                        Log.i("EventPresenter", "Found event with id=" + event.getId());
-                        if(isViewAttached() && getView() != null) {
-                            Log.i("EventPresenter", "Competition id=" + event.getDefaultPollId());
+                        Log.d(TAG, "Found event with id=" + event.getId());
+                        if (isViewAttached() && getView() != null) {
+                            Log.d(TAG, "Competition id=" + event.getDefaultPollId());
                             getView().setData(event);
                         }
                     }
@@ -70,7 +63,7 @@ public class EventPresenter extends BaseRxLcePresenter<EventView, Event> {
     public void getOwnerStatus(Event event) {
         if(isViewAttached() && getView() != null) {
 
-            if(accountManager.isLoggedIn()) {
+            if (accountManager.isLoggedIn()) {
                 getView().setIsOwner(
                         event.getOwnerLogin().equals(accountManager.getLocalAccount().getLogin())
                 );
@@ -79,7 +72,7 @@ public class EventPresenter extends BaseRxLcePresenter<EventView, Event> {
     }
   
     public void getEvent(Long id, Observer<Event> eventObserver) {
-        Log.i("EventPresenter", "Getting event with ID=" + id);
+        Log.d(TAG, "Getting event with ID=" + id);
 
         eventRepository.get(id)
                 .subscribeOn(Schedulers.io())

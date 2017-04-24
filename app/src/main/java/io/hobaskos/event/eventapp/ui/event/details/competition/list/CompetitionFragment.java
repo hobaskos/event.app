@@ -98,10 +98,10 @@ public class CompetitionFragment extends MvpFragment<CompetitionView, Competitio
         return competitionPresenter;
     }
 
-    public static CompetitionFragment newInstance(Long eventCompetitionId, boolean going, boolean horizontal) {
+    public static CompetitionFragment newInstance(Long eventCompetitionId, boolean isAttending, boolean horizontal) {
         CompetitionFragment fragment = new CompetitionFragment();
         Bundle args = new Bundle();
-        args.putBoolean(ARG_IS_ATTENDING_EVENT, going);
+        args.putBoolean(ARG_IS_ATTENDING_EVENT, isAttending);
         args.putLong(ARG_COMPETITION_ID, eventCompetitionId);
         args.putBoolean(ARG_HORIZONTAL, horizontal);
         fragment.setArguments(args);

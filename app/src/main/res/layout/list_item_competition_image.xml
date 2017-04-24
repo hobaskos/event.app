@@ -65,6 +65,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:orientation="vertical"
+            android:paddingEnd="16dp"
             android:gravity="center"
             >
 
@@ -72,7 +73,9 @@
                 android:id="@+id/up_vote"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/ic_up"/>
+                android:paddingBottom="16dp"
+                android:src="@drawable/ic_action_arrow_top"
+                />
 
             <TextView
                 android:id="@+id/number_of_votes"
@@ -84,8 +87,10 @@
             <ImageView
                 android:id="@+id/down_vote"
                 android:layout_width="wrap_content"
+                android:paddingTop="16dp"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/ic_down"/>
+                android:src="@drawable/ic_action_arrow_bottom_red"
+                />
 
         </LinearLayout>
 
