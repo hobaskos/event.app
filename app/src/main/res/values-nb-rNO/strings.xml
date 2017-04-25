@@ -144,4 +144,6 @@
 
     <string name="must_be_logged_in">Du må være pålogget for å benytte dette</string>
     <string name="saving">Lagrer&#8230;</string>
+
+    <string name="logout_confirm">Er du sikker du på at du ønsker å logge ut?</string>
 </resources>

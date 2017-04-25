@@ -1,6 +1,7 @@
 package io.hobaskos.event.eventapp.ui.main;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -172,7 +174,7 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
                 startActivity(new Intent(this, LoginActivity.class));
                 break;
             case R.id.nav_logout:
-                presenter.logout();
+                logoutDialog();
                 break;
         }
         // Set navdrawer item to checked
@@ -188,6 +190,16 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
         // Close drawer
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void logoutDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.logout)
+                .setMessage(R.string.logout_confirm)
+                .setPositiveButton(R.string.logout, (dialog, which) -> presenter.logout())
+                .setNegativeButton(R.string.close, (dialog, which) -> dialog.dismiss())
+                .create()
+                .show();
     }
 
     private void joinPrivateEvent() {
