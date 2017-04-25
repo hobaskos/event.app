@@ -189,6 +189,7 @@ public class EventDateSectionPagedRecyclerAdapter extends SectionedPagedRecycler
 
                 eventHolder.click(event, onItemClick);
                 eventHolder.eventTitle.setText(event.getTitle());
+                eventHolder.eventCategory.setText(event.getCategory().getTitle());
                 eventHolder.eventLocation.setText(event.getLocation());
                 eventHolder.eventDate.setText(event.getDate(context));
                 eventHolder.attendanceCount.setText(String.valueOf(event.getAttendanceCount()));
@@ -217,7 +218,8 @@ public class EventDateSectionPagedRecyclerAdapter extends SectionedPagedRecycler
     }
 
     public class EventViewHolder extends SectionedPagedRecyclerAdapter.ItemViewHolder {
-        public TextView eventTitle, eventLocation, eventDate, attendanceCount, myAttendance, attend;
+        public TextView eventTitle, eventCategory, eventLocation, eventDate,
+                attendanceCount, myAttendance, attend;
         public View categoryColor;
         public View categorySubColor;
         public CardView cardView;
@@ -227,6 +229,7 @@ public class EventDateSectionPagedRecyclerAdapter extends SectionedPagedRecycler
             super(itemView);
             Log.i(TAG, "ItemViewHolder()");
             eventTitle = (TextView) itemView.findViewById(R.id.event_title);
+            eventCategory = (TextView) itemView.findViewById(R.id.event_category);
             eventLocation = (TextView) itemView.findViewById(R.id.event_location);
             attendanceCount = (TextView) itemView.findViewById(R.id.attendance_count);
             myAttendance = (TextView) itemView.findViewById(R.id.my_attendance);
