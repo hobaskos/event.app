@@ -24,7 +24,6 @@ import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.data.model.EventCategoryTheme;
 import io.hobaskos.event.eventapp.data.model.Location;
 import io.hobaskos.event.eventapp.data.model.User;
-import io.hobaskos.event.eventapp.data.model.enumeration.EventAttendingType;
 import io.hobaskos.event.eventapp.ui.base.view.activity.BaseLceViewStateActivity;
 import io.hobaskos.event.eventapp.ui.event.details.competition.list.CompetitionFragment;
 import io.hobaskos.event.eventapp.ui.dialog.DeleteDialogFragment;
@@ -35,8 +34,8 @@ import io.hobaskos.event.eventapp.ui.event.details.competition.carousel.ImageCar
 import io.hobaskos.event.eventapp.ui.event.details.competition.list.OnCompetitionListInteractionListener;
 import io.hobaskos.event.eventapp.ui.event.details.info.EventInfoFragment;
 import io.hobaskos.event.eventapp.ui.event.details.location.LocationsFragment;
+import io.hobaskos.event.eventapp.ui.event.details.location.create.CreateLocationActivity;
 import io.hobaskos.event.eventapp.ui.event.details.map.EventMapActivity;
-import io.hobaskos.event.eventapp.ui.location.add.LocationActivity;
 import rx.Observer;
 
 /**
@@ -369,9 +368,9 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
 
     @Override
     public void onLocationEditInteraction(Location item) {
-        Intent intent = new Intent(this, LocationActivity.class);
-        intent.putExtra(LocationActivity.EVENT_STATE, 1);
-        intent.putExtra(LocationActivity.LOCATION, item);
+        Intent intent = new Intent(this, CreateLocationActivity.class);
+        intent.putExtra(CreateLocationActivity.EVENT_STATE, 1);
+        intent.putExtra(CreateLocationActivity.LOCATION, item);
         startActivityForResult(intent, EDIT_LOCATION_REQUEST);
     }
 

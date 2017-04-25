@@ -53,24 +53,24 @@
             android:background="@color/light_gray"
             android:id="@+id/action_wrapper"
             android:orientation="vertical"
-            android:padding="4dp"
             android:gravity="center"
             android:layout_height="match_parent">
 
             <ImageView
-                android:paddingBottom="12dp"
                 android:id="@+id/edit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:padding="12dp"
                 android:src="@drawable/ic_edit_black" />
 
             <ImageView
-                android:paddingTop="12dp"
                 android:id="@+id/delete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:padding="12dp"
                 android:src="@drawable/ic_action_trash"
-                android:visibility="invisible" />
+                android:visibility="invisible"
+                />
 
         </LinearLayout>
 

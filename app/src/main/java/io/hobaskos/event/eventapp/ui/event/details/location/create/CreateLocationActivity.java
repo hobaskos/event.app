@@ -1,4 +1,4 @@
-package io.hobaskos.event.eventapp.ui.location.add;
+package io.hobaskos.event.eventapp.ui.event.details.location.create;
 
 import android.app.Activity;
 import android.content.Context;
@@ -11,8 +11,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -45,9 +47,9 @@ import static com.wdullaer.materialdatetimepicker.date.DatePickerDialog.Version.
  * Created by osvold.hans.petter on 13.03.2017.
  */
 
-public class LocationActivity extends MvpActivity<LocationView, LocationPresenter>
+public class CreateLocationActivity extends MvpActivity<CreateLocationView, CreateLocationPresenter>
         implements GoogleApiClient.OnConnectionFailedListener,
-                    TimePickerDialog.OnTimeSetListener, OnDateSetListener, LocationView {
+                    TimePickerDialog.OnTimeSetListener, OnDateSetListener, CreateLocationView {
 
     public final static String EVENT_ID = "eventId";
     public final static String EVENT_STATE = "eventState";
@@ -55,10 +57,12 @@ public class LocationActivity extends MvpActivity<LocationView, LocationPresente
 
     private EditText name;
     private EditText description;
-    private EditText fromDate;
-    private EditText fromTime;
-    private EditText toDate;
-    private EditText toTime;
+    private TextView fromDate;
+    private TextView fromTime;
+    private TextView toDate;
+    private TextView toTime;
+    private LinearLayout fromDateTime;
+    private LinearLayout toDateTime;
     private DateTimeVM fromDateTimeVM;
     private DateTimeVM toDateTimeVM;
     private Location location;
@@ -79,7 +83,7 @@ public class LocationActivity extends MvpActivity<LocationView, LocationPresente
     private ActivityState activityState;
 
     @Inject
-    public LocationPresenter presenter;
+    public CreateLocationPresenter presenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -92,40 +96,24 @@ public class LocationActivity extends MvpActivity<LocationView, LocationPresente
 
         setTitle(R.string.add_location);
 
+        fromDate = (TextView) findViewById(R.id.activity_add_location_from_date);
+        fromTime = (TextView) findViewById(R.id.activity_add_location_from_time);
+        fromDateTime = (LinearLayout)findViewById(R.id.from_date_time);
+        fromDateTime.setOnClickListener(view -> {
+            showDatePickerDialog();
+            dateTimePickerState = DateTimePickerState.FROM;
+        });
+
+        toDate = (TextView) findViewById(R.id.activity_add_location_to_date);
+        toTime = (TextView) findViewById(R.id.activity_add_location_to_time);
+        toDateTime = (LinearLayout) findViewById(R.id.to_date_time);
+        toDateTime.setOnClickListener(view -> {
+            showDatePickerDialog();
+            dateTimePickerState = DateTimePickerState.TO;
+        });
+
         fromDateTimeVM = new DateTimeVM();
         toDateTimeVM = new DateTimeVM();
-
-        fromDate = (EditText) findViewById(R.id.activity_add_location_from_date);
-        fromDate.setOnFocusChangeListener((v, hasFocus) -> {
-            if(hasFocus) {
-                showDatePickerDialog();
-                dateTimePickerState = DateTimePickerState.FROM;
-            }
-        });
-
-        fromTime = (EditText) findViewById(R.id.activity_add_location_from_time);
-        fromTime.setOnFocusChangeListener((v, hasFocus) -> {
-            if(hasFocus) {
-                showTimePickerDialog();
-                dateTimePickerState = DateTimePickerState.FROM;
-            }
-        });
-
-        toDate = (EditText) findViewById(R.id.activity_add_location_to_date);
-        toDate.setOnFocusChangeListener((v, hasFocus) -> {
-            if(hasFocus) {
-                showDatePickerDialog();
-                dateTimePickerState = DateTimePickerState.TO;
-            }
-        });
-
-        toTime = (EditText) findViewById(R.id.activity_add_location_to_time);
-        toTime.setOnFocusChangeListener((v, hasFocus) -> {
-            if(hasFocus) {
-                showTimePickerDialog();
-                dateTimePickerState = DateTimePickerState.TO;
-            }
-        });
 
         mGoogleApiClient = new GoogleApiClient
                 .Builder(this)
@@ -144,15 +132,17 @@ public class LocationActivity extends MvpActivity<LocationView, LocationPresente
             setTitle(R.string.edit_location);
             location = getIntent().getParcelableExtra(LOCATION);
             name.setText(location.getName());
+            lat = location.getGeoPoint().getLat();
+            lon = location.getGeoPoint().getLon();
             description.setText(location.getDescription());
             placeAutocompleteFragment.setText(location.getSearchName());
-            Log.i("LocationActivity", "Location.getSearchName()=" + location.getSearchName());
             fromDateTimeVM = new DateTimeVM(location.getFromDate());
             toDateTimeVM = new DateTimeVM(location.getToDate());
             fromDate.setText(fromDateTimeVM.getDate());
             fromTime.setText(fromDateTimeVM.getTime());
             toDate.setText(toDateTimeVM.getDate());
             toTime.setText(toDateTimeVM.getTime());
+            googlePlace = location.getSearchName();
         }
 
         placeAutocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
@@ -174,11 +164,10 @@ public class LocationActivity extends MvpActivity<LocationView, LocationPresente
     }
 
     private void setState(int i) {
-        if(i == 0) {
+        if (i == 0) {
             activityState = ActivityState.CREATE;
             return;
         }
-
         activityState = ActivityState.EDIT;
     }
 
@@ -200,7 +189,7 @@ public class LocationActivity extends MvpActivity<LocationView, LocationPresente
 
     @NonNull
     @Override
-    public LocationPresenter createPresenter() {
+    public CreateLocationPresenter createPresenter() {
         App.getInst().getComponent().inject(this);
         return presenter;
     }
@@ -223,25 +212,37 @@ public class LocationActivity extends MvpActivity<LocationView, LocationPresente
     }
 
     private void showDatePickerDialog() {
-        Calendar now = Calendar.getInstance();
+        int year, month, day;
+        if (dateTimePickerState == DateTimePickerState.FROM) {
+            year = fromDateTimeVM.getYear();
+            month = fromDateTimeVM.getMonthOfYear() - 1;
+            day = fromDateTimeVM.getDayOfMonth();
+        } else {
+            year = toDateTimeVM.getYear();
+            month = toDateTimeVM.getMonthOfYear() - 1;
+            day = toDateTimeVM.getDayOfMonth();
+        }
         DatePickerDialog dpd = DatePickerDialog
                 .newInstance(
-                        LocationActivity.this,
-                        now.get(Calendar.YEAR),
-                        now.get(Calendar.MONTH),
-                        now.get(Calendar.DAY_OF_MONTH));
+                        CreateLocationActivity.this,
+                        year, month, day);
         dpd.setVersion(VERSION_2);
         dpd.show(getFragmentManager(), "DatePickerDialog");
+
     }
 
     private void showTimePickerDialog() {
-        Calendar now = Calendar.getInstance();
+        int hour, minute;
+        if (dateTimePickerState == DateTimePickerState.FROM) {
+            hour = fromDateTimeVM.getHour();
+            minute = fromDateTimeVM.getMinute();
+        } else {
+            hour = toDateTimeVM.getHour();
+            minute = toDateTimeVM.getMinute();
+        }
         TimePickerDialog tpd = TimePickerDialog
-                .newInstance(LocationActivity.this,
-                        now.get(Calendar.HOUR_OF_DAY),
-                        now.get(Calendar.MINUTE),
-                        now.get(Calendar.SECOND),
-                        true);
+                .newInstance(CreateLocationActivity.this,
+                        hour, minute, 0, true);
         tpd.setVersion(TimePickerDialog.Version.VERSION_2);
         tpd.show(getFragmentManager(), "DatePickerDialog");
     }
@@ -262,6 +263,7 @@ public class LocationActivity extends MvpActivity<LocationView, LocationPresente
             default:
                 throw new IllegalStateException("Illegal state");
         }
+        showTimePickerDialog();
     }
 
     @Override
@@ -283,19 +285,17 @@ public class LocationActivity extends MvpActivity<LocationView, LocationPresente
     }
 
     private void onCreateButtonClicked() {
-
         if (!validate()) { return; }
 
         Location location = new Location();
         location.setEventId(eventId);
         location.setName(name.getText().toString());
-        if(!description.getText().toString().isEmpty()) {
+        if (!description.getText().toString().isEmpty()) {
             location.setDescription(description.getText().toString());
         }
         location.setFromDate(fromDateTimeVM.getDateTime());
         location.setToDate(toDateTimeVM.getDateTime());
-        GeoPoint geoPoint = new GeoPoint(lat, lon);
-        location.setGeoPoint(geoPoint);
+        location.setGeoPoint(new GeoPoint(lat, lon));
         location.setAddress(address);
         location.setSearchName(googlePlace);
 
@@ -307,20 +307,19 @@ public class LocationActivity extends MvpActivity<LocationView, LocationPresente
 
         location.setName(name.getText().toString());
 
-        if(!description.getText().toString().isEmpty()) {
+        if (!description.getText().toString().isEmpty()) {
             location.setDescription(description.getText().toString());
         }
 
         location.setFromDate(fromDateTimeVM.getDateTime());
         location.setToDate(toDateTimeVM.getDateTime());
-        GeoPoint geoPoint = new GeoPoint(lat, lon);
-        location.setGeoPoint(geoPoint);
+        location.setGeoPoint(new GeoPoint(lat, lon));
 
-        if(address != null && !address.equals("")) {
+        if (address != null && !address.equals("")) {
             location.setAddress(address);
         }
 
-        if(googlePlace != null && !googlePlace.equals("")) {
+        if (googlePlace != null && !googlePlace.equals("")) {
             location.setSearchName(googlePlace);
         }
 
@@ -330,48 +329,48 @@ public class LocationActivity extends MvpActivity<LocationView, LocationPresente
     private boolean validate() {
         boolean valid = true;
 
-        if(name.getText().toString().isEmpty()) {
+        if (name.getText().toString().isEmpty()) {
             valid = false;
             name.setError(getText(R.string.error_message_required_field_title));
         } else {
             name.setError(null);
         }
 
-        if(googlePlace == null) {
+        if (googlePlace == null) {
             valid = false;
             Toast.makeText(this, R.string.place_is_a_required_field, Toast.LENGTH_SHORT).show();
         } 
         // Todo: handle situation where Google Places field is not set.
 
-        if(fromDate.getText().toString().isEmpty()) {
+        if (fromDate.getText().toString().isEmpty()) {
             valid = false;
             fromDate.setError(getText(R.string.error_message_required_field_from_date));
         } else {
             fromDate.setError(null);
         }
 
-        if(fromTime.getText().toString().isEmpty()) {
+        if (fromTime.getText().toString().isEmpty()) {
             valid = false;
             fromTime.setError(getText(R.string.error_message_required_field_from_time));
         } else {
             fromTime.setError(null);
         }
 
-        if(toDate.getText().toString().isEmpty()) {
+        if (toDate.getText().toString().isEmpty()) {
             valid = false;
             toDate.setError(getText(R.string.error_message_required_field_to_date));
         } else {
             toDate.setError(null);
         }
 
-        if(toTime.getText().toString().isEmpty()) {
+        if (toTime.getText().toString().isEmpty()) {
             valid = false;
             toTime.setError(getText(R.string.error_message_required_field_to_time));
         } else {
             toTime.setError(null);
         }
 
-        if(fromDateTimeVM.getDateTime().isAfter(toDateTimeVM.getDateTime())) {
+        if (fromDateTimeVM.getDateTime().isAfter(toDateTimeVM.getDateTime())) {
             valid = false;
             fromDate.setError(getText(R.string.error_from_date_is_after_to_date));
             toDate.setError(getText(R.string.error_from_date_is_after_to_date));

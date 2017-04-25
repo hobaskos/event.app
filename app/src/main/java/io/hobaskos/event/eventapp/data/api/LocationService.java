@@ -27,7 +27,7 @@ public interface LocationService {
     @DELETE("api/locations/{id}")
     Observable<Void> remove(@Path("id") Long id);
 
-    @GET("api/events/{id}/locations")
+    @GET("api/events/{id}/locations?sort=fromDate,asc")
     Observable<List<Location>> getLocationsForEvent(@Path("id") Long id,
                                                     @Query("page") int page,
                                                     @Query("size") int pageSize);

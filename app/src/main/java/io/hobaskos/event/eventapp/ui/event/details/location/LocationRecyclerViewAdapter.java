@@ -32,7 +32,7 @@ public class LocationRecyclerViewAdapter extends
     @Override
     public LocationViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_location, parent, false);
+                .inflate(R.layout.list_item_location, parent, false);
         return new LocationViewHolder(view);
     }
 

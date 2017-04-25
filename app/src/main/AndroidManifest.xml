@@ -94,7 +94,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.location.add.LocationActivity"
+            android:name=".ui.event.details.location.create.CreateLocationActivity"
             android:parentActivityName=".ui.event.details.EventActivity"/>
         <activity
             android:name=".ui.event.search.map.SearchEventsMapActivity" />

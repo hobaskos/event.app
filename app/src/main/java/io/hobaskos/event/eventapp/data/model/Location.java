@@ -4,15 +4,19 @@ import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.format.DateUtils;
+import android.util.Log;
 
 import com.google.gson.annotations.SerializedName;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeUtils;
 
 /**
  * Created by osvold.hans.petter on 08.02.2017.
  */
 public class Location implements Parcelable {
+
+    public final static String TAG = Location.class.getName();
 
     @SerializedName("id")
     private Long id;
@@ -106,29 +110,8 @@ public class Location implements Parcelable {
     }
 
     public String getDateLine(Context context) {
-        if(fromDate == null || toDate == null) {
-            return "";
-        }
-
-        String formattedFromDate = DateUtils.
-                formatDateTime(context, fromDate.toDate().getTime(), DateUtils.FORMAT_SHOW_DATE);
-
-        String formattedFromTime = DateUtils.
-                formatDateTime(context, fromDate.toDate().getTime(), DateUtils.FORMAT_SHOW_TIME);
-
-        String formattedToDate = DateUtils.
-                formatDateTime(context, toDate.toDate().getTime(), DateUtils.FORMAT_SHOW_DATE);
-
-        String formattedToTime = DateUtils.
-                formatDateTime(context, toDate.toDate().getTime(), DateUtils.FORMAT_SHOW_TIME);
-
-        if(formattedFromDate.equals(formattedToDate)) {
-            return String.format("%s  -  %s  ->  %s",
-                    formattedFromDate, formattedFromTime, formattedToTime);
-        }
-
-        return String.format("%s  ->  %s  -  %s  ->  %s",
-                    formattedFromDate, formattedToDate, formattedFromTime, formattedToTime);
+        if (fromDate == null || toDate == null) { return ""; }
+        return DateUtils.formatDateRange(context, fromDate.getMillis(), toDate.getMillis(), DateUtils.FORMAT_SHOW_TIME);
     }
 
     /**

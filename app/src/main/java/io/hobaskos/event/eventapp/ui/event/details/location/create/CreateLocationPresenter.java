@@ -1,4 +1,4 @@
-package io.hobaskos.event.eventapp.ui.location.add;
+package io.hobaskos.event.eventapp.ui.event.details.location.create;
 
 import android.util.Log;
 
@@ -7,7 +7,6 @@ import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 
 import javax.inject.Inject;
 
-import io.hobaskos.event.eventapp.data.api.LocationService;
 import io.hobaskos.event.eventapp.data.model.Location;
 import io.hobaskos.event.eventapp.data.repository.LocationRepository;
 import rx.Subscriber;
@@ -18,18 +17,18 @@ import rx.schedulers.Schedulers;
  * Created by osvold.hans.petter on 13.03.2017.
  */
 
-public class LocationPresenter implements MvpPresenter<LocationView> {
+public class CreateLocationPresenter implements MvpPresenter<CreateLocationView> {
 
-    private LocationView view;
+    private CreateLocationView view;
     private LocationRepository repository;
 
     @Inject
-    public LocationPresenter(LocationRepository repository) {
+    public CreateLocationPresenter(LocationRepository repository) {
         this.repository = repository;
     }
 
     @Override
-    public void attachView(LocationView view) {
+    public void attachView(CreateLocationView view) {
         this.view = view;
     }
 
