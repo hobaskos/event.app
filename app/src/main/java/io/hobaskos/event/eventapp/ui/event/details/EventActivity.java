@@ -33,6 +33,7 @@ import io.hobaskos.event.eventapp.ui.event.create.CreateEventActivity;
 import io.hobaskos.event.eventapp.ui.event.details.attending.AttendeesFragment;
 import io.hobaskos.event.eventapp.ui.event.details.competition.carousel.ImageCarouselActivity;
 import io.hobaskos.event.eventapp.ui.event.details.competition.list.OnCompetitionListInteractionListener;
+import io.hobaskos.event.eventapp.ui.event.details.info.EventInfoFragment;
 import io.hobaskos.event.eventapp.ui.event.details.location.LocationsFragment;
 import io.hobaskos.event.eventapp.ui.event.details.map.EventMapActivity;
 import io.hobaskos.event.eventapp.ui.location.add.LocationActivity;
@@ -200,7 +201,7 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
 
         Log.i(TAG, "setData");
 
-        if(eventPagerAdapter == null) {
+        if (eventPagerAdapter == null) {
             Log.i(TAG, "eventPagerAdapter == null");
             eventPagerAdapter = new EventPagerAdapter(this.event, isOwner, isLoggedIn, this, getSupportFragmentManager());
             viewPager.setAdapter(eventPagerAdapter);
@@ -210,10 +211,19 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
             tabLayout.getTabAt(1).setIcon(R.drawable.ic_location_on);
             tabLayout.getTabAt(2).setIcon(R.drawable.ic_group);
 
-            if(isLoggedIn) {
+            if (isLoggedIn) {
                 tabLayout.getTabAt(3).setIcon(R.drawable.trophy);
             }
         }
+    }
+
+    @Override
+    public void reloadData(Event event) {
+        this.event = event;
+        theme = event.getCategory().getTheme();
+        if (theme != null) { setEventTheme(theme); }
+        EventInfoFragment fragment = (EventInfoFragment) eventPagerAdapter.getItem(EventPagerAdapter.EVENT_INFO_FRAGMENT);
+        fragment.refresh(event);
     }
 
     @Override
@@ -260,7 +270,7 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     public void setIsOwner(boolean owner) {
         isOwner = owner;
 
-        if(isOwner && menu != null) {
+        if (isOwner && menu != null) {
             menu.getItem(0).setVisible(true);
         }
 
@@ -312,12 +322,7 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
         switch (requestCode) {
             case EDIT_EVENT_REQUEST:
                 Log.i(TAG, "activityForResult with request code == EDIT_EVENT_REQUEST");
-                Log.i(TAG, "activityForResult with result code == RESULT_OK");
-                Log.i(TAG, "eventId=" + data.getLongExtra(EVENT_ID, -1));
-                Log.i(TAG, "theme=" + data.getStringExtra(EVENT_THEME));
-                eventId = data.getLongExtra(EVENT_ID, -1);
-                theme = (EventCategoryTheme) getIntent().getExtras().getSerializable(EVENT_THEME);
-                recreate();
+                presenter.reloadEvent(eventId);
                 break;
 
             case EDIT_LOCATION_REQUEST:

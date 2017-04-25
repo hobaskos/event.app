@@ -71,13 +71,19 @@ public class EventInfoFragment extends Fragment {
 
         ButterKnife.bind(this, view);
 
+        renderEvent();
+
+        return view;
+    }
+
+    private void renderEvent() {
         if (event.getImageUrl() != null && !event.getImageUrl().equals("")) {
             Picasso.with(getContext())
                     .load(UrlUtil.getImageUrl(event.getImageUrl()))
                     .into(eventImage);
         }
 
-        if(event.getFromDate() != null) {
+        if (event.getFromDate() != null) {
             eventTime.setText(DateUtils.formatDateTime(getContext(),
                     event.getFromDate().toDate().getTime(), DateUtils.FORMAT_SHOW_DATE));
         }
@@ -95,8 +101,6 @@ public class EventInfoFragment extends Fragment {
         if (event.getMyAttendance() != null) {
             myAttendance.setText(R.string.attending_event);
         }
-
-        return view;
     }
 
     @Override
@@ -113,22 +117,6 @@ public class EventInfoFragment extends Fragment {
         Log.i("EventInfoFragment", "Refreshing EventInfoFragment");
         this.event = event;
 
-        Picasso.with(getContext())
-                .load(event.getImageUrl() != null ? event.getAbsoluteImageUrl() : EVENT_IMAGE_URL_PLACEHOLDER)
-                .into(eventImage);
-
-        if(event.getFromDate() != null) {
-            eventTime.setText(DateUtils.formatDateTime(getContext(),
-                    event.getFromDate().toDate().getTime(), DateUtils.FORMAT_SHOW_DATE));
-        }
-
-        eventDescription.setText(event.getDescription());
-
-        attendanceCount.setText(String.valueOf(event.getAttendanceCount()));
-
-        if(event.getMyAttendance() != null) {
-            myAttendance.setText(R.string.attending_event);
-        }
-
+        renderEvent();
     }
 }

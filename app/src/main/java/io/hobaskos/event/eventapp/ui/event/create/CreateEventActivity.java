@@ -14,6 +14,7 @@ import android.support.v7.widget.SwitchCompat;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -74,6 +75,9 @@ public class CreateEventActivity extends MvpActivity<CreateEventView, CreateEven
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_event);
 
+        // Don't show keyboard by default
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+
         setTitle(R.string.create_event);
 
         title = (EditText) findViewById(R.id.create_event_field_title);
@@ -93,12 +97,11 @@ public class CreateEventActivity extends MvpActivity<CreateEventView, CreateEven
 
         setState(getIntent().getIntExtra(ACTIVITY_STATE, 0));
 
-        if(activityState.equals(ActivityState.EDIT)) {
+        if (activityState.equals(ActivityState.EDIT)) {
             setTitle(R.string.edit_event);
             event = getIntent().getParcelableExtra(EVENT);
             title.setText(event.getTitle());
             description.setText(event.getDescription());
-            categories.setSelection(getIndex(event.getEventCategory()));
             if (event.getImageUrl() != null && !event.getImageUrl().equals("")) {
                 Picasso.with(this)
                         .load(UrlUtil.getImageUrl(event.getImageUrl()))
@@ -109,11 +112,9 @@ public class CreateEventActivity extends MvpActivity<CreateEventView, CreateEven
 
     private int getIndex(EventCategory eventCategory) {
         int index = 0;
-        for(int i = 0; i < categories.getCount(); i++ ) {
-            if(categories.getItemAtPosition(i).toString().equals(eventCategory)) {
-                index = i;
-                break;
-            }
+        for (int i = 0; i < categories.getCount(); i++ ) {
+            EventCategory ec = (EventCategory)categories.getItemAtPosition(i);
+            if (ec.getId().equals(eventCategory.getId())) return i;
         }
         return index;
     }
@@ -148,14 +149,14 @@ public class CreateEventActivity extends MvpActivity<CreateEventView, CreateEven
     }
 
     private void onCreateButtonClicked() {
-        if(!validate()) { return; }
+        if (!validate()) { return; }
 
         Event event = new Event();
         event.setTitle(title.getText().toString());
         event.setDescription(description.getText().toString());
         event.setPrivateEvent(privateEvent.isChecked());
         event.setCategory( (EventCategory) categories.getSelectedItem() );
-        if(image != null) {
+        if (image != null) {
             event.setImage( image );
             event.setContentType("image/jpg");
         }
@@ -170,7 +171,7 @@ public class CreateEventActivity extends MvpActivity<CreateEventView, CreateEven
         event.setDescription(description.getText().toString());
         event.setCategory( (EventCategory) categories.getSelectedItem());
 
-        if(image != null) {
+        if (image != null) {
             event.setImage( image );
             event.setContentType("image/jpg");
         }
@@ -317,6 +318,10 @@ public class CreateEventActivity extends MvpActivity<CreateEventView, CreateEven
 
         categories.setAdapter(adapter);
         categories.setVisibility(View.VISIBLE);
+
+        if (activityState.equals(ActivityState.EDIT)) {
+            categories.setSelection(getIndex(event.getEventCategory()));
+        }
     }
 
     @Override

@@ -35,34 +35,54 @@ public class EventPresenter extends BaseRxLcePresenter<EventView, Event> {
         this.locationRepository = locationRepository;
     }
 
-    public void getEvent(Long id) {
-        Log.d(TAG, "Getting event with ID=" + id);
-        eventRepository.get(id)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<Event>() {
-                    @Override
-                    public void onCompleted() {}
+    public void getEvent(Long eventId) {
+        Log.d(TAG, "Getting event with ID=" + eventId);
 
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.d(TAG, "Error getting event: " + e.getMessage());
-                    }
+        getEvent(eventId, new Subscriber<Event>() {
+            @Override
+            public void onCompleted() {}
 
-                    @Override
-                    public void onNext(Event event) {
-                        Log.d(TAG, "Found event with id=" + event.getId());
-                        if (isViewAttached() && getView() != null) {
-                            Log.d(TAG, "Competition id=" + event.getDefaultPollId());
-                            getView().setData(event);
-                        }
-                    }
-                });
+            @Override
+            public void onError(Throwable e) {
+                Log.d(TAG, "Error getting event: " + e.getMessage());
+            }
+
+            @Override
+            public void onNext(Event event) {
+                Log.d(TAG, "Found event with id=" + event.getId());
+                if (isViewAttached() && getView() != null) {
+                    Log.d(TAG, "Competition id=" + event.getDefaultPollId());
+                    getView().setData(event);
+                }
+            }
+        });
+    }
+
+    public void reloadEvent(Long eventId) {
+        Log.d(TAG, "Reloading event with ID=" + eventId);
+
+        getEvent(eventId, new Subscriber<Event>() {
+            @Override
+            public void onCompleted() {}
+
+            @Override
+            public void onError(Throwable e) {
+                Log.d(TAG, "Error getting event: " + e.getMessage());
+            }
+
+            @Override
+            public void onNext(Event event) {
+                if (isViewAttached() && getView() != null) {
+                    Log.d(TAG, "Competition id=" + event.getDefaultPollId());
+                    getView().reloadData(event);
+                }
+            }
+        });
+
     }
 
     public void getOwnerStatus(Event event) {
-        if(isViewAttached() && getView() != null) {
-
+        if (isViewAttached() && getView() != null) {
             if (accountManager.isLoggedIn()) {
                 getView().setIsOwner(
                         event.getOwnerLogin().equals(accountManager.getLocalAccount().getLogin())
