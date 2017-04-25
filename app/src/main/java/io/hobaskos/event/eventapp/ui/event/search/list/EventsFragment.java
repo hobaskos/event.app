@@ -42,6 +42,7 @@ import io.hobaskos.event.eventapp.ui.base.adapter.NpaLinearLayoutManager;
 import io.hobaskos.event.eventapp.ui.base.view.fragment.BaseLceViewStateFragment;
 import io.hobaskos.event.eventapp.ui.event.filter.FilterEventsActivity;
 import io.hobaskos.event.eventapp.ui.event.details.EventActivity;
+import io.hobaskos.event.eventapp.ui.event.filter.FilterEventsDialog;
 import io.hobaskos.event.eventapp.ui.event.search.map.SearchEventsMapActivity;
 
 /**
@@ -93,7 +94,7 @@ public class EventsFragment extends
         EventBus.getDefault().unregister(this);
     }
 
-    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    @Subscribe
     public void onEvent(FiltersUpdatedEvent event) {
         Log.d(TAG, "onEvent()");
         if (presenter != null) {
@@ -137,8 +138,9 @@ public class EventsFragment extends
                 case R.id.action_search:
                     return true;
                 case R.id.action_filter:
-                    Intent intent = new Intent(getActivity(), FilterEventsActivity.class);
-                    startActivity(intent);
+                    //Intent intent = new Intent(getActivity(), FilterEventsActivity.class);
+                    //startActivity(intent);
+                    FilterEventsDialog.newInstance().show(getFragmentManager(), "someTag");
                     return true;
             }
             return false;

@@ -4,30 +4,34 @@
     android:layout_height="match_parent"
     android:fillViewport="true">
 
-    <RelativeLayout
+    <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:paddingTop="16dp">
+        android:layout_height="wrap_content"
+        android:padding="8dp">
 
         <!-- LOCATION -->
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="24dp"
             android:id="@+id/locationLayout">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Location"
+                android:text="@string/location"
                 android:textAllCaps="true"
-                android:textSize="16dp"
+                android:textSize="16sp"
                 android:id="@+id/locationTextView"
                 android:labelFor="@+id/locationAutoCompleteTextView"/>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/locationTextView"
+                android:background="@color/divider"
+                />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -40,7 +44,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
-                    android:text="Use current location" />
+                    android:text="@string/use_current_location" />
 
                 <android.support.v7.widget.SwitchCompat
                     android:id="@+id/fragment_filter_events_gps_switch"
@@ -71,18 +75,23 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
             android:id="@+id/distanceLayout"
-            android:layout_marginTop="16dp"
-            android:layout_below="@+id/locationLayout" >
+            android:layout_marginTop="24dp">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Distance"
+                android:text="@string/distance"
                 android:textAllCaps="true"
-                android:textSize="16dp"
+                android:textSize="16sp"
                 android:id="@+id/distanceTextView" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/distanceTextView"
+                android:background="@color/divider"
+                />
 
             <LinearLayout
                 android:id="@+id/selectedDistanceLayout"
@@ -95,7 +104,7 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Selected distance"
+                    android:text="@string/selected_distance"
                     android:layout_weight="1"
                     android:gravity="left"
                     android:id="@+id/selctedDistanceLabelTextView"/>
@@ -107,8 +116,6 @@
                     android:id="@+id/selctedDistanceTextView"/>
 
             </LinearLayout>
-
-
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -151,39 +158,53 @@
         </RelativeLayout>
 
         <!-- CATEGORY -->
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/distanceLayout"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="16dp"
+            android:orientation="vertical"
+            android:layout_marginTop="24dp"
             android:id="@+id/categoryLayout">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Category"
+                android:text="@string/event_category"
                 android:textAllCaps="true"
-                android:textSize="16dp"
+                android:textSize="16sp"
                 android:id="@+id/categoryTextView" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@color/divider"
+                />
 
             <Spinner
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/categoryTextView"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="4dp"
                 android:id="@+id/categorySpinner" />
 
-        </RelativeLayout>
+        </LinearLayout>
 
-        <Button
-            android:text="Apply Filters"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <!-- SUBMIT -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_below="@+id/categoryLayout"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="32dp"
-            android:id="@+id/applyFiltersButton"/>
+            android:orientation="horizontal"
+            android:gravity="end"
+            android:layout_height="wrap_content">
 
-    </RelativeLayout>
+            <Button
+                android:text="@string/apply_filters"
+                android:background="@android:color/transparent"
+                android:textColor="@color/colorBlueDark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:id="@+id/applyFiltersButton"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
 </ScrollView>

@@ -1,7 +1,6 @@
 package io.hobaskos.event.eventapp.ui.main;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,11 +20,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
 import com.squareup.picasso.Picasso;
 
@@ -75,13 +72,6 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
     @Inject
     public AccountManager accountManager;
 
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    private GoogleApiClient client;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,10 +93,6 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
         presenter.onLoginState();
 
         navigationView.setNavigationItemSelectedListener(this);
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
 
         if (savedInstanceState == null) {
             // Set initial item in navigation view to checked
@@ -220,43 +206,16 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
 
     }
 
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    public Action getIndexApiAction() {
-        Thing object = new Thing.Builder()
-                .setName("Main Page") // TODO: Define a title for the content shown.
-                // TODO: Make sure this auto-generated URL is correct.
-                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
-                .build();
-        return new Action.Builder(Action.TYPE_VIEW)
-                .setObject(object)
-                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
-                .build();
-    }
-
     @Override
     public void onStart() {
         super.onStart();
-
         EventBus.getDefault().register(this);
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client.connect();
-        AppIndex.AppIndexApi.start(client, getIndexApiAction());
     }
 
     @Override
     public void onStop() {
         super.onStop();
         EventBus.getDefault().unregister(this);
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        AppIndex.AppIndexApi.end(client, getIndexApiAction());
-        client.disconnect();
     }
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
@@ -273,7 +232,6 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
         hideNavigationHeader();
         viewAnonymousNavigation();
         Toast.makeText(this, R.string.you_have_now_logged_out, Toast.LENGTH_SHORT).show();
-        //startActivity(new Intent(this, LoginActivity.class));
     }
 
     private void insertUserToNavigationDrawer(User user) {

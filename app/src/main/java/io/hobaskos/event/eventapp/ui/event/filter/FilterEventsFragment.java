@@ -88,12 +88,14 @@ public class FilterEventsFragment extends BaseFragment
         App.getInst().getComponent().inject(this);
         presenter.attachView(this);
 
-        googleApiClient = new GoogleApiClient
-                .Builder(getActivity())
-                .addApi(Places.GEO_DATA_API)
-                .addApi(Places.PLACE_DETECTION_API)
-                .enableAutoManage(getActivity(), this)
-                .build();
+        if (savedInstanceState == null) {
+            googleApiClient = new GoogleApiClient
+                    .Builder(getActivity())
+                    .addApi(Places.GEO_DATA_API)
+                    .addApi(Places.PLACE_DETECTION_API)
+                    .enableAutoManage(getActivity(), this)
+                    .build();
+        }
     }
 
     @Override
@@ -141,9 +143,11 @@ public class FilterEventsFragment extends BaseFragment
                 presenter.storeCategoryId(category.getId());
             }
             Toast.makeText(getContext(), getString(R.string.filters_applied), Toast.LENGTH_SHORT).show();
-            EventBus.getDefault().postSticky(new FiltersUpdatedEvent(""));
+            EventBus.getDefault().post(new FiltersUpdatedEvent(""));
             // Return to event list
-            getActivity().finish();
+            //getActivity().finish();
+            FilterEventsDialog eventsDialog = (FilterEventsDialog)getParentFragment();
+            eventsDialog.dismiss();
         });
 
         seekBar.setMax( MAX_DISTANCE / DISTANCE_STEP );
@@ -270,6 +274,13 @@ public class FilterEventsFragment extends BaseFragment
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        googleApiClient.stopAutoManage(getActivity());
+        googleApiClient.disconnect();
     }
 
     @Override

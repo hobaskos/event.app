@@ -149,4 +149,10 @@
     <string name="saving">Saving&#8230;</string>
 
     <string name="logout_confirm">Are you sure you want to logout?</string>
+
+    <string name="apply_filters">Apply filters</string>
+    <string name="distance">Distance</string>
+    <string name="selected_distance">Selected distance</string>
+    <string name="location">Location</string>
+    <string name="use_current_location">Use current lokasjon</string>
 </resources>

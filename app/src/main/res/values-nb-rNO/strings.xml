@@ -146,4 +146,9 @@
     <string name="saving">Lagrer&#8230;</string>
 
     <string name="logout_confirm">Er du sikker du på at du ønsker å logge ut?</string>
+    <string name="apply_filters">Lagre filtere</string>
+    <string name="distance">Avstand</string>
+    <string name="selected_distance">Valgt avstand</string>
+    <string name="location">Lokasjon</string>
+    <string name="use_current_location">Bruk enhetens lokasjon</string>
 </resources>
