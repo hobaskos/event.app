@@ -284,6 +284,7 @@ public class CreateEventActivity extends MvpActivity<CreateEventView, CreateEven
         intent.putExtra(EventActivity.EVENT_THEME, event.getCategory().getTheme());
 
         if (activityState.equals(ActivityState.CREATE)) {
+            intent.putExtra(EventActivity.EVENT_CREATED, true);
             startActivity(intent);
         }
 

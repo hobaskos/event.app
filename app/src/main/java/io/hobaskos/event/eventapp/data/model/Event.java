@@ -207,6 +207,10 @@ public class Event implements Parcelable {
         this.defaultPollId = defaultPollId;
     }
 
+    public boolean hasImage() {
+        return imageUrl != null && !imageUrl.equals("");
+    }
+
     public String getDate(Context context) {
         String dateString = "";
         if (fromDate != null) {

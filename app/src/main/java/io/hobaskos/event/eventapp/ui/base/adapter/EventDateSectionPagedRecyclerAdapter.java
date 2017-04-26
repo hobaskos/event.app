@@ -195,10 +195,11 @@ public class EventDateSectionPagedRecyclerAdapter extends SectionedPagedRecycler
                 eventHolder.attendanceCount.setText(String.valueOf(event.getAttendanceCount()));
                 ColorUtil.setCategoryColorCardView(context,eventHolder.cardView, event.getCategory().getTheme());
 
-                //TODO: Load placeholder image if loading image fails
-                Picasso.with(context)
-                        .load(UrlUtil.getImageUrl(event.getImageUrl()))
-                        .into(eventHolder.eventImage);
+                if (event.hasImage()) {
+                    Picasso.with(context)
+                            .load(UrlUtil.getImageUrl(event.getImageUrl()))
+                            .into(eventHolder.eventImage);
+                }
 
                 break;
             case VIEW_TYPE_HEADER:

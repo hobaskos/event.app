@@ -123,7 +123,7 @@ public class LocationsFragment
         if (isOwner) {
             addLocation.setOnClickListener(v -> {
                 Intent intent = new Intent(getActivity(), CreateLocationActivity.class);
-                intent.putExtra("eventId", eventId);
+                intent.putExtra(CreateLocationActivity.EVENT_ID, eventId);
                 startActivityForResult(intent, EventActivity.ADD_LOCATION_REQUEST);
             });
         } else {

@@ -49,11 +49,13 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
         OnCompetitionListInteractionListener,
         DeleteDialogListener<Location> {
 
+    public final static String TAG = EventActivity.class.getName();
+
     public static final String ACTIVITY_STATE = "activity_state";
     public static final String EVENT = "event";
     public final static String EVENT_ID = "eventId";
     public final static String EVENT_THEME = "eventTheme";
-    public final static String TAG = EventActivity.class.getName();
+    public final static String EVENT_CREATED = "eventCreated";
 
     // States
     public static final int EDIT_EVENT_REQUEST = 1;
@@ -81,6 +83,7 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
         super.onCreate(savedInstanceState);
 
         setTitle(R.string.loading);
+        boolean newEvent = false;
 
         if (savedInstanceState != null) {
             // The Activity was restarted
@@ -96,6 +99,7 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
             // The Activity is newly started from CreateEventActivity or the ListActivity.
             eventId = getIntent().getExtras().getLong(EVENT_ID);
             theme = (EventCategoryTheme) getIntent().getExtras().getSerializable(EVENT_THEME);
+            newEvent = getIntent().getExtras().getBoolean(EVENT_CREATED);
             if (theme != null) { setEventTheme(theme); }
 
         }
@@ -109,7 +113,14 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
         isLoggedIn = presenter.isLoggedIn();
         viewPager = (ViewPager) findViewById(R.id.container);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
+
+        if (newEvent) {
+            Intent intent = new Intent(this, CreateLocationActivity.class);
+            intent.putExtra(CreateLocationActivity.EVENT_ID, eventId);
+            startActivityForResult(intent, EventActivity.ADD_LOCATION_REQUEST);
+        }
     }
+
 
     private void setEventTheme(EventCategoryTheme theme) {
         Log.i("EventActivity", "Setting EventTheme: " + theme.name());
