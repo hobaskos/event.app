@@ -261,7 +261,6 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
         Picasso.with(getApplicationContext())
                 .load(UrlUtil.getImageUrl(imageUrl))
                 .transform(new CropCircleTransformation())
-                .fit()
                 .into(imageView);
     }
 

@@ -203,7 +203,6 @@ public class ProfileEditActivity extends MvpActivity<ProfileEditView, ProfileEdi
             Picasso.with(this)
                     .load(UrlUtil.getImageUrl(user.getProfileImageUrl()))
                     .transform(new CropCircleTransformation())
-                    .fit()
                     .into(userProfilePhoto);
         }
     }
