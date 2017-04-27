@@ -29,7 +29,9 @@ import io.hobaskos.event.eventapp.data.model.EventAttendance;
 import io.hobaskos.event.eventapp.data.model.User;
 import io.hobaskos.event.eventapp.ui.base.view.fragment.BaseLceViewStateFragment;
 import io.hobaskos.event.eventapp.util.LoginDialog;
+import rx.Observable;
 import rx.Observer;
+import rx.functions.Action1;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -142,7 +144,7 @@ public class AttendeesFragment
 
 
     @OnClick(R.id.fragment_attendees_attend)
-    public void attendEvent() {
+    public void attendEvent(Action1<Boolean> callback) {
         if (!accountManager.isLoggedIn()) {
             LoginDialog.createAndShow(getContext());
             return;
@@ -165,10 +167,15 @@ public class AttendeesFragment
                             listener.onAttendeesFabInteraction();
                             loadData(true);
                             attendFab.hide();
+                            callback.call(true);
                         }
                     });
                 })
-                .setNegativeButton(R.string.close, (dialog, which) -> dialog.dismiss())
+                .setNegativeButton(R.string.close, (dialog, which) -> {
+                    dialog.dismiss();
+                    callback.call(false);
+
+                })
                 .create()
                 .show();
     }

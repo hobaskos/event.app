@@ -61,22 +61,11 @@ public class EventPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         switch (position) {
-            case 0:
-                Log.i(TAG, "getItem eventInfoFragment");
-                return eventInfoFragment;
-            case 1:
-                Log.i(TAG, "getItem locationsFragment");
-                return locationsFragment;
-            case 2:
-                Log.i(TAG, "getItem attendeesFragment");
-                return attendeesFragment;
-            case 3:
-                if(isLoggedIn) {
-                    Log.i(TAG, "getItem competitionFragment");
-                    return competitionFragment;
-                }
-            default:
-                return new Fragment();
+            case 0: return eventInfoFragment;
+            case 1: return locationsFragment;
+            case 2: return attendeesFragment;
+            case 3: if(isLoggedIn) return competitionFragment;
+            default: return new Fragment();
         }
     }
 
@@ -88,16 +77,6 @@ public class EventPagerAdapter extends FragmentPagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         return null;
-        /*
-        switch (position) {
-            case 0:
-                //return context.getString(R.string.info);
-            case 1:
-                //return context.getString(R.string.locations);
-            default:
-                //return context.getString(R.string.attending);
-        }
-        */
     }
 
 

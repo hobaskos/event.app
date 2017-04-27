@@ -140,12 +140,6 @@ public class CompetitionFragment extends MvpFragment<CompetitionView, Competitio
 
         swipeRefreshLayout.setOnRefreshListener(() -> loadData(true));
 
-        if (isAttending) {
-            addCompetitionImage.setVisibility(View.VISIBLE);
-        } else {
-            addCompetitionImage.setVisibility(View.GONE);
-        }
-
         if (!horizontal) {
             addCompetitionImage.setOnClickListener(v -> pickNewCompetitionImage());
         } else {
@@ -318,12 +312,10 @@ public class CompetitionFragment extends MvpFragment<CompetitionView, Competitio
         presenter.nominateImage(title, image);
     }
 
-    public void setAttendingEvent(boolean isAttendingEvent) {
-        isAttending = isAttendingEvent;
+    public void setAttendingEvent(boolean isAttending) {
+        this.isAttending = isAttending;
 
-        Log.i(TAG, "setAttendingEvent = " + isAttendingEvent);
-
-        if (isAttendingEvent) {
+        if (isAttending) {
             addCompetitionImage.setVisibility(View.VISIBLE);
         } else {
             addCompetitionImage.setVisibility(View.GONE);
@@ -333,20 +325,29 @@ public class CompetitionFragment extends MvpFragment<CompetitionView, Competitio
     }
 
     public void pickNewCompetitionImage() {
-        CharSequence options[] = new CharSequence[]{
-                getString(R.string.capture_image),
-                getString(R.string.select_image_from_lib)};
+        if (!isAttending) {
+            listener.onRequestForAttendingEvent((bool) -> {
+                if (bool) {
+                    isAttending = true;
+                    pickNewCompetitionImage();
+                }
+            });
+        } else {
+            CharSequence options[] = new CharSequence[]{
+                    getString(R.string.capture_image),
+                    getString(R.string.select_image_from_lib)};
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle(getString(R.string.select_image_option))
-                .setItems(options, (dialog, which) -> {
-                    switch (which) {
-                        case 0: launchCamera(); break;
-                        case 1: launchLibrary(); break;
-                    }
-                })
-                .setNegativeButton(R.string.close, (dialog, which) -> dialog.dismiss())
-                .show();
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setTitle(getString(R.string.select_image_option))
+                    .setItems(options, (dialog, which) -> {
+                        switch (which) {
+                            case 0: launchCamera(); break;
+                            case 1: launchLibrary(); break;
+                        }
+                    })
+                    .setNegativeButton(R.string.close, (dialog, which) -> dialog.dismiss())
+                    .show();
+        }
     }
 
     private void launchCamera() {

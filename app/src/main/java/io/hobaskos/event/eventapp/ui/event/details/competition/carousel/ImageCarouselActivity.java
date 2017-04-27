@@ -28,6 +28,7 @@ import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.model.CompetitionImage;
 import io.hobaskos.event.eventapp.ui.event.details.competition.list.CompetitionFragment;
 import io.hobaskos.event.eventapp.ui.event.details.competition.list.OnCompetitionListInteractionListener;
+import rx.functions.Action1;
 
 /**
  * Created by hans on 23/03/2017.
@@ -107,5 +108,10 @@ public class ImageCarouselActivity extends AppCompatActivity
     @Override
     public void onCompetitionVoteButtonClicked(CompetitionImage competitionImage, int vote) {
         competitionFragment.onCompetitionImageVoteSubmitted(competitionImage, vote);
+    }
+
+    @Override
+    public void onRequestForAttendingEvent(Action1<Boolean> callback) {
+        // do nothing for now
     }
 }

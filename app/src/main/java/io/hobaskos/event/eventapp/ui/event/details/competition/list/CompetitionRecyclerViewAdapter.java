@@ -98,8 +98,12 @@ public class CompetitionRecyclerViewAdapter extends
                 upVoteButton.setOnClickListener(v -> listener.onCompetitionVoteButtonClicked(competitionImage, +1));
                 downVoteButton.setOnClickListener(v -> listener.onCompetitionVoteButtonClicked(competitionImage, -1));
             } else {
-                upVoteButton.setVisibility(View.GONE);
-                downVoteButton.setVisibility(View.GONE);
+                upVoteButton.setOnClickListener(v ->
+                        listener.onCompetitionVoteButtonClicked(competitionImage, +1)
+                );
+                downVoteButton.setOnClickListener(v ->
+                        listener.onCompetitionVoteButtonClicked(competitionImage, -1)
+                );
             }
         }
     }

@@ -19,6 +19,7 @@ import javax.inject.Inject;
 
 import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
+import io.hobaskos.event.eventapp.data.AccountManager;
 import io.hobaskos.event.eventapp.data.model.CompetitionImage;
 import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.data.model.EventCategoryTheme;
@@ -37,6 +38,7 @@ import io.hobaskos.event.eventapp.ui.event.details.location.LocationsFragment;
 import io.hobaskos.event.eventapp.ui.event.details.location.create.CreateLocationActivity;
 import io.hobaskos.event.eventapp.ui.event.details.map.EventMapActivity;
 import rx.Observer;
+import rx.functions.Action1;
 
 /**
  * Created by andre on 1/26/2017.
@@ -65,7 +67,7 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
 
     private Long eventId;
     private EventCategoryTheme theme;
-    private boolean eventGoing;
+    private boolean isAttending;
 
     private EventPagerAdapter eventPagerAdapter;
     protected ViewPager viewPager;
@@ -76,7 +78,8 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     private boolean hasBeenPaused = false;
     private Menu menu;
 
-    @Inject public EventPresenter presenter;
+    @Inject protected EventPresenter presenter;
+    @Inject protected AccountManager accountManager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -206,7 +209,7 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     public void setData(Event event) {
         this.event = event;
         presenter.getOwnerStatus(event);
-        eventGoing = event.isAttending();
+        isAttending = event.isAttending();
         setTitle(event.getTitle());
 
         Log.i(TAG, "setData");
@@ -277,14 +280,9 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     }
 
    @Override
-    public void setIsOwner(boolean owner) {
-        isOwner = owner;
-
-        if (isOwner && menu != null) {
-            menu.getItem(0).setVisible(true);
-        }
-
-        Toast.makeText(this, owner ? "Owner" : "Not owner", Toast.LENGTH_SHORT).show();
+    public void setIsOwner(boolean isOwner) {
+        this.isOwner = isOwner;
+        if (isOwner && menu != null) { menu.getItem(0).setVisible(true); }
     }
 
     @Override
@@ -354,8 +352,21 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
 
     @Override
     public void onCompetitionVoteButtonClicked(CompetitionImage competitionImage, int vote) {
-        CompetitionFragment competitionFragment = (CompetitionFragment) eventPagerAdapter.getItem(3);
-        competitionFragment.onCompetitionImageVoteSubmitted(competitionImage, vote);
+        CompetitionFragment competitionFragment =
+                (CompetitionFragment) eventPagerAdapter.getItem(EventPagerAdapter.COMPETITIONS_FRAGMENT);
+
+        if (!isAttending) {
+            AttendeesFragment attendeesFragment =
+                    (AttendeesFragment) eventPagerAdapter.getItem(EventPagerAdapter.ATTENDEES_FRAGMENT);
+            attendeesFragment.attendEvent((bool) -> {
+                if (bool) {
+                    isAttending = true;
+                    competitionFragment.onCompetitionImageVoteSubmitted(competitionImage, vote);
+                }
+            });
+        } else {
+            competitionFragment.onCompetitionImageVoteSubmitted(competitionImage, vote);
+        }
     }
 
     @Override
@@ -363,8 +374,27 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
         Intent intent = new Intent(this, ImageCarouselActivity.class);
         intent.putExtra(ImageCarouselActivity.ARG_COMPETITION_ID, event.getDefaultPollId());
         intent.putExtra(ImageCarouselActivity.ARG_EVENT_TITLE, event.getTitle());
-        intent.putExtra(ImageCarouselActivity.ARG_EVENT_GOING, eventGoing);
-        startActivityForResult(intent, VIEW_COMPETITION_CAROUSEL);
+        intent.putExtra(ImageCarouselActivity.ARG_EVENT_GOING, isAttending);
+
+        if (!isAttending) {
+            AttendeesFragment attendeesFragment =
+                    (AttendeesFragment) eventPagerAdapter.getItem(EventPagerAdapter.ATTENDEES_FRAGMENT);
+            attendeesFragment.attendEvent((bool) -> {
+                if (bool) {
+                    isAttending = true;
+                    startActivityForResult(intent, VIEW_COMPETITION_CAROUSEL);
+                }
+            });
+        } else {
+            startActivityForResult(intent, VIEW_COMPETITION_CAROUSEL);
+        }
+    }
+
+    @Override
+    public void onRequestForAttendingEvent(Action1<Boolean> callback) {
+        AttendeesFragment attendeesFragment =
+                    (AttendeesFragment) eventPagerAdapter.getItem(EventPagerAdapter.ATTENDEES_FRAGMENT);
+        attendeesFragment.attendEvent(callback);
     }
 
     @Override
@@ -403,6 +433,6 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
         CompetitionFragment competitionFragment =
                 (CompetitionFragment) eventPagerAdapter.getItem(EventPagerAdapter.COMPETITIONS_FRAGMENT);
         competitionFragment.setAttendingEvent(true);
-        eventGoing = true;
+        isAttending = true;
     }
 }

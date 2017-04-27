@@ -109,38 +109,38 @@ public class CompetitionPresenter extends MvpBasePresenter<CompetitionView> {
 
     public void nominateImage(String title, String image) {
         Log.i(TAG, "Nominating image...");
-        if(competitionId != null) {
-            CompetitionImage competitionImage = new CompetitionImage();
-            competitionImage.setTitle(title);
-            competitionImage.setCompetitionId(competitionId);
-            competitionImage.setImageBase64(image);
-            competitionImage.setFileContentType("image/jpg");
+        if (competitionId == null) return;
 
-            eventImageRepository.saveImage(competitionImage)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Subscriber<CompetitionImage>() {
-                        @Override
-                        public void onCompleted() {
-                        }
+        CompetitionImage competitionImage = new CompetitionImage();
+        competitionImage.setTitle(title);
+        competitionImage.setCompetitionId(competitionId);
+        competitionImage.setImageBase64(image);
+        competitionImage.setFileContentType("image/jpg");
 
-                        @Override
-                        public void onError(Throwable e) {
-                            Log.i(TAG, "Could not save competition image.");
-                            Log.i(TAG, "Error: " + e.getMessage());
-                            if(isViewAttached() && getView() != null) {
-                                getView().imageWasUnsuccessfullyNominated(e);
-                            }
-                        }
+        eventImageRepository.saveImage(competitionImage)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<CompetitionImage>() {
+                    @Override
+                    public void onCompleted() {
+                    }
 
-                        @Override
-                        public void onNext(CompetitionImage competitionImage) {
-                            Log.i(TAG, "Competition image saved successfully.");
-                            if(isViewAttached() && getView() != null) {
-                                getView().imageWasSuccessfullyNominated(competitionImage);
-                            }
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.i(TAG, "Could not save competition image.");
+                        Log.i(TAG, "Error: " + e.getMessage());
+                        if(isViewAttached() && getView() != null) {
+                            getView().imageWasUnsuccessfullyNominated(e);
                         }
-                    });
-        }
+                    }
+
+                    @Override
+                    public void onNext(CompetitionImage competitionImage) {
+                        Log.i(TAG, "Competition image saved successfully.");
+                        if(isViewAttached() && getView() != null) {
+                            getView().imageWasSuccessfullyNominated(competitionImage);
+                        }
+                    }
+                });
     }
 }
