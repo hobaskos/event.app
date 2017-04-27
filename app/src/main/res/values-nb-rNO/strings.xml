@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Eventure</string>
+    <string name="app_version">Version 1.0</string>
 
     <!-- Screen titles -->
     <string name="events">Arrangementer</string>
@@ -151,4 +152,7 @@
     <string name="selected_distance">Valgt avstand</string>
     <string name="location">Lokasjon</string>
     <string name="use_current_location">Bruk enhetens lokasjon</string>
+
+    <string name="about">Om appen</string>
+    <string name="about_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer ac pretium nisi. Proin convallis eros quis tellus gravida vestibulum. Maecenas sollicitudin nulla enim, eu hendrerit mauris bibendum sit amet. Sed facilisis, risus sit amet tempor euismod, tellus nisi egestas metus, nec consectetur ex lectus quis mi.</string>
 </resources>

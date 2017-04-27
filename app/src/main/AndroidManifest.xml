@@ -8,15 +8,18 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <!--<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />-->
+    <!-- <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> -->
+
 
     <!--
     <permission
         android:name="io.hobaskos.event.eventapp.permission.MAPS_RECEIVE"
-        android:protectionLevel="signature" /> -->
+        android:protectionLevel="signature" />
+    -->
 
-    <!--<uses-permission android:name="io.hobaskos.event.eventapp.permission.MAPS_RECEIVE" />-->
-    <!--<uses-permission android:name="com.google.android.providers.gsf.permissions.READ_GSERVICES" />-->
+
+    <!-- <uses-permission android:name="io.hobaskos.event.eventapp.permission.MAPS_RECEIVE" /> -->
+    <!-- <uses-permission android:name="com.google.android.providers.gsf.permissions.READ_GSERVICES" /> -->
 
     <uses-feature
         android:glEsVersion="0x00020000"
@@ -27,7 +30,6 @@
          Google Maps Android API v2, but you must specify either coarse or fine
          location permissions for the 'MyLocation' functionality. 
     -->
-
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -35,7 +37,6 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
 
         <!-- Activities -->
         <!-- Splash screen -->
@@ -54,6 +55,7 @@
             android:name=".ui.main.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
+
             <!--
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -62,15 +64,13 @@
             </intent-filter>
             -->
         </activity>
-
         <activity
             android:name=".ui.profile.edit.ProfileEditActivity"
-            android:parentActivityName=".ui.profile.ProfileActivity"/>
+            android:parentActivityName=".ui.profile.ProfileActivity" />
         <activity
             android:name=".ui.event.create.CreateEventActivity"
             android:parentActivityName=".ui.main.MainActivity" />
-        <activity
-            android:name=".ui.event.details.EventActivity" />
+        <activity android:name=".ui.event.details.EventActivity" />
         <activity
             android:name=".ui.login.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -95,20 +95,22 @@
         </activity>
         <activity
             android:name=".ui.event.details.location.create.CreateLocationActivity"
-            android:parentActivityName=".ui.event.details.EventActivity"/>
-        <activity
-            android:name=".ui.event.search.map.SearchEventsMapActivity" />
-        <activity
-            android:name=".ui.event.filter.FilterEventsActivity" />
+            android:parentActivityName=".ui.event.details.EventActivity" />
+        <activity android:name=".ui.event.search.map.SearchEventsMapActivity" />
+        <activity android:name=".ui.event.filter.FilterEventsActivity" />
         <activity
             android:name=".ui.event.details.competition.carousel.ImageCarouselActivity"
-            android:parentActivityName=".ui.event.details.EventActivity"/>
+            android:parentActivityName=".ui.event.details.EventActivity" />
         <activity
             android:name=".ui.profile.ProfileActivity"
             android:label="@string/my_profile"
             android:parentActivityName=".ui.main.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            />
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".ui.about.AboutActivity"
+            android:label="@string/about"
+            android:theme="@style/AppTheme.NoActionBar"/>
 
         <meta-data
             android:name="com.google.android.gms.version"
@@ -118,10 +120,9 @@
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_api_key"/>
+            android:value="@string/google_api_key" />
 
         <!-- https://github.com/robolectric/robolectric/issues/2579 -->
         <meta-data
@@ -132,13 +133,12 @@
             android:name=".service.NotificationService"
             android:exported="false">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
         <service android:name=".service.FcmTokenService">
             <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
 

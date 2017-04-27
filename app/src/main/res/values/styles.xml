@@ -63,8 +63,7 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
-    </style>
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"></style>
 
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
@@ -91,8 +90,7 @@
         <item name="android:windowBackground">@drawable/map_background_splash</item>
     </style>
 
-    <style name="EventFilterDialog" parent="@android:style/Theme.Material.Light.Dialog.NoActionBar">
-    </style>
+    <style name="EventFilterDialog" parent="@android:style/Theme.Material.Light.Dialog.NoActionBar"></style>
 
     <style name="BigBlueButton">
         <item name="android:background">@drawable/button_submit_rounded</item>

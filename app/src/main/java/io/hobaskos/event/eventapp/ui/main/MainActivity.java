@@ -38,6 +38,7 @@ import io.hobaskos.event.eventapp.data.AccountManager;
 import io.hobaskos.event.eventapp.data.eventbus.UserHasLoggedInEvent;
 import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.data.model.User;
+import io.hobaskos.event.eventapp.ui.about.AboutActivity;
 import io.hobaskos.event.eventapp.ui.base.view.activity.BaseViewStateActivity;
 import io.hobaskos.event.eventapp.ui.event.create.CreateEventActivity;
 import io.hobaskos.event.eventapp.ui.event.details.EventActivity;
@@ -162,6 +163,9 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
             case R.id.nav_logout:
                 logoutDialog();
                 break;
+
+            case R.id.nav_about:
+                startActivity(new Intent(this, AboutActivity.class));
         }
         // Set navdrawer item to checked
         item.setChecked(true);
