@@ -114,10 +114,40 @@
                         android:textSize="12sp" />
                 </LinearLayout>
 
+                <!-- CATEGORY -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="4dp">
+
+                    <ImageView
+                        android:id="@+id/category_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_label_white"
+                        />
+
+                    <TextView
+                        android:id="@+id/event_category"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:paddingLeft="4dp"
+                        android:paddingTop="2dp"
+                        android:text="Placeholder category"
+                        android:textColor="@color/cardview_text"
+                        android:textSize="12sp"
+                        />
+                </LinearLayout>
+
                 <!-- GOING & ATTENDANCE -->
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingBottom="4dp"
                     android:orientation="horizontal">
 
                     <ImageView
@@ -159,76 +189,6 @@
                         android:textColor="@color/cardview_text"
                         android:textStyle="bold"
                         android:textSize="12sp" />
-                </LinearLayout>
-
-                <!-- ATTEND / EXPLORE -->
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingTop="16dp">
-
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:id="@+id/attend_text_view"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/attend_upper"
-                            android:paddingEnd="16dp"
-                            android:textColor="@color/cardview_text"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/explore_text_view"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/explore_upper"
-                            android:textColor="@color/cardview_text"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
-
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
-                        />
-
-                    <!-- CATEGORY -->
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:paddingBottom="4dp">
-
-                        <ImageView
-                            android:id="@+id/category_icon"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/ic_label_white"
-                            />
-
-                        <TextView
-                            android:id="@+id/event_category"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:ellipsize="end"
-                            android:maxLines="1"
-                            android:paddingLeft="4dp"
-                            android:paddingTop="2dp"
-                            android:text="Placeholder category"
-                            android:textColor="@color/cardview_text"
-                            android:textSize="12sp"
-                            />
-                    </LinearLayout>
-
                 </LinearLayout>
 
             </LinearLayout>

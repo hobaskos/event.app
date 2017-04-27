@@ -183,8 +183,6 @@ public class EventDateSectionPagedRecyclerAdapter extends SectionedPagedRecycler
 
                 if (!event.isAttending()) {
                     eventHolder.myAttendance.setVisibility(View.GONE);
-                } else {
-                    eventHolder.attend.setVisibility(View.GONE);
                 }
 
                 eventHolder.click(event, onItemClick);
@@ -220,7 +218,7 @@ public class EventDateSectionPagedRecyclerAdapter extends SectionedPagedRecycler
 
     public class EventViewHolder extends SectionedPagedRecyclerAdapter.ItemViewHolder {
         public TextView eventTitle, eventCategory, eventLocation, eventDate,
-                attendanceCount, myAttendance, attend;
+                attendanceCount, myAttendance;
         public View categoryColor;
         public View categorySubColor;
         public CardView cardView;
@@ -234,7 +232,6 @@ public class EventDateSectionPagedRecyclerAdapter extends SectionedPagedRecycler
             eventLocation = (TextView) itemView.findViewById(R.id.event_location);
             attendanceCount = (TextView) itemView.findViewById(R.id.attendance_count);
             myAttendance = (TextView) itemView.findViewById(R.id.my_attendance);
-            attend = (TextView) itemView.findViewById(R.id.attend_text_view);
             eventDate = (TextView) itemView.findViewById(R.id.event_time);
             cardView = (CardView) itemView.findViewById(R.id.card_view);
             eventImage = (ImageView) itemView.findViewById(R.id.event_list_item_image);
