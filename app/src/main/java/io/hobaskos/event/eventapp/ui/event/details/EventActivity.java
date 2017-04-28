@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,7 +15,6 @@ import android.widget.Toast;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -173,6 +173,29 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
         }
     }
 
+    private void onLeaveEvent() {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.leave_event)
+                .setMessage(R.string.leave_event_desc)
+                .setPositiveButton(R.string.leave_event, (dialog, which) ->
+                    presenter.leaveEvent(event.getMyAttendance().getId(), aBoolean -> {
+                        if (aBoolean) { onLeftEvent(); }
+                    })
+                )
+                .setNegativeButton(R.string.close, (dialog, which) -> dialog.dismiss())
+                .create()
+                .show();
+    }
+
+    private void onLeftEvent() {
+        Toast.makeText(this, R.string.left_event, Toast.LENGTH_SHORT).show();
+        menu.findItem(R.id.leave_event).setVisible(false);
+        loadData(true);
+
+        eventPagerAdapter.getCompetitionFragment().setAttendingEvent(false);
+        eventPagerAdapter.getAttendeesFragment().onLeftEvent();
+    }
+
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -231,6 +254,11 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
         this.event = event;
         presenter.getOwnerStatus(event);
         isAttending = event.isAttending();
+
+        if (isAttending) {
+            menu.findItem(R.id.leave_event).setVisible(true);
+        }
+
         setTitle(event.getTitle());
 
         Log.i(TAG, "setData");
@@ -245,9 +273,9 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
             tabLayout.getTabAt(1).setIcon(R.drawable.ic_location_on);
             tabLayout.getTabAt(2).setIcon(R.drawable.ic_group);
 
-            if (isLoggedIn) {
-                tabLayout.getTabAt(3).setIcon(R.drawable.trophy);
-            }
+            if (isLoggedIn) { tabLayout.getTabAt(3).setIcon(R.drawable.trophy); }
+        } else {
+            eventPagerAdapter.getEventInfoFragment().refresh(event);
         }
     }
 
@@ -270,7 +298,7 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
         getMenuInflater().inflate(R.menu.event_menu, menu);
         this.menu = menu;
 
-        if(!hasBeenPaused && isOwner) {
+        if (!hasBeenPaused && isOwner) {
             // Edit Event button
             menu.getItem(0).setVisible(true);
         }
@@ -290,6 +318,9 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
                 editIntent.putExtra(EVENT, event);
                 //startActivity(editIntent);
                 startActivityForResult(editIntent, EDIT_EVENT_REQUEST);
+                break;
+            case R.id.leave_event:
+                onLeaveEvent();
                 break;
             case R.id.map:
                 Intent intent = new Intent(this, EventMapActivity.class);
@@ -449,11 +480,11 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
     }
 
     @Override
-    public void onAttendeesFabInteraction() {
-        Log.i(TAG, "onAttendeesFabInteraction");
+    public void onUserHasAttendedEvent() {
+        Log.i(TAG, "onUserHasAttendedEvent");
         CompetitionFragment competitionFragment =
                 (CompetitionFragment) eventPagerAdapter.getItem(EventPagerAdapter.COMPETITIONS_FRAGMENT);
         competitionFragment.setAttendingEvent(true);
-        isAttending = true;
+        loadData(true);
     }
 }

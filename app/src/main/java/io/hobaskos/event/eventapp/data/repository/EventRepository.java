@@ -23,6 +23,8 @@ public class EventRepository implements BaseRepository<Event, Long> {
     private final EventService.Authenticated eventServiceAuthenticated;
     private final AccountManager accountManager;
 
+    private final String DEFAULT_SORT = "fromDate,asc";
+
     public static final int PAGE_SIZE = 20;
 
     @Inject
@@ -65,9 +67,9 @@ public class EventRepository implements BaseRepository<Event, Long> {
 
     public Observable<List<Event>> search(int page, String query) {
         if (accountManager.isLoggedIn()) {
-            return eventServiceAuthenticated.search(page, PAGE_SIZE, query, "fromDate,asc");
+            return eventServiceAuthenticated.search(page, PAGE_SIZE, query, DEFAULT_SORT);
         } else {
-            return eventServiceAnonymously.search(page, PAGE_SIZE, query, "fromDate,asc");
+            return eventServiceAnonymously.search(page, PAGE_SIZE, query, DEFAULT_SORT);
         }
     }
 
@@ -75,10 +77,10 @@ public class EventRepository implements BaseRepository<Event, Long> {
                                                 DateTime fromDate, DateTime toDate, String categories) {
         if (accountManager.isLoggedIn()) {
             return eventServiceAuthenticated
-                    .searchNearby(page, PAGE_SIZE, query, lat, lon, distance, fromDate, toDate, categories, "fromDate,asc");
+                    .searchNearby(page, PAGE_SIZE, query, lat, lon, distance, fromDate, toDate, categories, DEFAULT_SORT);
         } else {
             return eventServiceAnonymously
-                    .searchNearby(page, PAGE_SIZE, query, lat, lon, distance, fromDate, toDate, categories, "fromDate,asc");
+                    .searchNearby(page, PAGE_SIZE, query, lat, lon, distance, fromDate, toDate, categories, DEFAULT_SORT);
         }
     }
 
@@ -86,12 +88,16 @@ public class EventRepository implements BaseRepository<Event, Long> {
         return eventServiceAuthenticated.saveAttendance(new EventAttendance(eventId, EventAttendingType.GOING));
     }
 
+    public Observable<Void> leaveEvent(Long eventAttendingId) {
+        return eventServiceAuthenticated.deleteAttendance(eventAttendingId);
+    }
+
     public Observable<List<Event>> getAttendingEvents(int page) {
         return eventServiceAuthenticated.getAttendingEvents(page, PAGE_SIZE);
     }
 
     public Observable<List<Event>> getMyEvents(int page) {
-        return eventServiceAuthenticated.getMyEvents(page, PAGE_SIZE, "fromDate,asc");
+        return eventServiceAuthenticated.getMyEvents(page, PAGE_SIZE, DEFAULT_SORT);
     }
 
     public Observable<List<User>> getAddendingUsers(Long eventId, int page) {

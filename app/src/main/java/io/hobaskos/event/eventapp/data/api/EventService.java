@@ -88,6 +88,9 @@ public interface EventService
         @POST("api/event-user-attendings")
         Observable<EventAttendance> saveAttendance(@Body EventAttendance attendance);
 
+        @DELETE("api/event-user-attendings/{id}")
+        Observable<Void> deleteAttendance(@Path("id") Long id);
+
         @GET("api/account/attending-events?sort=fromDate,asc")
         Observable<List<Event>> getAttendingEvents(@Query("page") int page,
                                                    @Query("size") int pageSize);

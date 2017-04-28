@@ -79,5 +79,35 @@ public class EventPagerAdapter extends FragmentPagerAdapter {
         return null;
     }
 
+    public EventInfoFragment getEventInfoFragment() {
+        return eventInfoFragment;
+    }
 
+    public void setEventInfoFragment(EventInfoFragment eventInfoFragment) {
+        this.eventInfoFragment = eventInfoFragment;
+    }
+
+    public LocationsFragment getLocationsFragment() {
+        return locationsFragment;
+    }
+
+    public void setLocationsFragment(LocationsFragment locationsFragment) {
+        this.locationsFragment = locationsFragment;
+    }
+
+    public AttendeesFragment getAttendeesFragment() {
+        return attendeesFragment;
+    }
+
+    public void setAttendeesFragment(AttendeesFragment attendeesFragment) {
+        this.attendeesFragment = attendeesFragment;
+    }
+
+    public CompetitionFragment getCompetitionFragment() {
+        return competitionFragment;
+    }
+
+    public void setCompetitionFragment(CompetitionFragment competitionFragment) {
+        this.competitionFragment = competitionFragment;
+    }
 }

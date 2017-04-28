@@ -346,7 +346,7 @@ public class CompetitionFragment extends MvpFragment<CompetitionView, Competitio
                         }
                     })
                     .setNegativeButton(R.string.close, (dialog, which) -> dialog.dismiss())
-                    .show();
+                    .create().show();
         }
     }
 

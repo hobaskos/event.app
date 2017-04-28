@@ -83,6 +83,9 @@
     <string name="delete">Slett</string>
     <string name="delete_location">Vil du slette denne lokasjonen?</string>
     <string name="attend_event">Delta på arrangement</string>
+    <string name="left_event">Du er nå meldt av dette eventet</string>
+    <string name="leave_event">Meld av event</string>
+    <string name="leave_event_desc">Ønsker du å melde deg av dette eventet?</string>
     <string name="event_going">Påmeldte:</string>
     <string name="attending_event">Påmeldt</string>
     <string name="attend_event_desc">Lnsker du å delta på dette arrangementet?</string>

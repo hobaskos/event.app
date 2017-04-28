@@ -1,7 +1,6 @@
 package io.hobaskos.event.eventapp.ui.event.details.attending;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -20,7 +19,6 @@ import com.hannesdorfmann.mosby.mvp.viewstate.lce.LceViewState;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import icepick.State;
 import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
@@ -29,7 +27,6 @@ import io.hobaskos.event.eventapp.data.model.EventAttendance;
 import io.hobaskos.event.eventapp.data.model.User;
 import io.hobaskos.event.eventapp.ui.base.view.fragment.BaseLceViewStateFragment;
 import io.hobaskos.event.eventapp.util.LoginDialog;
-import rx.Observable;
 import rx.Observer;
 import rx.functions.Action1;
 
@@ -140,12 +137,14 @@ public class AttendeesFragment
         });
 
         attendFab.setOnClickListener((v) -> attendEvent(aBoolean -> {
-            Toast.makeText(context, R.string.attend_event, Toast.LENGTH_SHORT).show();
+            if (aBoolean) {
+                Toast.makeText(context, R.string.attending_event, Toast.LENGTH_SHORT).show();
+                listener.onUserHasAttendedEvent();
+            }
         }));
 
         return view;
     }
-
 
     public void attendEvent(Action1<Boolean> callback) {
         if (!accountManager.isLoggedIn()) {
@@ -167,10 +166,8 @@ public class AttendeesFragment
                         @Override
                         public void onNext(EventAttendance attendance) {
                             dialog.dismiss();
-                            listener.onAttendeesFabInteraction();
-                            loadData(true);
-                            attendFab.hide();
                             callback.call(true);
+                            onAttendingEvent();
                         }
                     });
                 })
@@ -181,6 +178,16 @@ public class AttendeesFragment
                 })
                 .create()
                 .show();
+    }
+
+    public void onAttendingEvent() {
+        loadData(true);
+        attendFab.hide();
+    }
+
+    public void onLeftEvent() {
+        loadData(true);
+        attendFab.show();
     }
 
     @Override
@@ -263,6 +270,6 @@ public class AttendeesFragment
 
     public interface OnAttendeesInteractionListener {
         void onUserAttendingInteraction(User item);
-        void onAttendeesFabInteraction();
+        void onUserHasAttendedEvent();
     }
 }

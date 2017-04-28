@@ -33,7 +33,7 @@ public class EventPagedRecyclerAdapter extends PagedRecyclerAdapter<Event> {
                 EventPagedRecyclerAdapter.EventViewHolder eventHolder = (EventPagedRecyclerAdapter.EventViewHolder) holder;
                 Event event = getItemAtPosition(position);
 
-                if (event.getMyAttendance() == null) eventHolder.myAttendance.setVisibility(View.GONE);
+                if (event.isAttending()) eventHolder.myAttendance.setVisibility(View.GONE);
 
                 eventHolder.click(event, onItemClick);
                 eventHolder.eventTitle.setText(event.getTitle());

@@ -55,7 +55,7 @@ public class Event implements Parcelable {
     private int attendanceCount;
 
     @SerializedName("myAttendance")
-    private String myAttendance;
+    private EventAttendance myAttendance;
 
     @SerializedName("image")
     private String image;
@@ -163,12 +163,12 @@ public class Event implements Parcelable {
         this.attendanceCount = attendanceCount;
     }
 
-    public String getMyAttendance() {
+    public EventAttendance getMyAttendance() {
         return myAttendance;
     }
 
     public boolean isAttending() {
-        return myAttendance != null && !myAttendance.equals("");
+        return myAttendance != null;
     }
 
     public boolean isPrivateEvent() {
@@ -195,7 +195,7 @@ public class Event implements Parcelable {
         this.category = category;
     }
 
-    public void setMyAttendance(String myAttendance) {
+    public void setMyAttendance(EventAttendance myAttendance) {
         this.myAttendance = myAttendance;
     }
 
@@ -305,8 +305,7 @@ public class Event implements Parcelable {
 
 
     public String getAbsoluteImageUrl() {
-        String s = "https://" + Constants.API_HOST + "/api" + imageUrl;
-        return s;
+        return "https://" + Constants.API_HOST + "/api" + imageUrl;
     }
 
     @Override
@@ -346,7 +345,7 @@ public class Event implements Parcelable {
         dest.writeTypedList(this.locations);
         dest.writeParcelable(this.category, flags);
         dest.writeInt(this.attendanceCount);
-        dest.writeString(this.myAttendance);
+        dest.writeParcelable(this.myAttendance, flags);
         dest.writeString(this.image);
         dest.writeString(this.imageContentType);
         dest.writeValue(this.defaultPollId);
@@ -368,7 +367,7 @@ public class Event implements Parcelable {
         this.locations = in.createTypedArrayList(Location.CREATOR);
         this.category = in.readParcelable(EventCategory.class.getClassLoader());
         this.attendanceCount = in.readInt();
-        this.myAttendance = in.readString();
+        this.myAttendance = in.readParcelable(EventAttendance.class.getClassLoader());
         this.image = in.readString();
         this.imageContentType = in.readString();
         this.defaultPollId = (Long) in.readValue(Long.class.getClassLoader());

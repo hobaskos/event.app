@@ -10,9 +10,11 @@ import io.hobaskos.event.eventapp.data.model.Location;
 import io.hobaskos.event.eventapp.data.repository.EventRepository;
 import io.hobaskos.event.eventapp.data.repository.LocationRepository;
 import io.hobaskos.event.eventapp.ui.base.presenter.BaseRxLcePresenter;
+import rx.Observable;
 import rx.Observer;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -109,6 +111,28 @@ public class EventPresenter extends BaseRxLcePresenter<EventView, Event> {
 
     public boolean isLoggedIn() {
         return accountManager.isLoggedIn();
+    }
+
+    public void leaveEvent(Long eventAttendingId, Action1<Boolean> callback) {
+        Log.d(TAG, "leaveEvent: " + eventAttendingId);
+        eventRepository.leaveEvent(eventAttendingId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Void>() {
+                    @Override
+                    public void onCompleted() {}
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.d(TAG, "onError: " + e.getMessage());
+                        callback.call(false);
+                    }
+
+                    @Override
+                    public void onNext(Void aVoid) {
+                        callback.call(true);
+                    }
+                });
     }
 }
 

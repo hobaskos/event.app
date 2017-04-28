@@ -70,9 +70,7 @@ public class EventInfoFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_event_info, container, false);
 
         ButterKnife.bind(this, view);
-
         renderEvent();
-
         return view;
     }
 
