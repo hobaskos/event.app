@@ -139,11 +139,14 @@ public class AttendeesFragment
             }
         });
 
+        attendFab.setOnClickListener((v) -> attendEvent(aBoolean -> {
+            Toast.makeText(context, R.string.attend_event, Toast.LENGTH_SHORT).show();
+        }));
+
         return view;
     }
 
 
-    @OnClick(R.id.fragment_attendees_attend)
     public void attendEvent(Action1<Boolean> callback) {
         if (!accountManager.isLoggedIn()) {
             LoginDialog.createAndShow(getContext());
