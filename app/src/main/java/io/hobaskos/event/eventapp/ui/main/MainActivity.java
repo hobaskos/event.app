@@ -266,7 +266,7 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
     public void setDefaultPicture() {
         View header = navigationView.getHeaderView(0);
         ImageView imageView = (ImageView) header.findViewById(R.id.imageView);
-        imageView.setImageResource(R.mipmap.eventure_logo);
+        imageView.setImageResource(R.drawable.round_logo);
     }
 
     @Override
