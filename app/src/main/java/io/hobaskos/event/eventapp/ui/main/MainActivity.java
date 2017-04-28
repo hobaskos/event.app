@@ -199,7 +199,6 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
         JoinPrivateEventFragment.newInstance().show(ft, JOIN_EVENT_KEY);
     }
 
-
     @Override
     public ViewState<MainView> createViewState() {
         return new MainViewState();

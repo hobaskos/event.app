@@ -14,11 +14,14 @@ import android.view.ViewGroup;
 
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.LceViewState;
 
+import org.greenrobot.eventbus.EventBus;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import icepick.State;
 import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
+import io.hobaskos.event.eventapp.data.eventbus.EventHasUpdatedLocations;
 import io.hobaskos.event.eventapp.data.model.Location;
 import io.hobaskos.event.eventapp.ui.base.view.fragment.BaseLceViewStateFragment;
 import io.hobaskos.event.eventapp.ui.event.details.EventActivity;
@@ -178,6 +181,7 @@ public class LocationsFragment
         locations.addAll(data);
         locationRecyclerViewAdapter.setItems(locations);
         swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(false));
+        EventBus.getDefault().post(new EventHasUpdatedLocations(locations));
     }
 
     @Override

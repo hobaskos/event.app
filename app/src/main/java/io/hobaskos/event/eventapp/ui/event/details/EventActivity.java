@@ -12,6 +12,10 @@ import android.view.MenuItem;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +24,7 @@ import javax.inject.Inject;
 import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.AccountManager;
+import io.hobaskos.event.eventapp.data.eventbus.EventHasUpdatedLocations;
 import io.hobaskos.event.eventapp.data.model.CompetitionImage;
 import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.data.model.EventCategoryTheme;
@@ -124,6 +129,22 @@ public class EventActivity extends BaseLceViewStateActivity<RelativeLayout, Even
         }
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe
+    public void onUserHasLoggedInEvent(EventHasUpdatedLocations eventHasUpdatedLocations) {
+        event.setLocations(eventHasUpdatedLocations.getLocations());
+    }
 
     private void setEventTheme(EventCategoryTheme theme) {
         Log.i("EventActivity", "Setting EventTheme: " + theme.name());

@@ -160,4 +160,6 @@
 
     <string name="about">About</string>
     <string name="about_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer ac pretium nisi. Proin convallis eros quis tellus gravida vestibulum. Maecenas sollicitudin nulla enim, eu hendrerit mauris bibendum sit amet. Sed facilisis, risus sit amet tempor euismod, tellus nisi egestas metus, nec consectetur ex lectus quis mi.</string>
+
+    <string name="this_event_has_no_locations">This event has no locations</string>
 </resources>

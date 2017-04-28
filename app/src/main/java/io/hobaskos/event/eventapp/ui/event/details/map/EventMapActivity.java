@@ -114,10 +114,16 @@ public class EventMapActivity extends FragmentActivity implements OnMapReadyCall
             map.setMyLocationEnabled(true);
         }
 
-        addMarkers();
+        if (locations == null || locations.size() == 0) {
+            Toast.makeText(this, R.string.this_event_has_no_locations, Toast.LENGTH_SHORT).show();
+            finish();
+        } else {
+            addMarkers();
+        }
     }
 
     private void addMarkers() {
+
 
         //Add first Marker
         Marker marker0 = map.addMarker(new MarkerOptions()
