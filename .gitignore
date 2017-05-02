@@ -10,3 +10,5 @@
 /captures
 .externalNativeBuild
 /app/src/main/res/facebook_api.xml
+
+app/app-release.apk

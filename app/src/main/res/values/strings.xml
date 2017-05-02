@@ -22,7 +22,6 @@
     <string name="friends_label">Friends</string>
     <string name="btn_login">Login</string>
     <string name="title_activity_maps">Map</string>
-    <string name="title_activity_prifile">PrifileActivity</string>
     <string name="email">Email</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
@@ -70,7 +69,7 @@
     <string name="to">To</string>
     <string name="date">Date</string>
     <string name="time">Time</string>
-    <string name="left">venstre</string>
+    <string name="left">Left</string>
     <string-array name="tabName">
         <item>Attending</item>
         <item>Mine</item>
@@ -158,8 +157,7 @@
     <string name="distance">Distance</string>
     <string name="selected_distance">Selected distance</string>
     <string name="location">Location</string>
-    <string name="use_current_location">Use current lokasjon</string>
-    <string name="title_activity_about">AboutActivity</string>
+    <string name="use_current_location">Use current location</string>
 
     <string name="about">About</string>
     <string name="about_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer ac pretium nisi. Proin convallis eros quis tellus gravida vestibulum. Maecenas sollicitudin nulla enim, eu hendrerit mauris bibendum sit amet. Sed facilisis, risus sit amet tempor euismod, tellus nisi egestas metus, nec consectetur ex lectus quis mi.</string>

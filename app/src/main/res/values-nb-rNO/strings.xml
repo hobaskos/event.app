@@ -68,6 +68,7 @@
     <string name="to">Til</string>
     <string name="date">Dato</string>
     <string name="time">Tid</string>
+    <string name="left">Venstre</string>
     <string-array name="tabName">
         <item>Påmeldt</item>
         <item>Mine</item>
