@@ -75,8 +75,8 @@ public class FilterEventsPresenter extends MvpBasePresenter<FilterEventsView> {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        list -> getView().setCategories(list),
-                        throwable -> getView().showError(throwable)
+                        list -> { if (getView() != null) getView().setCategories(list); },
+                        throwable -> { if (getView() != null) getView().showError(throwable); }
                 );
     }
 

@@ -10,4 +10,5 @@ import io.hobaskos.event.eventapp.data.model.Event;
 
 public interface EventView extends MvpLceView<Event> {
     void setIsOwner(boolean isOwner);
+    void reloadData(Event event);
 }

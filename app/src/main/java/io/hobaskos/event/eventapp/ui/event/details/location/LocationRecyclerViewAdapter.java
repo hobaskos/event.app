@@ -32,7 +32,7 @@ public class LocationRecyclerViewAdapter extends
     @Override
     public LocationViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_location, parent, false);
+                .inflate(R.layout.list_item_location, parent, false);
         return new LocationViewHolder(view);
     }
 
@@ -62,31 +62,34 @@ public class LocationRecyclerViewAdapter extends
     }
 
     public class LocationViewHolder extends RecyclerView.ViewHolder {
-        public final LinearLayout locationInfoView;
+        public final LinearLayout contentWrapper;
+        public final LinearLayout actionWrapper;
         public final TextView title;
         public final TextView address;
         public final TextView date;
         public final ImageView delete;
+        public final ImageView edit;
         public Location location;
 
         public LocationViewHolder(View view) {
             super(view);
-            locationInfoView = (LinearLayout) view.findViewById(R.id.location_info);
+            contentWrapper = (LinearLayout) view.findViewById(R.id.content_wrapper);
+            actionWrapper = (LinearLayout) view.findViewById(R.id.action_wrapper);
             title = (TextView) view.findViewById(R.id.title);
             address = (TextView) view.findViewById(R.id.address);
             date = (TextView) view.findViewById(R.id.date);
             delete = (ImageView) view.findViewById(R.id.delete);
+            edit = (ImageView) view.findViewById(R.id.edit);
 
-            if(isOwner) {
+            if (listener == null) return;
 
-                locationInfoView.setOnClickListener(v -> {
-                    if (null != listener) { listener.onListFragmentEditInteraction(location); }
-                });
+            contentWrapper.setOnClickListener(v -> listener.onLocationMapInteraction(locations, location));
 
-                delete.setOnClickListener(v -> {
-                    if(null != listener) { listener.onListFragmentDeleteInteraction(location); }
-                });
-
+            if (isOwner) {
+                edit.setOnClickListener(v -> listener.onLocationEditInteraction(location));
+                delete.setOnClickListener(v -> listener.onLocationDeleteInteraction(location));
+            } else {
+                actionWrapper.setVisibility(View.GONE);
             }
         }
 

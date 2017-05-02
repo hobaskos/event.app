@@ -5,6 +5,6 @@ package io.hobaskos.event.eventapp.ui.dialog;
  */
 
 public interface DeleteDialogListener<T> {
-    void onDeleteButtonClicked(T item);
-    void onCancelButtonClicked();
+    void onDeleteDialogConfirmButtonClicked(T item);
+    void onDeleteDialogCancelButtonClicked();
 }

@@ -137,10 +137,10 @@ public class SearchEventsMapFragment extends Fragment implements SearchEventsMap
             googleMap.clear();
 
             // Get locations and add them as markers on the map:
-            for (Event event : events) {
+            events.stream().filter(event -> event.getLocationByClosestDate() != null).forEach(event -> {
                 Location l = event.getLocationByClosestDate();
                 Marker marker = googleMap.addMarker(new MarkerOptions()
-                        .position(LocationUtil.LocationToLatLng(l))
+                        .position(LocationUtil.locationToLatLng(l))
                         .title(event.getTitle())
                         .snippet(event.getDate(getContext())));
 
@@ -148,20 +148,14 @@ public class SearchEventsMapFragment extends Fragment implements SearchEventsMap
                 marker.setTag(event);
                 markers.add(marker);
 
-                googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
-
-                    @Override
-                    public void onInfoWindowClick(Marker arg0) {
-                        final Event event = (Event) arg0.getTag();
+                googleMap.setOnInfoWindowClickListener((arg0) -> {
+                        final Event e = (Event) arg0.getTag();
                         Intent intent = new Intent(getActivity(), EventActivity.class);
-                        intent.putExtra(EventActivity.EVENT_ID, event.getId());
+                        intent.putExtra(EventActivity.EVENT_ID, e.getId());
                         intent.putExtra(EventActivity.EVENT_THEME, EventCategoryTheme.YELLOW); //TODO change when eventCategory is available
                         startActivity(intent);
-                    }
                 });
-            }
-
-
+            });
 
             // Create LatLng bounds from markers:
             LatLngBounds.Builder latLngBoundsBuilder = new LatLngBounds.Builder();
@@ -180,8 +174,6 @@ public class SearchEventsMapFragment extends Fragment implements SearchEventsMap
 
             googleMap.getUiSettings().setZoomControlsEnabled(true);
             //googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cameraLocation, 10));
-
-
         }
     }
 }

@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Eventure</string>
+    <string name="app_version">Version 1.0</string>
 
     <!-- Screen titles -->
     <string name="events">Events</string>
@@ -21,7 +22,6 @@
     <string name="friends_label">Friends</string>
     <string name="btn_login">Login</string>
     <string name="title_activity_maps">Map</string>
-    <string name="title_activity_prifile">PrifileActivity</string>
     <string name="email">Email</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
@@ -54,6 +54,7 @@
     <string name="error_message_required_field_from_time">From time is a required field.</string>
     <string name="error_message_required_field_to_date">To date is a required field.</string>
     <string name="error_message_required_field_to_time">To time is a required field.</string>
+    <string name="title">Title</string>
     <string name="title_label">Title</string>
     <string name="image_label">Image</string>
     <string name="could_not_create_event">Could not create event. Please try again.</string>
@@ -68,7 +69,7 @@
     <string name="to">To</string>
     <string name="date">Date</string>
     <string name="time">Time</string>
-    <string name="left">venstre</string>
+    <string name="left">Left</string>
     <string-array name="tabName">
         <item>Attending</item>
         <item>Mine</item>
@@ -84,6 +85,9 @@
     <string name="delete">Delete</string>
     <string name="delete_location">DANGER: Do you want to delete this location?</string>
     <string name="attend_event">Attend event</string>
+    <string name="left_event">You have now left this event</string>
+    <string name="leave_event">Leave event</string>
+    <string name="leave_event_desc">Do you want to leave this event?</string>
     <string name="event_going">Going:</string>
     <string name="attending_event">Attending event</string>
     <string name="attend_event_desc">Do you want to attend this event?</string>
@@ -134,4 +138,29 @@
 
     <string name="first_name">First name</string>
     <string name="last_name">Last name</string>
+
+    <string name="already_voted">You have already voted for this image</string>
+    <string name="image_author">Uploader: </string>
+    <string name="upload_new_image">Upload new image</string>
+    <string name="add_image">Add image</string>
+
+    <string name="attend_upper">ATTEND</string>
+    <string name="explore_upper">EXPLORE</string>
+
+    <string name="must_be_logged_in">You must be logged for this function</string>
+
+    <string name="saving">Saving&#8230;</string>
+
+    <string name="logout_confirm">Are you sure you want to logout?</string>
+
+    <string name="apply_filters">Apply filters</string>
+    <string name="distance">Distance</string>
+    <string name="selected_distance">Selected distance</string>
+    <string name="location">Location</string>
+    <string name="use_current_location">Use current location</string>
+
+    <string name="about">About</string>
+    <string name="about_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer ac pretium nisi. Proin convallis eros quis tellus gravida vestibulum. Maecenas sollicitudin nulla enim, eu hendrerit mauris bibendum sit amet. Sed facilisis, risus sit amet tempor euismod, tellus nisi egestas metus, nec consectetur ex lectus quis mi.</string>
+
+    <string name="this_event_has_no_locations">This event has no locations</string>
 </resources>

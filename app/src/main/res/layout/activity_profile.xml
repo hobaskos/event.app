@@ -29,11 +29,12 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
+                android:background="@color/primary_dark"
+                android:layout_height="275dp"
                 app:layout_collapseMode="parallax"
                 android:fitsSystemWindows="true"
                 android:orientation="vertical"
                 android:gravity="center"
-                android:layout_height="wrap_content"
                 >
 
                 <!--<ImageView

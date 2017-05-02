@@ -3,6 +3,8 @@ package io.hobaskos.event.eventapp.data.model;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 
+import java.util.Calendar;
+
 /**
  * Created by hansp on 14.03.2017.
  */
@@ -15,6 +17,7 @@ public class DateTimeVM {
     private int minute;
 
     public DateTimeVM() {
+        this(DateTime.now());
     }
 
     public DateTimeVM(DateTime dateTime) {
@@ -53,5 +56,23 @@ public class DateTimeVM {
                             DateTimeZone.getDefault());
     }
 
+    public int getYear() {
+        return year;
+    }
 
+    public int getMonthOfYear() {
+        return monthOfYear;
+    }
+
+    public int getDayOfMonth() {
+        return dayOfMonth;
+    }
+
+    public int getHour() {
+        return hour;
+    }
+
+    public int getMinute() {
+        return minute;
+    }
 }

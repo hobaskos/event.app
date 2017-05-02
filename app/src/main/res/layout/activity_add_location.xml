@@ -1,95 +1,131 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
-    android:padding="16dp">
-
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp">
-        <EditText
-            android:id="@+id/activity_add_location_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/title_label"/>
-    </android.support.design.widget.TextInputLayout>
-
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp">
-        <EditText
-            android:id="@+id/activity_add_location_description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/description_label" />
-    </android.support.design.widget.TextInputLayout>
-
-    <fragment
-        android:id="@+id/add_location_activity_place_autocomplete_fragment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:name="com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment" />
+    android:layout_width="match_parent"
+    >
 
     <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
 
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
             <EditText
-                android:id="@+id/activity_add_location_from_date"
-                android:layout_width="wrap_content"
-                android:layout_weight="0.5"
+                android:id="@+id/activity_add_location_name"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/from_date"
-                android:inputType="date" />
+                android:hint="@string/title_label"/>
+        </android.support.design.widget.TextInputLayout>
 
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
             <EditText
-                android:id="@+id/activity_add_location_from_time"
-                android:layout_width="wrap_content"
-                android:layout_weight="0.5"
+                android:id="@+id/activity_add_location_description"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/from_time"/>
+                android:hint="@string/description_label" />
+        </android.support.design.widget.TextInputLayout>
+
+        <fragment
+            android:id="@+id/add_location_activity_place_autocomplete_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:name="com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:id="@+id/from_date_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/text_margin"
+            android:paddingBottom="@dimen/text_margin"
+            android:clickable="true"
+            android:background="@android:drawable/btn_default"
+            >
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_event_black_24dp"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/from"
+                    android:paddingStart="@dimen/text_margin"
+                    android:paddingEnd="@dimen/text_margin"
+                    android:textSize="16sp"
+                    />
+
+                <TextView
+                    android:id="@+id/activity_add_location_from_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    />
+
+                <TextView
+                    android:paddingStart="@dimen/text_margin"
+                    android:id="@+id/activity_add_location_from_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:id="@+id/to_date_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:background="@android:drawable/btn_default"
+            android:paddingTop="@dimen/text_margin"
+            android:paddingBottom="@dimen/text_margin"
+            >
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_event_black_24dp"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/to"
+                    android:paddingStart="@dimen/text_margin"
+                    android:paddingEnd="@dimen/text_margin"
+                    android:textSize="18sp"
+                    />
+
+                <TextView
+                    android:id="@+id/activity_add_location_to_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    />
+
+                <TextView
+                    android:id="@+id/activity_add_location_to_time"
+                    android:paddingStart="@dimen/text_margin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    />
+
+        </LinearLayout>
 
     </LinearLayout>
 
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-            <EditText
-                android:id="@+id/activity_add_location_to_date"
-                android:layout_width="wrap_content"
-                android:layout_weight="0.5"
-                android:layout_height="wrap_content"
-                android:hint="@string/to_date"
-                android:inputType="date" />
-
-            <EditText
-                android:id="@+id/activity_add_location_to_time"
-                android:layout_width="wrap_content"
-                android:layout_weight="0.5"
-                android:layout_height="wrap_content"
-                android:hint="@string/to_time" />
-
-    </LinearLayout>
-
-    <Button
-        android:id="@+id/activity_add_location_submit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/create" />
-
-    <Button
-        android:id="@+id/activity_add_location_edit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/edit" />
-
-</LinearLayout>
-
+</ScrollView>

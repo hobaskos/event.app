@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="google_api_key" templateMergeStrategy="preserve" translatable="false">
-        PLACEHOLDER
+        AIzaSyAkLtcPaixEWjCZtixBA7SLuIiLpBoYCWk
+    </string>
+    <string name="facebook_app_id" translatable="false">
+        1648559978780543
+    </string>
+    <string name="fb_login_protocol_scheme" translatable="false">
+        fb1648559978780543
     </string>
 </resources>

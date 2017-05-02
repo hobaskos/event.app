@@ -181,20 +181,23 @@ public class EventDateSectionPagedRecyclerAdapter extends SectionedPagedRecycler
                 EventViewHolder eventHolder = (EventViewHolder) holder;
                 Event event = getItemAtPosition(position);
 
-                if (event.getMyAttendance() == null) eventHolder.myAttendance.setVisibility(View.GONE);
+                if (!event.isAttending()) {
+                    eventHolder.myAttendance.setVisibility(View.GONE);
+                }
 
                 eventHolder.click(event, onItemClick);
                 eventHolder.eventTitle.setText(event.getTitle());
+                eventHolder.eventCategory.setText(event.getCategory().getTitle());
                 eventHolder.eventLocation.setText(event.getLocation());
                 eventHolder.eventDate.setText(event.getDate(context));
                 eventHolder.attendanceCount.setText(String.valueOf(event.getAttendanceCount()));
                 ColorUtil.setCategoryColorCardView(context,eventHolder.cardView, event.getCategory().getTheme());
 
-                //TODO: Load placeholder image if loading image fails
-                Picasso.with(context)
-                        .load(UrlUtil.getImageUrl(event.getImageUrl()))
-                        .into(eventHolder.eventImage);
-
+                if (event.hasImage()) {
+                    Picasso.with(context)
+                            .load(UrlUtil.getImageUrl(event.getImageUrl()))
+                            .into(eventHolder.eventImage);
+                }
 
                 break;
             case VIEW_TYPE_HEADER:
@@ -214,7 +217,8 @@ public class EventDateSectionPagedRecyclerAdapter extends SectionedPagedRecycler
     }
 
     public class EventViewHolder extends SectionedPagedRecyclerAdapter.ItemViewHolder {
-        public TextView eventTitle, eventLocation, eventDate, attendanceCount, myAttendance;
+        public TextView eventTitle, eventCategory, eventLocation, eventDate,
+                attendanceCount, myAttendance;
         public View categoryColor;
         public View categorySubColor;
         public CardView cardView;
@@ -224,13 +228,13 @@ public class EventDateSectionPagedRecyclerAdapter extends SectionedPagedRecycler
             super(itemView);
             Log.i(TAG, "ItemViewHolder()");
             eventTitle = (TextView) itemView.findViewById(R.id.event_title);
+            eventCategory = (TextView) itemView.findViewById(R.id.event_category);
             eventLocation = (TextView) itemView.findViewById(R.id.event_location);
             attendanceCount = (TextView) itemView.findViewById(R.id.attendance_count);
             myAttendance = (TextView) itemView.findViewById(R.id.my_attendance);
             eventDate = (TextView) itemView.findViewById(R.id.event_time);
             cardView = (CardView) itemView.findViewById(R.id.card_view);
             eventImage = (ImageView) itemView.findViewById(R.id.event_list_item_image);
-
         }
 
         public void click(final Event event, Action1<Event> listener) {

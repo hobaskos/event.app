@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import io.hobaskos.event.eventapp.R;
 import io.hobaskos.event.eventapp.data.model.CompetitionImage;
 import io.hobaskos.event.eventapp.data.model.Event;
+import io.hobaskos.event.eventapp.data.model.enumeration.EventAttendingType;
 import io.hobaskos.event.eventapp.ui.event.details.attending.AttendeesFragment;
 import io.hobaskos.event.eventapp.ui.event.details.competition.list.CompetitionFragment;
 import io.hobaskos.event.eventapp.ui.event.details.info.EventInfoFragment;
@@ -52,30 +53,19 @@ public class EventPagerAdapter extends FragmentPagerAdapter {
         eventInfoFragment = EventInfoFragment.newInstance(event);
         locationsFragment = LocationsFragment.newInstance(event.getId(), isOwner);
         attendeesFragment = AttendeesFragment.newInstance(event.getId(), event.getMyAttendance() != null);
-        if(isLoggedIn) {
-            competitionFragment = CompetitionFragment.newInstance(event);
+        if (isLoggedIn) {
+            competitionFragment = CompetitionFragment.newInstance(event.getDefaultPollId(), event.isAttending(), false);
         }
     }
 
     @Override
     public Fragment getItem(int position) {
         switch (position) {
-            case 0:
-                Log.i(TAG, "getItem eventInfoFragment");
-                return eventInfoFragment;
-            case 1:
-                Log.i(TAG, "getItem locationsFragment");
-                return locationsFragment;
-            case 2:
-                Log.i(TAG, "getItem attendeesFragment");
-                return attendeesFragment;
-            case 3:
-                if(isLoggedIn) {
-                    Log.i(TAG, "getItem competitionFragment");
-                    return competitionFragment;
-                }
-            default:
-                return new Fragment();
+            case 0: return eventInfoFragment;
+            case 1: return locationsFragment;
+            case 2: return attendeesFragment;
+            case 3: if(isLoggedIn) return competitionFragment;
+            default: return new Fragment();
         }
     }
 
@@ -87,17 +77,37 @@ public class EventPagerAdapter extends FragmentPagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         return null;
-        /*
-        switch (position) {
-            case 0:
-                //return context.getString(R.string.info);
-            case 1:
-                //return context.getString(R.string.locations);
-            default:
-                //return context.getString(R.string.attending);
-        }
-        */
     }
 
+    public EventInfoFragment getEventInfoFragment() {
+        return eventInfoFragment;
+    }
 
+    public void setEventInfoFragment(EventInfoFragment eventInfoFragment) {
+        this.eventInfoFragment = eventInfoFragment;
+    }
+
+    public LocationsFragment getLocationsFragment() {
+        return locationsFragment;
+    }
+
+    public void setLocationsFragment(LocationsFragment locationsFragment) {
+        this.locationsFragment = locationsFragment;
+    }
+
+    public AttendeesFragment getAttendeesFragment() {
+        return attendeesFragment;
+    }
+
+    public void setAttendeesFragment(AttendeesFragment attendeesFragment) {
+        this.attendeesFragment = attendeesFragment;
+    }
+
+    public CompetitionFragment getCompetitionFragment() {
+        return competitionFragment;
+    }
+
+    public void setCompetitionFragment(CompetitionFragment competitionFragment) {
+        this.competitionFragment = competitionFragment;
+    }
 }

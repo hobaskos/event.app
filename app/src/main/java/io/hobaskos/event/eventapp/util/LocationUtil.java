@@ -17,7 +17,7 @@ import io.hobaskos.event.eventapp.data.model.Location;
 
 public final class LocationUtil {
 
-    public static LatLng LocationToLatLng(Location location) {
+    public static LatLng locationToLatLng(Location location) {
         GeoPoint geoPoint = location.getGeoPoint();
         return new LatLng(geoPoint.getLat(), geoPoint.getLon());
     }

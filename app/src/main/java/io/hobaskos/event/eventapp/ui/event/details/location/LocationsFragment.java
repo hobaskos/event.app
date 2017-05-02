@@ -4,9 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -16,16 +14,18 @@ import android.view.ViewGroup;
 
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.LceViewState;
 
+import org.greenrobot.eventbus.EventBus;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import icepick.State;
 import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
-import io.hobaskos.event.eventapp.data.model.Event;
+import io.hobaskos.event.eventapp.data.eventbus.EventHasUpdatedLocations;
 import io.hobaskos.event.eventapp.data.model.Location;
 import io.hobaskos.event.eventapp.ui.base.view.fragment.BaseLceViewStateFragment;
 import io.hobaskos.event.eventapp.ui.event.details.EventActivity;
-import io.hobaskos.event.eventapp.ui.location.add.LocationActivity;
+import io.hobaskos.event.eventapp.ui.event.details.location.create.CreateLocationActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +50,6 @@ public class LocationsFragment
 
     private ArrayList<Location> locations = new ArrayList<>();
     private OnListFragmentInteractionListener listener;
-    private DividerItemDecoration dividerItemDecoration;
     private LocationRecyclerViewAdapter locationRecyclerViewAdapter;
 
     @BindView(R.id.contentView)
@@ -113,10 +112,6 @@ public class LocationsFragment
         locationRecyclerViewAdapter = new LocationRecyclerViewAdapter(locations, listener, context, isOwner);
         recyclerView.setAdapter(locationRecyclerViewAdapter);
 
-        dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
-                linearLayoutManager.getOrientation());
-        recyclerView.addItemDecoration(dividerItemDecoration);
-
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 int totalItemCount = linearLayoutManager.getItemCount();
@@ -128,17 +123,15 @@ public class LocationsFragment
             }
         });
 
-
         if (isOwner) {
             addLocation.setOnClickListener(v -> {
-                Intent intent = new Intent(getActivity(), LocationActivity.class);
-                intent.putExtra("eventId", eventId);
+                Intent intent = new Intent(getActivity(), CreateLocationActivity.class);
+                intent.putExtra(CreateLocationActivity.EVENT_ID, eventId);
                 startActivityForResult(intent, EventActivity.ADD_LOCATION_REQUEST);
             });
         } else {
             addLocation.setVisibility(View.GONE);
         }
-
         return view;
     }
 
@@ -188,6 +181,7 @@ public class LocationsFragment
         locations.addAll(data);
         locationRecyclerViewAdapter.setItems(locations);
         swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(false));
+        EventBus.getDefault().post(new EventHasUpdatedLocations(locations));
     }
 
     @Override
@@ -223,7 +217,8 @@ public class LocationsFragment
     }
 
     public interface OnListFragmentInteractionListener {
-        void onListFragmentEditInteraction(Location item);
-        void onListFragmentDeleteInteraction(Location item);
+        void onLocationMapInteraction(List<Location> locations, Location focus);
+        void onLocationEditInteraction(Location item);
+        void onLocationDeleteInteraction(Location item);
     }
 }

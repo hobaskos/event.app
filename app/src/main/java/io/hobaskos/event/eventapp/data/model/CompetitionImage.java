@@ -14,52 +14,56 @@ import io.hobaskos.event.eventapp.util.UrlUtil;
 
 public class CompetitionImage implements CompetitionItem, Parcelable {
 
-    @SerializedName("id")
     private Long id;
-    @SerializedName("ownerLogin")
-    private String ownerLogin;
-    @SerializedName("voteCount")
-    private int numberOfVotes;
-    @SerializedName("imageUrl")
+    private String title;
+
     private String imageUrl;
-    @SerializedName("hasMyVote")
-    private boolean hasMyVote;
+    private Integer myVote;
+    private String userLogin;
+    private String userFirstName;
+    private String userLastName;
+    private Long voteScore;
+    private int voteCount;
+
     @SerializedName("file")
     private String imageBase64;
+    private String fileContentType;
+
     @SerializedName("pollId")
     private Long competitionId;
-    @SerializedName("fileContentType")
-    private String fileContentType;
-    @SerializedName("voteScore")
-    private Long voteScore;
+
 
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public String getTitle() {
+        return (title == null || title.equals("")) ? "No title" : title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getAuthor() {
+        return userFirstName + " " + userLastName;
     }
 
     public int getNumberOfVotes() {
-        return numberOfVotes;
+        return voteCount;
     }
 
-    public void setNumberOfVotes(int numberOfVotes) {
-        this.numberOfVotes = numberOfVotes;
+    public void setNumberOfVotes(int vote) {
+        this.voteCount += vote;
     }
 
-    public void setHasMyVote(boolean b) {
-        hasMyVote = b;
-        if(hasMyVote) {
-            numberOfVotes++;
-        } else {
-            numberOfVotes--;
-        }
+    public void setHasMyVote(int vote) {
+        myVote = vote;
+        voteCount += vote;
     }
 
     public boolean hasMyVote() {
-        return hasMyVote;
+        return myVote != null;
     }
 
     public String getImageUrl() {
@@ -91,23 +95,26 @@ public class CompetitionImage implements CompetitionItem, Parcelable {
     }
 
     public String getVoteScoreAsReadable() {
-        if(voteScore > 1000) {
+        if (voteScore > 1000) {
             return voteScore / 1000 + "k";
         }
-
         return voteScore.toString();
     }
 
     @Override
     public String toString() {
         return "CompetitionImage{" +
-                "ownerLogin='" + ownerLogin + '\'' +
-                ", numberOfVotes=" + numberOfVotes +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", myVote=" + myVote +
+                ", userLogin='" + userLogin + '\'' +
+                ", voteScore=" + voteScore +
+                ", voteCount=" + voteCount +
+                ", imageBase64='" + imageBase64 + '\'' +
+                ", fileContentType='" + fileContentType + '\'' +
+                ", competitionId=" + competitionId +
                 '}';
-    }
-
-
-    public CompetitionImage() {
     }
 
     @Override
@@ -118,29 +125,34 @@ public class CompetitionImage implements CompetitionItem, Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(this.id);
-        dest.writeString(this.ownerLogin);
-        dest.writeInt(this.numberOfVotes);
+        dest.writeString(this.title);
         dest.writeString(this.imageUrl);
-        dest.writeByte(this.hasMyVote ? (byte) 1 : (byte) 0);
-        dest.writeString(this.imageBase64);
-        dest.writeValue(this.competitionId);
-        dest.writeString(this.fileContentType);
+        dest.writeValue(this.myVote);
+        dest.writeString(this.userLogin);
         dest.writeValue(this.voteScore);
+        dest.writeInt(this.voteCount);
+        dest.writeString(this.imageBase64);
+        dest.writeString(this.fileContentType);
+        dest.writeValue(this.competitionId);
+    }
+
+    public CompetitionImage() {
     }
 
     protected CompetitionImage(Parcel in) {
         this.id = (Long) in.readValue(Long.class.getClassLoader());
-        this.ownerLogin = in.readString();
-        this.numberOfVotes = in.readInt();
+        this.title = in.readString();
         this.imageUrl = in.readString();
-        this.hasMyVote = in.readByte() != 0;
-        this.imageBase64 = in.readString();
-        this.competitionId = (Long) in.readValue(Long.class.getClassLoader());
-        this.fileContentType = in.readString();
+        this.myVote = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.userLogin = in.readString();
         this.voteScore = (Long) in.readValue(Long.class.getClassLoader());
+        this.voteCount = in.readInt();
+        this.imageBase64 = in.readString();
+        this.fileContentType = in.readString();
+        this.competitionId = (Long) in.readValue(Long.class.getClassLoader());
     }
 
-    public static final Parcelable.Creator<CompetitionImage> CREATOR = new Parcelable.Creator<CompetitionImage>() {
+    public static final Creator<CompetitionImage> CREATOR = new Creator<CompetitionImage>() {
         @Override
         public CompetitionImage createFromParcel(Parcel source) {
             return new CompetitionImage(source);

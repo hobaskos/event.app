@@ -123,7 +123,7 @@ public class EventsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 EventViewHolder eventHolder = (EventViewHolder) holder;
                 Event event = items.get(position);
 
-                if (event.getMyAttendance() == null) eventHolder.myAttendance.setVisibility(View.GONE);
+                //if (event.getMyAttendance() == null) eventHolder.myAttendance.setVisibility(View.GONE);
 
                 eventHolder.click(event, onItemClick);
                 eventHolder.eventTitle.setText(event.getTitle());

@@ -2,8 +2,6 @@ package io.hobaskos.event.eventapp.ui.event.details;
 
 import android.util.Log;
 
-import java.util.List;
-
 import javax.inject.Inject;
 
 import io.hobaskos.event.eventapp.data.AccountManager;
@@ -16,6 +14,7 @@ import rx.Observable;
 import rx.Observer;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -23,12 +22,13 @@ import rx.schedulers.Schedulers;
  */
 public class EventPresenter extends BaseRxLcePresenter<EventView, Event> {
 
+    public static final String TAG = EventPresenter.class.getName();
+
     private EventView view;
 
     private AccountManager accountManager;
     private EventRepository eventRepository;
     private LocationRepository locationRepository;
-    private Observable<Event> eventObservable = Observable.empty();
 
     @Inject
     public EventPresenter(EventRepository eventRepository, AccountManager accountManager, LocationRepository locationRepository) {
@@ -37,40 +37,55 @@ public class EventPresenter extends BaseRxLcePresenter<EventView, Event> {
         this.locationRepository = locationRepository;
     }
 
-    public void getEvent(Long id) {
+    public void getEvent(Long eventId) {
+        Log.d(TAG, "Getting event with ID=" + eventId);
 
-        Log.i("EventPresenter", "Getting event with ID=" + id);
+        getEvent(eventId, new Subscriber<Event>() {
+            @Override
+            public void onCompleted() {}
 
-        eventRepository.get2(id)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<Event>() {
-                    @Override
-                    public void onCompleted() {
+            @Override
+            public void onError(Throwable e) {
+                Log.d(TAG, "Error getting event: " + e.getMessage());
+            }
 
-                    }
+            @Override
+            public void onNext(Event event) {
+                Log.d(TAG, "Found event with id=" + event.getId());
+                if (isViewAttached() && getView() != null) {
+                    Log.d(TAG, "Competition id=" + event.getDefaultPollId());
+                    getView().setData(event);
+                }
+            }
+        });
+    }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.i("EventPresenter", "Error getting event: " + e.getMessage());
-                        e.printStackTrace();
-                    }
+    public void reloadEvent(Long eventId) {
+        Log.d(TAG, "Reloading event with ID=" + eventId);
 
-                    @Override
-                    public void onNext(Event event) {
-                        Log.i("EventPresenter", "Found event with id=" + event.getId());
-                        if(isViewAttached() && getView() != null) {
-                            Log.i("EventPresenter", "Competition id=" + event.getDefaultPollId());
-                            getView().setData(event);
-                        }
-                    }
-                });
+        getEvent(eventId, new Subscriber<Event>() {
+            @Override
+            public void onCompleted() {}
+
+            @Override
+            public void onError(Throwable e) {
+                Log.d(TAG, "Error getting event: " + e.getMessage());
+            }
+
+            @Override
+            public void onNext(Event event) {
+                if (isViewAttached() && getView() != null) {
+                    Log.d(TAG, "Competition id=" + event.getDefaultPollId());
+                    getView().reloadData(event);
+                }
+            }
+        });
+
     }
 
     public void getOwnerStatus(Event event) {
-        if(isViewAttached() && getView() != null) {
-
-            if(accountManager.isLoggedIn()) {
+        if (isViewAttached() && getView() != null) {
+            if (accountManager.isLoggedIn()) {
                 getView().setIsOwner(
                         event.getOwnerLogin().equals(accountManager.getLocalAccount().getLogin())
                 );
@@ -79,7 +94,7 @@ public class EventPresenter extends BaseRxLcePresenter<EventView, Event> {
     }
   
     public void getEvent(Long id, Observer<Event> eventObserver) {
-        Log.i("EventPresenter", "Getting event with ID=" + id);
+        Log.d(TAG, "Getting event with ID=" + id);
 
         eventRepository.get(id)
                 .subscribeOn(Schedulers.io())
@@ -96,6 +111,28 @@ public class EventPresenter extends BaseRxLcePresenter<EventView, Event> {
 
     public boolean isLoggedIn() {
         return accountManager.isLoggedIn();
+    }
+
+    public void leaveEvent(Long eventAttendingId, Action1<Boolean> callback) {
+        Log.d(TAG, "leaveEvent: " + eventAttendingId);
+        eventRepository.leaveEvent(eventAttendingId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Void>() {
+                    @Override
+                    public void onCompleted() {}
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.d(TAG, "onError: " + e.getMessage());
+                        callback.call(false);
+                    }
+
+                    @Override
+                    public void onNext(Void aVoid) {
+                        callback.call(true);
+                    }
+                });
     }
 }
 

@@ -11,9 +11,9 @@ import io.hobaskos.event.eventapp.ui.event.details.competition.carousel.ImageCar
 import io.hobaskos.event.eventapp.ui.event.details.competition.list.CompetitionFragment;
 import io.hobaskos.event.eventapp.ui.event.details.competition.list.CompetitionPresenter;
 import io.hobaskos.event.eventapp.ui.event.details.location.LocationsFragment;
+import io.hobaskos.event.eventapp.ui.event.details.location.create.CreateLocationActivity;
 import io.hobaskos.event.eventapp.ui.event.search.list.EventsFragment;
 import io.hobaskos.event.eventapp.ui.event.details.attending.AttendeesFragment;
-import io.hobaskos.event.eventapp.ui.location.add.LocationActivity;
 import io.hobaskos.event.eventapp.ui.event.details.EventActivity;
 import io.hobaskos.event.eventapp.ui.event.filter.FilterEventsFragment;
 import io.hobaskos.event.eventapp.ui.event.search.map.SearchEventsMapFragment;
@@ -35,7 +35,7 @@ import io.hobaskos.event.eventapp.ui.profile.events.mine.MyEventsFragment;
                       NetModule.class})
 public interface DiComponent {
     void inject(EventActivity eventActivity);
-    void inject(LocationActivity locationActivity);
+    void inject(CreateLocationActivity createLocationActivity);
     void inject(EventsFragment eventsFragment);
     void inject(SearchEventsMapFragment eventsMapFragment);
     void inject(CreateEventActivity createEventActivity);

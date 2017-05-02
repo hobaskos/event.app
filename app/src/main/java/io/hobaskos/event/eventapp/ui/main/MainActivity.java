@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,11 +20,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
 import com.squareup.picasso.Picasso;
 
@@ -39,6 +38,7 @@ import io.hobaskos.event.eventapp.data.AccountManager;
 import io.hobaskos.event.eventapp.data.eventbus.UserHasLoggedInEvent;
 import io.hobaskos.event.eventapp.data.model.Event;
 import io.hobaskos.event.eventapp.data.model.User;
+import io.hobaskos.event.eventapp.ui.about.AboutActivity;
 import io.hobaskos.event.eventapp.ui.base.view.activity.BaseViewStateActivity;
 import io.hobaskos.event.eventapp.ui.event.create.CreateEventActivity;
 import io.hobaskos.event.eventapp.ui.event.details.EventActivity;
@@ -73,13 +73,6 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
     @Inject
     public AccountManager accountManager;
 
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    private GoogleApiClient client;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,10 +94,6 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
         presenter.onLoginState();
 
         navigationView.setNavigationItemSelectedListener(this);
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
 
         if (savedInstanceState == null) {
             // Set initial item in navigation view to checked
@@ -172,8 +161,11 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
                 startActivity(new Intent(this, LoginActivity.class));
                 break;
             case R.id.nav_logout:
-                presenter.logout();
+                logoutDialog();
                 break;
+
+            case R.id.nav_about:
+                startActivity(new Intent(this, AboutActivity.class));
         }
         // Set navdrawer item to checked
         item.setChecked(true);
@@ -190,13 +182,22 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
         return true;
     }
 
+    private void logoutDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.logout)
+                .setMessage(R.string.logout_confirm)
+                .setPositiveButton(R.string.logout, (dialog, which) -> presenter.logout())
+                .setNegativeButton(R.string.close, (dialog, which) -> dialog.dismiss())
+                .create()
+                .show();
+    }
+
     private void joinPrivateEvent() {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         Fragment prev = getSupportFragmentManager().findFragmentByTag(JOIN_EVENT_KEY);
         if (prev != null) { ft.remove(prev); }
         JoinPrivateEventFragment.newInstance().show(ft, JOIN_EVENT_KEY);
     }
-
 
     @Override
     public ViewState<MainView> createViewState() {
@@ -208,43 +209,16 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
 
     }
 
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    public Action getIndexApiAction() {
-        Thing object = new Thing.Builder()
-                .setName("Main Page") // TODO: Define a title for the content shown.
-                // TODO: Make sure this auto-generated URL is correct.
-                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
-                .build();
-        return new Action.Builder(Action.TYPE_VIEW)
-                .setObject(object)
-                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
-                .build();
-    }
-
     @Override
     public void onStart() {
         super.onStart();
-
         EventBus.getDefault().register(this);
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client.connect();
-        AppIndex.AppIndexApi.start(client, getIndexApiAction());
     }
 
     @Override
     public void onStop() {
         super.onStop();
         EventBus.getDefault().unregister(this);
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        AppIndex.AppIndexApi.end(client, getIndexApiAction());
-        client.disconnect();
     }
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
@@ -261,7 +235,6 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
         hideNavigationHeader();
         viewAnonymousNavigation();
         Toast.makeText(this, R.string.you_have_now_logged_out, Toast.LENGTH_SHORT).show();
-        //startActivity(new Intent(this, LoginActivity.class));
     }
 
     private void insertUserToNavigationDrawer(User user) {
@@ -287,14 +260,13 @@ public class MainActivity extends BaseViewStateActivity<MainView, MainPresenter>
         Picasso.with(getApplicationContext())
                 .load(UrlUtil.getImageUrl(imageUrl))
                 .transform(new CropCircleTransformation())
-                .fit()
                 .into(imageView);
     }
 
     public void setDefaultPicture() {
         View header = navigationView.getHeaderView(0);
         ImageView imageView = (ImageView) header.findViewById(R.id.imageView);
-        imageView.setImageResource(R.mipmap.eventure_logo);
+        imageView.setImageResource(R.drawable.round_logo);
     }
 
     @Override

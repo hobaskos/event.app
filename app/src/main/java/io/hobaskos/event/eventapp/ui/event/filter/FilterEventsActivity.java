@@ -9,7 +9,7 @@ import io.hobaskos.event.eventapp.R;
 /**
  * Created by test on 3/15/2017.
  */
-
+@Deprecated
 public class FilterEventsActivity extends AppCompatActivity {
 
     @Override public void onCreate(Bundle savedInstanceState) {

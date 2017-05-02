@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Eventure</string>
+    <string name="app_version">Version 1.0</string>
 
     <!-- Screen titles -->
     <string name="events">Arrangementer</string>
@@ -52,6 +53,7 @@
     <string name="error_message_required_field_from_time">Start-tid er et nødvendig felt.</string>
     <string name="error_message_required_field_to_date">Slutt-dato er et nødvendig felt.</string>
     <string name="error_message_required_field_to_time">Slutt-tid er et nødvendig felt.</string>
+    <string name="title">Tittel</string>
     <string name="title_label">Navn</string>
     <string name="image_label">Bilde</string>
     <string name="could_not_create_event">Kunne ikke opprette event. Vennligst prøv på nytt.</string>
@@ -66,6 +68,7 @@
     <string name="to">Til</string>
     <string name="date">Dato</string>
     <string name="time">Tid</string>
+    <string name="left">Venstre</string>
     <string-array name="tabName">
         <item>Påmeldt</item>
         <item>Mine</item>
@@ -81,6 +84,9 @@
     <string name="delete">Slett</string>
     <string name="delete_location">Vil du slette denne lokasjonen?</string>
     <string name="attend_event">Delta på arrangement</string>
+    <string name="left_event">Du er nå meldt av dette eventet</string>
+    <string name="leave_event">Meld av event</string>
+    <string name="leave_event_desc">Ønsker du å melde deg av dette eventet?</string>
     <string name="event_going">Påmeldte:</string>
     <string name="attending_event">Påmeldt</string>
     <string name="attend_event_desc">Lnsker du å delta på dette arrangementet?</string>
@@ -132,4 +138,27 @@
 
     <string name="first_name">Fornavn</string>
     <string name="last_name">Etternavn</string>
+
+    <string name="already_voted">Du har allerede stemt på dette bildet</string>
+    <string name="image_author">Opplaster: </string>
+    <string name="upload_new_image">Last opp nytt bilde</string>
+    <string name="add_image">Nytt bilde</string>
+
+    <string name="attend_upper">DELTA</string>
+    <string name="explore_upper">UTFORSK</string>
+
+    <string name="must_be_logged_in">Du må være pålogget for å benytte dette</string>
+    <string name="saving">Lagrer&#8230;</string>
+
+    <string name="logout_confirm">Er du sikker du på at du ønsker å logge ut?</string>
+    <string name="apply_filters">Lagre filtere</string>
+    <string name="distance">Avstand</string>
+    <string name="selected_distance">Valgt avstand</string>
+    <string name="location">Lokasjon</string>
+    <string name="use_current_location">Bruk enhetens lokasjon</string>
+
+    <string name="about">Om appen</string>
+    <string name="about_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer ac pretium nisi. Proin convallis eros quis tellus gravida vestibulum. Maecenas sollicitudin nulla enim, eu hendrerit mauris bibendum sit amet. Sed facilisis, risus sit amet tempor euismod, tellus nisi egestas metus, nec consectetur ex lectus quis mi.</string>
+
+    <string name="this_event_has_no_locations">Dette eventet har ingen lokasjoner</string>
 </resources>

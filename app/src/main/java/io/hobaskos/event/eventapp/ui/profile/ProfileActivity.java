@@ -134,7 +134,6 @@ public class ProfileActivity extends BaseViewStateActivity<ProfileView, ProfileP
             Picasso.with(this)
                     .load(UrlUtil.getImageUrl(user.getProfileImageUrl()))
                     .transform(new CropCircleTransformation())
-                    .fit()
                     .into(userProfilePhoto);
         }
     }

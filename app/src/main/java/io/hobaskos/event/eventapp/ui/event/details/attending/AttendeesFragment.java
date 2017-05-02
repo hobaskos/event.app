@@ -1,7 +1,6 @@
 package io.hobaskos.event.eventapp.ui.event.details.attending;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -20,14 +19,16 @@ import com.hannesdorfmann.mosby.mvp.viewstate.lce.LceViewState;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import icepick.State;
 import io.hobaskos.event.eventapp.App;
 import io.hobaskos.event.eventapp.R;
+import io.hobaskos.event.eventapp.data.AccountManager;
 import io.hobaskos.event.eventapp.data.model.EventAttendance;
 import io.hobaskos.event.eventapp.data.model.User;
 import io.hobaskos.event.eventapp.ui.base.view.fragment.BaseLceViewStateFragment;
+import io.hobaskos.event.eventapp.util.LoginDialog;
 import rx.Observer;
+import rx.functions.Action1;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,6 +75,8 @@ public class AttendeesFragment
 
     @Inject
     public AttendeesPresenter attendeesPresenter;
+    @Inject
+    public AccountManager accountManager;
 
     public AttendeesFragment() {}
 
@@ -133,12 +136,21 @@ public class AttendeesFragment
             }
         });
 
+        attendFab.setOnClickListener((v) -> attendEvent(aBoolean -> {
+            if (aBoolean) {
+                Toast.makeText(context, R.string.attending_event, Toast.LENGTH_SHORT).show();
+                listener.onUserHasAttendedEvent();
+            }
+        }));
+
         return view;
     }
 
-
-    @OnClick(R.id.fragment_attendees_attend)
-    public void attendEvent() {
+    public void attendEvent(Action1<Boolean> callback) {
+        if (!accountManager.isLoggedIn()) {
+            LoginDialog.createAndShow(getContext());
+            return;
+        }
         new AlertDialog.Builder(getContext())
                 .setTitle(R.string.attend_event)
                 .setMessage(R.string.attend_event_desc)
@@ -154,15 +166,28 @@ public class AttendeesFragment
                         @Override
                         public void onNext(EventAttendance attendance) {
                             dialog.dismiss();
-                            listener.onAttendeesFabInteraction();
-                            loadData(true);
-                            attendFab.hide();
+                            callback.call(true);
+                            onAttendingEvent();
                         }
                     });
                 })
-                .setNegativeButton(R.string.close, (dialog, which) -> dialog.dismiss())
+                .setNegativeButton(R.string.close, (dialog, which) -> {
+                    dialog.dismiss();
+                    callback.call(false);
+
+                })
                 .create()
                 .show();
+    }
+
+    public void onAttendingEvent() {
+        loadData(true);
+        attendFab.hide();
+    }
+
+    public void onLeftEvent() {
+        loadData(true);
+        attendFab.show();
     }
 
     @Override
@@ -244,7 +269,7 @@ public class AttendeesFragment
     }
 
     public interface OnAttendeesInteractionListener {
-        void onListFragmentInteraction(User item);
-        void onAttendeesFabInteraction();
+        void onUserAttendingInteraction(User item);
+        void onUserHasAttendedEvent();
     }
 }

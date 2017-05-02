@@ -34,10 +34,8 @@ public class ImageCarouselPresenter extends MvpBasePresenter<ImageCarouselView> 
     @Inject
     public ImageCarouselPresenter(EventImageVoteRepository eventImageVoteRepository,
                                   EventImageRepository eventImageRepository) {
-
         this.eventImageVoteRepository = eventImageVoteRepository;
         this.eventImageRepository = eventImageRepository;
-
     }
 
     public void setCompetitionId(Long id) {
@@ -45,16 +43,14 @@ public class ImageCarouselPresenter extends MvpBasePresenter<ImageCarouselView> 
     }
 
     public void get() {
-        if(competitionId != null) {
+        if (competitionId != null) {
             eventImageRepository
                     .getCompetitionImages(competitionId)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Subscriber<List<CompetitionImage>>() {
                         @Override
-                        public void onCompleted() {
-
-                        }
+                        public void onCompleted() {}
 
                         @Override
                         public void onError(Throwable e) {
@@ -63,7 +59,7 @@ public class ImageCarouselPresenter extends MvpBasePresenter<ImageCarouselView> 
 
                         @Override
                         public void onNext(List<CompetitionImage> competitionImages) {
-                            if(isViewAttached() && getView() != null) {
+                            if (isViewAttached() && getView() != null) {
                                 getView().setData(competitionImages);
                             }
                         }
@@ -81,9 +77,7 @@ public class ImageCarouselPresenter extends MvpBasePresenter<ImageCarouselView> 
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<EventImageVoteDTO>() {
                     @Override
-                    public void onCompleted() {
-
-                    }
+                    public void onCompleted() {}
 
                     @Override
                     public void onError(Throwable e) {

@@ -44,12 +44,12 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
             Picasso.with(App.getInst())
                     .load(UrlUtil.getImageUrl(user.getProfileImageUrl()))
                     .transform(new CropCircleTransformation())
-                    .fit().into(holder.profileImage);
+                    .into(holder.profileImage);
         }
 
         holder.view.setOnClickListener((view) -> {
             if (null != listener) {
-                listener.onListFragmentInteraction(holder.item);
+                listener.onUserAttendingInteraction(holder.item);
             }
         });
     }
