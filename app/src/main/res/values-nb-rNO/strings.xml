@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Eventure</string>
+    <string name="app_version">Version 1.0</string>
+
+    <!-- Screen titles -->
+    <string name="events">Arrangementer</string>
+    <string name="edit_profile">Rediger profil</string>
+    <string name="filter_events">Søkefiltere</string>
+
+    <string name="navigation_drawer_open">Åpne navigasjonsskuffen</string>
+    <string name="navigation_drawer_close">Lukk navigasjonsskuffen</string>
+    <string name="error_event_not_found">Dette arrangementet eksisterer ikke lenger</string>
+    <string name="filters_applied">Oppdaterer søkefiltere</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hallo blank fragment</string>
+    <string name="description_label">Beskrivelse</string>
+    <string name="button_name">+</string>
+    <string name="interested_label">Interessert</string>
+    <string name="attending_label">Skal</string>
+    <string name="friends_label">Venner</string>
+    <string name="btn_login">Logg inn</string>
+    <string name="title_activity_maps">Kart</string>
+    <string name="email">Epost</string>
+    <string name="username">Brukernavn</string>
+    <string name="password">Passord</string>
+    <string name="login">Logg inn</string>
+    <string name="login_success">Du er nå logget inn.</string>
+    <string name="login_failure">Problemer med innlogging</string>
+    <string name="login_username_empty">Vennligst fyll inn brukernavn.</string>
+    <string name="login_password_error">Vennligst fyll inn passord.</string>
+    <string name="login_skip">Gå videre uten konto</string>
+    <string name="authenticating">Logger inn…</string>
+    <string name="attending">Påmeldt</string>
+    <string name="archived">Arkivert</string>
+    <string name="mine">Mine</string>
+    <string name="search_event">Eventer</string>
+    <string name="create_event">Opprett Event</string>
+    <string name="edit_event">Rediger Event</string>
+    <string name="add_location">Legg til lokasjon</string>
+    <string name="edit_location">Rediger lokasjon</string>
+    <string name="my_profile">Min Profil</string>
+    <string name="logout">Logg ut</string>
+    <string name="loading">Laster</string>
+    <string name="edit">Rediger</string>
+    <string name="map">Kart</string>
+    <string name="info">Info</string>
+    <string name="event_image">Event bilde</string>
+    <string name="locations">Lokasjoner</string>
+    <string name="create">Opprett</string>
+    <string name="error_message_required_field_title">Tittel er et nødvendig felt.</string>
+    <string name="error_message_required_field_from_date">Start-dato er et nødvendig felt.</string>
+    <string name="error_message_required_field_from_time">Start-tid er et nødvendig felt.</string>
+    <string name="error_message_required_field_to_date">Slutt-dato er et nødvendig felt.</string>
+    <string name="error_message_required_field_to_time">Slutt-tid er et nødvendig felt.</string>
+    <string name="title">Tittel</string>
+    <string name="title_label">Navn</string>
+    <string name="image_label">Bilde</string>
+    <string name="could_not_create_event">Kunne ikke opprette event. Vennligst prøv på nytt.</string>
+    <string name="could_not_edit_event">Kunne ikke endre eventet. Vennligst prøv på nytt.</string>
+    <string name="could_not_load_categories">Kunne ikke hente kategoriene. </string>
+    <string name="could_not_add_location">Kunne ikke legge til lokasjonen. Vennligst prøv på nytt.</string>
+    <string name="could_not_edit_location">Kunne ikke endre lokasjonen. Vennligst prøv på nytt.</string>
+    <string name="could_not_find_camera">Ingen kamera tilgjengelig på denne enheten</string>
+    <string name="private_event_label">Privat Event</string>
+    <string name="event_category_label">Kategori</string>
+    <string name="from">Fra</string>
+    <string name="to">Til</string>
+    <string name="date">Dato</string>
+    <string name="time">Tid</string>
+    <string name="left">Venstre</string>
+    <string-array name="tabName">
+        <item>Påmeldt</item>
+        <item>Mine</item>
+    </string-array>
+    <string name="close">Lukk</string>
+    <string name="submit">Send</string>
+    <string name="save">Lagre</string>
+    <string name="join_private_event">Gå til privat event</string>
+    <string name="enter_invitation_code">Oppgi invitasjonskode</string>
+    <string name="join_private">Gå til privat event</string>
+    <string name="invite_code_length_error">Invitasjonskoden må være over 4 karakterer</string>
+    <string name="invalid_invite_code">Fant ingen eventer med den invitasjonskoden</string>
+    <string name="delete">Slett</string>
+    <string name="delete_location">Vil du slette denne lokasjonen?</string>
+    <string name="attend_event">Delta på arrangement</string>
+    <string name="left_event">Du er nå meldt av dette eventet</string>
+    <string name="leave_event">Meld av event</string>
+    <string name="leave_event_desc">Ønsker du å melde deg av dette eventet?</string>
+    <string name="event_going">Påmeldte:</string>
+    <string name="attending_event">Påmeldt</string>
+    <string name="attend_event_desc">Lnsker du å delta på dette arrangementet?</string>
+    <string name="could_not_attend_event">Klarte ikke å delta, deltar du allerede?</string>
+    <string name="attending_event_count">Antall påmeldte:</string>
+    <string name="place_is_a_required_field">Sted er et nødvendig felt.</string>
+    <string name="from_date">Start dato</string>
+    <string name="from_time">Start tid</string>
+    <string name="to_date">Slutt dato</string>
+    <string name="to_time">Slutt tid</string>
+    <string name="error_from_date_is_after_to_date">Fra dato kan ikke komme etter til dato!</string>
+    <string name="previous">Forrige</string>
+    <string name="next">Neste</string>
+    <string name="competitions">Konkurranser</string>
+    <string name="private_event_invite_code">Privat event, invitasjonskode:</string>
+    <string name="organizer">Organisator:</string>
+    <string name="event_category">Kategori:</string>
+
+
+    <!-- Date Sections -->
+    <string name="today">I dag</string>
+    <string name="tomorrow">I morgen</string>
+    <string name="this_week">Denne uken</string>
+    <string name="next_week">Neste uke</string>
+
+    <string name="january">Januar</string>
+    <string name="february">Februar</string>
+    <string name="march">Mars</string>
+    <string name="april">April</string>
+    <string name="may">Mai</string>
+    <string name="june">Juni</string>
+    <string name="july">Juli</string>
+    <string name="august">August</string>
+    <string name="september">September</string>
+    <string name="october">Oktober</string>
+    <string name="november">November</string>
+    <string name="december">Desember</string>
+
+    <string name="next_year">Neste år</string>
+
+    <string name="you_have_now_logged_out">Ha det bra. Du er nå logget ut</string>
+
+    <string name="or">Eller</string>
+
+    <string name="edit_image">Rediger bilde</string>
+    <string name="select_image_option">Velg bildetype</string>
+    <string name="capture_image">Ta nytt bilde</string>
+    <string name="select_image_from_lib">Velg bilde fra bibliotek</string>
+
+    <string name="first_name">Fornavn</string>
+    <string name="last_name">Etternavn</string>
+
+    <string name="already_voted">Du har allerede stemt på dette bildet</string>
+    <string name="image_author">Opplaster: </string>
+    <string name="upload_new_image">Last opp nytt bilde</string>
+    <string name="add_image">Nytt bilde</string>
+
+    <string name="attend_upper">DELTA</string>
+    <string name="explore_upper">UTFORSK</string>
+
+    <string name="must_be_logged_in">Du må være pålogget for å benytte dette</string>
+    <string name="saving">Lagrer&#8230;</string>
+
+    <string name="logout_confirm">Er du sikker du på at du ønsker å logge ut?</string>
+    <string name="apply_filters">Lagre filtere</string>
+    <string name="distance">Avstand</string>
+    <string name="selected_distance">Valgt avstand</string>
+    <string name="location">Lokasjon</string>
+    <string name="use_current_location">Bruk enhetens lokasjon</string>
+
+    <string name="about">Om appen</string>
+    <string name="about_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer ac pretium nisi. Proin convallis eros quis tellus gravida vestibulum. Maecenas sollicitudin nulla enim, eu hendrerit mauris bibendum sit amet. Sed facilisis, risus sit amet tempor euismod, tellus nisi egestas metus, nec consectetur ex lectus quis mi.</string>
+
+    <string name="this_event_has_no_locations">Dette eventet har ingen lokasjoner</string>
+</resources>

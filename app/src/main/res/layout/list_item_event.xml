@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+    
+    <android.support.v7.widget.CardView
+        android:id="@+id/card_view"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:elevation="3dp"
+        card_view:cardCornerRadius="0dp">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:padding="16dp"
+            android:layout_height="wrap_content">
+
+            <!-- EVENT IMAGE -->
+            <ImageView
+                android:id="@+id/event_list_item_image"
+                android:layout_width="115dp"
+                android:layout_height="115dp"
+                android:paddingEnd="8dp"
+                android:background="@android:color/darker_gray"
+                android:elevation="3dp"
+                android:scaleType="centerCrop"
+                android:alpha="0.9"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                card_view:layout_constraintTop_toTopOf="parent"
+                card_view:layout_constraintRight_toRightOf="parent" />
+
+            <!-- LAYOUT FOR TEXT (TITLE, DATE ETC) -->
+            <LinearLayout
+                android:id="@+id/event_list_item_text_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="8dp"
+                android:orientation="vertical"
+                card_view:layout_constraintLeft_toLeftOf="parent"
+                card_view:layout_constraintTop_toTopOf="parent"
+                card_view:layout_constraintRight_toLeftOf="@+id/event_list_item_image">
+
+                <!-- TITLE -->
+                <TextView
+                    android:id="@+id/event_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="8dp"
+                    android:text="Placeholder title"
+                    android:textColor="@color/cardview_text"
+                    android:textSize="20sp" />
+
+                <!-- LOCATION -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="4dp">
+
+                    <ImageView
+                        android:id="@+id/markerIcon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_marker_white_24px"
+                        android:tint="@color/cardview_text" />
+
+                    <TextView
+                        android:id="@+id/event_location"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:paddingLeft="4dp"
+                        android:paddingTop="2dp"
+                        android:text="Placeholder location"
+                        android:textColor="@color/cardview_text"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <!-- TIME -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="4dp">
+
+                    <ImageView
+                        android:id="@+id/timeIcon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_query_builder_black_24dp"
+                        android:tint="@color/cardview_text" />
+
+                    <TextView
+                        android:id="@+id/event_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:paddingLeft="4dp"
+                        android:paddingTop="2dp"
+                        android:text="Placeholder time"
+                        android:textColor="@color/cardview_text"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <!-- CATEGORY -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="4dp">
+
+                    <ImageView
+                        android:id="@+id/category_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_label_white"
+                        />
+
+                    <TextView
+                        android:id="@+id/event_category"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:paddingLeft="4dp"
+                        android:paddingTop="2dp"
+                        android:text="Placeholder category"
+                        android:textColor="@color/cardview_text"
+                        android:textSize="12sp"
+                        />
+                </LinearLayout>
+
+                <!-- GOING & ATTENDANCE -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="4dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/peopleIcon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_people_black_24dp"
+                        android:tint="@color/cardview_text" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="4dp"
+                        android:paddingTop="2dp"
+                        android:text="@string/event_going"
+                        android:textColor="@color/cardview_text"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/attendance_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="4dp"
+                        android:paddingTop="2dp"
+                        android:textColor="@color/cardview_text"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/my_attendance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:paddingStart="16dp"
+                        android:paddingTop="2dp"
+                        android:text="@string/attending"
+                        android:textColor="@color/cardview_text"
+                        android:textStyle="bold"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </android.support.constraint.ConstraintLayout>
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>

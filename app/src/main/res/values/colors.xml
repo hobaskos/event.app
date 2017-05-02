@@ -1,6 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimary">#80aae9</color>
+    <color name="colorPrimaryDark">#5489db</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="colorRed">#AA3939</color>
+    <color name="colorRedDark">#801515</color>
+    <color name="colorRedAccent">#2D8633</color>
+
+    <color name="colorOrange">#AA6E39</color>
+    <color name="colorOrangeDark">#804715</color>
+    <color name="colorOrangeAccent">#236467</color>
+
+    <color name="colorYellow">#AAA639</color>
+    <color name="colorYellowDark">#807C15</color>
+    <color name="colorYellowAccent">#592A71</color>
+
+    <color name="colorGreen">#6C9A33</color>
+    <color name="colorGreenDark">#477413</color>
+    <color name="colorGreenAccent">#973252</color>
+
+    <color name="colorBlue">#29516D</color>
+    <color name="colorBlueDark">#123752</color>
+    <color name="colorBlueAccent">#FF4081</color>
+
+    <color name="colorIndigo">#522B72</color>
+    <color name="colorIndigoDark">#371356</color>
+    <color name="colorIndigoAccent">#AAA539</color>
+
+    <color name="colorViolet">#8C2F5E</color>
+    <color name="colorVioletDark">#69113E</color>
+    <color name="colorVioletAccent">#7A9E35</color>
+
+    <color name="colorBlack">#000000</color>
+    <color name="colorBlackAccent">#BDBDBD</color>
+
+
+    <color name="primary">#5489db</color>
+    <color name="primary_dark">#4478c6</color>
+    <color name="primary_light">#C5CAE9</color>
+    <color name="accent">#4CAF50</color>
+    <color name="primary_text">#212121</color>
+    <color name="secondary_text">#757575</color>
+    <color name="icons">#FFFFFF</color>
+    <color name="divider">#BDBDBD</color>
+
+    <color name="light_gray">#F3F6F9</color>
+
+
+    <color name="cardview_text">#FFFFFF</color>
+
 </resources>

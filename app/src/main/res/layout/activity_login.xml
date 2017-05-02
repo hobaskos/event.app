@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fitsSystemWindows="true"
+    android:gravity="center"
+    android:background="@drawable/map_background"
+    android:scaleType="fitXY"
+    android:paddingLeft="24dp"
+    android:paddingRight="24dp">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:background="@drawable/smoke_background"
+            android:layout_height="wrap_content">
+
+            <com.facebook.login.widget.LoginButton
+                 android:id="@+id/btn_login_facebook"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_marginTop="24dp"
+                 android:textSize="16dp"
+                 android:layout_marginBottom="24dp"
+                 android:padding="12dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/or"
+                />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginBottom="16dp"
+                android:background="#dedede"/>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp">
+                <EditText android:id="@+id/field_username"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:hint="@string/username" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp">
+                <EditText android:id="@+id/field_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:hint="@string/password"/>
+            </android.support.design.widget.TextInputLayout>
+
+            <Button
+                android:text="@string/login"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/btn_login_username"
+                android:layout_marginTop="24dp"
+                android:padding="12dp"/>
+
+            <TextView
+                android:text="@string/login_skip"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/link_skip_login"
+                android:gravity="center"
+                android:layout_marginTop="18dp"
+                android:padding="12dp"/>
+
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

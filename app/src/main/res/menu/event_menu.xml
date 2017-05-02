@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/edit"
+        android:icon="@drawable/ic_mode_edit"
+        android:title="@string/edit"
+        android:visible="false"
+        app:showAsAction="ifRoom"
+        />
+
+    <item
+        android:id="@+id/leave_event"
+        android:icon="@drawable/ic_action_exit_white"
+        android:visible="false"
+        android:title="@string/leave_event"
+        app:showAsAction="ifRoom"
+        />
+
+    <item
+        android:id="@+id/map"
+        android:icon="@drawable/ic_map"
+        android:title="@string/map"
+        app:showAsAction="ifRoom"
+        />
+
+</menu>

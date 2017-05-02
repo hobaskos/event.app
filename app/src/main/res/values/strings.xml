@@ -1,3 +1,166 @@
 <resources>
-    <string name="app_name">Event app</string>
+    <string name="app_name">Eventure</string>
+    <string name="app_version">Version 1.0</string>
+
+    <!-- Screen titles -->
+    <string name="events">Events</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="filter_events">Search filters</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="error_event_not_found">This event no longer exists</string>
+    <string name="filters_applied">Filters applied</string>
+
+    <!-- -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="description_label">Description</string>
+    <string name="button_name">+</string>
+    <string name="interested_label">Interested</string>
+    <string name="attending_label">Going</string>
+    <string name="friends_label">Friends</string>
+    <string name="btn_login">Login</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="email">Email</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="login_success">You has been successfully logged in.</string>
+    <string name="login_failure">Could not log in. Please try again!</string>
+    <string name="login_username_empty">Username is a required field.</string>
+    <string name="login_password_error">Password is a required field.</string>
+    <string name="login_skip">Use without account</string>
+    <string name="authenticating">Authenticating…</string>
+    <string name="attending">Attending</string>
+    <string name="archived">Archived</string>
+    <string name="mine">Mine</string>
+    <string name="search_event">Events</string>
+    <string name="create_event">Create Event</string>
+    <string name="event_image">Event image</string>
+    <string name="edit_event">Edit Event</string>
+    <string name="add_location">Add Location</string>
+    <string name="edit_location">Edit Location</string>
+    <string name="my_profile">My Profile</string>
+    <string name="logout">Logout</string>
+    <string name="loading">Loading</string>
+    <string name="edit">Edit</string>
+    <string name="map">Map</string>
+    <string name="info">Info</string>
+    <string name="locations">Locations</string>
+    <string name="create">Create</string>
+    <string name="error_message_required_field_title">Title is a required field.</string>
+    <string name="error_message_required_field_from_date">From date is a required field.</string>
+    <string name="error_message_required_field_from_time">From time is a required field.</string>
+    <string name="error_message_required_field_to_date">To date is a required field.</string>
+    <string name="error_message_required_field_to_time">To time is a required field.</string>
+    <string name="title">Title</string>
+    <string name="title_label">Title</string>
+    <string name="image_label">Image</string>
+    <string name="could_not_create_event">Could not create event. Please try again.</string>
+    <string name="could_not_edit_event">Could not edit event. Please try again.</string>
+    <string name="could_not_load_categories">Could not load categories.</string>
+    <string name="could_not_add_location">Could not add location. Please try again.</string>
+    <string name="could_not_edit_location">Could not edit location. Please try again.</string>
+    <string name="could_not_find_camera">Could not find a camera</string>
+    <string name="private_event_label">Private Event</string>
+    <string name="event_category_label">Category</string>
+    <string name="from">From</string>
+    <string name="to">To</string>
+    <string name="date">Date</string>
+    <string name="time">Time</string>
+    <string name="left">Left</string>
+    <string-array name="tabName">
+        <item>Attending</item>
+        <item>Mine</item>
+    </string-array>
+    <string name="close">Close</string>
+    <string name="submit">Submit</string>
+    <string name="save">Save</string>
+    <string name="join_private_event">Join private event</string>
+    <string name="enter_invitation_code">Enter invitation code</string>
+    <string name="join_private">Join private event</string>
+    <string name="invite_code_length_error">The invite code must be at least 4 characters</string>
+    <string name="invalid_invite_code">Could not find event with that invite code</string>
+    <string name="delete">Delete</string>
+    <string name="delete_location">DANGER: Do you want to delete this location?</string>
+    <string name="attend_event">Attend event</string>
+    <string name="left_event">You have now left this event</string>
+    <string name="leave_event">Leave event</string>
+    <string name="leave_event_desc">Do you want to leave this event?</string>
+    <string name="event_going">Going:</string>
+    <string name="attending_event">Attending event</string>
+    <string name="attend_event_desc">Do you want to attend this event?</string>
+    <string name="could_not_attend_event">Could not attend event, maybe you are already attending?</string>
+    <string name="attending_event_count">Attendance count:</string>
+    <string name="place_is_a_required_field">Place is a required field.</string>
+    <string name="from_date">Start date</string>
+    <string name="from_time">Start time</string>
+    <string name="to_date">End date</string>
+    <string name="to_time">End time</string>
+    <string name="error_from_date_is_after_to_date">From date cannot be after to date!</string>
+    <string name="previous">Previous</string>
+    <string name="next">Next</string>
+    <string name="competitions">Competitions</string>
+    <string name="private_event_invite_code">Private event, invitation code:</string>
+    <string name="organizer">Organizer:</string>
+    <string name="event_category">Category:</string>
+
+    <!-- Date Sections -->
+    <string name="today">Today</string>
+    <string name="tomorrow">Tomorrow</string>
+    <string name="this_week">This week</string>
+    <string name="next_week">Next week</string>
+
+    <string name="january">January</string>
+    <string name="february">February</string>
+    <string name="march">March</string>
+    <string name="april">April</string>
+    <string name="may">May</string>
+    <string name="june">June</string>
+    <string name="july">July</string>
+    <string name="august">August</string>
+    <string name="september">September</string>
+    <string name="october">October</string>
+    <string name="november">November</string>
+    <string name="december">December</string>
+
+    <string name="next_year">Next year</string>
+
+    <string name="you_have_now_logged_out">Good bye. You have now logged out</string>
+
+    <string name="or">Or</string>
+
+    <string name="edit_image">Edit image</string>
+    <string name="select_image_option">Select image option</string>
+    <string name="capture_image">Capture image</string>
+    <string name="select_image_from_lib">Image from library</string>
+
+    <string name="first_name">First name</string>
+    <string name="last_name">Last name</string>
+
+    <string name="already_voted">You have already voted for this image</string>
+    <string name="image_author">Uploader: </string>
+    <string name="upload_new_image">Upload new image</string>
+    <string name="add_image">Add image</string>
+
+    <string name="attend_upper">ATTEND</string>
+    <string name="explore_upper">EXPLORE</string>
+
+    <string name="must_be_logged_in">You must be logged for this function</string>
+
+    <string name="saving">Saving&#8230;</string>
+
+    <string name="logout_confirm">Are you sure you want to logout?</string>
+
+    <string name="apply_filters">Apply filters</string>
+    <string name="distance">Distance</string>
+    <string name="selected_distance">Selected distance</string>
+    <string name="location">Location</string>
+    <string name="use_current_location">Use current location</string>
+
+    <string name="about">About</string>
+    <string name="about_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer ac pretium nisi. Proin convallis eros quis tellus gravida vestibulum. Maecenas sollicitudin nulla enim, eu hendrerit mauris bibendum sit amet. Sed facilisis, risus sit amet tempor euismod, tellus nisi egestas metus, nec consectetur ex lectus quis mi.</string>
+
+    <string name="this_event_has_no_locations">This event has no locations</string>
 </resources>

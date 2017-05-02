@@ -2,10 +2,99 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <!-- Color theme -->
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorAccent">@color/accent</item>
+        <item name="colorButtonNormal">@color/primary</item>
     </style>
+
+    <style name="AppTheme.Red">
+        <!-- Color theme -->
+        <item name="colorPrimary">@color/colorRed</item>
+        <item name="colorPrimaryDark">@color/colorRedDark</item>
+        <item name="colorAccent">@color/colorRedAccent</item>
+    </style>
+
+    <style name="AppTheme.Orange">
+        <!-- Color theme -->
+        <item name="colorPrimary">@color/colorOrange</item>
+        <item name="colorPrimaryDark">@color/colorOrangeDark</item>
+        <item name="colorAccent">@color/colorOrangeAccent</item>
+    </style>
+
+    <style name="AppTheme.Yellow">
+        <!-- Color theme -->
+        <item name="colorPrimary">@color/colorYellow</item>
+        <item name="colorPrimaryDark">@color/colorYellowDark</item>
+        <item name="colorAccent">@color/colorYellowAccent</item>
+    </style>
+
+    <style name="AppTheme.Green">
+        <!-- Color theme -->
+        <item name="colorPrimary">@color/colorGreen</item>
+        <item name="colorPrimaryDark">@color/colorGreenDark</item>
+        <item name="colorAccent">@color/colorGreenAccent</item>
+    </style>
+
+    <style name="AppTheme.Blue">
+        <!-- Color theme -->
+        <item name="colorPrimary">@color/colorBlue</item>
+        <item name="colorPrimaryDark">@color/colorBlueDark</item>
+        <item name="colorAccent">@color/colorBlueAccent</item>
+    </style>
+
+    <style name="AppTheme.Indigo">
+        <!-- Color theme -->
+        <item name="colorPrimary">@color/colorIndigo</item>
+        <item name="colorPrimaryDark">@color/colorIndigoDark</item>
+        <item name="colorAccent">@color/colorIndigoAccent</item>
+    </style>
+
+    <style name="AppTheme.Violet">
+        <!-- Color theme -->
+        <item name="colorPrimary">@color/colorViolet</item>
+        <item name="colorPrimaryDark">@color/colorVioletDark</item>
+        <item name="colorAccent">@color/colorVioletAccent</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"></style>
+
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="AppTheme.Dialog" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:background">@color/primary</item>
+        <item name="colorAccent">@color/divider</item>
+    </style>
+
+    <style name="CollapsingToolbarLayoutExpandedTextStyle" parent="AppTheme">
+        <item name="android:textColor">@color/light_gray</item>
+        <item name="android:textSize">22sp</item>
+    </style>
+
+    <style name="JoinEventDialog" parent="android:Theme.DeviceDefault.Dialog">
+        <item name="colorAccent">@color/colorPrimaryDark</item>
+    </style>
+
+    <style name="UploadImageDialog" parent="android:Theme.DeviceDefault.Dialog">
+        <item name="colorAccent">@color/colorPrimaryDark</item>
+    </style>
+
+    <style name="SplashTheme" parent="AppTheme.NoActionBar">
+        <item name="android:windowBackground">@drawable/map_background_splash</item>
+    </style>
+
+    <style name="EventFilterDialog" parent="@android:style/Theme.Material.Light.Dialog.NoActionBar"></style>
+
+    <style name="BigBlueButton">
+        <item name="android:background">@drawable/button_submit_rounded</item>
+    </style>
+
 
 </resources>
