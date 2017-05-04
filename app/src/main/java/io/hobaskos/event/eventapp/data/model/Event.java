@@ -45,6 +45,12 @@ public class Event implements Parcelable {
     @SerializedName("ownerLogin")
     private String ownerLogin;
 
+    @SerializedName("ownerFirstName")
+    private String ownerFirstName;
+
+    @SerializedName("ownerLastName")
+    private String ownerLastName;
+
     @SerializedName("locations")
     private List<Location> locations;
 
@@ -141,6 +147,10 @@ public class Event implements Parcelable {
 
     public void setOwnerLogin(String ownerLogin) {
         this.ownerLogin = ownerLogin;
+    }
+
+    public String getOwnerName() {
+        return ownerFirstName + " " + ownerLastName;
     }
 
     public List<Location> getLocations() {

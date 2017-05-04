@@ -71,7 +71,7 @@ public class EventMapActivity extends FragmentActivity implements OnMapReadyCall
             focusLng = extra.getDouble(FOCUS_LNG);
             focusPoint = extra.getBoolean(FOCUS_POINT);
         } else {
-            Toast.makeText(this, "Kan ikke hente lokasjoner", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.could_not_get_locations, Toast.LENGTH_LONG).show();
             finish();
         }
 
@@ -225,13 +225,13 @@ public class EventMapActivity extends FragmentActivity implements OnMapReadyCall
         LatLng latLng = getLatLng(location);
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(latLng);
-        markerOptions.title("Din plassering");
+        markerOptions.title(getString(R.string.your_location));
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
         mCurrLocationMarker = map.addMarker(markerOptions);
 
         //Move map camera
-        map.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        map.animateCamera(CameraUpdateFactory.zoomTo(11));
+        //map.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        //map.animateCamera(CameraUpdateFactory.zoomTo(11));
 
         //Stop location updates
         if (mGoogleApiClient != null) {
