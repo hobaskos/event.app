@@ -88,7 +88,7 @@ public class EventInfoFragment extends Fragment {
 
         eventDescription.setText(event.getDescription());
         attendanceCount.setText(String.valueOf(event.getAttendanceCount()));
-        //organizer.setText("REPLACE ME");
+        organizer.setText(event.getOwnerName());
         category.setText(event.getCategory().getTitle());
 
         if (event.isPrivateEvent()) {

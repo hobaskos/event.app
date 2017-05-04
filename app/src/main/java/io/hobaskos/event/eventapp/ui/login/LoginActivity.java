@@ -89,6 +89,7 @@ public class LoginActivity extends MvpActivity<LoginView, LoginPresenter> implem
 
                 SocialUserVM socialUserVM = new SocialUserVM(userId, token);
                 socialUserVM.setType(SocialType.FACEBOOK);
+                progressDialog.show();
                 presenter.login(socialUserVM);
             }
 

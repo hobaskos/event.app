@@ -43,6 +43,11 @@ public class LocationRecyclerViewAdapter extends
         holder.title.setText(location.getName());
         holder.address.setText(location.getAddress());
         holder.date.setText(location.getDateLine(context));
+        if (location.hasDescription()) {
+            holder.description.setText(location.getDescription());
+        } else {
+            holder.description.setVisibility(View.GONE);
+        }
         if (isOwner) {
             holder.delete.setVisibility(View.VISIBLE);
         } else {
@@ -67,6 +72,7 @@ public class LocationRecyclerViewAdapter extends
         public final TextView title;
         public final TextView address;
         public final TextView date;
+        public final TextView description;
         public final ImageView delete;
         public final ImageView edit;
         public Location location;
@@ -78,6 +84,7 @@ public class LocationRecyclerViewAdapter extends
             title = (TextView) view.findViewById(R.id.title);
             address = (TextView) view.findViewById(R.id.address);
             date = (TextView) view.findViewById(R.id.date);
+            description = (TextView) view.findViewById(R.id.description);
             delete = (ImageView) view.findViewById(R.id.delete);
             edit = (ImageView) view.findViewById(R.id.edit);
 

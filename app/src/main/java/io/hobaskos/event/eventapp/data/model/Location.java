@@ -114,6 +114,10 @@ public class Location implements Parcelable {
         return DateUtils.formatDateRange(context, fromDate.getMillis(), toDate.getMillis(), DateUtils.FORMAT_SHOW_TIME);
     }
 
+    public boolean hasDescription() {
+        return description != null && !description.equals("");
+    }
+
     /**
      * Checks if this location is currently on going.
      * @return true if location is ongoing, false otherwise.
